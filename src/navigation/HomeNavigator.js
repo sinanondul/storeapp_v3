@@ -27,5 +27,5 @@ const HomeNavigator = () => {
 };
 
 //söfmlşdsmf
-
+//dsfakndlsşmfg
 export default HomeNavigator;
