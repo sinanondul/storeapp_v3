@@ -47,7 +47,7 @@ const styles = StyleSheet.create({
       ),
       headerRight: () => (
         <Icon
-          name = {"plus"}
+          name = {"ios-plus"}
           style={{marginRight:10}}
           size={40}
           color='#fff'

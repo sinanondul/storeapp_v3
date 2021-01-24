@@ -32,7 +32,7 @@ export default class App extends React.Component {
   render() {
     return (
       <NavigationContainer ref={navigationRef}>
-        {this.state.isLoggedIn ? <PageNavigator /> : <AuthNavigator />}
+        {this.state.isLoggedIn ? <PageNavigator/> : <AuthNavigator />}
       </NavigationContainer>
     );
   }
