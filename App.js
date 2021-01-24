@@ -1,61 +1,39 @@
-import 'react-native-gesture-handler';
-import React, { useEffect, useState } from 'react'
-import { firebase } from './src/firebase/config'
-import { NavigationContainer } from '@react-navigation/native'
-import { createStackNavigator } from '@react-navigation/stack'
-import { LoginScreen, HomeScreen, RegistrationScreen } from './src/screens'
-import {decode, encode} from 'base-64'
-if (!global.btoa) {  global.btoa = encode }
-if (!global.atob) { global.atob = decode }
+import "react-native-gesture-handler";
+import React, { useEffect, useState } from "react";
+import { firebase } from "./src/firebase/config";
+import { NavigationContainer } from "@react-navigation/native";
+import PageNavigator from "./src/navigation/PageNavigator";
+import AuthNavigator from "./src/navigation/AuthNavigator";
+import {Alert} from "react-native";
+import { DrawerActions } from '@react-navigation/native';
+import { render } from "react-dom";
 
-const Stack = createStackNavigator();
+const navigationRef = React.createRef();
 
-export default function App() {
+export function openDrawer(){
+  navigationRef.current && navigationRef.current.dispatch(DrawerActions.toggleDrawer());
+}
 
-  const [loading, setLoading] = useState(true)
-  const [user, setUser] = useState(null)
+export default class App extends React.Component {
+  state = {
+    isLoggedIn: false,
+  };
 
-  useEffect(() => {
-    const usersRef = firebase.firestore().collection('users');
-    firebase.auth().onAuthStateChanged(user => {
+  componentDidMount() {
+    firebase.auth().onAuthStateChanged((user) => {
       if (user) {
-        usersRef
-          .doc(user.uid)
-          .get()
-          .then((document) => {
-            const userData = document.data()
-            setLoading(false)
-            setUser(userData)
-          })
-          .catch((error) => {
-            setLoading(false)
-          });
+        this.setState({ isLoggedIn: true });
       } else {
-        setLoading(false)
+        this.setState({ isLoggedIn: false });
       }
     });
-  }, []);
-
-  if (loading) {
-    return (
-      <></>
-    )
   }
 
-  return (
-    <NavigationContainer>
-      <Stack.Navigator>
-        { user ? (
-          <Stack.Screen name="Home">
-            {props => <HomeScreen {...props} extraData={user} />}
-          </Stack.Screen>
-        ) : (
-          <>
-            <Stack.Screen name="Login" component={LoginScreen} />
-            <Stack.Screen name="Registration" component={RegistrationScreen} />
-          </>
-        )}
-      </Stack.Navigator>
-    </NavigationContainer>
-  );
+  render() {
+    return (
+      <NavigationContainer ref={navigationRef}>
+        {this.state.isLoggedIn ? <PageNavigator /> : <AuthNavigator />}
+      </NavigationContainer>
+    );
+  }
 }
