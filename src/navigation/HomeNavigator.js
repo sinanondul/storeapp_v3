@@ -5,12 +5,11 @@ import Feed from "../screens/HomeScreen/BottomTab/Feed";
 import Profile from "../screens/HomeScreen/BottomTab/Profile";
 import Notifications from "../screens/HomeScreen/BottomTab/Notifications";
 import Inbox from "../screens/HomeScreen/BottomTab/Inbox";
-
+import { BottomStackNavigator } from "./MainStackNavigator";
 
 const Tab = createBottomTabNavigator();
 
-const screenOptionStyle = {
-};
+const screenOptionStyle = {};
 
 const HomeNavigator = ({navigation}) => {
   return (
@@ -26,4 +25,6 @@ const HomeNavigator = ({navigation}) => {
   );
 };
 
+//söfmlşdsmf
+//dsfakndlsşmfg
 export default HomeNavigator;

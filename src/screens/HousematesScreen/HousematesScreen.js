@@ -25,7 +25,6 @@ export default class HousematesScreen extends React.Component{
     return (
       <HousematesStack.Navigator 
         initialRouteName='Landing'
-        lazy={false}
       >
         <HousematesStack.Screen name="Landing" component={LandingScreen} options={LandingScreen.navigationOptions}/>
         <HousematesStack.Screen name="Add" component={AddScreen}/>

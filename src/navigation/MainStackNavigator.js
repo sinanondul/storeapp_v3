@@ -23,7 +23,6 @@ const MainStackNavigator = () => {
   return (
     <Stack.Navigator screenOptions={screenOptionStyle}>
       <Stack.Screen name="Home" component={HomeScreen} />
-      {/* <Stack.Screen name="AddPost" component={Addpost} /> */}
     </Stack.Navigator>
   );
 };

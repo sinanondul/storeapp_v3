@@ -18,10 +18,10 @@ import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
 const PageDrawer = createDrawerNavigator();
 
 const screenOptionStyle = {
-    headerStyle: {
-      backgroundColor: "#9AC4F8",
-    }
-  };
+  headerStyle: {
+    backgroundColor: "#9AC4F8",
+  },
+};
 
 export default function PageNavigator(props) {
   return (
@@ -36,32 +36,6 @@ export default function PageNavigator(props) {
       <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
       <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
-      {/* <PageDrawer.Screen name="Logout"  component={CustomDrawerContent} /> */}
     </PageDrawer.Navigator>
-    );
+  );
 }
-
-// function CustomDrawerContent(props) {
-//   return (
-//     <DrawerContentScrollView {...props}>
-//       <DrawerItemList {...props} />
-//       <DrawerItem label="Logout" onPress={() => onLogoutPress({...props})} />
-//     </DrawerContentScrollView>
-//   );
-// }
-
-//   function onLogoutPress({ props }) {
-//     firebase
-//       .auth()
-//       .signOut()
-//       .then(
-//         () => {
-//           //
-//         },
-//         function (error) {
-//           console.log("didnotgoback");
-//           // An error happened.
-//         }
-//       );
-//   }
-
