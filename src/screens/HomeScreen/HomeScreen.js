@@ -1,15 +1,22 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
+import { createStackNavigator } from "@react-navigation/stack";
+import { useFocusEffect } from "@react-navigation/native";
+import styles from "./styles";
+import { Alert } from "react-native";
+
+import LandingScreen from "./LandingScreen";
+import AddScreen from "./AddScreen";
+
 import Feed from "./BottomTab/Feed";
 import Profile from "./BottomTab/Profile";
 import Notifications from "./BottomTab/Notifications";
 import Inbox from "./BottomTab/Inbox";
 
-export default class HomeScreen extends React.Component{
-
+export default class HomeScreen extends React.Component {
   componentDidMount() {
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+    this._unsubscribe = this.props.navigation.addListener("focus", () => {
       // do something
     });
   }
@@ -18,19 +25,29 @@ export default class HomeScreen extends React.Component{
     this._unsubscribe();
   }
 
-  render(){
+  render() {
+    //const Tab = createBottomTabNavigator();
 
-    const Tab = createBottomTabNavigator();
+    const HousematesStack = createStackNavigator();
 
     return (
-      <Tab.Navigator 
-        initialRouteName={"Feed"}
-      >
-        <Tab.Screen name="Feed" component={Feed} />
-        <Tab.Screen name="Profile" component={Profile} />
-        <Tab.Screen name="Notifications" component={Notifications} />
-        <Tab.Screen name="Inbox" component={Inbox} />
-      </Tab.Navigator>
+      <HousematesStack.Navigator initialRouteName="Landing">
+        <HousematesStack.Screen
+          name="Landing"
+          component={LandingScreen}
+          options={LandingScreen.navigationOptions}
+        />
+        <HousematesStack.Screen name="Add" component={AddScreen} />
+      </HousematesStack.Navigator>
+
+      // <Tab.Navigator
+      //   initialRouteName={"Feed"}
+      // >
+      //   <Tab.Screen name="Feed" component={Feed} />
+      //   <Tab.Screen name="Profile" component={Profile} />
+      //   <Tab.Screen name="Notifications" component={Notifications} />
+      //   <Tab.Screen name="Inbox" component={Inbox} />
+      // </Tab.Navigator>
     );
   }
 }
