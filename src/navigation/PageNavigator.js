@@ -1,19 +1,14 @@
 import React from "react";
-import {
-  createDrawerNavigator,
-} from '@react-navigation/drawer';
+import { createDrawerNavigator } from "@react-navigation/drawer";
 import { firebase } from "../firebase/config";
 
 import HomeNavigator from "./HomeNavigator";
 import DrawerContent from "./DrawerContent";
 
-
-import HomeScreen from "../screens/HomeScreen/HomeScreen"
+import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import HousematesScreen from "../screens/HousematesScreen/HousematesScreen";
 import SuppliesScreen from "../screens/SuppliesScreen/SuppliesScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
-
-
 
 const PageDrawer = createDrawerNavigator();
 
@@ -25,11 +20,11 @@ const screenOptionStyle = {
 
 export default function PageNavigator(props) {
   return (
-    <PageDrawer.Navigator 
+    <PageDrawer.Navigator
       // screenOptions={screenOptionStyle}
-      drawerContent={props => <DrawerContent {...props} />}
-      initialRouteName='Home'
-      drawerOpenRoute='OpenDrawer'
+      drawerContent={(props) => <DrawerContent {...props} />}
+      initialRouteName="Home"
+      drawerOpenRoute="OpenDrawer"
       lazy={false}
     >
       <PageDrawer.Screen name="Home" component={HomeScreen} />
