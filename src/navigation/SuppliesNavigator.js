@@ -11,7 +11,7 @@ const screenOptionStyle = {
     },
   };
 
-const SuppliesNavigator = () => {
+const SuppliesNavigator = ({navigation}) => {
   return (
     <SuppliesStack.Navigator 
       screenOptions={screenOptionStyle}
@@ -22,5 +22,6 @@ const SuppliesNavigator = () => {
     </SuppliesStack.Navigator>
   );
 };
+
 
 export default SuppliesNavigator;

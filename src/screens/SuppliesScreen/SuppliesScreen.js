@@ -1,60 +1,33 @@
 import React from "react";
-import {View, Platform, Text, StyleSheet} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-import { openDrawer } from "../../../App"
+import { createStackNavigator } from "@react-navigation/stack";
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      // textAlign: "center",
-    },
-  });
-  
-  class SuppliesScreen extends React.Component{
+import LandingScreen from "./LandingScreen";
+import AddScreen from "./AddScreen";
+import styles from "./styles";
+import { Alert } from 'react-native';
 
-    render(){
-      return (
-        <View 
-        style={styles.container}>
-            <Text>Supplies page.</Text>
-        </View>
-      )
-    }
-  
-    static navigationOptions = {
-      title: <Text>Supplies</Text>,
-      headerStyle: {
-        backgroundColor: '#2890cf',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        flex: 0.6,
-        alignSelf: 'center', 
-        alignItems: 'center',
-        fontWeight: 'bold',
-      },
-      headerLeft: () => (
-        <Icon 
-            name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
-            style={{marginLeft:10}}
-            size={40}
-            color='#fff'
-            onPress={() => openDrawer()}
-            // onPress={() => Alert.alert('Hello world!')}
-        />
-      ),
-      headerRight: () => (
-        <Icon
-          name = {"ios-plus"}
-          style={{marginRight:10}}
-          size={40}
-          color='#fff'
-          onPress={() => navigation.navigate("Add")}
-        />
-      ),
-    };
+export default class SuppliesScreen extends React.Component{
+
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      // do something
+    });
   }
 
-export default SuppliesScreen;
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+    
+    render(){
+      const SuppliesStack = createStackNavigator();
+      return (
+        <SuppliesStack.Navigator 
+          initialRouteName='Landing'
+          lazy={false}
+        >
+          <SuppliesStack.Screen name="Landing" component={LandingScreen} options={LandingScreen.navigationOptions}/>
+          <SuppliesStack.Screen name="Add" component={AddScreen}/>
+        </SuppliesStack.Navigator>
+      );
+    }
+  }

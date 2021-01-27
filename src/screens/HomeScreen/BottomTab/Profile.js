@@ -6,7 +6,7 @@ import { openDrawer } from "../../../../App"
 
 const ProfileStack = createStackNavigator();
 
-export default function Profile({ navigation }) {
+export default function Profile({navigation}) {
   return (
     <ProfileStack.Navigator>
       <ProfileStack.Screen name="Profile" component={ProfileScreen} options={ProfileScreen.navigationOptions}/>

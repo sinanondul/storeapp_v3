@@ -6,7 +6,7 @@ import { openDrawer } from "../../../../App"
 
 const InboxStack = createStackNavigator();
 
-export default function Inbox({ navigation }) {
+export default function Inbox({navigation}) {
   return (
     <InboxStack.Navigator>
       <InboxStack.Screen name="Inbox" component={InboxScreen} options={InboxScreen.navigationOptions}/>

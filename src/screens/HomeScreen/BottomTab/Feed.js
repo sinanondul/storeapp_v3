@@ -6,7 +6,7 @@ import { openDrawer } from "../../../../App"
 
 const FeedStack = createStackNavigator();
 
-export default function Feed({ navigation }) {
+export default function Feed({navigation}) {
   return (
     <FeedStack.Navigator>
       <FeedStack.Screen name="Feed" component={FeedScreen} options={FeedScreen.navigationOptions}/>

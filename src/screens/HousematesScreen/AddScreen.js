@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, TouchableOpacity, StyleSheet } from "react-native";
+import {View, Text, StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
     container: {
@@ -16,7 +16,7 @@ class AddScreen extends React.Component{
       return (
         <View 
         style={styles.container}>
-            <Text>Supplies page.</Text>
+            <Text>Add housemates here.</Text>
         </View>
       )
     }

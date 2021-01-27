@@ -1,60 +1,35 @@
-import React from "react";
-import {View, Platform, Text, StyleSheet} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-import { openDrawer } from "../../../App"
+import * as React from 'react';
+import { createStackNavigator } from "@react-navigation/stack";
+import {useFocusEffect} from '@react-navigation/native';
 
-const styles = StyleSheet.create({
-    container: {
-      flex: 1,
-      justifyContent: "center",
-      alignItems: "center",
-      // textAlign: "center",
-    },
-  });
-  
-  class HousematesScreen extends React.Component{
+import LandingScreen from "./LandingScreen";
+import AddScreen from "./AddScreen";
+import styles from "./styles";
+import { Alert } from 'react-native';
 
-    render(){
-      return (
-        <View 
-        style={styles.container}>
-            <Text>Housemates page.</Text>
-        </View>
-      )
-    }
+export default class HousematesScreen extends React.Component{
   
-    static navigationOptions = {
-      title: <Text>Housemates</Text>,
-      headerStyle: {
-        backgroundColor: '#2890cf',
-      },
-      headerTintColor: '#fff',
-      headerTitleStyle: {
-        flex: 0.6,
-        alignSelf: 'center', 
-        alignItems: 'center',
-        fontWeight: 'bold',
-      },
-      headerLeft: () => (
-        <Icon 
-            name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
-            style={{marginLeft:10}}
-            size={40}
-            color='#fff'
-            onPress={() => openDrawer()}
-            // onPress={() => Alert.alert('Hello world!')}
-        />
-      ),
-      headerRight: () => (
-        <Icon
-          name = {"add-outline"}
-          style={{marginRight:10}}
-          size={40}
-          color='#fff'
-          onPress={() => navigation.navigate("Add")}
-        />
-      ),
-    };
+  componentDidMount() {
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+      // do something
+    });
   }
 
-export default HousematesScreen;
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
+  render(){
+    const HousematesStack = createStackNavigator();
+
+    return (
+      <HousematesStack.Navigator 
+        initialRouteName='Landing'
+        lazy={false}
+      >
+        <HousematesStack.Screen name="Landing" component={LandingScreen} options={LandingScreen.navigationOptions}/>
+        <HousematesStack.Screen name="Add" component={AddScreen}/>
+      </HousematesStack.Navigator>
+    );
+  }
+}

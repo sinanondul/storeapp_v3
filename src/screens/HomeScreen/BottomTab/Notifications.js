@@ -6,7 +6,7 @@ import { openDrawer } from "../../../../App"
 
 const NotificationsStack = createStackNavigator();
 
-export default function Notifications({ navigation }) {
+export default function Notifications({navigation}) {
   return (
     <NotificationsStack.Navigator>
       <NotificationsStack.Screen name="Notifications" component={NotificationScreen} options={NotificationScreen.navigationOptions}/>

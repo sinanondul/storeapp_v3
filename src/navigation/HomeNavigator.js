@@ -12,7 +12,7 @@ const Tab = createBottomTabNavigator();
 const screenOptionStyle = {
 };
 
-const HomeNavigator = () => {
+const HomeNavigator = ({navigation}) => {
   return (
     <Tab.Navigator 
       screenOptions={screenOptionStyle}

@@ -1,6 +1,6 @@
 import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-import HousematesScreen from "../screens/HousematesScreen/HousematesScreen";
+import Landing from "../screens/HousematesScreen/Landing/";
 import AddScreen from "../screens/HousematesScreen/AddScreen";
 import { createStackNavigator } from "@react-navigation/stack";
 
@@ -11,7 +11,7 @@ const screenOptionStyle = {
     },
   };
 
-const HousematesNavigator = () => {
+function HousematesNavigator({navigator}){
   return (
     <HousematesStack.Navigator 
       screenOptions={screenOptionStyle}

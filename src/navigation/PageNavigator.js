@@ -1,9 +1,18 @@
 import React from "react";
-import HomeNavigator from "./HomeNavigator";
-import SuppliesNavigator from "./SuppliesNavigator";
-import HousematesNavigator from "./HousematesNavigator";
-import { createDrawerNavigator } from '@react-navigation/drawer';
+import {
+  createDrawerNavigator,
+} from '@react-navigation/drawer';
 import { firebase } from "../firebase/config";
+
+import HomeNavigator from "./HomeNavigator";
+import DrawerContent from "./DrawerContent";
+
+
+import HomeScreen from "../screens/HomeScreen/HomeScreen"
+import HousematesScreen from "../screens/HousematesScreen/HousematesScreen";
+import SuppliesScreen from "../screens/SuppliesScreen/SuppliesScreen";
+import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
+
 
 
 const PageDrawer = createDrawerNavigator();
@@ -14,33 +23,45 @@ const screenOptionStyle = {
     }
   };
 
-export default function PageNavigator({ navigation, loginState }) {
+export default function PageNavigator(props) {
   return (
     <PageDrawer.Navigator 
-      screenOptions={screenOptionStyle}
+      // screenOptions={screenOptionStyle}
+      drawerContent={props => <DrawerContent {...props} />}
       initialRouteName='Home'
       drawerOpenRoute='OpenDrawer'
+      lazy={false}
     >
-      <PageDrawer.Screen name="Home" component={HomeNavigator} />
-      <PageDrawer.Screen name="Supplies" component={SuppliesNavigator} />
-      <PageDrawer.Screen name="Housemates" component={HousematesNavigator} />
-      <PageDrawer.Screen name="Logout"  component={onLogoutPress} />
+      <PageDrawer.Screen name="Home" component={HomeScreen} />
+      <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
+      <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
+      <PageDrawer.Screen name="Settings" component={SettingsScreen} />
+      {/* <PageDrawer.Screen name="Logout"  component={CustomDrawerContent} /> */}
     </PageDrawer.Navigator>
     );
 }
 
+// function CustomDrawerContent(props) {
+//   return (
+//     <DrawerContentScrollView {...props}>
+//       <DrawerItemList {...props} />
+//       <DrawerItem label="Logout" onPress={() => onLogoutPress({...props})} />
+//     </DrawerContentScrollView>
+//   );
+// }
 
-  function onLogoutPress({ navigation }) {
-    firebase
-      .auth()
-      .signOut()
-      .then(
-        () => {
-          //
-        },
-        function (error) {
-          console.log("didnotgoback");
-          // An error happened.
-        }
-      );
-  }
+//   function onLogoutPress({ props }) {
+//     firebase
+//       .auth()
+//       .signOut()
+//       .then(
+//         () => {
+//           //
+//         },
+//         function (error) {
+//           console.log("didnotgoback");
+//           // An error happened.
+//         }
+//       );
+//   }
+
