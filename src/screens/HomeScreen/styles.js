@@ -3,7 +3,6 @@ import { StyleSheet } from "react-native";
 export default StyleSheet.create({
   container: {
     flex: 1,
-    alignItems: "center",
   },
   formContainer: {
     flexDirection: "row",
@@ -61,5 +60,47 @@ export default StyleSheet.create({
     fontSize: 20,
     color: "#333333",
   },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "500",
+  },
+  feed: {
+    marginHorizontal: 16,
+  },
+  feedItem: {
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    padding: 8,
+    flexDirection: "row",
+    marginVertical: 8,
+  },
+  avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: 16,
+  },
+  name: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#454D65",
+  },
+  timestamp: {
+    fontSize: 11,
+    color: "#C4C6CE",
+    marginTop: 4,
+  },
+  post: {
+    marginTop: 16,
+    fontSize: 14,
+    color: "#838899",
+  },
+  postImage: {
+    width: undefined,
+    height: 150,
+    borderRadius: 5,
+    marginVertical: 16,
+  },
+
   //tabs
 });
