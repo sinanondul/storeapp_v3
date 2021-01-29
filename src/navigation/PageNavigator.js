@@ -1,6 +1,5 @@
 import React from "react";
 import { createDrawerNavigator } from "@react-navigation/drawer";
-import { firebase } from "../firebase/config";
 
 import HomeNavigator from "./HomeNavigator";
 import DrawerContent from "./DrawerContent";
