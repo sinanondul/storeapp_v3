@@ -1,9 +1,9 @@
-import firebaseConfig from "./config";
+import firebaseKeys from "./config";
 import firebase from "firebase";
 
 class Fire {
   constructor() {
-    firebase.initializeApp(firebaseConfig);
+    firebase.initializeApp(firebaseKeys);
   }
 
   addPost = async ({ text, localUri }) => {

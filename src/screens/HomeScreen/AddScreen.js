@@ -18,7 +18,7 @@ import * as ImagePicker from "expo-image-picker";
 const firebase = require("firebase");
 require("firebase/firestore");
 
-class AddScreen extends React.Component {
+export default class AddScreen extends React.Component {
   state = {
     text: "",
     image: null,
@@ -118,8 +118,6 @@ class AddScreen extends React.Component {
     headerTintColor: "#fff",
   };
 }
-
-export default AddScreen;
 
 const styles = StyleSheet.create({
   container: {
