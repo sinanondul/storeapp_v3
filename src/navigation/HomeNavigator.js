@@ -11,12 +11,9 @@ const Tab = createBottomTabNavigator();
 
 const screenOptionStyle = {};
 
-const HomeNavigator = ({navigation}) => {
+const HomeNavigator = ({ navigation }) => {
   return (
-    <Tab.Navigator 
-      screenOptions={screenOptionStyle}
-      initialRouteName={"Feed"}
-    >
+    <Tab.Navigator screenOptions={screenOptionStyle} initialRouteName={"Feed"}>
       <Tab.Screen name="Feed" component={Feed} />
       <Tab.Screen name="Profile" component={Profile} />
       <Tab.Screen name="Notifications" component={Notifications} />
@@ -25,6 +22,4 @@ const HomeNavigator = ({navigation}) => {
   );
 };
 
-//söfmlşdsmf
-//dsfakndlsşmfg
 export default HomeNavigator;
