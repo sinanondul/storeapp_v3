@@ -14,7 +14,7 @@ import {
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 
 import Fire from "../firebase/Fire";
-
+import * as firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";
 import styles from "./styles";
 
@@ -122,7 +122,8 @@ export default class DrawerContent extends React.Component {
 }
 
 const onLogoutButtonPress = ({ props }) => {
-  Fire.auth()
+  firebase
+    .auth()
     .signOut()
     .then(
       () => {},
