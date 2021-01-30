@@ -11,7 +11,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import { openDrawer } from "../../../App";
 import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
-
+import moment from "moment";
 //temp posts
 
 posts = [
@@ -56,7 +56,9 @@ export default class LandingScreen extends React.Component {
           >
             <View>
               <Text style={styles.name}>{post.name}</Text>
-              <Text style={styles.timestamp}>{post.timestamp}</Text>
+              <Text style={styles.timestamp}>
+                {moment(post.timestamp).fromNow()}
+              </Text>
             </View>
             <Ionicons name="ios-more" size={24} color="#73788" />
           </View>
@@ -66,6 +68,14 @@ export default class LandingScreen extends React.Component {
             style={styles.postImage}
             resizeMode="cover"
           />
+          <View style={{ flexDirection: "row" }}>
+            <Ionicons
+              name="ios-heart-empty"
+              size={24}
+              color="#73788B"
+            ></Ionicons>
+            {/* <Ionicons name ="ios-heart-empty" size={24} color="#73788B"></Ionicons> */}
+          </View>
         </View>
       </View>
     );
