@@ -41,9 +41,8 @@ export default class LandingScreen extends React.Component{
                     <View style={styles.dm}>
                         <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
                     </View>
-                    <View style={styles.active}></View>
                     <View style={styles.add}>
-                        <Ionicons name="ios-add" size={36} color="#DFD8C8" style={{ marginTop: 4, marginLeft: 1 }}></Ionicons>
+                        <Ionicons name="ios-add" size={36} color="#DFD8C8" style={{ marginTop: 3 }}></Ionicons>
                     </View>
                 </View>
 

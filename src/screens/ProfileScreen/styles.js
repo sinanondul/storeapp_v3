@@ -25,8 +25,8 @@ const styles = StyleSheet.create({
         alignSelf: "center" 
     },
     profileImage: {
-        width: 200,
-        height: 150,
+        width: 80,
+        height: 200,
         borderRadius: 100,
         overflow: "hidden"
     },
@@ -40,23 +40,13 @@ const styles = StyleSheet.create({
         alignItems: "center",
         justifyContent: "center"
     },
-    active: {
-        backgroundColor: "#34FFB9",
-        position: "absolute",
-        bottom: 28,
-        left: 10,
-        padding: 4,
-        height: 20,
-        width: 20,
-        borderRadius: 10
-    },
     add: {
         backgroundColor: "#41444B",
         position: "absolute",
-        bottom: 0,
+        bottom: 20,
         right: 0,
-        width: 60,
-        height: 60,
+        width: 40,
+        height: 40,
         borderRadius: 30,
         alignItems: "center",
         justifyContent: "center"
