@@ -21,9 +21,12 @@ const styles = StyleSheet.create({
         textTransform: "uppercase",
         fontWeight: "500"
     },
+    profileImageContainer: {
+        alignSelf: "center" 
+    },
     profileImage: {
         width: 200,
-        height: 200,
+        height: 150,
         borderRadius: 100,
         overflow: "hidden"
     },

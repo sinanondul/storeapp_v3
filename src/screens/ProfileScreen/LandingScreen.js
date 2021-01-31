@@ -34,7 +34,7 @@ export default class LandingScreen extends React.Component{
         <SafeAreaView style={styles.container}>
             <ScrollView showsVerticalScrollIndicator={false}>
 
-                <View style={{ alignSelf: "center" }}>
+                <View style={styles.profileImageContainer}>
                     <View style={styles.profileImage}>
                         <Image source={require("./assets/profile-pic.jpg")} style={styles.image} resizeMode="center"></Image>
                     </View>
@@ -43,7 +43,7 @@ export default class LandingScreen extends React.Component{
                     </View>
                     <View style={styles.active}></View>
                     <View style={styles.add}>
-                        <Ionicons name="ios-add" size={48} color="#DFD8C8" style={{ marginTop: 6, marginLeft: 2 }}></Ionicons>
+                        <Ionicons name="ios-add" size={36} color="#DFD8C8" style={{ marginTop: 4, marginLeft: 1 }}></Ionicons>
                     </View>
                 </View>
 
