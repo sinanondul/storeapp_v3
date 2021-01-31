@@ -25,7 +25,7 @@ export default class DrawerContent extends React.Component {
         <View style={styles.userInfoSection}>
           <View style={{ flexDirection: "row", marginTop: 40 }}>
               <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")}>
-                <Avatar.Text size={50} label="UT" marginLeft={15}></Avatar.Text>
+                <Avatar.Text size={50} label="P" marginLeft={15}></Avatar.Text>
               </TouchableOpacity>                
           </View>
           <View></View>
