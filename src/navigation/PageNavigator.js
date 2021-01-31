@@ -8,6 +8,7 @@ import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import HousematesScreen from "../screens/HousematesScreen/HousematesScreen";
 import SuppliesScreen from "../screens/SuppliesScreen/SuppliesScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
+import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 
 const PageDrawer = createDrawerNavigator();
 
@@ -29,6 +30,7 @@ export default function PageNavigator(props) {
       <PageDrawer.Screen name="Home" component={HomeScreen} />
       <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
       <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
+      <PageDrawer.Screen name="Profile" component={ProfileScreen} />
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
     </PageDrawer.Navigator>
   );

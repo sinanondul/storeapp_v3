@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, TouchableOpacity } from "react-native";
 import {
   useTheme,
   Avatar,
@@ -24,7 +24,9 @@ export default class DrawerContent extends React.Component {
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
           <View style={{ flexDirection: "row", marginTop: 40 }}>
-            <Avatar.Text size={50} label="UT" marginLeft={15} />
+              <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")}>
+                <Avatar.Text size={50} label="UT" marginLeft={15}></Avatar.Text>
+              </TouchableOpacity>                
           </View>
           <View></View>
         </View>
