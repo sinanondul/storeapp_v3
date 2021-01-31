@@ -23,12 +23,9 @@ export default class DrawerContent extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
-          <View style={{ flexDirection: "row", marginTop: 40 }}>
-              <TouchableOpacity onPress={() => this.props.navigation.navigate("Profile")}>
-                <Avatar.Text size={50} label="P" marginLeft={15}></Avatar.Text>
-              </TouchableOpacity>                
-          </View>
-          <View></View>
+          <TouchableOpacity style={{ flexDirection: "row", marginTop: 50 }} onPress={() => this.props.navigation.navigate("Profile")}>
+              <Avatar.Text size={50} label="P" marginLeft={15}></Avatar.Text>               
+          </TouchableOpacity>
         </View>
 
         <View style={styles.topDrawerSection}>
