@@ -49,7 +49,7 @@ export default class LandingScreen extends React.Component{
 
                 <View style={styles.infoContainer}>
                     <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>Julie</Text>
-                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Photographer</Text>
+                    <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Computer Science</Text>
                 </View>
 
                 <View style={styles.statsContainer}>
