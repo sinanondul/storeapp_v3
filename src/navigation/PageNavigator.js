@@ -1,4 +1,5 @@
 import React from "react";
+import {Alert} from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import HomeNavigator from "./HomeNavigator";
@@ -17,11 +18,13 @@ const screenOptionStyle = {
   },
 };
 
-export default function PageNavigator(props) {
+const PageNavigator = (props) => {
+  
+  var userData = props.userData;
   return (
     <PageDrawer.Navigator
       // screenOptions={screenOptionStyle}
-      drawerContent={(props) => <DrawerContent {...props} />}
+      drawerContent={(props) => <DrawerContent {...props} userData={userData}/>}
       initialRouteName="Home"
       drawerOpenRoute="OpenDrawer"
       lazy={false}
@@ -33,3 +36,5 @@ export default function PageNavigator(props) {
     </PageDrawer.Navigator>
   );
 }
+
+export default PageNavigator;

@@ -22,7 +22,7 @@ class AddScreen extends React.Component{
     }
   
     static navigationOptions = {
-      title: <Text>Supplies</Text>,
+      title: <Text>Housemates</Text>,
       headerStyle: {
         backgroundColor: '#2890cf',
       },

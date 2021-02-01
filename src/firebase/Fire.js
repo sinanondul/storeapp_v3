@@ -1,11 +1,18 @@
 import firebaseKeys from "./config";
 import firebase from "firebase";
+import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 
 class Fire {
   constructor() {
-    firebase.initializeApp(firebaseKeys);
+    if (!firebase.apps.length) {
+      firebase.initializeApp(firebaseKeys);
+    }
+    else {
+      firebase.app();
+    }
   }
 
+  //Post Stuff
   addPost = async ({ text, localUri }) => {
     const remoteUri = await this.uploadPhotoAsync(localUri);
 
@@ -58,6 +65,22 @@ class Fire {
   }
   get timestamp() {
     return Date.now();
+  }
+
+  //Messaging Stuff
+  send = messages => {
+    messages.forEach(item =>{
+      const message = {
+        text: item.text,
+        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        user: item.user
+      }
+      this.db.push(message)
+    })
+  }
+
+  get db() {
+    return firebase.database().ref("messages")
   }
 }
 

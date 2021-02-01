@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, Platform, StyleSheet, Alert } from "react-native";
 import {
   useTheme,
   Avatar,
@@ -12,19 +12,49 @@ import {
   Switch,
 } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
+import firebase from "firebase";
 
-import Fire from "../firebase/Fire";
-import * as firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";
 import styles from "./styles";
 
+function getFullName(info){
+  return info.name + " " + info.surename;
+}
+
+function getAvatarTag(info){
+    return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
+}
+
+function getAvatar(info){
+  if (!(info.avatar == null)) {
+    return(<Avatar.Image size={50} source={info.avatar}/>);
+  }
+  else {
+    return(<Avatar.Text size={50} label={getAvatarTag(info)} marginLeft={15} style={{backgroundColor: "#f4511e"}}/>);
+  }
+}
+
 export default class DrawerContent extends React.Component {
+  
+  
+  
+  
   render() {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
-          <View style={{ flexDirection: "row", marginTop: 40 }}>
-            <Avatar.Text size={50} label="UT" marginLeft={15} />
+          <View style={styles.userInfoWrapper}>
+            <View style={styles.userAvatar}>
+              {getAvatar(this.props.userData)}
+            </View>
+            <View style={styles.userTextWrapper}>
+              <View style={styles.userName}>
+                <Text style={styles.userNameText}>{getFullName(this.props.userData)}</Text>
+              </View>
+              <View>
+
+              </View>
+            </View>
           </View>
           <View></View>
         </View>

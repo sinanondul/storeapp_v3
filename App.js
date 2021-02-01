@@ -8,8 +8,8 @@ import { Alert } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { render } from "react-dom";
 
-import * as firebase from "firebase";
-var firebaseConfig = firebaseKeys;
+import firebase from "firebase";
+
 //firebase.initializeApp(firebaseConfig);
 
 if (!firebase.apps.length) {
@@ -23,13 +23,40 @@ export function openDrawer() {
 }
 
 export default class App extends React.Component {
+  constructor(props) {
+    super(props)
+
+  }
+
   state = {
     isLoggedIn: false,
+    userInfo:{
+      uid: null,
+      name: "Blank",
+      surename: "Blankovich",
+      avatar: null,
+      messages: null,
+    }
   };
 
   componentDidMount() {
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
+        var uid = user.uid;
+        const usersRef = firebase.firestore().collection("users");
+        usersRef
+          .doc(uid)
+          .get()
+          .then((firestoreDocument) => {
+            var userData = firestoreDocument.data();
+            this.setState({ userInfo: {
+              uid: userData.uid,
+              name: userData.name,
+              surename: userData.surename,
+              avatar: userData.avatar,
+              messages: userData.messages
+            }})
+          })
         this.setState({ isLoggedIn: true });
       } else {
         this.setState({ isLoggedIn: false });
@@ -38,12 +65,13 @@ export default class App extends React.Component {
   }
 
   render() {
+    var userData = this.state.userInfo;
     return (
       <NavigationContainer ref={navigationRef}>
         {this.state.isLoggedIn ? (
-          <PageNavigator {...this.props} />
+          <PageNavigator userData={userData}/>
         ) : (
-          <AuthNavigator />
+          <AuthNavigator/>
         )}
       </NavigationContainer>
     );

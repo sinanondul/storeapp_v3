@@ -14,7 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 
 //temp posts
 
-posts = [
+const posts = [
   {
     id: "1",
     name: "Lebron James",
@@ -77,17 +77,6 @@ export default class LandingScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.props.navigation.setOptions({
-      headerRight: () => (
-        <Icon
-          name="ios-add-circle-outline"
-          style={{ marginRight: 10 }}
-          size={40}
-          color="#fff"
-          onPress={() => this.props.navigation.navigate("Add")}
-        />
-      ),
-    });
   }
 
   render() {
@@ -112,6 +101,7 @@ export default class LandingScreen extends React.Component {
     headerTintColor: "#ffff",
     headerTitleStyle: {
       flex: 0.6,
+      paddingRight: 60,
       alignSelf: "center",
       alignItems: "center",
       fontWeight: "bold",
