@@ -132,5 +132,12 @@ export default StyleSheet.create({
     marginVertical: 16,
   },
 
+
+  userAvatar: {
+    height: 80,
+    flex: 0.3,
+    justifyContent: "center",
+    alignItems: "center",
+},
   //tabs
 });
