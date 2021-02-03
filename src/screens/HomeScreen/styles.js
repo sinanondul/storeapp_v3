@@ -67,6 +67,7 @@ export default StyleSheet.create({
   feed: {
     marginHorizontal: 16,
   },
+
   feedItem: {
     backgroundColor: "#FFF",
     borderRadius: 5,
@@ -74,6 +75,36 @@ export default StyleSheet.create({
     flexDirection: "row",
     marginVertical: 8,
   },
+  feedHeader: {
+    flex: 1,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  userAvatar: {
+    height: 80,
+    flex: 0.2,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingLeft: 5,
+    paddingTop: 20,
+  },
+  userText: {
+    flex: 0.7,
+  },
+  moreButton: {
+    height: 80,
+    flex: 0.1,
+    alignItems: 'center',
+    justifyContent: 'center',
+    paddingTop: 10,
+    paddingBottom: 40,
+  },
+
+  mainText: {
+    paddingLeft: 10,
+  },
+
+
   avatar: {
     width: 36,
     height: 36,
@@ -93,10 +124,9 @@ export default StyleSheet.create({
   post: {
     marginTop: 16,
     fontSize: 14,
-    color: "#838899",
   },
   postImage: {
-    width: undefined,
+    width: '100%',
     height: 150,
     borderRadius: 5,
     marginVertical: 16,

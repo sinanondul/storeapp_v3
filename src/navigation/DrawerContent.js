@@ -36,9 +36,6 @@ function getAvatar(info){
 
 export default class DrawerContent extends React.Component {
   
-  
-  
-  
   render() {
     return (
       <View style={{ flex: 1 }}>

@@ -72,7 +72,7 @@ class Fire {
     messages.forEach(item =>{
       const message = {
         text: item.text,
-        timestamp: firebase.database.ServerValue.TIMESTAMP,
+        timestamp: timestamp(),
         user: item.user
       }
       this.db.push(message)
