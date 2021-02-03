@@ -16,7 +16,6 @@ import Fire from "../../firebase/Fire";
 import * as ImagePicker from "expo-image-picker";
 
 const firebase = require("firebase");
-require("firebase/firestore");
 
 export default class AddScreen extends React.Component {
   state = {
