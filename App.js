@@ -68,11 +68,7 @@ export default class App extends React.Component {
     var userData = this.state.userInfo;
     return (
       <NavigationContainer ref={navigationRef}>
-        {this.state.isLoggedIn ? (
-          <PageNavigator userData={userData}/>
-        ) : (
-          <AuthNavigator/>
-        )}
+        {this.state.isLoggedIn ? (<PageNavigator userData={userData}/>) : (<AuthNavigator/>)}
       </NavigationContainer>
     );
   }

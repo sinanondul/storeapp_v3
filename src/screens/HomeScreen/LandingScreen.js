@@ -36,16 +36,6 @@ function getAvatar(info){
   }
 }
 
-function getDate(timestamp){
-  var formattedTimestamp = new Date(Number(timestamp));
-  return ((formattedTimestamp.getDate()).toString() + "/" + (formattedTimestamp.getMonth()).toString() + "/" + (formattedTimestamp.getFullYear()).toString());
-}
-
-function getTime(timestamp){
-  var formattedTimestamp = new Date(Number(timestamp));
-  return ((formattedTimestamp.getHours()).toString() + ":" + (formattedTimestamp.getMinutes()).toString());
-}
-
 function getTimeSince(timestamp){
   return moment().utc(timestamp).local().startOf('days').fromNow();
 }
@@ -120,6 +110,7 @@ class FeedItem extends React.Component {
 export default class LandingScreen extends React.Component {
   state = {
     posts: [],
+    postsInited: false,
   }
 
   static navigationOptions = ({ navigation }) => {
@@ -134,7 +125,7 @@ export default class LandingScreen extends React.Component {
       .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         snapshot.docChanges().forEach(change =>{
-          var doc = change.doc.data();
+          var doc = change.doc.data()
           if (change.type === 'added') {
             var postArray = [...this.state.posts]
             const data = {

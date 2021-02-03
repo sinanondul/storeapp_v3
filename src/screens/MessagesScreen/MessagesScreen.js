@@ -1,9 +1,10 @@
 import React from "react";
-import {View, Platform, Header, Text, StyleSheet, FlatList} from "react-native";
+import {View, Platform, Header, Text, StyleSheet, FlatList, Alert} from "react-native";
 import {Avatar} from "react-native-paper";
 import {GiftedChat} from "react-native-gifted-chat";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
+import firebase from 'firebase';
 
 import styles from "./styles";
 
@@ -81,6 +82,10 @@ const messageItems = [
 ]
 
 export default class MessagesScreen extends React.Component{
+  state ={
+    messages: [],
+  }
+
 
   renderMessage = (message) => {
     return (
@@ -106,6 +111,39 @@ export default class MessagesScreen extends React.Component{
   }
 
   componentDidMount() {
+    // firebase
+    //   .firestore()
+    //   .collection("users")
+    //   .doc(this.props.userData.uid)
+    //   .collection('messages')
+    //   .orderBy("timestamp", "desc")
+    //   .onSnapshot((snapshot) => {
+    //     snapshot.docChanges().forEach(change =>{
+    //       var doc = change.doc.data();
+    //       if (change.type === 'added') {
+    //         var messageArray = [...this.state.messages]
+    //         const data = {
+    //           name: doc.name,
+    //           text: doc.text,
+    //           timestamp: doc.timestamp,
+    //           image: doc.image,
+    //           senderId: doc.uid
+    //         }
+    //         postArray.push(data);
+    //         this.setState({messages: messageArray});
+    //       } else if (change.type == 'updated') {
+            
+    //       }
+    //       else if (change.type == 'removed') {
+    //         var postArray = [...this.state.posts]
+    //         var index = postArray.findIndex(x => x.id === doc.id)
+    //         if (index !== -1) {
+    //           postArray.splice(index, 1);
+    //           this.setState({posts: postArray});
+    //         }
+    //       }
+    //     });
+    //   });
   }
 
   render(){

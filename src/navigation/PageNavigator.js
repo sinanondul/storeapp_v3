@@ -29,7 +29,9 @@ const PageNavigator = (props) => {
       drawerOpenRoute="OpenDrawer"
       lazy={false}
     >
-      <PageDrawer.Screen name="Home" component={HomeScreen} />
+      <PageDrawer.Screen name="Home">
+        {(props) => <HomeScreen {...props} userData={userData}/>}
+      </PageDrawer.Screen>
       <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
       <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
