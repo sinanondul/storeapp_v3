@@ -5,7 +5,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import { useFocusEffect } from "@react-navigation/native";
 import { Alert } from "react-native";
 
-import HomeNavigator from "../../navigation/HomeNavigator";
+import SocialNavigator from "../../navigation/HomeNavigator";
 import styles from "./styles";
 
 export default class HomeScreen extends React.Component {
@@ -22,7 +22,7 @@ export default class HomeScreen extends React.Component {
   render() {
 
     return (
-      <HomeNavigator/>
+      <SocialNavigator {...this.props}/>
     );
   }
 }

@@ -84,7 +84,7 @@ function SocialTabNavigator(){
   );
 }
 
-export default function SocialNavigator() {
+export default function SocialNavigator(props) {
   return (
     <SocialStack.Navigator
     options={{
@@ -92,7 +92,9 @@ export default function SocialNavigator() {
     >
       <SocialStack.Screen name="Default" component={SocialTabNavigator} options={LandingScreen.navigationOptions}/>
       <SocialStack.Screen name="Messages" component={MessagesScreen} options={MessagesScreen.navigationOptions}/>
-      <SocialStack.Screen name="Add" component={AddScreen} options={AddScreen.navigationOptions} />
+      <SocialStack.Screen name="Add" options={AddScreen.navigationOptions}>
+        {(props) => <AddScreen {...props}/>}
+      </SocialStack.Screen>
       <SocialStack.Screen name="Notifications" component={NotificationsScreen} options={NotificationsScreen.navigationOptions} />
     </SocialStack.Navigator>
   );

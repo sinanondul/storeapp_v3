@@ -1,6 +1,6 @@
 import { StyleSheet } from "react-native";
 
-export default StyleSheet.create({
+const LandingStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
@@ -64,6 +64,7 @@ export default StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
   },
+  
   feed: {
     marginHorizontal: 16,
   },
@@ -131,13 +132,7 @@ export default StyleSheet.create({
     borderRadius: 5,
     marginVertical: 16,
   },
-
-
-  userAvatar: {
-    height: 80,
-    flex: 0.3,
-    justifyContent: "center",
-    alignItems: "center",
-},
   //tabs
 });
+
+export default LandingStyles;

@@ -15,12 +15,11 @@ import * as Permissions from "expo-permissions";
 import Fire from "../../firebase/Fire";
 import * as ImagePicker from "expo-image-picker";
 
-const firebase = require("firebase");
-
 export default class AddScreen extends React.Component {
   state = {
     text: "",
     image: null,
+    imageAllowed: false,
   };
 
   componentDidMount() {
@@ -29,10 +28,10 @@ export default class AddScreen extends React.Component {
 
   getPhotoPermission = async () => {
     if (Constants.platform.ios) {
-      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
 
-      if (status != "granted") {
-        alert("C'mon give me permission man");
+      if (status == "granted") {
+        this.setState({imageAllowed: true});
       }
     }
   };
@@ -110,7 +109,7 @@ export default class AddScreen extends React.Component {
 
   //
   static navigationOptions = {
-    title: <Text>Supplies</Text>,
+    title: <Text>Add Post</Text>,
     headerStyle: {
       backgroundColor: "#2890cf",
     },

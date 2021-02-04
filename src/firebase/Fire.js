@@ -1,5 +1,6 @@
 import firebaseKeys from "./config";
 import firebase from "firebase";
+import moment from 'moment';
 import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 
 class Fire {
@@ -14,7 +15,10 @@ class Fire {
 
   //Post Stuff
   addPost = async ({ text, localUri }) => {
-    const remoteUri = await this.uploadPhotoAsync(localUri);
+    var remoteUri = null;
+    if (localUri != null) {
+      remoteUri = await this.uploadPhotoAsync(localUri);
+    }
 
     return new Promise((res, rej) => {
       this.firestore

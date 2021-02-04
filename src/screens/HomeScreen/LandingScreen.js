@@ -9,13 +9,14 @@ import {
   Alert,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { openDrawer } from "../../../App";
-import styles from "./styles";
 import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
 import Fire from "../../firebase/Fire";
 import {Avatar} from "react-native-paper";
 import moment from 'moment';
+
+import { openDrawer } from "../../../App";
+import styles, {feedItemStyles} from "./styles";
 
 const usersRef = firebase.firestore().collection("users");
 
@@ -29,7 +30,7 @@ function getAvatarTag(info){
 
 function getAvatar(info){
   if (!(info.avatar == null)) {
-    return(<Avatar.Image size={40} source={info.avatar}/>);
+    return(<Avatar.Image size={40} marginLeft = {0} source={info.avatar}/>);
   }
   else {
     return(<Avatar.Text size={40} label={getAvatarTag(info)} marginLeft={0} style={{backgroundColor: "#f4511e"}}/>);
@@ -47,7 +48,7 @@ function getTime(timestamp){
 }
 
 function getTimeSince(timestamp){
-  return moment().utc(timestamp).local().startOf('days').fromNow();
+  return moment(timestamp).fromNow();
 }
 
 
@@ -65,8 +66,6 @@ class FeedItem extends React.Component {
     nameinit: false,
   }
 
-  
-  
 
   componentDidMount() {
     const usersRef = firebase.firestore().collection("users");
@@ -90,8 +89,8 @@ class FeedItem extends React.Component {
       <View style={styles.feedItem}>
         <View style={{ flex: 1 }}>
           <View style={styles.feedHeader}>
-             <View style = {styles.userAvatar}>
-                {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
+            <View style = {styles.userAvatar}>
+              {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
             </View>
             <View style = {styles.userText}>
               {this.state.nameinit ? <Text style={styles.name}>{getFullName(this.state.senderInfo)}</Text> : null}
@@ -105,12 +104,13 @@ class FeedItem extends React.Component {
           <View style = {styles.mainText}>
             <Text style={styles.post}>{this.props.post.text}</Text>
           </View>
-          
-          <Image
-            source={{uri: this.props.post.image}}
-            style={styles.postImage}
-            resizeMode="cover"
-          />
+          <View>
+            {this.props.post.image != null ? <Image
+              source={{uri: this.props.post.image}}
+              style={styles.postImage}
+              resizeMode="cover"
+            /> : null}
+          </View>
         </View>
       </View>
     );
@@ -121,40 +121,39 @@ export default class LandingScreen extends React.Component {
   state = {
     posts: [],
   }
-
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;
   };
 
+  renderItem = ({item}) => {
+    return (<FeedItem post={item}/>);
+  }
+
   componentDidMount() {
-    firebase
+    let postsArray = [];
+    const unsubscribe = firebase
       .firestore()
       .collection("posts")
-      .orderBy("timestamp", "desc")
+      .orderBy('timestamp')
       .onSnapshot((snapshot) => {
-        snapshot.docChanges().forEach(change =>{
-          var doc = change.doc.data();
+        let changes = snapshot.docChanges();
+
+        changes.forEach((change) => {
           if (change.type === 'added') {
-            var postArray = [...this.state.posts]
-            const data = {
-              name: doc.name,
-              text: doc.text,
-              timestamp: doc.timestamp,
-              image: doc.image,
-              senderId: doc.uid
+            const newPost = change.doc.data();
+            const newPostData = {
+              id: change.doc.id,
+              name: newPost.name,
+              text: newPost.text,
+              timestamp: newPost.timestamp,
+              image: newPost.image,
+              senderId: newPost.uid
             }
-            postArray.push(data);
-            this.setState({posts: postArray});
-          } else if (change.type == 'removed') {
-            var postArray = [...this.state.posts]
-            var index = postArray.findIndex(x => x.id === doc.id)
-            if (index !== -1) {
-              postArray.splice(index, 1);
-              this.setState({posts: postArray});
-            }
+            postsArray.unshift(newPostData);
           }
         });
+        this.setState({posts: postsArray});
       });
   }
 
@@ -164,7 +163,7 @@ export default class LandingScreen extends React.Component {
         <FlatList
           style={styles.feed}
           data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
-          renderItem={({item}) => <FeedItem post = {item}/>}
+          renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         ></FlatList>
