@@ -72,20 +72,27 @@ class Fire {
   }
 
   //Messaging Stuff
-  send = messages => {
-    messages.forEach(item =>{
-      const message = {
-        text: item.text,
-        timestamp: timestamp(),
-        user: item.user
-      }
-      this.db.push(message)
-    })
+  addMessage = async ({text, targetId}) =>{
+    //Adding to target's messages.
+    return new Promise((res, rej) => {
+      this.firestore
+        .collection('users')
+        .doc(targetId)
+        .collection('messages')
+        .doc(this.uid)
+        .add({
+          text,
+          timestamp: this.timestamp,
+        })
+        .then((ref) => {
+          res(ref);
+        })
+        .catch((error) => {
+          rej(error);
+        });
+    });
   }
 
-  get db() {
-    return firebase.database().ref("messages")
-  }
 }
 
 Fire.shared = new Fire();

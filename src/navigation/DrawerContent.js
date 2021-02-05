@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Platform, StyleSheet, Alert } from "react-native";
+import { View, Platform, StyleSheet, TouchableOpacity, Alert } from "react-native";
 import {
   useTheme,
   Avatar,
@@ -41,9 +41,9 @@ export default class DrawerContent extends React.Component {
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
           <View style={styles.userInfoWrapper}>
-            <View style={styles.userAvatar}>
+            <TouchableOpacity style={styles.userAvatar} onPress={() => this.props.navigation.navigate("Profile", {userData: this.props.userData})}>
               {getAvatar(this.props.userData)}
-            </View>
+            </TouchableOpacity>
             <View style={styles.userTextWrapper}>
               <View style={styles.userName}>
                 <Text style={styles.userNameText}>{getFullName(this.props.userData)}</Text>
@@ -105,6 +105,21 @@ export default class DrawerContent extends React.Component {
                       this.props.navigation.navigate("Housemates");
                     }}
                   />
+
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <Icon
+                        name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="Profile"
+                    labelStyle={styles.drawerItem}
+                    onPress={() => {
+                      this.props.navigation.navigate("Profile", {userData: this.props.userData});
+                    }}
+                  />  
                 </Drawer.Section>
               </View>
             </View>

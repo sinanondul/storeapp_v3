@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, Platform} from "react-native";
+import {View, Text, Platform, Alert} from "react-native";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createStackNavigator } from "@react-navigation/stack";
 import { useNavigation } from '@react-navigation/native';
@@ -85,13 +85,16 @@ function SocialTabNavigator(){
 }
 
 export default function SocialNavigator(props) {
+  var userData = props.userData;
   return (
     <SocialStack.Navigator
     options={{
     }}
     >
       <SocialStack.Screen name="Default" component={SocialTabNavigator} options={LandingScreen.navigationOptions}/>
-      <SocialStack.Screen name="Messages" component={MessagesScreen} options={MessagesScreen.navigationOptions}/>
+      <SocialStack.Screen name="Messages" options={MessagesScreen.navigationOptions}>
+        {(props) => <MessagesScreen {...props} userData={userData}/>}
+      </SocialStack.Screen>
       <SocialStack.Screen name="Add" options={AddScreen.navigationOptions}>
         {(props) => <AddScreen {...props}/>}
       </SocialStack.Screen>

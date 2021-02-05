@@ -8,6 +8,7 @@ import DrawerContent from "./DrawerContent";
 import HomeScreen from "../screens/HomeScreen/HomeScreen";
 import HousematesScreen from "../screens/HousematesScreen/HousematesScreen";
 import SuppliesScreen from "../screens/SuppliesScreen/SuppliesScreen";
+import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
 
 const PageDrawer = createDrawerNavigator();
@@ -29,9 +30,14 @@ const PageNavigator = (props) => {
       drawerOpenRoute="OpenDrawer"
       lazy={false}
     >
-      <PageDrawer.Screen name="Home" component={HomeScreen} />
+      <PageDrawer.Screen name="Home">
+        {(props) => <HomeScreen {...props} userData={userData}/>}
+      </PageDrawer.Screen>
       <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
       <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
+      <PageDrawer.Screen name="Profile">
+        {(props) => <ProfileScreen {...props} userData={userData}/>}
+      </PageDrawer.Screen>
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
     </PageDrawer.Navigator>
   );
