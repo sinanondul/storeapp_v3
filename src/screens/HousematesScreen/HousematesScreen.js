@@ -2,10 +2,8 @@ import * as React from 'react';
 import { createStackNavigator } from "@react-navigation/stack";
 import {useFocusEffect} from '@react-navigation/native';
 
-import LandingScreen from "./LandingScreen";
-import AddScreen from "./AddScreen";
+import HousematesNavigator from "../../navigation/HousematesNavigator";
 import styles from "./styles";
-import { Alert } from 'react-native';
 
 export default class HousematesScreen extends React.Component{
   
@@ -20,15 +18,9 @@ export default class HousematesScreen extends React.Component{
   }
 
   render(){
-    const HousematesStack = createStackNavigator();
 
     return (
-      <HousematesStack.Navigator 
-        initialRouteName='Landing'
-      >
-        <HousematesStack.Screen name="Landing" component={LandingScreen} options={LandingScreen.navigationOptions}/>
-        <HousematesStack.Screen name="Add" component={AddScreen}/>
-      </HousematesStack.Navigator>
+      <HousematesNavigator/>
     );
   }
 }

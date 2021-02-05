@@ -1,5 +1,5 @@
 // For Firebase JS SDK v7.20.0 and later, measurementId is optional
-export default firebaseKeys = {
+const firebaseKeys = {
   apiKey: "AIzaSyAeJdnimyvsZk80KS4pB1Ea-2CFVYrLhpY",
   authDomain: "newap-a871c.firebaseapp.com",
   projectId: "newap-a871c",
@@ -8,3 +8,5 @@ export default firebaseKeys = {
   appId: "1:125486026046:web:95a45bc7a6be83b328706f",
   measurementId: "G-NBYM6W0D49",
 };
+
+export default firebaseKeys;

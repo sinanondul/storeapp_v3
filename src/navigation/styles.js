@@ -6,9 +6,36 @@ const styles = StyleSheet.create({
     }, 
     userInfoSection: {
         flex: 0.35,
-        paddingLeft: 20,
         backgroundColor: "#5DADE2",
     },
+    userInfoWrapper: {
+        flex: 1,
+        flexDirection: 'row',
+        paddingTop: 40,
+        paddingBottom: 20,
+    },
+    userAvatar: {
+        height: 80,
+        flex: 0.3,
+        justifyContent: "center",
+        alignItems: "center",
+    },
+    userTextWrapper: {
+        flex: 0.7,
+        paddingTop: 27.5,
+        flexDirection: 'column'
+    },
+    userName: {
+        paddingLeft: 3,
+        flex: 0.5,
+    },
+    userNameText: {
+        fontSize: 17,
+        fontWeight: 'bold',
+        color: "#fff"
+    },
+
+
     topDrawerSection: {
         flex: 1,
     },

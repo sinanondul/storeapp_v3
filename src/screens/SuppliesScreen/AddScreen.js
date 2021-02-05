@@ -16,7 +16,7 @@ class AddScreen extends React.Component{
       return (
         <View 
         style={styles.container}>
-            <Text>Supplies page.</Text>
+            <Text>AddScreen page.</Text>
         </View>
       )
     }

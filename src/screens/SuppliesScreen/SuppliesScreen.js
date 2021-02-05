@@ -1,6 +1,7 @@
 import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
+import SuppliesNavigator from "../../navigation/SuppliesNavigator";
 import LandingScreen from "./LandingScreen";
 import AddScreen from "./AddScreen";
 import styles from "./styles";
@@ -19,15 +20,8 @@ export default class SuppliesScreen extends React.Component{
   }
     
     render(){
-      const SuppliesStack = createStackNavigator();
       return (
-        <SuppliesStack.Navigator 
-          initialRouteName='Landing'
-          lazy={false}
-        >
-          <SuppliesStack.Screen name="Landing" component={LandingScreen} options={LandingScreen.navigationOptions}/>
-          <SuppliesStack.Screen name="Add" component={AddScreen}/>
-        </SuppliesStack.Navigator>
+       <SuppliesNavigator/>
       );
     }
   }

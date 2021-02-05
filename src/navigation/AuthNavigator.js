@@ -12,10 +12,10 @@ const screenOptionStyle = {
   headerBackTitle: "Back",
 };
 
-const AuthNavigator = () => {
+const AuthNavigator = ({navigation}) => {
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle}>
-      <Stack.Screen name="Login" component={LoginScreen} />
+    <Stack.Navigator screenOptions={screenOptionStyle}> 
+      <Stack.Screen name="Login" component={LoginScreen}/>
       <Stack.Screen name="Registration" component={RegistrationScreen} />
     </Stack.Navigator>
   );
