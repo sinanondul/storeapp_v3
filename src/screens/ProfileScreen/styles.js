@@ -25,10 +25,9 @@ const styles = StyleSheet.create({
         alignSelf: "center" 
     },
     profileImage: {
-        width: 80,
         height: 200,
-        borderRadius: 100,
-        overflow: "hidden"
+        alignItems: 'center',
+        justifyContent: 'center',
     },
     dm: {
         backgroundColor: "#41444B",

@@ -17,10 +17,10 @@ function getAvatarTag(info){
 
 function getAvatar(info){
     if (!(info.avatar == null)) {
-        return(<Avatar.Image size={100} marginLeft = {0} rounded={false} source={info.avatar}/>);
+        return(<Avatar.Image size={140} marginLeft = {0} rounded={false} source={info.avatar}/>);
     }
     else {
-        return(<Avatar.Text size={100} label={getAvatarTag(info)} marginLeft={0} rounded={false} style={{backgroundColor: "#f4511e"}}/>);
+        return(<Avatar.Text size={140} label={getAvatarTag(info)} marginLeft={0} rounded={false} style={{backgroundColor: "#f4511e"}}/>);
     }
 }
 
@@ -53,7 +53,9 @@ export default class LandingScreen extends React.Component{
                 <ScrollView showsVerticalScrollIndicator={false}>
 
                     <View style={styles.profileImageContainer}>
+                        <View style={styles.profileImage}>
                             {getAvatar(this.props.userData)}
+                        </View>
                         <View style={styles.dm}>
                             <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
                         </View>
