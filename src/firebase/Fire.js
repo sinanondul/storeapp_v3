@@ -2,6 +2,7 @@ import firebaseKeys from "./config";
 import firebase from "firebase";
 import moment from 'moment';
 import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
+import { Alert } from "react-native";
 
 class Fire {
   constructor() {
@@ -72,27 +73,71 @@ class Fire {
   }
 
   //Messaging Stuff
-  addMessage = async ({text, targetId}) =>{
-    //Adding to target's messages.
+  addChat = async({targetIds, chatInfo = null}) => {
+
+    const chatsRef = this.firestore.collection('chats');
+
+    
+    const createdChat = await chatsRef.add(
+      {
+        participantIds: [],
+        messages: [],
+        latestTimestamp: this.timestamp(),
+        latestMessage: null,
+        chatInfo: chatInfo
+      }
+    );
+    
+    const chatId = createdChat.id;
+    const usersRef = this.firestore.collection('users');
+
     return new Promise((res, rej) => {
-      this.firestore
-        .collection('users')
-        .doc(targetId)
-        .collection('messages')
-        .doc(this.uid)
-        .add({
-          text,
-          timestamp: this.timestamp,
-        })
-        .then((ref) => {
-          res(ref);
-        })
-        .catch((error) => {
-          rej(error);
-        });
-    });
+      const snapshot = await usersRef.where('id', 'in', targetIds).get();
+      snapshot
+      .forEach(doc => {
+        doc.FieldValue.arrayUnion(chatId);
+      })
+      .then((ref) => {
+        res(ref);
+      })
+      .catch((error) => {
+        rej(error);
+      });
+
+    })
+
   }
 
+  addMessage = async ({senderId, text, targetId}) =>{
+    //Adding to target's messages.
+    const senderRef = this.firestore.collection('users').doc(targetId).collection('messages').doc(senderId);
+      senderRef.get()
+        .then((senderDoc) => {
+          if (!senderDoc.exists) {
+            senderRef.set({
+              id: senderId,
+            })
+          }
+          senderRef.set({
+            lastMessage: text,
+            lastTimestamp: this.timestamp})
+    return new Promise((res, rej) => {
+      
+          senderRef
+            .collection('messages')
+            .add({ 
+              text,
+              timestamp: this.timestamp,
+            })
+            .then((ref) => {
+              res(ref);
+            })
+            .catch((error) => {
+              rej(error);
+            });
+      });
+    });
+  }
 }
 
 Fire.shared = new Fire();

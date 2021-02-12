@@ -35,12 +35,15 @@ export default class MessagesScreen extends React.Component{
 
   render(){
     const MessagesStack = createStackNavigator();
+    const userData = this.props.userData
     return (
       <MessagesStack.Navigator
         initialRouteName="Landing"
       >
         <MessagesStack.Screen name="Landing" component={LandingScreen} options={LandingScreen.navigationOptions}/>
-        <MessagesStack.Screen name="Messaging" component={MessagingInterface} options={MessagingInterface.navigationOptions}/>
+        <MessagesStack.Screen name="Messaging" options={MessagingInterface.navigationOptions}>
+          {(props) => <MessagingInterface {...props} userData={userData}/>}
+        </MessagesStack.Screen>
       </MessagesStack.Navigator>
     );
   }

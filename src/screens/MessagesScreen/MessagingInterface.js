@@ -1,18 +1,30 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {View, Platform, Header, Text, TouchableOpacity, StyleSheet, FlatList, Alert} from "react-native";
 import {Avatar} from "react-native-paper";
 import {GiftedChat} from "react-native-gifted-chat";
 
+import Fire from "../../firebase/Fire";
+import firebase from 'firebase';
+
+
 const messageItems = [
     {
-        id: "1",
-        text: "My first message.",
-        created_at: new Date(1612443350116),
-        user: {
-            _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
-            name: 'Adam Bronze',
-            avatar: null,
-        }
+      _id: 1,
+      text: 'Hello developer',
+      createdAt: 1612443350116,
+      user: {
+        _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
+        name: 'Adam Bronze',
+      },
+    },
+    {
+      _id: 2,
+      text: 'Hello again developer',
+      createdAt: 1612635490376,
+      user: {
+        _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
+        name: 'Adam Bronze',
+      },
     }
 ]
 
@@ -37,7 +49,7 @@ export default class MessagingInterface extends React.Component{
     
     
     state={
-        messages: [],
+        messages: [...messageItems],
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -50,14 +62,67 @@ export default class MessagingInterface extends React.Component{
         this.props.navigation.setOptions({
             title: getFullName(this.props.route.params.senderInfo),
         });
+        
+    let messagesArray = [];
+    const usersRef = firebase.firestore().collection("users").where('id', 'in', [this.props.route.params.senderInfo.id.toString()]);
+    const messagesRef = usersRef.collectionGroup('messages').where('id', 'in', [this.props.route.params.senderInfo.id]);
+    const unsubscribe = messagesRef
+      .orderBy('timestamp', 'desc')
+      .onSnapshot((snapshot) => {
+        let changes = snapshot.docChanges();
+        let senderId= snapshot.getRef().getParent().getParent().data().id;
+        let senderInfo = null;
+        if (senderId == this.props.userData.uid) {
+          senderInfo = this.props.userData;
+        } else {
+          senderInfo = this.props.route.params.senderInfo;
+        }
 
+        changes.forEach((change) => {
+          if (change.type === 'added') {
+            const newMessage = change.doc.data();
+            const newMessageData = {
+              _id: change.doc.id,
+              text: newMessage.text,
+              createdAt: newMessage.timestamp,
+              user: {
+                _id: senderInfo.uid,
+                name: senderInfo.name,
+              },
+            }
+            messagesArray.push(newPostData);
+          }
+        });
+        this.setState({posts: postsArray});
+      });
+    }
+    
+    onSend (messages) {
+      Fire.shared
+      .addMessage({
+        senderId: this.props.userData.uid,
+        text: messages[0].text,
+        targetId: this.props.route.params.senderInfo.id,
+      })
+      .catch((error) => {
+        alert(error);
+      });
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, messages),
+      }))
     }
 
     render() {
         return(
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <GiftedChat
-                messages={messageItems}
+                messages={this.state.messages.sort((a, b) => b.createdAt - a.createdAt)}
+                onSend={messages => this.onSend(messages)}
+                user={{
+                  _id: this.props.userData.uid,
+                }}
             />
+          </View>
         );
     }
 
@@ -76,75 +141,3 @@ export default class MessagingInterface extends React.Component{
         },
     };
 }
-
-const styles = {
-    container: {
-      flex: 1
-    },
-  
-    header_right: {
-      flex: 1,
-      flexDirection: "row",
-      justifyContent: "space-around"
-    },
-    header_button_container: {
-      marginRight: 10
-    },
-    header_button_text: {
-      color: '#FFF'
-    },
-  
-    modal: {
-      flex: 1,
-      backgroundColor: '#FFF'
-    },
-    close: {
-      alignSelf: 'flex-end',
-      marginBottom: 10
-    },
-    modal_header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 10
-    },
-    modal_header_text: {
-      fontSize: 20,
-      fontWeight: 'bold'
-    },
-    modal_body: {
-      marginTop: 20,
-      padding: 20
-    },
-  
-    list_item_body: {
-      flex: 1,
-      padding: 10,
-      flexDirection: "row",
-      justifyContent: "space-between"
-    },
-    list_item: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    },
-    list_item_text: {
-      marginLeft: 10,
-      fontSize: 20,
-    },
-    inline_contents: {
-      flex: 1,
-      flexDirection: 'row'
-    },
-    status_indicator: {
-      width: 10,
-      height: 10,
-      alignSelf: 'center',
-      borderRadius: 10,
-    },
-    online: {
-      backgroundColor: '#5bb90b'
-    },
-    offline: {
-      backgroundColor: '#606060'
-    },
-  }
