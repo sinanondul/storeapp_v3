@@ -64,7 +64,7 @@ const LandingStyles = StyleSheet.create({
     fontSize: 20,
     fontWeight: "500",
   },
-  
+
   feed: {
     marginHorizontal: 16,
   },
@@ -78,8 +78,8 @@ const LandingStyles = StyleSheet.create({
   },
   feedHeader: {
     flex: 1,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   userAvatar: {
     height: 80,
@@ -95,8 +95,8 @@ const LandingStyles = StyleSheet.create({
   moreButton: {
     height: 80,
     flex: 0.1,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
     paddingTop: 10,
     paddingBottom: 40,
   },
@@ -104,7 +104,6 @@ const LandingStyles = StyleSheet.create({
   mainText: {
     paddingLeft: 10,
   },
-
 
   avatar: {
     width: 36,
@@ -127,10 +126,51 @@ const LandingStyles = StyleSheet.create({
     fontSize: 14,
   },
   postImage: {
-    width: '100%',
+    width: "100%",
     height: 150,
     borderRadius: 5,
     marginVertical: 16,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
   },
   //tabs
 });
