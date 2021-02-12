@@ -21,6 +21,8 @@ import { openDrawer } from "../../../App";
 import styles, { feedItemStyles } from "./styles";
 
 import AddScreen from "../HomeScreen/AddScreen";
+import AddModal from "./AddModal";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 const usersRef = firebase.firestore().collection("users");
 
@@ -153,9 +155,6 @@ export default class LandingScreen extends React.Component {
     const { params } = navigation.state;
     return params;
   };
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
-  };
 
   renderItem = ({ item }) => {
     return <FeedItem post={item} />;
@@ -189,7 +188,6 @@ export default class LandingScreen extends React.Component {
   }
 
   render() {
-    const { modalVisible } = this.state;
     return (
       <View style={styles.container}>
         <FlatList
@@ -199,27 +197,10 @@ export default class LandingScreen extends React.Component {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         ></FlatList>
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            this.setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <AddScreen />
-            </View>
-          </View>
-        </Modal>
-        <Pressable
-          style={[styles.button, styles.buttonOpen]}
-          onPress={() => this.setModalVisible(true)}
-        >
-          <Text style={styles.textStyle}>Show Modal</Text>
-        </Pressable>
+        {/* Todo- */}
+        <TouchableOpacity onPressOut={(this.setModalVisible = false)}>
+          <AddModal modalVisible={true} />
+        </TouchableOpacity>
       </View>
     );
   }

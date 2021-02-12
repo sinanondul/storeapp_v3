@@ -20,9 +20,6 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-
-    return (
-      <SocialNavigator {...this.props}/>
-    );
+    return <SocialNavigator {...this.props} />;
   }
 }
