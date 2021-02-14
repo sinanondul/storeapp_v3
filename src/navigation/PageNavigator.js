@@ -10,7 +10,7 @@ import HousematesScreen from "../screens/HousematesScreen/HousematesScreen";
 import SuppliesScreen from "../screens/SuppliesScreen/SuppliesScreen";
 import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
-import Onboarding from "../screens/Onboarding";
+import Onboarding from "../screens/HelpScreen/Onboarding.js";
 
 const PageDrawer = createDrawerNavigator();
 
