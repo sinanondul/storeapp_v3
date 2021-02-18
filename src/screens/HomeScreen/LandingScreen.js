@@ -7,8 +7,7 @@ import {
   FlatList,
   Image,
   Alert,
-  Modal,
-  Pressable,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
@@ -19,10 +18,6 @@ import moment from "moment";
 
 import { openDrawer } from "../../../App";
 import styles, { feedItemStyles } from "./styles";
-
-import AddScreen from "../HomeScreen/AddScreen";
-import AddModal from "./AddModal";
-import { TouchableOpacity } from "react-native-gesture-handler";
 
 const usersRef = firebase.firestore().collection("users");
 
@@ -107,41 +102,43 @@ class FeedItem extends React.Component {
 
   render() {
     return (
-      <View style={styles.feedItem}>
-        <View style={{ flex: 1 }}>
-          <View style={styles.feedHeader}>
-            <View style={styles.userAvatar}>
-              {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
-            </View>
-            <View style={styles.userText}>
-              {this.state.nameinit ? (
-                <Text style={styles.name}>
-                  {getFullName(this.state.senderInfo)}
+      <TouchableOpacity /*onPress={handlePostModal()}*/>
+        <View style={styles.feedItem}>
+          <View style={{ flex: 1 }}>
+            <View style={styles.feedHeader}>
+              <View style={styles.userAvatar}>
+                {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
+              </View>
+              <View style={styles.userText}>
+                {this.state.nameinit ? (
+                  <Text style={styles.name}>
+                    {getFullName(this.state.senderInfo)}
+                  </Text>
+                ) : null}
+                <Text style={styles.timestamp}>
+                  {getTimeSince(this.props.post.timestamp)}
                 </Text>
-              ) : null}
-              <Text style={styles.timestamp}>
-                {getTimeSince(this.props.post.timestamp)}
-              </Text>
+              </View>
+              <View style={styles.moreButton}>
+                <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
+              </View>
             </View>
-            <View style={styles.moreButton}>
-              <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
-            </View>
-          </View>
 
-          <View style={styles.mainText}>
-            <Text style={styles.post}>{this.props.post.text}</Text>
-          </View>
-          <View>
-            {this.props.post.image != null ? (
-              <Image
-                source={{ uri: this.props.post.image }}
-                style={styles.postImage}
-                resizeMode="cover"
-              />
-            ) : null}
+            <View style={styles.mainText}>
+              <Text style={styles.post}>{this.props.post.text}</Text>
+            </View>
+            <View>
+              {this.props.post.image != null ? (
+                <Image
+                  source={{ uri: this.props.post.image }}
+                  style={styles.postImage}
+                  resizeMode="cover"
+                />
+              ) : null}
+            </View>
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }
@@ -149,7 +146,6 @@ class FeedItem extends React.Component {
 export default class LandingScreen extends React.Component {
   state = {
     posts: [],
-    modalVisible: false,
   };
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;

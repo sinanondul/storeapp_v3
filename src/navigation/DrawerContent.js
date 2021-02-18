@@ -1,5 +1,11 @@
 import React from "react";
-import { View, Platform, StyleSheet, TouchableOpacity, Alert } from "react-native";
+import {
+  View,
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  Alert,
+} from "react-native";
 import {
   useTheme,
   Avatar,
@@ -17,40 +23,52 @@ import firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";
 import styles from "./styles";
 
-function getFullName(info){
+function getFullName(info) {
   return info.name + " " + info.surename;
 }
 
-function getAvatarTag(info){
-    return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
+function getAvatarTag(info) {
+  return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
 }
 
-function getAvatar(info){
+function getAvatar(info) {
   if (!(info.avatar == null)) {
-    return(<Avatar.Image size={50} source={info.avatar}/>);
-  }
-  else {
-    return(<Avatar.Text size={50} label={getAvatarTag(info)} marginLeft={15} style={{backgroundColor: "#f4511e"}}/>);
+    return <Avatar.Image size={50} source={info.avatar} />;
+  } else {
+    return (
+      <Avatar.Text
+        size={50}
+        label={getAvatarTag(info)}
+        marginLeft={15}
+        style={{ backgroundColor: "#f4511e" }}
+      />
+    );
   }
 }
 
 export default class DrawerContent extends React.Component {
-  
   render() {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
           <View style={styles.userInfoWrapper}>
-            <TouchableOpacity style={styles.userAvatar} onPress={() => this.props.navigation.navigate("Profile", {userData: this.props.userData})}>
+            <TouchableOpacity
+              style={styles.userAvatar}
+              onPress={() =>
+                this.props.navigation.navigate("Profile", {
+                  userData: this.props.userData,
+                })
+              }
+            >
               {getAvatar(this.props.userData)}
             </TouchableOpacity>
             <View style={styles.userTextWrapper}>
               <View style={styles.userName}>
-                <Text style={styles.userNameText}>{getFullName(this.props.userData)}</Text>
+                <Text style={styles.userNameText}>
+                  {getFullName(this.props.userData)}
+                </Text>
               </View>
-              <View>
-
-              </View>
+              <View></View>
             </View>
           </View>
           <View></View>
@@ -117,9 +135,11 @@ export default class DrawerContent extends React.Component {
                     label="Profile"
                     labelStyle={styles.drawerItem}
                     onPress={() => {
-                      this.props.navigation.navigate("Profile", {userData: this.props.userData});
+                      this.props.navigation.navigate("Profile", {
+                        userData: this.props.userData,
+                      });
                     }}
-                  />  
+                  />
                 </Drawer.Section>
               </View>
             </View>
@@ -128,6 +148,20 @@ export default class DrawerContent extends React.Component {
 
         <View style={styles.bottomDrawerSection}>
           <Drawer.Section>
+            <DrawerItem
+              icon={({ color, size }) => (
+                <Icon
+                  name={Platform.OS === "ios" ? "ios-help" : "md-help"}
+                  color={color}
+                  size={size}
+                />
+              )}
+              label="Help"
+              labelStyle={styles.drawerItem}
+              onPress={() => {
+                this.props.navigation.navigate("Onboarding");
+              }}
+            />
             <DrawerItem
               icon={({ color, size }) => (
                 <Icon
