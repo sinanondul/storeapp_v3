@@ -70,7 +70,7 @@ export default class MessagingInterface extends React.Component{
 
       const usersRef = firebase.firestore().collection("users");
       const participantIds = this.props.route.params.chat.participantIds;
-      var foo = new Promise((resolve, reject) => {
+      var getUsers = new Promise((resolve, reject) => {
         participantIds.forEach((participantId, index, array) => {
           usersRef
           .doc(participantId)
@@ -90,7 +90,7 @@ export default class MessagingInterface extends React.Component{
         });
       });
     
-      foo.then(() => {
+      getUsers.then(() => {
         this.setState({userData: usersArray});
         //Getting messages.
         let messagesArray = [];
@@ -129,6 +129,7 @@ export default class MessagingInterface extends React.Component{
         senderId: this.props.userData.uid,
         text: messages[0].text,
         chatId: this.props.route.params.chat.id,
+        participantIds: this.props.route.params.chat.participantIds,
       })
       .catch((error) => {
         alert(error);

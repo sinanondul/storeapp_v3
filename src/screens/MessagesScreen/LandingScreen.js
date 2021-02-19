@@ -45,18 +45,43 @@ export default class LandingScreen extends React.Component{
       .doc(this.props.userData.uid)
       .collection("chats")
       .onSnapshot((snapshot) => {
+        
         let changes = snapshot.docChanges();
+        var getChats = new Promise((resolve, reject) => {
+          changes.forEach((change, index, array) => {
+            
+            if (change.type === "added") {
+              const newChatRef = change.doc.data();
+              firebase
+              .firestore()
+              .collection("chats")
+              .doc(newChatRef.id)
+              .get()
+              .then((firestoreDocument) => {
+                  var newChatData = firestoreDocument.data();
+                  const newChatItem = {
+                    id: newChatRef.id,
+                    timestamp: newChatRef.lastTimestamp,
+                    new: newChatRef.new,
+                    participantIds: newChatData.participantIds,
+                    lastMessage: newChatData.lastMessage,
+                    chatInfo: newChatData.chatInfo
+                  };
 
-        changes.forEach((change) => {
-          
-          if (change.type === "added") {
-            const newChatRef = change.doc.data();
-            firebase
-            .firestore()
-            .collection("chats")
-            .doc(newChatRef.id)
-            .get()
-            .then((firestoreDocument) => {
+                  //Adding to array
+                  chatsArray.unshift(newChatItem);
+                  
+                  if (index === array.length -1) resolve();
+                })
+            }
+            else if (change.type === "modified") {
+              const newChatRef = change.doc.data();
+              firebase
+              .firestore()
+              .collection("chats")
+              .doc(newChatRef.id)
+              .get()
+              .then((firestoreDocument) => {
                 var newChatData = firestoreDocument.data();
                 const newChatItem = {
                   id: newChatRef.id,
@@ -66,39 +91,27 @@ export default class LandingScreen extends React.Component{
                   lastMessage: newChatData.lastMessage,
                   chatInfo: newChatData.chatInfo
                 };
+
+                //Modifying previously added chat. 
+                const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+                chatsArray[index] = newChatItem;
                 
-                //Adding to array
-                chatsArray.unshift(newChatItem);
-                this.setState({ chats: chatsArray });
+                if (index === array.length -1) resolve();
               })
-          }
-          else if (change.type === "modified") {
-
-            const newChatRef = change.doc.data();
-            firebase
-            .firestore()
-            .collection("chats")
-            .doc(newChatRef.id)
-            .get()
-            .then((firestoreDocument) => {
-              var newChatData = firestoreDocument.data();
-              const newChatItem = {
-                id: newChatRef.id,
-                timestamp: newChatRef.lastTimestamp,
-                new: newChatRef.new,
-                participantIds: newChatData.participantIds,
-                lastMessage: newChatData.lastMessage,
-                chatInfo: newChatData.chatInfo
-              };
-
-              //Modifying previously added chat.
-              const index = chatsArray.find((item) => item.id === newChatRef.id)
-              chatsArray[index] = newChatItem;
-              this.setState({ chats: chatsArray });
-            })
-          }
+            }
+          });
         });
-      });
+
+        getChats.then(() => {
+          this.setState({ chats: chatsArray })
+        });
+    });
+
+    
+  }
+
+  componentWillUnmout() {
+    Alert.alert("unmounting");
   }
 
   render(){
@@ -109,6 +122,7 @@ export default class LandingScreen extends React.Component{
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
+          extraData={this.state}
         ></FlatList>
         <TouchableOpacity
                 style={{

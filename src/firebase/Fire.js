@@ -113,16 +113,34 @@ class Fire {
   }
 
 
-  addMessage = async ({senderId, text, chatId}) =>{
-    //Adding to target's messages.
-    const messagesRef = this.firestore.collection('chats').doc(chatId).collection('messages');
+  addMessage = async ({senderId, text, chatId, participantIds}) =>{
+
+    const chatRef = this.firestore.collection('chats').doc(chatId);
+    const messagesRef = chatRef.collection('messages');
+    const usersRef = this.firestore.collection('users');
+    const timeCreated = this.timestamp;
+
+    await chatRef.update({lastMessage: text, lastTimestamp: timeCreated})
+
+    await participantIds.forEach((participantId) => {
+      usersRef
+      .doc(participantId)
+      .collection('chats')
+      .where('id', '==', chatId)
+      .get()
+      .then(response => {
+        response.docs.forEach((doc) => {
+            const docRef = usersRef.doc(participantId).collection('chats').doc(doc.id)
+            docRef.update({lastTimestamp: timeCreated})
+        })
+      })
+    })
 
     return new Promise((res, rej) => {
-      
       messagesRef
             .add({ 
               text,
-              timestamp: this.timestamp,
+              timestamp: timeCreated,
               senderId: senderId,
             })
             .then((ref) => {
