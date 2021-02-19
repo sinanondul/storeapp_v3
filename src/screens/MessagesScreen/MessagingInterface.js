@@ -1,18 +1,30 @@
-import React from "react";
+import React, {useCallback} from "react";
 import {View, Platform, Header, Text, TouchableOpacity, StyleSheet, FlatList, Alert} from "react-native";
 import {Avatar} from "react-native-paper";
 import {GiftedChat} from "react-native-gifted-chat";
 
+import Fire from "../../firebase/Fire";
+import firebase from 'firebase';
+
+
 const messageItems = [
     {
-        id: "1",
-        text: "My first message.",
-        created_at: new Date(1612443350116),
-        user: {
-            _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
-            name: 'Adam Bronze',
-            avatar: null,
-        }
+      _id: 1,
+      text: 'Hello developer',
+      createdAt: 1612443350116,
+      user: {
+        _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
+        name: 'Adam Bronze',
+      },
+    },
+    {
+      _id: 2,
+      text: 'Hello again developer',
+      createdAt: 1612635490376,
+      user: {
+        _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
+        name: 'Adam Bronze',
+      },
     }
 ]
 
@@ -38,6 +50,7 @@ export default class MessagingInterface extends React.Component{
     
     state={
         messages: [],
+        userData: []
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -47,17 +60,95 @@ export default class MessagingInterface extends React.Component{
 
 
     componentDidMount() {
-        this.props.navigation.setOptions({
-            title: getFullName(this.props.route.params.senderInfo),
-        });
+      //Setting navigation options.
+      this.props.navigation.setOptions({
+        title: getFullName(this.props.route.params.senderInfo),
+      });
 
+      //Getting participant info.
+      let usersArray = [];
+
+      const usersRef = firebase.firestore().collection("users");
+      const participantIds = this.props.route.params.chat.participantIds;
+      var foo = new Promise((resolve, reject) => {
+        participantIds.forEach((participantId, index, array) => {
+          usersRef
+          .doc(participantId)
+          .get()
+          .then((firestoreDocument) => {
+            var userData = firestoreDocument.data();
+            const userInfo = {
+                uid: userData.id,
+                name: userData.name,
+                surename: userData.surename,
+                avatar: userData.avatar
+            }
+            
+            usersArray.unshift(userInfo);
+            if (index === array.length -1) resolve();
+          })
+        });
+      });
+    
+      foo.then(() => {
+        this.setState({userData: usersArray});
+        //Getting messages.
+        let messagesArray = [];
+        const chatRef = firebase.firestore().collection("chats").doc(this.props.route.params.chat.id);
+        const unsubscribe = chatRef
+          .collection('messages')
+          .orderBy('timestamp', 'desc')
+          .onSnapshot((snapshot) => {
+            let changes = snapshot.docChanges();
+
+            changes.forEach((change) => {
+              if (change.type === 'added') {
+                const newMessage = change.doc.data();
+                const userItem = this.state.userData.find((user) => user.uid === newMessage.senderId);
+                const newMessageData = {
+                  _id: change.doc.id,
+                  text: newMessage.text,
+                  createdAt: newMessage.timestamp,
+                  user: {
+                    _id: newMessage.senderId,
+                    name: getFullName(userItem),
+                  },
+                }
+                messagesArray.unshift(newMessageData);
+              }
+            });
+            this.setState({messages: messagesArray});
+          });
+      });
+     
+    }
+    
+    onSend (messages) {
+      Fire.shared
+      .addMessage({
+        senderId: this.props.userData.uid,
+        text: messages[0].text,
+        chatId: this.props.route.params.chat.id,
+      })
+      .catch((error) => {
+        alert(error);
+      });
+      this.setState(previousState => ({
+        messages: GiftedChat.append(previousState.messages, messages),
+      }))
     }
 
     render() {
         return(
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
             <GiftedChat
-                messages={messageItems}
+                messages={this.state.messages.sort((a, b) => b.createdAt - a.createdAt)}
+                onSend={messages => this.onSend(messages)}
+                user={{
+                  _id: this.props.userData.uid,
+                }}
             />
+          </View>
         );
     }
 
@@ -76,75 +167,3 @@ export default class MessagingInterface extends React.Component{
         },
     };
 }
-
-const styles = {
-    container: {
-      flex: 1
-    },
-  
-    header_right: {
-      flex: 1,
-      flexDirection: "row",
-      justifyContent: "space-around"
-    },
-    header_button_container: {
-      marginRight: 10
-    },
-    header_button_text: {
-      color: '#FFF'
-    },
-  
-    modal: {
-      flex: 1,
-      backgroundColor: '#FFF'
-    },
-    close: {
-      alignSelf: 'flex-end',
-      marginBottom: 10
-    },
-    modal_header: {
-      flexDirection: 'row',
-      justifyContent: 'space-between',
-      padding: 10
-    },
-    modal_header_text: {
-      fontSize: 20,
-      fontWeight: 'bold'
-    },
-    modal_body: {
-      marginTop: 20,
-      padding: 20
-    },
-  
-    list_item_body: {
-      flex: 1,
-      padding: 10,
-      flexDirection: "row",
-      justifyContent: "space-between"
-    },
-    list_item: {
-      flex: 1,
-      flexDirection: 'row',
-      justifyContent: 'space-between'
-    },
-    list_item_text: {
-      marginLeft: 10,
-      fontSize: 20,
-    },
-    inline_contents: {
-      flex: 1,
-      flexDirection: 'row'
-    },
-    status_indicator: {
-      width: 10,
-      height: 10,
-      alignSelf: 'center',
-      borderRadius: 10,
-    },
-    online: {
-      backgroundColor: '#5bb90b'
-    },
-    offline: {
-      backgroundColor: '#606060'
-    },
-  }

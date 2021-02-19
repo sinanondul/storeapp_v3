@@ -10,19 +10,12 @@ import styles from "./styles";
 
 export default class HomeScreen extends React.Component {
   componentDidMount() {
-    this._unsubscribe = this.props.navigation.addListener("focus", () => {
-      // do something
-    });
   }
 
   componentWillUnmount() {
-    this._unsubscribe();
   }
 
   render() {
-
-    return (
-      <SocialNavigator {...this.props}/>
-    );
+    return <SocialNavigator {...this.props} />;
   }
 }

@@ -35,7 +35,6 @@ export default class App extends React.Component {
       name: "Blank",
       surename: "Blankovich",
       avatar: null,
-      messages: null,
     }
   };
 
@@ -50,11 +49,10 @@ export default class App extends React.Component {
           .then((firestoreDocument) => {
             var userData = firestoreDocument.data();
             this.setState({ userInfo: {
-              uid: userData.uid,
+              uid: userData.id,
               name: userData.name,
               surename: userData.surename,
-              avatar: userData.avatar,
-              messages: userData.messages
+              avatar: userData.avatar
             }})
           })
         this.setState({ isLoggedIn: true });

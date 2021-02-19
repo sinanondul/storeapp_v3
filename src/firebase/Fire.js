@@ -2,6 +2,7 @@ import firebaseKeys from "./config";
 import firebase from "firebase";
 import moment from 'moment';
 import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
+import { Alert } from "react-native";
 
 class Fire {
   constructor() {
@@ -72,27 +73,66 @@ class Fire {
   }
 
   //Messaging Stuff
-  addMessage = async ({text, targetId}) =>{
-    //Adding to target's messages.
+  addChat = async({participantIds, chatInfo = null}) => {
+
+    const chatsRef = this.firestore.collection('chats');
+    const timeCreated = this.timestamp();
+
+    
+    const createdChat = await chatsRef.add(
+      {
+        participantIds: participantIds,
+        messages: [],
+        lastTimestamp: timeCreated,
+        lastMessage: null,
+        chatInfo: chatInfo
+      }
+    );
+    
+    const chatId = createdChat.id;
+    const usersRef = this.firestore.collection('users');
+
     return new Promise((res, rej) => {
-      this.firestore
-        .collection('users')
-        .doc(targetId)
-        .collection('messages')
-        .doc(this.uid)
-        .add({
-          text,
-          timestamp: this.timestamp,
+      const snapshot = usersRef.where('id', 'in', targetIds).get();
+      snapshot
+      .forEach(doc => {
+        doc.collection("chats").add({
+          id: chatId,
+          new: true,
         })
-        .then((ref) => {
-          res(ref);
-        })
-        .catch((error) => {
-          rej(error);
-        });
-    });
+      })
+      .then((ref) => {
+        res(ref);
+      })
+      .catch((error) => {
+        rej(error);
+      });
+
+    })
+
   }
 
+
+  addMessage = async ({senderId, text, chatId}) =>{
+    //Adding to target's messages.
+    const messagesRef = this.firestore.collection('chats').doc(chatId).collection('messages');
+
+    return new Promise((res, rej) => {
+      
+      messagesRef
+            .add({ 
+              text,
+              timestamp: this.timestamp,
+              senderId: senderId,
+            })
+            .then((ref) => {
+              res(ref);
+            })
+            .catch((error) => {
+              rej(error);
+            });
+      });
+  }
 }
 
 Fire.shared = new Fire();
