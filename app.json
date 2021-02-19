@@ -1,7 +1,8 @@
 {
   "expo": {
-    "name": "React Native Firebase",
-    "slug": "react-native-firebase",
+    "name": "UP",
+    "icon": "./assets/icon.png",
+    "slug": "up-demo",
     "platforms": [
       "ios",
       "android",
@@ -9,7 +10,6 @@
     ],
     "version": "1.0.0",
     "orientation": "portrait",
-    "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
@@ -24,7 +24,6 @@
     "ios": {
       "supportsTablet": true
     },
-    "description": "Built by the team behind https://www.instamobile.io https://www.iosapptemplates.com https://www.instaflutter.com and https://www.instakotlin.com",
-    "githubUrl": "https://github.com/instamobile/react-native-firebase"
+    "description": ""
   }
 }
