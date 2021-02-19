@@ -1,5 +1,5 @@
 import React from 'react';
-import {View, Text, TouchableOpacity} from "react-native";
+import {View, Text, TouchableOpacity, Alert} from "react-native";
 import {Avatar} from "react-native-paper";
 import firebase from 'firebase';
 
@@ -22,30 +22,36 @@ function getAvatar(info){
     }
 }
 
+function getTime(timestamp) {
+  var formattedTimestamp = new Date(Number(timestamp));
+  return (
+    formattedTimestamp.getHours().toString() +
+    ":" +
+    formattedTimestamp.getMinutes().toString()
+  );
+}
+
+
 export default class ChatItem extends React.Component{
 
     state= {
-        chatInfo: {
-            targetIds: [],
-            avatar: null,
-            name: null,
-            lastTimestamp: null,
-            lastMessage: null,
-        },
+        senderInfo: null,
         nameinit: false,
     }
 
 
     componentDidMount() {
-        
         const usersRef = firebase.firestore().collection("users");
+        const participants = this.props.chat.participantIds;
+        const index = participants.findIndex((item) => item !== this.props.userData.uid);
+        const senderId = participants[index];
         usersRef
-            .doc(this.props.chat.senderId)
+            .doc(senderId)
             .get()
             .then((firestoreDocument) => {
                 var userData = firestoreDocument.data();
                 this.setState({ senderInfo: {
-                    id: this.props.message.senderId,
+                    id: senderId,
                     name: userData.name,
                     surename: userData.surename,
                     avatar: userData.avatar,
@@ -56,7 +62,7 @@ export default class ChatItem extends React.Component{
 
     render(){
         return (
-            <TouchableOpacity onPress={() => {return(this.props.navigation.navigate('Messaging', {senderInfo: this.state.senderInfo}));}} style={styles.messageItem}>
+            <TouchableOpacity onPress={() => {return(this.props.navigation.navigate('Messaging', {senderInfo: this.state.senderInfo, chat: this.props.chat}));}} style={styles.messageItem}>
               <View style={styles.messageAvatar}>
                 {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
               </View>
@@ -68,7 +74,7 @@ export default class ChatItem extends React.Component{
                     : null}
                   </View>
                   <View style={styles.messageTimeStamp}>
-                    <Text style={styles.timeStampText} numberOfLines={1}>{getTime(this.props.chat.lastTimestamp)}</Text>
+                    <Text style={styles.timeStampText} numberOfLines={1}>{getTime(this.props.chat.timestamp)}</Text>
                   </View>
                 </View>
                 <View style={styles.messageSummary}>

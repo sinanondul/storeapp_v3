@@ -194,9 +194,9 @@ export default class LandingScreen extends React.Component {
           showsVerticalScrollIndicator={false}
         ></FlatList>
         {/* Todo- */}
-        <TouchableOpacity onPressOut={(this.setModalVisible = false)}>
+        {/* <TouchableOpacity onPressOut={(this.setModalVisible = false)}>
           <AddModal modalVisible={true} />
-        </TouchableOpacity>
+        </TouchableOpacity> */}
       </View>
     );
   }

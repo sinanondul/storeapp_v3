@@ -73,17 +73,18 @@ class Fire {
   }
 
   //Messaging Stuff
-  addChat = async({targetIds, chatInfo = null}) => {
+  addChat = async({participantIds, chatInfo = null}) => {
 
     const chatsRef = this.firestore.collection('chats');
+    const timeCreated = this.timestamp();
 
     
     const createdChat = await chatsRef.add(
       {
-        participantIds: [],
+        participantIds: participantIds,
         messages: [],
-        latestTimestamp: this.timestamp(),
-        latestMessage: null,
+        lastTimestamp: timeCreated,
+        lastMessage: null,
         chatInfo: chatInfo
       }
     );
@@ -92,10 +93,13 @@ class Fire {
     const usersRef = this.firestore.collection('users');
 
     return new Promise((res, rej) => {
-      const snapshot = await usersRef.where('id', 'in', targetIds).get();
+      const snapshot = usersRef.where('id', 'in', targetIds).get();
       snapshot
       .forEach(doc => {
-        doc.FieldValue.arrayUnion(chatId);
+        doc.collection("chats").add({
+          id: chatId,
+          new: true,
+        })
       })
       .then((ref) => {
         res(ref);
@@ -108,26 +112,18 @@ class Fire {
 
   }
 
-  addMessage = async ({senderId, text, targetId}) =>{
+
+  addMessage = async ({senderId, text, chatId}) =>{
     //Adding to target's messages.
-    const senderRef = this.firestore.collection('users').doc(targetId).collection('messages').doc(senderId);
-      senderRef.get()
-        .then((senderDoc) => {
-          if (!senderDoc.exists) {
-            senderRef.set({
-              id: senderId,
-            })
-          }
-          senderRef.set({
-            lastMessage: text,
-            lastTimestamp: this.timestamp})
+    const messagesRef = this.firestore.collection('chats').doc(chatId).collection('messages');
+
     return new Promise((res, rej) => {
       
-          senderRef
-            .collection('messages')
+      messagesRef
             .add({ 
               text,
               timestamp: this.timestamp,
+              senderId: senderId,
             })
             .then((ref) => {
               res(ref);
@@ -136,7 +132,6 @@ class Fire {
               rej(error);
             });
       });
-    });
   }
 }
 

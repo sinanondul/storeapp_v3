@@ -1,8 +1,11 @@
 import React from "react";
-import {View, Text, TouchableOpacity, StyleSheet, FlatList, Alert} from "react-native";
+import {View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, Platform} from "react-native";
 import {Avatar} from "react-native-paper";
 import { createStackNavigator, HeaderBackButton} from "@react-navigation/stack";
+import Icon from "react-native-vector-icons/Ionicons";
 import moment from 'moment';
+
+
 import Fire from '../../firebase/Fire';
 import firebase from 'firebase';
 import ChatItem from './ChatItem';
@@ -10,21 +13,6 @@ import ChatItem from './ChatItem';
 
 import MessagingInterface from "./MessagingInterface";
 import styles from "./styles";
-
-const messageItems = [
-  {
-    id: "1",
-    senderId: "qVBhL18fjISoYhxRBjXfa6iynXR2",
-    lastMessage: "I'll record a triple double tonight",
-    lastTimestamp: 1612443350116,
-  },
-  {
-    id: "2",
-    senderId: "n6QtMkM9M1geJGo7C3gXCFIv8Hs1",
-    lastMessage: "I'll record a triple double tonight",
-    lastTimestamp: 1612446858796,
-  },
-]
 
 export default class LandingScreen extends React.Component{
 
@@ -47,20 +35,104 @@ export default class LandingScreen extends React.Component{
             <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.goBack()}}/>
         ),
       });
-    firebase
+      
+      
+    let chatsArray = [];
+    
+    const unsubscribe = firebase
       .firestore()
-      .doc()
+      .collection("users")
+      .doc(this.props.userData.uid)
+      .collection("chats")
+      .onSnapshot((snapshot) => {
+        let changes = snapshot.docChanges();
+
+        changes.forEach((change) => {
+          
+          if (change.type === "added") {
+            const newChatRef = change.doc.data();
+            firebase
+            .firestore()
+            .collection("chats")
+            .doc(newChatRef.id)
+            .get()
+            .then((firestoreDocument) => {
+                var newChatData = firestoreDocument.data();
+                const newChatItem = {
+                  id: newChatRef.id,
+                  timestamp: newChatRef.lastTimestamp,
+                  new: newChatRef.new,
+                  participantIds: newChatData.participantIds,
+                  lastMessage: newChatData.lastMessage,
+                  chatInfo: newChatData.chatInfo
+                };
+                
+                //Adding to array
+                chatsArray.unshift(newChatItem);
+                this.setState({ chats: chatsArray });
+              })
+          }
+          else if (change.type === "modified") {
+
+            const newChatRef = change.doc.data();
+            firebase
+            .firestore()
+            .collection("chats")
+            .doc(newChatRef.id)
+            .get()
+            .then((firestoreDocument) => {
+              var newChatData = firestoreDocument.data();
+              const newChatItem = {
+                id: newChatRef.id,
+                timestamp: newChatRef.lastTimestamp,
+                new: newChatRef.new,
+                participantIds: newChatData.participantIds,
+                lastMessage: newChatData.lastMessage,
+                chatInfo: newChatData.chatInfo
+              };
+
+              //Modifying previously added chat.
+              const index = chatsArray.find((item) => item.id === newChatRef.id)
+              chatsArray[index] = newChatItem;
+              this.setState({ chats: chatsArray });
+            })
+          }
+        });
+      });
   }
 
   render(){
     return (
       <View style={styles.container}>
         <FlatList
-          data={chats.sort((a, b) => b.timestamp - a.timestamp)}
+          data={this.state.chats.sort((a, b) => b.timestamp - a.timestamp)}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         ></FlatList>
+        <TouchableOpacity
+                style={{
+                    borderWidth:1,
+                    borderColor:'rgba(0,0,0,0.2)',
+                    alignItems:'center',
+                    justifyContent:'center',
+                    width:48,
+                    position: 'absolute',                                          
+                    bottom: 10,                                                    
+                    right: 10,
+                    height:48,
+                    backgroundColor:'#fff',
+                    borderRadius:100,
+                }}
+                onPress={() =>
+                  {}
+                }
+                >
+                <Icon 
+                  name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"}
+                  size={48} color="#f4511e" />
+            </TouchableOpacity>
+            
       </View>
     );
   }

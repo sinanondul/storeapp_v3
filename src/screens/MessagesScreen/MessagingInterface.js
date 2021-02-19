@@ -49,7 +49,8 @@ export default class MessagingInterface extends React.Component{
     
     
     state={
-        messages: [...messageItems],
+        messages: [],
+        userData: []
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -59,42 +60,67 @@ export default class MessagingInterface extends React.Component{
 
 
     componentDidMount() {
-        this.props.navigation.setOptions({
-            title: getFullName(this.props.route.params.senderInfo),
-        });
-        
-    let messagesArray = [];
-    const usersRef = firebase.firestore().collection("users").where('id', 'in', [this.props.route.params.senderInfo.id.toString()]);
-    const messagesRef = usersRef.collectionGroup('messages').where('id', 'in', [this.props.route.params.senderInfo.id]);
-    const unsubscribe = messagesRef
-      .orderBy('timestamp', 'desc')
-      .onSnapshot((snapshot) => {
-        let changes = snapshot.docChanges();
-        let senderId= snapshot.getRef().getParent().getParent().data().id;
-        let senderInfo = null;
-        if (senderId == this.props.userData.uid) {
-          senderInfo = this.props.userData;
-        } else {
-          senderInfo = this.props.route.params.senderInfo;
-        }
-
-        changes.forEach((change) => {
-          if (change.type === 'added') {
-            const newMessage = change.doc.data();
-            const newMessageData = {
-              _id: change.doc.id,
-              text: newMessage.text,
-              createdAt: newMessage.timestamp,
-              user: {
-                _id: senderInfo.uid,
-                name: senderInfo.name,
-              },
-            }
-            messagesArray.push(newPostData);
-          }
-        });
-        this.setState({posts: postsArray});
+      //Setting navigation options.
+      this.props.navigation.setOptions({
+        title: getFullName(this.props.route.params.senderInfo),
       });
+
+      //Getting participant info.
+      let usersArray = [];
+
+      const usersRef = firebase.firestore().collection("users");
+      const participantIds = this.props.route.params.chat.participantIds;
+      var foo = new Promise((resolve, reject) => {
+        participantIds.forEach((participantId, index, array) => {
+          usersRef
+          .doc(participantId)
+          .get()
+          .then((firestoreDocument) => {
+            var userData = firestoreDocument.data();
+            const userInfo = {
+                uid: userData.id,
+                name: userData.name,
+                surename: userData.surename,
+                avatar: userData.avatar
+            }
+            
+            usersArray.unshift(userInfo);
+            if (index === array.length -1) resolve();
+          })
+        });
+      });
+    
+      foo.then(() => {
+        this.setState({userData: usersArray});
+        //Getting messages.
+        let messagesArray = [];
+        const chatRef = firebase.firestore().collection("chats").doc(this.props.route.params.chat.id);
+        const unsubscribe = chatRef
+          .collection('messages')
+          .orderBy('timestamp', 'desc')
+          .onSnapshot((snapshot) => {
+            let changes = snapshot.docChanges();
+
+            changes.forEach((change) => {
+              if (change.type === 'added') {
+                const newMessage = change.doc.data();
+                const userItem = this.state.userData.find((user) => user.uid === newMessage.senderId);
+                const newMessageData = {
+                  _id: change.doc.id,
+                  text: newMessage.text,
+                  createdAt: newMessage.timestamp,
+                  user: {
+                    _id: newMessage.senderId,
+                    name: getFullName(userItem),
+                  },
+                }
+                messagesArray.unshift(newMessageData);
+              }
+            });
+            this.setState({messages: messagesArray});
+          });
+      });
+     
     }
     
     onSend (messages) {
@@ -102,7 +128,7 @@ export default class MessagingInterface extends React.Component{
       .addMessage({
         senderId: this.props.userData.uid,
         text: messages[0].text,
-        targetId: this.props.route.params.senderInfo.id,
+        chatId: this.props.route.params.chat.id,
       })
       .catch((error) => {
         alert(error);

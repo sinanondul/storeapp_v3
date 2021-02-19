@@ -40,7 +40,9 @@ export default class MessagesScreen extends React.Component{
       <MessagesStack.Navigator
         initialRouteName="Landing"
       >
-        <MessagesStack.Screen name="Landing" component={LandingScreen} options={LandingScreen.navigationOptions}/>
+        <MessagesStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
+          {(props) => <LandingScreen {...props} userData={userData}/>}
+        </MessagesStack.Screen>
         <MessagesStack.Screen name="Messaging" options={MessagingInterface.navigationOptions}>
           {(props) => <MessagingInterface {...props} userData={userData}/>}
         </MessagesStack.Screen>
