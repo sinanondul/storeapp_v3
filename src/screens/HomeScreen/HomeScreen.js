@@ -9,6 +9,7 @@ import SocialNavigator from "../../navigation/HomeNavigator";
 import styles from "./styles";
 
 export default class HomeScreen extends React.Component {
+  
   componentDidMount() {
   }
 

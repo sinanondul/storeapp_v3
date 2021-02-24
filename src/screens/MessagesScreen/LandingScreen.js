@@ -35,81 +35,6 @@ export default class LandingScreen extends React.Component{
             <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.goBack()}}/>
         ),
       });
-      
-      
-    let chatsArray = [];
-    
-    const unsubscribe = firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userData.uid)
-      .collection("chats")
-      .onSnapshot((snapshot) => {
-        
-        let changes = snapshot.docChanges();
-        var getChats = new Promise((resolve, reject) => {
-          changes.forEach((change, index, array) => {
-            
-            if (change.type === "added") {
-              const newChatRef = change.doc.data();
-              firebase
-              .firestore()
-              .collection("chats")
-              .doc(newChatRef.id)
-              .get()
-              .then((firestoreDocument) => {
-                  var newChatData = firestoreDocument.data();
-                  const newChatItem = {
-                    id: newChatRef.id,
-                    timestamp: newChatRef.lastTimestamp,
-                    new: newChatRef.new,
-                    newCount: newChatRef.newCount,
-                    participantIds: newChatData.participantIds,
-                    lastMessage: newChatData.lastMessage,
-                    chatInfo: newChatData.chatInfo
-                  };
-
-                  //Adding to array
-                  chatsArray.unshift(newChatItem);
-                  
-                  if (index === array.length -1) resolve();
-                })
-            }
-            else if (change.type === "modified") {
-              const newChatRef = change.doc.data();
-              firebase
-              .firestore()
-              .collection("chats")
-              .doc(newChatRef.id)
-              .get()
-              .then((firestoreDocument) => {
-                var newChatData = firestoreDocument.data();
-                const newChatItem = {
-                  id: newChatRef.id,
-                  timestamp: newChatRef.lastTimestamp,
-                  new: newChatRef.new,
-                  newCount: newChatRef.newCount,
-                  participantIds: newChatData.participantIds,
-                  lastMessage: newChatData.lastMessage,
-                  chatInfo: newChatData.chatInfo
-                };
-
-                //Modifying previously added chat. 
-                const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
-                chatsArray[index] = newChatItem;
-                
-                if (index === array.length -1) resolve();
-              })
-            }
-          });
-        });
-
-        getChats.then(() => {
-          this.setState({ chats: chatsArray })
-        });
-    });
-
-    
   }
 
   componentWillUnmout() {
@@ -120,7 +45,7 @@ export default class LandingScreen extends React.Component{
     return (
       <View style={styles.container}>
         <FlatList
-          data={this.state.chats.sort((a, b) => b.timestamp - a.timestamp)}
+          data={this.props.chats.sort((a, b) => b.timestamp - a.timestamp)}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}

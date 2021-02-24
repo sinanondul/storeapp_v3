@@ -2,18 +2,19 @@ import "react-native-gesture-handler";
 import React, { useEffect, useState } from "react";
 import firebaseKeys from "./src/firebase/config";
 import { NavigationContainer } from "@react-navigation/native";
-import PageNavigator from "./src/navigation/PageNavigator";
+import AppPage from "./src/navigation/PageNavigator";
 import AuthNavigator from "./src/navigation/AuthNavigator";
-import { Alert } from "react-native";
+import { Alert, LogBox } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { render } from "react-dom";
 
 import firebase from "firebase";
+LogBox.ignoreAllLogs(true);
 
 //firebase.initializeApp(firebaseConfig);
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);
+  firebase.initializeApp(firebaseConfig);s
 }
 const navigationRef = React.createRef();
 
@@ -35,10 +36,12 @@ export default class App extends React.Component {
       name: "Blank",
       surename: "Blankovich",
       avatar: null,
-    }
+    },
+    chats: [],
   };
 
   componentDidMount() {
+    //Auth load
     firebase.auth().onAuthStateChanged((user) => {
       if (user) {
         var uid = user.uid;
@@ -54,8 +57,8 @@ export default class App extends React.Component {
               surename: userData.surename,
               avatar: userData.avatar
             }})
+            this.setState({ isLoggedIn: true });
           })
-        this.setState({ isLoggedIn: true });
       } else {
         this.setState({ isLoggedIn: false });
       }
@@ -63,11 +66,12 @@ export default class App extends React.Component {
   }
 
   render() {
-    var userData = this.state.userInfo;
+    const userData = this.state.userInfo;
+    const chats = this.state.chats;
     return (
       <NavigationContainer ref={navigationRef}>
         {this.state.isLoggedIn ? (
-          <PageNavigator userData={userData}/>
+          <AppPage userData={userData} chats={chats}/>
         ) : (
           <AuthNavigator/>
         )}

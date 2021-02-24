@@ -15,8 +15,9 @@ const SocialStack = createStackNavigator();
 
 const SocialBottomTab = createBottomTabNavigator();
 
-function SocialTabNavigator() {
+const SocialTabNavigator = (props) => {
   const navigation = useNavigation();
+  const newChatCount = props.newChatCount > 0 ? props.newChatCount : null;
   return (
     <SocialBottomTab.Navigator
       tabBarOptions={{
@@ -28,6 +29,7 @@ function SocialTabNavigator() {
         name="MessagesFiller"
         component={LandingScreen}
         options={{
+          tabBarBadge: newChatCount,
           tabBarIcon: ({ tintColor }) => (
             <Icon
               name={
@@ -35,7 +37,7 @@ function SocialTabNavigator() {
                   ? "ios-chatbubbles-outline"
                   : "md-chatbubbles-outline"
               }
-              size={24}
+              size={32}
               color={tintColor}
             />
           ),
@@ -90,7 +92,7 @@ function SocialTabNavigator() {
                   ? "ios-notifications-outline"
                   : "md-notifications-outline"
               }
-              size={24}
+              size={32}
               color={tintColor}
             />
           ),
@@ -111,18 +113,23 @@ function SocialTabNavigator() {
 
 export default function SocialNavigator(props) {
   var userData = props.userData;
+  var chats = props.chats;
+  var newChatCount = props.newChatCount;
   return (
     <SocialStack.Navigator options={{}} mode="modal">
       <SocialStack.Screen
         name="Default"
-        component={SocialTabNavigator}
         options={LandingScreen.navigationOptions}
-      />
+        lazy={false}
+      >
+        {(props) =><SocialTabNavigator {...props} newChatCount={newChatCount}/>}
+      </SocialStack.Screen>
+
       <SocialStack.Screen
         name="Messages"
         options={MessagesScreen.navigationOptions}
       >
-        {(props) => <MessagesScreen {...props} userData={userData} />}
+        {(props) => <MessagesScreen {...props} userData={userData} chats={chats} />}
       </SocialStack.Screen>
       <SocialStack.Screen name="Add" options={{}}>
         {(props) => <AddScreen {...props} />}
