@@ -39,17 +39,33 @@ const styles = StyleSheet.create({
         fontWeight: 'bold'
     },
     messageTimeStamp:{
-        flex: 0.3
+        flex: 0.3,
+        alignItems: 'flex-end',
+        justifyContent: 'center',
+        paddingRight: 20
     },
     timeStampText: {
         color: '#797D7F'
     },
     messageSummary:{
         flex: 0.5,
-        paddingRight: 30,
+        flexDirection: "row",
+        justifyContent: 'flex-start',
+        alignItems: 'flex-start',
     },
     summaryText: {
+        flex: 0.9,
+        justifyContent: 'center',
+        paddingTop: 5,
+    },
+    lastMessageText: {
         color: '#797D7F'
+    },
+    newBadge: {
+        flex: 0.1,
+        justifyContent: 'center',
+        paddingTop: 5,
+        paddingRight: 20,
     }
 });
 

@@ -1,7 +1,6 @@
 import firebaseKeys from "./config";
 import firebase from "firebase";
 import moment from 'moment';
-import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 import { Alert } from "react-native";
 
 class Fire {
@@ -99,6 +98,7 @@ class Fire {
         doc.collection("chats").add({
           id: chatId,
           new: true,
+          newCount: 0,
         })
       })
       .then((ref) => {
@@ -112,6 +112,30 @@ class Fire {
 
   }
 
+  resetNewCount = async ({uid, chatId}) => {
+    const chatsRef = this.firestore.collection('users').doc(uid).collection('chats');
+    var chatRef;
+
+    
+    
+    return new Promise((res, rej) => {
+      chatsRef
+        .where('id', '==', chatId)
+        .get()
+        .then(response => {
+          response.docs.forEach((doc) => {
+            chatsRef.doc(doc.id).update({newCount: 0})
+              .then((ref) => {
+                res(ref);
+              })
+              .catch((error) => {
+                rej(error);
+              });
+          })
+        })
+        
+    })
+  }
 
   addMessage = async ({senderId, text, chatId, participantIds}) =>{
 
@@ -131,7 +155,18 @@ class Fire {
       .then(response => {
         response.docs.forEach((doc) => {
             const docRef = usersRef.doc(participantId).collection('chats').doc(doc.id)
-            docRef.update({lastTimestamp: timeCreated})
+            var newCount;
+            docRef.get().then((firestoreDocument) => {
+              const docData = firestoreDocument.data();
+              if (docData.newCount)
+                newCount = docData.newCount;
+              else
+                newCount = 0;
+              if (participantId !== senderId){
+                newCount = newCount + 1;
+              }
+              docRef.update({lastTimestamp: timeCreated, newCount: newCount})
+            })
         })
       })
     })
