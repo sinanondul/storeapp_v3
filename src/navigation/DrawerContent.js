@@ -51,17 +51,15 @@ export default class DrawerContent extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
-          <View style={styles.userInfoWrapper}>
-            <TouchableOpacity
-              style={styles.userAvatar}
+          <TouchableOpacity style={styles.userInfoWrapper} 
               onPress={() =>
                 this.props.navigation.navigate("Profile", {
                   userData: this.props.userData,
                 })
-              }
-            >
+              }>
+            <View style={styles.userAvatar}>
               {getAvatar(this.props.userData)}
-            </TouchableOpacity>
+            </View>
             <View style={styles.userTextWrapper}>
               <View style={styles.userName}>
                 <Text style={styles.userNameText}>
@@ -70,7 +68,7 @@ export default class DrawerContent extends React.Component {
               </View>
               <View></View>
             </View>
-          </View>
+          </TouchableOpacity>
           <View></View>
         </View>
 

@@ -124,7 +124,7 @@ class Fire {
         .get()
         .then(response => {
           response.docs.forEach((doc) => {
-            chatsRef.doc(doc.id).update({newCount: 0})
+            chatsRef.doc(doc.id).update({new: false, newCount: 0})
               .then((ref) => {
                 res(ref);
               })
