@@ -63,6 +63,7 @@ export default class LandingScreen extends React.Component{
                     id: newChatRef.id,
                     timestamp: newChatRef.lastTimestamp,
                     new: newChatRef.new,
+                    newCount: newChatRef.newCount,
                     participantIds: newChatData.participantIds,
                     lastMessage: newChatData.lastMessage,
                     chatInfo: newChatData.chatInfo
@@ -87,6 +88,7 @@ export default class LandingScreen extends React.Component{
                   id: newChatRef.id,
                   timestamp: newChatRef.lastTimestamp,
                   new: newChatRef.new,
+                  newCount: newChatRef.newCount,
                   participantIds: newChatData.participantIds,
                   lastMessage: newChatData.lastMessage,
                   chatInfo: newChatData.chatInfo

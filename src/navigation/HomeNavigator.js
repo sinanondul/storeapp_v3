@@ -125,7 +125,7 @@ export default function SocialNavigator(props) {
         {(props) => <MessagesScreen {...props} userData={userData} />}
       </SocialStack.Screen>
       <SocialStack.Screen name="Add" options={{}}>
-        {(props) => <AddModal {...props} />}
+        {(props) => <AddScreen {...props} />}
       </SocialStack.Screen>
       <SocialStack.Screen
         name="Notifications"
