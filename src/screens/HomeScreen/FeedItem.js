@@ -16,32 +16,11 @@ import Fire from "../../firebase/Fire";
 import { Avatar } from "react-native-paper";
 import moment from "moment";
 
+import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
 import styles from "./styles";
 
 const usersRef = firebase.firestore().collection("users");
 
-function getFullName(info) {
-  return info.name + " " + info.surename;
-}
-
-function getAvatarTag(info) {
-  return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
-}
-
-function getAvatar(info) {
-  if (!(info.avatar == null)) {
-    return <Avatar.Image size={40} marginLeft={0} source={info.avatar} />;
-  } else {
-    return (
-      <Avatar.Text
-        size={40}
-        label={getAvatarTag(info)}
-        marginLeft={0}
-        style={{ backgroundColor: "#f4511e" }}
-      />
-    );
-  }
-}
 
 function getTimeSince(timestamp) {
   return moment(timestamp).fromNow();

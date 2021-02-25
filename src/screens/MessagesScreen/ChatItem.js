@@ -4,41 +4,15 @@ import {Avatar, Badge, withBadge} from "react-native-paper";
 import firebase from 'firebase';
 import moment from 'moment';
 
+import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
 import Fire from "../../firebase/Fire";
 import styles from "./styles";
-
-function getFullName(info){
-    return info.name + " " + info.surename;
-}
-
-function getAvatarTag(info){
-    return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
-}
-
-function getAvatar(info){
-    if (!(info.avatar == null)) {
-        return(<Avatar.Image size={40} marginLeft = {0} source={info.avatar}/>);
-    }
-    else {
-        return(<Avatar.Text size={40} label={getAvatarTag(info)} marginLeft={0} style={{backgroundColor: "#f4511e"}}/>);
-    }
-}
-
-function getTime(timestamp) {
-  var formattedTimestamp = new Date(Number(timestamp));
-  var hourString = formattedTimestamp.getHours().toString();
-  var minuteString = formattedTimestamp.getMinutes().toString();
-
-  if (hourString.length == 1) hourString = "0" + hourString;
-  if (minuteString.length == 1) minuteString = "0" + minuteString;
-  return hourString + ":" + minuteString;
-}
 
 function getTimeSince(timestamp) {
   moment.updateLocale('en', {
     calendar : {
         lastDay : '[Yesterday]',
-        sameDay : 'hh:mm',
+        sameDay : 'LT',
         nextDay : '[Tomorrow]',
         lastWeek : 'ddd',
         nextWeek : 'ddd',

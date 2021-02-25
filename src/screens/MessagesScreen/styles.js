@@ -66,6 +66,21 @@ const styles = StyleSheet.create({
         justifyContent: 'center',
         paddingTop: 5,
         paddingRight: 20,
+    },
+    headerTitleContainer: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    headerAvatar: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingRight: 10,
+    },
+    headerText: {
+        fontSize: 19,
+        fontWeight: 'bold',
+        color: '#fff',
+        paddingLeft: 10,
     }
 });
 

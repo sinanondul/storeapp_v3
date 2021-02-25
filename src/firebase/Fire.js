@@ -75,7 +75,7 @@ class Fire {
   addChat = async({participantIds, chatInfo = null}) => {
 
     const chatsRef = this.firestore.collection('chats');
-    const timeCreated = this.timestamp();
+    const timeCreated = this.timestamp;
 
     
     const createdChat = await chatsRef.add(
@@ -92,24 +92,21 @@ class Fire {
     const usersRef = this.firestore.collection('users');
 
     return new Promise((res, rej) => {
-      const snapshot = usersRef.where('id', 'in', targetIds).get();
-      snapshot
-      .forEach(doc => {
-        doc.collection("chats").add({
-          id: chatId,
-          new: true,
-          newCount: 0,
+      usersRef
+      .where('id', 'in', participantIds)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach(doc => {
+          usersRef.doc(doc.data().id).collection("chats").add({
+            id: chatId,
+            lastTimestamp: timeCreated,
+            new: true,
+            newCount: 0,
+          })
         })
+        res();
       })
-      .then((ref) => {
-        res(ref);
-      })
-      .catch((error) => {
-        rej(error);
-      });
-
     })
-
   }
 
   resetNewCount = async ({uid, chatId}) => {

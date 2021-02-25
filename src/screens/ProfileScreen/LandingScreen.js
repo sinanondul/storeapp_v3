@@ -1,19 +1,12 @@
 import React from "react";
 import {View, Platform, Text, SafeAreaView, ScrollView, Image, Alert} from "react-native";
-import {Avatar} from 'react-native-paper';
+import {Avatar} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+
+import {getFullName, getAvatarTag} from "../../functions/UserInfoFormatter";
 import { openDrawer } from "../../../App";
 import styles from "./styles";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-  
-
-function getFullName(info){
-    return info.name + " " + info.surename;
-}
-
-function getAvatarTag(info){
-    return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
-}
 
 function getAvatar(info){
     if (!(info.avatar == null)) {

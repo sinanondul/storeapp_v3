@@ -5,9 +5,6 @@ import { createStackNavigator, HeaderBackButton} from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from 'moment';
 
-
-import Fire from '../../firebase/Fire';
-import firebase from 'firebase';
 import ChatItem from './ChatItem';
 
 
@@ -37,8 +34,7 @@ export default class LandingScreen extends React.Component{
       });
   }
 
-  componentWillUnmout() {
-    Alert.alert("unmounting");
+  componentWillUnmount() {
   }
 
   render(){
@@ -66,7 +62,7 @@ export default class LandingScreen extends React.Component{
                     borderRadius:100,
                 }}
                 onPress={() =>
-                  {}
+                  {this.props.navigation.navigate("AddChat");}
                 }
                 >
                 <Icon 
@@ -81,7 +77,7 @@ export default class LandingScreen extends React.Component{
   static navigationOptions = {
     title: 'Messages',
     headerStyle: {
-      backgroundColor: '#f4511e',
+      backgroundColor: "#2890cf",
     },
     headerTintColor: '#fff',
     headerTitleStyle: {
