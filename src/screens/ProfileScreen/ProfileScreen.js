@@ -14,16 +14,16 @@ export default class ProfileScreen extends React.Component{
   componentWillUnmount() {
   }
     
-    render(){
-      const ProfileStack = createStackNavigator();
-      return (
-        <ProfileStack.Navigator
-          initialRouteName='Landing'
-        >
-          <ProfileStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
-            {(props) => <LandingScreen {...props} userData={this.props.userData}/>}
-          </ProfileStack.Screen>
-        </ProfileStack.Navigator>
-      );
-    }
+  render(){
+    const ProfileStack = createStackNavigator();
+    return (
+      <ProfileStack.Navigator
+        initialRouteName='Landing'
+      >
+        <ProfileStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
+          {(props) => <LandingScreen {...props} userData={this.props.userData}/>}
+        </ProfileStack.Screen>
+      </ProfileStack.Navigator>
+    );
   }
+}

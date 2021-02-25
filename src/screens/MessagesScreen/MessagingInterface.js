@@ -3,47 +3,11 @@ import {View, Platform, Header, Text, TouchableOpacity, StyleSheet, FlatList, Al
 import {Avatar} from "react-native-paper";
 import {GiftedChat} from "react-native-gifted-chat";
 
+import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
+import styles from "./styles";
 import Fire from "../../firebase/Fire";
 import firebase from 'firebase';
 
-
-const messageItems = [
-    {
-      _id: 1,
-      text: 'Hello developer',
-      createdAt: 1612443350116,
-      user: {
-        _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
-        name: 'Adam Bronze',
-      },
-    },
-    {
-      _id: 2,
-      text: 'Hello again developer',
-      createdAt: 1612635490376,
-      user: {
-        _id: "qVBhL18fjISoYhxRBjXfa6iynXR2",
-        name: 'Adam Bronze',
-      },
-    }
-]
-
-function getFullName(info){
-    return info.name + " " + info.surename;
-}
-
-function getAvatarTag(info){
-    return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
-}
-
-function getAvatar(info){
-    if (!(info.avatar == null)) {
-        return(<Avatar.Image size={40} marginLeft = {0} source={info.avatar}/>);
-    }
-    else {
-        return(<Avatar.Text size={40} label={getAvatarTag(info)} marginLeft={0} style={{backgroundColor: "#f4511e"}}/>);
-    }
-}
 
 export default class MessagingInterface extends React.Component{
     
@@ -62,7 +26,15 @@ export default class MessagingInterface extends React.Component{
     componentDidMount() {
       //Setting navigation options.
       this.props.navigation.setOptions({
-        title: getFullName(this.props.route.params.senderInfo),
+        headerTitle: (props) => (
+          <View style={styles.headerTitleContainer}>
+            <View style={styles.headerAvatar}>
+              {getAvatar(this.props.route.params.senderInfo)}
+            </View>
+
+            <Text style={styles.headerText}>{getFullName(this.props.route.params.senderInfo)}</Text>
+          </View>
+        ),
       });
 
       //Getting participant info.
@@ -122,6 +94,9 @@ export default class MessagingInterface extends React.Component{
       });
      
     }
+
+    componentWillUnmount() {
+    }
     
     onSend (messages) {
       Fire.shared
@@ -156,12 +131,11 @@ export default class MessagingInterface extends React.Component{
     static navigationOptions = {
         title: "Test",
         headerStyle: {
-          backgroundColor: '#f4511e',
+          backgroundColor: "#2890cf",
         },
         headerTintColor: '#fff',
         headerTitleStyle: {
           flex: 0.6,
-          paddingRight: 60,
           alignSelf: 'center', 
           alignItems: 'center',
           fontWeight: 'bold',

@@ -8,24 +8,8 @@ import { createStackNavigator} from "@react-navigation/stack";
 
 import LandingScreen from "./LandingScreen";
 import MessagingInterface from "./MessagingInterface";
+import AddChatScreen from "./AddChatScreen";
 import styles from "./styles";
-
-const messageItems = [
-  {
-    id: "1",
-    sender: "Lebron",
-    lastMessage: "I'll record a triple double tonight",
-    timestamp: "31/01/21",
-    avatar: require("../../../assets/exavatar1.jpg"),
-  },
-  {
-    id: "2",
-    sender: "Lebron",
-    lastMessage: "I'll record a triple double tonight",
-    timestamp: "31/01/21",
-    avatar: require("../../../assets/exavatar1.jpg"),
-  },
-]
 
 export default class MessagesScreen extends React.Component{
 
@@ -46,6 +30,9 @@ export default class MessagesScreen extends React.Component{
         </MessagesStack.Screen>
         <MessagesStack.Screen name="Messaging" options={MessagingInterface.navigationOptions}>
           {(props) => <MessagingInterface {...props} userData={userData}/>}
+        </MessagesStack.Screen>
+        <MessagesStack.Screen name="AddChat" options={AddChatScreen.navigationOptions}>
+          {(props) => <AddChatScreen {...props} userData={userData}/>}
         </MessagesStack.Screen>
       </MessagesStack.Navigator>
     );

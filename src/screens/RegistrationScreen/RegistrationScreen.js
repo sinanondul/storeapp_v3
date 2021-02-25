@@ -30,10 +30,10 @@ export default function RegistrationScreen({ navigation }) {
         const data = {
           id: uid,
           email,
-          name,
-          surename,
+          name: name.toLowerCase(),
+          surename: surename.toLowerCase(),
+          fullName: name.toLowerCase() + surename.toLowerCase(),
           avatar: null,
-          messages: null,
         };
         const usersRef = firebase.firestore().collection("users");
         usersRef

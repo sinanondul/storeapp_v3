@@ -1,28 +1,12 @@
 import React from "react";
 import {View, Platform, Text, SafeAreaView, ScrollView, Image, Alert} from "react-native";
-import {Avatar} from 'react-native-paper';
 import Icon from "react-native-vector-icons/Ionicons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+
+import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
 import { openDrawer } from "../../../App";
 import styles from "./styles";
-import { Ionicons, MaterialIcons } from "@expo/vector-icons";
-  
 
-function getFullName(info){
-    return info.name + " " + info.surename;
-}
-
-function getAvatarTag(info){
-    return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
-}
-
-function getAvatar(info){
-    if (!(info.avatar == null)) {
-        return(<Avatar.Image size={140} marginLeft = {0} rounded={false} source={info.avatar}/>);
-    }
-    else {
-        return(<Avatar.Text size={140} label={getAvatarTag(info)} marginLeft={0} rounded={false} style={{backgroundColor: "#f4511e"}}/>);
-    }
-}
 
 export default class LandingScreen extends React.Component{
     

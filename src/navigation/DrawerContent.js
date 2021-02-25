@@ -19,17 +19,10 @@ import {
 } from "react-native-paper";
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import firebase from "firebase";
-
 import Icon from "react-native-vector-icons/Ionicons";
+
+import {getFullName, getAvatarTag} from '../functions/UserInfoFormatter';
 import styles from "./styles";
-
-function getFullName(info) {
-  return info.name + " " + info.surename;
-}
-
-function getAvatarTag(info) {
-  return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
-}
 
 function getAvatar(info) {
   if (!(info.avatar == null)) {
