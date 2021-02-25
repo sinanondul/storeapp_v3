@@ -32,7 +32,7 @@ export default function RegistrationScreen({ navigation }) {
           email,
           name: name.toLowerCase(),
           surename: surename.toLowerCase(),
-          fullName: name.toLowerCase() + surename.toLowerCase(),
+          fullName: name.toLowerCase() + " " + surename.toLowerCase(),
           avatar: null,
         };
         const usersRef = firebase.firestore().collection("users");

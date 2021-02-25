@@ -1,6 +1,6 @@
 import React from "react";
 import {View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, Platform} from "react-native";
-import {Avatar} from "react-native-paper";
+import {Searchbar} from "react-native-paper";
 import { createStackNavigator, HeaderBackButton} from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 
@@ -9,7 +9,6 @@ import styles from './styles';
 
 import firebase from 'firebase';
 
-const searchText = "a"
 const usersRef = firebase.firestore().collection('users');
 
 function nextChar(c) {
@@ -19,49 +18,64 @@ function nextChar(c) {
 export default class AddChatScreen extends React.Component
 {
     state={
-        userInfos: []
+        userInfos: [],
+        searchQuery: '',
     }
 
     renderItem = ({item}) => {
         return (<UserItem {...this.props} userInfo={item}/>);
     }
 
-    componentDidMount() {
-        let usersArray = [];
-        const limitString = searchText.replace(/.$/, nextChar(searchText.charAt(searchText.length - 1)));
-        Alert.alert(limitString);
-        var getUsers = new Promise((resolve, reject) => {
-            usersRef
-              .where('name', '>=', searchText)
-              .where('name', '<', limitString)
-              .get()
-              .then((snapshot) => {
-                snapshot.forEach((firestoreDocument) =>{
-                    
-                    var userData = firestoreDocument.data();
-                    const userInfo = {
-                        uid: userData.id,
-                        name: userData.name,
-                        surename: userData.surename,
-                        fullName: userData.fullName,
-                        avatar: userData.avatar
-                    }
-                    if (userData.id !== this.props.userData.uid) {
-                        usersArray.unshift(userInfo);
-                    }
+    onChangeSearch = (searchText => {
+        if (searchText.length > 0) {
+            let usersArray = [];
+            const limitString = searchText.toLowerCase().replace(/.$/, nextChar(searchText.charAt(searchText.length - 1)));
+            var getUsers = new Promise((resolve, reject) => {
+                usersRef
+                .where('name', '>=', searchText.toLowerCase())
+                .where('name', '<', limitString)
+                .get()
+                .then((snapshot) => {
+                    snapshot.forEach((firestoreDocument) =>{
+                        
+                        var userData = firestoreDocument.data();
+                        const userInfo = {
+                            uid: userData.id,
+                            name: userData.name,
+                            surename: userData.surename,
+                            fullName: userData.fullName,
+                            avatar: userData.avatar
+                        }
+                        if (userData.id !== this.props.userData.uid) {
+                            usersArray.unshift(userInfo);
+                        }
+                    })
+                    resolve();
                 })
-                resolve();
-              })
-        });
-        getUsers.then(() => {
-            this.setState({userInfos: usersArray});
-        });
+            });
+            getUsers.then(() => {
+                this.setState({userInfos: usersArray});
+            });
+        }
+        else {
+            this.setState({userInfos: []})
+        }
+        this.setState({searchQuery: searchText});
+    })
+
+    componentDidMount() {
+       
     }
   
     render(){
 
         return(
             <View style={styles.container}>
+                <Searchbar
+                    placeholder="Search"
+                    onChangeText={this.onChangeSearch}
+                    value={this.state.searchQuery}
+                />
                 <FlatList
                     data={this.state.userInfos.sort((a, b) => (a.fullName > b.fullName) ? 1 : ((b.fullName > a.fullName) ? -1 : 0))}
                     renderItem={this.renderItem}
