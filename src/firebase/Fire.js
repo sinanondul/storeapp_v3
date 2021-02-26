@@ -76,6 +76,8 @@ class Fire {
 
     const chatsRef = this.firestore.collection('chats');
     const timeCreated = this.timestamp;
+    var senderExists = false;
+    var targetExists = false;
     var alreadyExists = false;
     var chatId;
 
@@ -84,7 +86,12 @@ class Fire {
     .get()
     .then((snapshot) => {
       snapshot.forEach((firestoreDocument) =>{
-          if (firestoreDocument.data().participantIds.length === participantIds.length) {
+          if (firestoreDocument.data().participantIds.length === participantIds.length
+          && ((firestoreDocument.data().participantIds[0] === participantIds[0]
+          && firestoreDocument.data().participantIds[1] === participantIds[1])
+          || (firestoreDocument.data().participantIds[1] === participantIds[0]
+          && firestoreDocument.data().participantIds[0] === participantIds[1]))
+          ) {
             
             alreadyExists = true;
             chatId = firestoreDocument.id;
