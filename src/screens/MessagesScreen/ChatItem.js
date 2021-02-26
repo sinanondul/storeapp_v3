@@ -52,7 +52,7 @@ export default class ChatItem extends React.Component{
         .then((firestoreDocument) => {
             var userData = firestoreDocument.data();
             this.setState({ senderInfo: {
-                id: senderId,
+                uid: senderId,
                 name: userData.name,
                 surename: userData.surename,
                 avatar: userData.avatar,

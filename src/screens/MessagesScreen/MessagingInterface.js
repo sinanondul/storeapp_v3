@@ -2,6 +2,7 @@ import React, {useCallback} from "react";
 import {View, Platform, Header, Text, TouchableOpacity, StyleSheet, FlatList, Alert} from "react-native";
 import {Avatar} from "react-native-paper";
 import {GiftedChat} from "react-native-gifted-chat";
+import {HeaderBackButton} from "@react-navigation/stack";
 
 import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
 import styles from "./styles";
@@ -35,6 +36,9 @@ export default class MessagingInterface extends React.Component{
             <Text style={styles.headerText}>{getFullName(this.props.route.params.senderInfo)}</Text>
           </View>
         ),
+        headerLeft: () => (
+          <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.navigate('Landing')}}/>
+      ),
       });
 
       //Getting participant info.
