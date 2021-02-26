@@ -24,7 +24,13 @@ export default class UserItem extends React.Component{
           <TouchableOpacity 
             onPress={() => {
               Fire.shared.addChat({participantIds: [this.props.userData.uid, this.props.userInfo.uid]})
-              return(this.props.navigation.goBack());
+              .then((chatId) => {
+                const chatItem = {
+                  id: chatId,
+                  participantIds: [this.props.userData.uid, this.props.userInfo.uid],
+                }
+                return(this.props.navigation.navigate('Messaging', {senderInfo: this.props.userInfo, chat: chatItem}));
+              })
             }}
             style={styles.messageItem}>
             <View style={styles.messageAvatar}>

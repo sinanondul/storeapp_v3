@@ -13,10 +13,6 @@ import styles from "./styles";
 
 export default class LandingScreen extends React.Component{
 
-  state={
-    chats: [],
-  }
-
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;

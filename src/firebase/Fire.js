@@ -76,36 +76,59 @@ class Fire {
 
     const chatsRef = this.firestore.collection('chats');
     const timeCreated = this.timestamp;
+    var alreadyExists = false;
+    var chatId;
 
+    await chatsRef
+    .where('participantIds', 'array-contains-any', participantIds)
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((firestoreDocument) =>{
+          if (firestoreDocument.data().participantIds.length === participantIds.length) {
+            
+            alreadyExists = true;
+            chatId = firestoreDocument.id;
+          }
+      })
+    })
     
-    const createdChat = await chatsRef.add(
-      {
-        participantIds: participantIds,
-        messages: [],
-        lastTimestamp: timeCreated,
-        lastMessage: null,
-        chatInfo: chatInfo
-      }
-    );
+    if (!alreadyExists) {
+
+      const createdChat = await chatsRef.add(
+        {
+          participantIds: participantIds,
+          messages: [],
+          lastTimestamp: timeCreated,
+          lastMessage: null,
+          chatInfo: chatInfo
+        }
+      );
+      chatId = createdChat.id;
+    }
     
-    const chatId = createdChat.id;
+    
     const usersRef = this.firestore.collection('users');
 
     return new Promise((res, rej) => {
-      usersRef
-      .where('id', 'in', participantIds)
-      .get()
-      .then((snapshot) => {
-        snapshot.forEach(doc => {
-          usersRef.doc(doc.data().id).collection("chats").add({
-            id: chatId,
-            lastTimestamp: timeCreated,
-            new: true,
-            newCount: 0,
+      if (!alreadyExists) {
+        usersRef
+        .where('id', 'in', participantIds)
+        .get()
+        .then((snapshot) => {
+          snapshot.forEach(doc => {
+            usersRef.doc(doc.data().id).collection("chats").add({
+              id: chatId,
+              lastTimestamp: timeCreated,
+              new: true,
+              newCount: 0,
+            })
           })
+          res(chatId);
         })
-        res();
-      })
+      }
+      else {
+        res(chatId);
+      }
     })
   }
 
