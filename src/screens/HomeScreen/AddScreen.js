@@ -42,13 +42,10 @@ export default class AddScreen extends React.Component {
         text: this.state.text.trim(),
         localUri: this.state.image,
       })
-      .then((ref) => {
-        this.setState({ text: "", image: null });
-        this.props.navigation.goBack();
-      })
       .catch((error) => {
         alert(error);
       });
+    this.props.navigation.goBack();
   };
 
   pickImage = async () => {

@@ -7,6 +7,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import {getFullName, getAvatarTag} from "../../functions/UserInfoFormatter";
 import { openDrawer } from "../../../App";
 import styles from "./styles";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 function getAvatar(info){
     if (!(info.avatar == null)) {
@@ -19,6 +20,10 @@ function getAvatar(info){
 
 export default class LandingScreen extends React.Component{
     
+    state = {
+        ownProfile: false,
+    }
+
     static navigationOptions = ({ navigation }) => {
       const { params } = navigation.state;
       return params;
@@ -26,18 +31,22 @@ export default class LandingScreen extends React.Component{
 
     componentDidMount() {
 
-      this.props.navigation.setOptions({
+        //Navigation update.
+        this.props.navigation.setOptions({
 
-        headerRight: () => (
-          <Icon
-            name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
-            style={{marginRight:10}}
-            size={30}
-            color='#fff'
-            onPress={() => this.props.navigation.navigate("Settings")}
-          />
-        )
-      });
+            headerRight: () => (
+                <Icon
+                name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
+                style={{marginRight:10}}
+                size={30}
+                color='#fff'
+                onPress={() => this.props.navigation.navigate("Settings")}
+                />
+            )
+        });
+
+        //Checking if own profile.
+        
     }
     
     render(){
@@ -47,18 +56,18 @@ export default class LandingScreen extends React.Component{
 
                     <View style={styles.profileImageContainer}>
                         <View style={styles.profileImage}>
-                            {getAvatar(this.props.userData)}
+                            {getAvatar(this.props.userInfo)}
                         </View>
-                        <View style={styles.dm}>
+                        <TouchableOpacity style={styles.dm}>
                             <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
-                        </View>
+                        </TouchableOpacity>
                         <View style={styles.add}>
                             <Ionicons name="ios-add" size={36} color="#DFD8C8" style={{ marginTop: 3 }}></Ionicons>
                         </View>
                     </View>
 
                     <View style={styles.infoContainer}>
-                        <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{getFullName(this.props.userData)}</Text>
+                        <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{getFullName(this.props.userInfo)}</Text>
                         <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Computer Science</Text>
                     </View>
 

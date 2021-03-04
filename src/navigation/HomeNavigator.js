@@ -116,7 +116,11 @@ export default function SocialNavigator(props) {
   var chats = props.chats;
   var newChatCount = props.newChatCount;
   return (
-    <SocialStack.Navigator options={{}} mode="modal">
+    <SocialStack.Navigator 
+      options={{}} 
+      mode="modal"
+      headerMode='none'
+    >
       <SocialStack.Screen
         name="Default"
         options={LandingScreen.navigationOptions}
