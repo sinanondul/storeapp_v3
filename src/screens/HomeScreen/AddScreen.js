@@ -49,6 +49,7 @@ export default class AddScreen extends React.Component {
       .catch((error) => {
         alert(error);
       });
+      this.props.navigation.goBack();
   };
 
   pickImage = async () => {

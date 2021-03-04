@@ -49,6 +49,7 @@ export default class FeedItem extends React.Component {
           var userData = firestoreDocument.data();
           this.setState({
             senderInfo: {
+              uid: userData.id,
               name: userData.name,
               surename: userData.surename,
               avatar: userData.avatar,
@@ -60,23 +61,31 @@ export default class FeedItem extends React.Component {
   
     render() {
       return (
-        <TouchableOpacity /*onPress={handlePostModal()}*/>
+        <View>
           <View style={styles.feedItem}>
             <View style={{ flex: 1 }}>
               <View style={styles.feedHeader}>
-                <View style={styles.userAvatar}>
-                  {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
-                </View>
-                <View style={styles.userText}>
-                  {this.state.nameinit ? (
-                    <Text style={styles.name}>
-                      {getFullName(this.state.senderInfo)}
+                <TouchableOpacity style={styles.userInfo}
+                  onPress={() => {
+                    //   this.props.navigation.navigate("Profile", {
+                    //   userInfo: this.state.senderInfo,
+                    // })
+                  }}
+                >
+                  <View style={styles.userAvatar}>
+                    {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
+                  </View>
+                  <View style={styles.userText}>
+                    {this.state.nameinit ? (
+                      <Text style={styles.name}>
+                        {getFullName(this.state.senderInfo)}
+                      </Text>
+                    ) : null}
+                    <Text style={styles.timestamp}>
+                      {getTimeSince(this.props.post.timestamp)}
                     </Text>
-                  ) : null}
-                  <Text style={styles.timestamp}>
-                    {getTimeSince(this.props.post.timestamp)}
-                  </Text>
-                </View>
+                  </View>
+                </TouchableOpacity>
                 <View style={styles.moreButton}>
                   <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
                 </View>
@@ -96,7 +105,7 @@ export default class FeedItem extends React.Component {
               </View>
             </View>
           </View>
-        </TouchableOpacity>
+        </View>
       );
     }
   }
