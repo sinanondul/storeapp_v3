@@ -2,6 +2,7 @@ import React from "react";
 import { createStackNavigator } from "@react-navigation/stack";
 
 import LandingScreen from "./LandingScreen";
+import MessagingInterface from "../MessagesScreen/MessagingInterface";
 //import AddScreen from "./AddScreen";
 import styles from "./styles";
 import { Alert } from 'react-native';
@@ -30,7 +31,10 @@ export default class ProfileScreen extends React.Component{
         initialRouteName='Landing'
       >
         <ProfileStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
-          {() => <LandingScreen {...this.props} userData={this.props.userData} userInfo={userInfo}/>}
+          {(props) => <LandingScreen {...this.props} {...props} userData={this.props.userData} userInfo={userInfo}/>}
+        </ProfileStack.Screen>
+        <ProfileStack.Screen name="MessagingFromProfile" options={MessagingInterface.navigationOptions}>
+          {(props) => <MessagingInterface {...this.props} {...props}/>}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );

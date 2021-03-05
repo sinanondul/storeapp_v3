@@ -36,9 +36,6 @@ export default class MessagingInterface extends React.Component{
             <Text style={styles.headerText}>{getFullName(this.props.route.params.senderInfo)}</Text>
           </View>
         ),
-        headerLeft: () => (
-          <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.navigate('Landing')}}/>
-      ),
       });
 
       //Getting participant info.

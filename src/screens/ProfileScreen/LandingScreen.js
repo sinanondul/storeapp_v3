@@ -53,11 +53,11 @@ export default class LandingScreen extends React.Component{
                                         onPress={() => {
                                             Fire.shared.addChat({participantIds: [this.props.userData.uid, this.props.userInfo.uid]})
                                             .then((chatId) => {
-                                            const chatItem = {
-                                                id: chatId,
-                                                participantIds: [this.props.userData.uid, this.props.userInfo.uid],
-                                            }
-                                            return(this.props.navigation.navigate('Messaging', {senderInfo: this.props.userInfo, chat: chatItem}));
+                                                const chatItem = {
+                                                    id: chatId,
+                                                    participantIds: [this.props.userData.uid, this.props.userInfo.uid],
+                                                }
+                                                return(this.props.navigation.navigate('MessagingFromProfile', {senderInfo: this.props.userInfo, chat: chatItem}));
                                             })
                                         }}
                                     >
