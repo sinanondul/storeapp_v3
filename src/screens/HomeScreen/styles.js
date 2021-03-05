@@ -181,4 +181,14 @@ const LandingStyles = StyleSheet.create({
   //tabs
 });
 
+const MainStyles = StyleSheet.create({ 
+  container: {
+    flex: 1,
+  },
+
+  
+
+})
+
 export default LandingStyles;
+export {MainStyles};

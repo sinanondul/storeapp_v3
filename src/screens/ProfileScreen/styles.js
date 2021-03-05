@@ -31,8 +31,6 @@ const styles = StyleSheet.create({
     },
     dm: {
         backgroundColor: "#41444B",
-        position: "absolute",
-        top: 20,
         width: 40,
         height: 40,
         borderRadius: 20,
@@ -41,12 +39,9 @@ const styles = StyleSheet.create({
     },
     add: {
         backgroundColor: "#41444B",
-        position: "absolute",
-        bottom: 20,
-        right: 0,
         width: 40,
         height: 40,
-        borderRadius: 30,
+        borderRadius: 20,
         alignItems: "center",
         justifyContent: "center"
     },
