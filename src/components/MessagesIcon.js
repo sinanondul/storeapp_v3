@@ -12,8 +12,6 @@ export default class MessagesIcon extends React.Component
     {
         return (
             <TouchableOpacity style={styles.footerButtonContainer}>
-                
-                
                 <Icon
                     name={
                     Platform.OS === "ios"
@@ -22,7 +20,7 @@ export default class MessagesIcon extends React.Component
                     }
                     size={30}
                     color='#000'
-                    onPress={() => this.props.navigation.navigate("Messages")}
+                    onPress={() => this.props.navigation.navigate('Messages')}
                 />
                 <Badge
                     visible={this.props.messageCount > 0}

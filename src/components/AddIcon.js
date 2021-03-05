@@ -19,6 +19,7 @@ export default class AddIcon extends React.Component
                     color="#f4511e"
                     style={{
                     }}
+                    onPress={() => this.props.navigation.navigate('Add')}
                 />
             </TouchableOpacity>
         );

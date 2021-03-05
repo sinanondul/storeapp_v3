@@ -7,7 +7,9 @@ const ComponentStyles = StyleSheet.create({
 
     footerContainer: {
       justifyContent: 'space-evenly',
-      backgroundColor: '#fff'
+      backgroundColor: '#fff',
+      height: 60,
+      flexBasis: 60,
     },
 
     footerButtonContainer: {

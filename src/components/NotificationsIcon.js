@@ -23,7 +23,7 @@ export default class NotificationsIcon extends React.Component
                     }
                     size={30}
                     color='#000'
-                    onPress={() => this.props.navigation.navigate("Notifications")}
+                    onPress={() => this.props.navigation.navigate('Notifications')}
                 />
                 <Badge
                     visible={this.props.notificationCount > 0}

@@ -17,7 +17,7 @@ export default class DefaultHeader extends React.Component {
         return (
             <Appbar style={styles.footerContainer}>
                 <MessagesIcon {...this.props}/>
-                <AddIcon/>
+                <AddIcon {...this.props}/>
                 <NotificationsIcon {...this.props}/>
             </Appbar>
         );

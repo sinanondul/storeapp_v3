@@ -8,6 +8,7 @@ import { Alert } from 'react-native';
 
 export default class ProfileScreen extends React.Component{
 
+
   componentDidMount() {
   }
 
@@ -16,12 +17,12 @@ export default class ProfileScreen extends React.Component{
     
   render(){
     const ProfileStack = createStackNavigator();
+    var userInfo = this.props.userData;
     if (this.props.route.params)
     {
       if (this.props.route.params.userInfo)
       {
-        const userInfo = this.props.route.params.userInfo;
-        Alert.alert("", userInfo.uid);
+        userInfo = this.props.route.params.userInfo;
       }
     }
     return (
@@ -29,7 +30,7 @@ export default class ProfileScreen extends React.Component{
         initialRouteName='Landing'
       >
         <ProfileStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
-          {(props) => <LandingScreen {...props} userData={this.props.userData} userInfo={this.props.userData}/>}
+          {() => <LandingScreen {...this.props} userData={this.props.userData} userInfo={userInfo}/>}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
