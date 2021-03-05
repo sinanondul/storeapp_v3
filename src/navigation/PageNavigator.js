@@ -12,6 +12,11 @@ import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
 import Onboarding from "../screens/HelpScreen/Onboarding.js";
 
+
+import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
+import AddScreen from "../screens/HomeScreen/AddScreen";
+import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
+
 import firebase from 'firebase';
 import ChatItem from "../screens/MessagesScreen/ChatItem";
 
@@ -26,14 +31,14 @@ const screenOptionStyle = {
 export default class AppPage extends React.Component {
   state = {
     chats: [],
-    newChatCount: 0,
+    messageCount: 0,
   }
 
   componentDidMount() {
     //Adding chats
 
     let chatsArray = [];
-    let newChatCount = 0;
+    let messageCount = 0;
     const unsubscribe = firebase
       .firestore()
       .collection("users")
@@ -108,14 +113,14 @@ export default class AppPage extends React.Component {
           var getChatCount = new Promise((resolve, reject) => {
             chatsArray.forEach((item, index, array) => {
               if (item.newCount > 0) {
-                newChatCount = newChatCount + 1;
+                messageCount = messageCount + 1;
               }
               if (index === array.length -1) resolve();
             })
           });
           getChatCount.then(() => {
-            this.setState({ chats: chatsArray, newChatCount: newChatCount })
-            newChatCount = 0;
+            this.setState({ chats: chatsArray, messageCount: messageCount })
+            messageCount = 0;
           })
         });
     });
@@ -123,15 +128,15 @@ export default class AppPage extends React.Component {
 
   render() {
     const chats = this.state.chats;
-    const newChatCount = this.state.newChatCount;
-    return <PageNavigator {...this.props} chats={chats} newChatCount = {newChatCount}/>;
+    const messageCount = this.state.messageCount;
+    return <PageNavigator {...this.props} chats={chats} messageCount = {messageCount}/>;
   }
 }
 
 const PageNavigator = (props) => {
   var userData = props.userData;
   var chats = props.chats;
-  var newChatCount = props.newChatCount;
+  var messageCount = props.messageCount;
   return (
     <PageDrawer.Navigator
       // screenOptions={screenOptionStyle}
@@ -143,7 +148,7 @@ const PageNavigator = (props) => {
       lazy={false}
     >
       <PageDrawer.Screen name="Home">
-        {(props) => <HomeScreen {...props} userData={userData} chats={chats} newChatCount={newChatCount}/>}
+        {(props) => <HomeScreen {...props} userData={userData} chats={chats} messageCount={messageCount}/>}
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
       <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
@@ -152,6 +157,15 @@ const PageNavigator = (props) => {
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
       <PageDrawer.Screen name="Onboarding" component={Onboarding} />
+      <PageDrawer.Screen name="Messages" options={MessagesScreen.navigationOptions}>
+        {(props) => <MessagesScreen {...props} userData={userData} chats={chats} newChatCount={messageCount}/>}
+      </PageDrawer.Screen>
+      <PageDrawer.Screen name="AddSocial" options={AddScreen.navigationOptions}>
+        {(props) => <AddScreen {...props}/>}
+      </PageDrawer.Screen>
+      <PageDrawer.Screen name="Notifications" options={NotificationsScreen.navigationOptions}>
+        {(props) => <NotificationsScreen {...props}/>}
+      </PageDrawer.Screen>
     </PageDrawer.Navigator>
   );
 };

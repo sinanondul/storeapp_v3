@@ -13,116 +13,20 @@ import AddModal from "../screens/HomeScreen/AddModal";
 
 const SocialStack = createStackNavigator();
 
-const SocialBottomTab = createBottomTabNavigator();
-
-const SocialTabNavigator = (props) => {
-  const navigation = useNavigation();
-  const newChatCount = props.newChatCount > 0 ? props.newChatCount : null;
-  return (
-    <SocialBottomTab.Navigator
-      tabBarOptions={{
-        showLabel: false,
-        style: { height: 60 },
-      }}
-    >
-      <SocialBottomTab.Screen
-        name="MessagesFiller"
-        component={LandingScreen}
-        options={{
-          tabBarBadge: newChatCount,
-          tabBarIcon: ({ tintColor }) => (
-            <Icon
-              name={
-                Platform.OS === "ios"
-                  ? "ios-chatbubbles-outline"
-                  : "md-chatbubbles-outline"
-              }
-              size={32}
-              color={tintColor}
-            />
-          ),
-        }}
-        listeners={({ navigation, route }) => ({
-          tabPress: (e) => {
-            // Prevent default action
-            e.preventDefault();
-
-            // Do something with the `navigation` object
-            navigation.navigate("Messages");
-          },
-        })}
-      />
-      <SocialBottomTab.Screen
-        name="AddFiller"
-        component={LandingScreen}
-        initialParams={{ i: false }}
-        options={{
-          tabBarIcon: ({ tintColor }) => (
-            <Icon
-              name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"}
-              size={48}
-              color="#f4511e"
-              style={{
-                shadowColor: "#f4511e",
-                shadowOffset: { width: 0, height: 0 },
-                shadowRadius: 10,
-                shadowOpacity: 0.3,
-              }}
-            />
-          ),
-        }}
-        listeners={(props /*{ navigation, route }*/) => ({
-          tabPress: (e) => {
-            // Prevent default action
-            e.preventDefault();
-
-            // Do something with the `navigation` object
-            navigation.navigate("Add");
-          },
-        })}
-      />
-      <SocialBottomTab.Screen
-        name="NotificationsFiller"
-        component={LandingScreen}
-        options={{
-          tabBarIcon: ({ tintColor }) => (
-            <Icon
-              name={
-                Platform.OS === "ios"
-                  ? "ios-notifications-outline"
-                  : "md-notifications-outline"
-              }
-              size={32}
-              color={tintColor}
-            />
-          ),
-        }}
-        listeners={({ navigation, route }) => ({
-          tabPress: (e) => {
-            // Prevent default action
-            e.preventDefault();
-
-            // Do something with the `navigation` object
-            navigation.navigate("Notifications");
-          },
-        })}
-      />
-    </SocialBottomTab.Navigator>
-  );
-}
-
 export default function SocialNavigator(props) {
   var userData = props.userData;
   var chats = props.chats;
   var newChatCount = props.newChatCount;
   return (
-    <SocialStack.Navigator options={{}} mode="modal">
+    <SocialStack.Navigator 
+      options={{}} 
+      mode="modal"
+    >
       <SocialStack.Screen
         name="Default"
         options={LandingScreen.navigationOptions}
-        lazy={false}
       >
-        {(props) =><SocialTabNavigator {...props} newChatCount={newChatCount}/>}
+        {(props) =><LandingScreen {...props}/>}
       </SocialStack.Screen>
 
       <SocialStack.Screen

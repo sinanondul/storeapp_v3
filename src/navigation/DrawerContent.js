@@ -47,7 +47,7 @@ export default class DrawerContent extends React.Component {
           <TouchableOpacity style={styles.userInfoWrapper} 
               onPress={() =>
                 this.props.navigation.navigate("Profile", {
-                  userData: this.props.userData,
+                  userInfo: this.props.userData,
                 })
               }>
             <View style={styles.userAvatar}>

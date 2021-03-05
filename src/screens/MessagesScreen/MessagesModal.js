@@ -1,22 +1,20 @@
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
-import AddScreen from "./AddScreen";
+import MessagesScreen from "./MessagesScreen";
 
-const AddModal = (props) => {
+const MessagesModal = (props) => {
   return (
     <Modal
       animationType="slide"
       transparent={true}
-      visible={true}
+      visible={props.openMessages}
       onRequestClose={() => {
-        Alert.alert("Modal has been closed.");
-        //setModalVisible(!modalVisible);
-        //props.modalVisible = false;
+
       }}
     >
       <View style={styles.centeredView}>
         <View style={styles.modalView}>
-          <AddScreen />
+          <MessagesScreen {...props} />
         </View>
       </View>
     </Modal>
@@ -28,7 +26,6 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
     backgroundColor: '#00000080',
   },
   modalView: {
@@ -68,4 +65,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default AddModal;
+export default MessagesModal;

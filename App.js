@@ -8,6 +8,8 @@ import { Alert, LogBox } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { render } from "react-dom";
 
+import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+
 import firebase from "firebase";
 LogBox.ignoreAllLogs(true);
 
@@ -17,6 +19,16 @@ if (!firebase.apps.length) {
   firebase.initializeApp(firebaseConfig);s
 }
 const navigationRef = React.createRef();
+
+const theme = {
+  ...DefaultTheme,
+  roundness: 2,
+  colors: {
+    ...DefaultTheme.colors,
+    primary: "#2890cf",
+    accent: '#f1c40f',
+  },
+};
 
 export function openDrawer() {
   navigationRef.current &&
@@ -69,13 +81,16 @@ export default class App extends React.Component {
     const userData = this.state.userInfo;
     const chats = this.state.chats;
     return (
-      <NavigationContainer ref={navigationRef}>
-        {this.state.isLoggedIn ? (
-          <AppPage userData={userData} chats={chats}/>
-        ) : (
-          <AuthNavigator/>
-        )}
-      </NavigationContainer>
+      <PaperProvider theme={theme}>
+
+        <NavigationContainer ref={navigationRef}>
+          {this.state.isLoggedIn ? (
+            <AppPage userData={userData} chats={chats}/>
+          ) : (
+            <AuthNavigator/>
+          )}
+        </NavigationContainer>
+      </PaperProvider>
     );
   }
 }

@@ -81,6 +81,12 @@ const LandingStyles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
+  userInfo: {
+    height: 80,
+    flex: 0.9,
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
   userAvatar: {
     height: 80,
     flex: 0.2,
@@ -175,4 +181,14 @@ const LandingStyles = StyleSheet.create({
   //tabs
 });
 
+const MainStyles = StyleSheet.create({ 
+  container: {
+    flex: 1,
+  },
+
+  
+
+})
+
 export default LandingStyles;
+export {MainStyles};

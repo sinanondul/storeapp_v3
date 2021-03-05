@@ -3,9 +3,11 @@ import {View, Platform, Text, SafeAreaView, ScrollView, Image, Alert} from "reac
 import {Avatar} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { TouchableOpacity } from "react-native-gesture-handler";
 
 import {getFullName, getAvatarTag} from "../../functions/UserInfoFormatter";
 import { openDrawer } from "../../../App";
+import Fire from '../../firebase/Fire';
 import styles from "./styles";
 
 function getAvatar(info){
@@ -18,7 +20,7 @@ function getAvatar(info){
 }
 
 export default class LandingScreen extends React.Component{
-    
+
     static navigationOptions = ({ navigation }) => {
       const { params } = navigation.state;
       return params;
@@ -26,39 +28,51 @@ export default class LandingScreen extends React.Component{
 
     componentDidMount() {
 
-      this.props.navigation.setOptions({
+        //Navigation update.
+        this.props.navigation.setOptions({
 
-        headerRight: () => (
-          <Icon
-            name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
-            style={{marginRight:10}}
-            size={30}
-            color='#fff'
-            onPress={() => this.props.navigation.navigate("Settings")}
-          />
-        )
-      });
+        });
+
+        //Checking if own profile.
+        
     }
     
     render(){
+        const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
         return (
             <SafeAreaView style={styles.container}>
                 <ScrollView showsVerticalScrollIndicator={false}>
 
                     <View style={styles.profileImageContainer}>
                         <View style={styles.profileImage}>
-                            {getAvatar(this.props.userData)}
+                            {getAvatar(this.props.userInfo)}
                         </View>
-                        <View style={styles.dm}>
-                            <MaterialIcons name="chat" size={18} color="#DFD8C8"></MaterialIcons>
-                        </View>
-                        <View style={styles.add}>
-                            <Ionicons name="ios-add" size={36} color="#DFD8C8" style={{ marginTop: 3 }}></Ionicons>
-                        </View>
+                        {otherProfile
+                            ?   <View style={{flexDirection: 'row', justifyContent: 'space-evenly',}}>
+                                    <TouchableOpacity style={styles.dm} 
+                                        onPress={() => {
+                                            Fire.shared.addChat({participantIds: [this.props.userData.uid, this.props.userInfo.uid]})
+                                            .then((chatId) => {
+                                            const chatItem = {
+                                                id: chatId,
+                                                participantIds: [this.props.userData.uid, this.props.userInfo.uid],
+                                            }
+                                            return(this.props.navigation.navigate('Messaging', {senderInfo: this.props.userInfo, chat: chatItem}));
+                                            })
+                                        }}
+                                    >
+                                        <MaterialIcons name="chat" size={18} color="#DFD8C8"/>
+                                    </TouchableOpacity>
+                                    <TouchableOpacity style={styles.add}>
+                                        <Ionicons name="ios-add" size={36} color="#DFD8C8" style={{ marginTop: 3 }}></Ionicons>
+                                    </TouchableOpacity>
+                                </View>
+                            : null
+                        }
                     </View>
 
                     <View style={styles.infoContainer}>
-                        <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{getFullName(this.props.userData)}</Text>
+                        <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>{getFullName(this.props.userInfo)}</Text>
                         <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>Computer Science</Text>
                     </View>
 
