@@ -6,6 +6,7 @@ import {
   ScrollView,
   Image,
   Alert,
+  FlatList,
 } from "react-native";
 import {
   Avatar,
@@ -20,12 +21,55 @@ import styles from "./styles";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { color } from "react-native-reanimated";
 
+import firebase from "firebase";
+import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
+
+function getUID() {}
+
 function getFullName(info) {
   return info.name + " " + info.surename;
 }
 
 function getAvatarTag(info) {
   return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
+}
+
+function getEmail(info) {
+  return info.email; //
+}
+
+function getHandle(info) {
+  //TODO
+  //return info.handle;
+}
+
+function getFollowing(info) {
+  //TODO
+  //return info.handle;
+}
+function getFollowers(info) {
+  //TODO
+  //return info.handle;
+}
+function getPostCount(info) {
+  //TODO
+  //return info.handle;
+}
+function getRecent1(info) {
+  //TODO
+  //return info.handle;
+}
+function getRecent2(info) {
+  //TODO
+  //return info.handle;
+}
+function getUpped(info) {
+  //TODO
+  //return info.handle;
+}
+function getLocation(info) {
+  //TODO
+  //return info.handle;
 }
 
 function getAvatar(info) {
@@ -57,18 +101,61 @@ export default class LandingScreen extends React.Component {
     return params;
   };
 
+  state = {
+    posts: [],
+    name: "",
+    email: "",
+    handle: "",
+    department: "",
+    number: "",
+    following: "",
+    followers: "",
+    recentActivity2: "",
+    recentActivity2: "",
+  };
+
   componentDidMount() {
     this.props.navigation.setOptions({
       headerRight: () => (
         <Icon
-          name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
+          name="account-edit"
           style={{ marginRight: 10 }}
           size={30}
           color="#fff"
-          onPress={() => this.props.navigation.navigate("Settings")}
+          onPress={() => this.props.navigation.navigate("EditProfile")}
         />
       ),
     });
+  }
+  renderItem = ({ item }) => {
+    return <MyPostFeedItem post={item} />;
+  };
+  componentDidMount() {
+    let postsArray = [];
+    const unsubscribe = firebase
+      .firestore()
+      .collection("posts")
+      .orderBy("timestamp")
+      .onSnapshot((snapshot) => {
+        let changes = snapshot.docChanges();
+
+        changes.forEach((change) => {
+          if (change.type === "added") {
+            const newPost = change.doc.data();
+            const newPostData = {
+              id: change.doc.id,
+              name: newPost.name,
+              text: newPost.text,
+              timestamp: newPost.timestamp,
+              image: newPost.image,
+              senderId: newPost.uid,
+            };
+            postsArray.unshift(newPostData);
+          }
+        });
+        this.setState({ posts: postsArray });
+      });
+    //userData;
   }
 
   render() {
@@ -131,7 +218,7 @@ export default class LandingScreen extends React.Component {
             </View>
             <View style={styles.row}>
               <Icon name="email" color="#777777" />
-              <Text>email@domain.com</Text>
+              <Text>{getEmail(this.props.userData)}</Text>
             </View>
           </View>
           {/* TODO */}
@@ -208,6 +295,14 @@ export default class LandingScreen extends React.Component {
               </View>
             </View>
           </View>
+          <FlatList
+            style={styles.myposts}
+            horizontal
+            data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
+            renderItem={this.renderItem}
+            keyExtractor={(item) => item.id}
+            //showsVerticalScrollIndicator={true}
+          ></FlatList>
           <View style={styles.menuWrapper}>
             {/*"TODO"*/}
             <TouchableRipple>
@@ -237,7 +332,7 @@ export default class LandingScreen extends React.Component {
             <TouchableRipple>
               <View style={styles.menuItem}>
                 <Icon name="account-settings" color="#FF6347" size={25} />
-                <Text style={styles.menuItemText}>AccountSettings</Text>
+                <Text style={styles.menuItemText}>Account Settings</Text>
               </View>
             </TouchableRipple>
           </View>
@@ -249,23 +344,20 @@ export default class LandingScreen extends React.Component {
   static navigationOptions = {
     title: <Text>Profile</Text>,
     headerStyle: {
-      backgroundColor: "#2890cf",
+      // backgroundColor: "#2ab20c",
     },
-    headerTintColor: "#fff",
+    headerTintColor: "#000",
     headerTitleStyle: {
-      flex: 0.6,
-      alignSelf: "center",
-      alignItems: "center",
       fontWeight: "bold",
     },
     headerLeft: () => (
       <Icon
         name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
         style={{ marginLeft: 10 }}
+        backgroundColor="#1f65ff"
         size={40}
         color="#fff"
         onPress={() => openDrawer()}
-        // onPress={() => Alert.alert('Hello world!')}
       />
     ),
   };

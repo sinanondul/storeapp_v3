@@ -127,7 +127,7 @@ const LandingStyles = StyleSheet.create({
   },
   postImage: {
     width: "100%",
-    height: 380,
+    height: 200,
     borderRadius: 5,
     marginVertical: 16,
   },

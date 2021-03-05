@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
   },
+
   menuItem: {
     flexDirection: "row",
     paddingVertical: 15,
@@ -99,6 +100,122 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     fontSize: 16,
     lineHeight: 26,
+  },
+  myposts: {
+    marginLeft: 10,
+  },
+  MyPostFeedItem: {
+    backgroundColor: "#FFF",
+    borderRadius: 5,
+    padding: 0,
+    flexDirection: "row",
+    marginVertical: 0,
+    width: 300,
+    borderColor: "black",
+  },
+  feedHeader: {
+    flex: 1,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  userAvatar: {
+    height: 80,
+    flex: 0.2,
+    justifyContent: "flex-start",
+    alignItems: "flex-start",
+    paddingLeft: 5,
+    paddingTop: 20,
+  },
+  userText: {
+    flex: 0.7,
+  },
+  moreButton: {
+    height: 80,
+    flex: 0.1,
+    alignItems: "center",
+    justifyContent: "center",
+    paddingTop: 10,
+    paddingBottom: 40,
+  },
+
+  mainText: {
+    paddingLeft: 10,
+  },
+
+  avatar: {
+    width: 36,
+    height: 36,
+    borderRadius: 18,
+    marginRight: 16,
+  },
+  name: {
+    fontSize: 15,
+    fontWeight: "500",
+    color: "#454D65",
+  },
+  timestamp: {
+    fontSize: 11,
+    color: "#C4C6CE",
+    marginTop: 4,
+  },
+  post: {
+    marginTop: 16,
+    fontSize: 14,
+  },
+  postImage: {
+    width: "100%",
+    height: 380,
+    borderRadius: 5,
+    marginVertical: 16,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  postImage: {
+    width: "100%",
+    height: 200,
+    borderRadius: 5,
+    marginVertical: 16,
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
   },
 });
 

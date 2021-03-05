@@ -14,7 +14,8 @@ LogBox.ignoreAllLogs(true);
 //firebase.initializeApp(firebaseConfig);
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);s
+  firebase.initializeApp(firebaseConfig);
+  s;
 }
 const navigationRef = React.createRef();
 
@@ -25,17 +26,17 @@ export function openDrawer() {
 
 export default class App extends React.Component {
   constructor(props) {
-    super(props)
-
+    super(props);
   }
 
   state = {
     isLoggedIn: false,
-    userInfo:{
+    userInfo: {
       uid: null,
       name: "Blank",
       surename: "Blankovich",
       avatar: null,
+      email: null,
     },
     chats: [],
   };
@@ -51,14 +52,17 @@ export default class App extends React.Component {
           .get()
           .then((firestoreDocument) => {
             var userData = firestoreDocument.data();
-            this.setState({ userInfo: {
-              uid: userData.id,
-              name: userData.name,
-              surename: userData.surename,
-              avatar: userData.avatar
-            }})
+            this.setState({
+              userInfo: {
+                uid: userData.id,
+                name: userData.name,
+                surename: userData.surename,
+                avatar: userData.avatar,
+                email: userData.email,
+              },
+            });
             this.setState({ isLoggedIn: true });
-          })
+          });
       } else {
         this.setState({ isLoggedIn: false });
       }
@@ -71,9 +75,9 @@ export default class App extends React.Component {
     return (
       <NavigationContainer ref={navigationRef}>
         {this.state.isLoggedIn ? (
-          <AppPage userData={userData} chats={chats}/>
+          <AppPage userData={userData} chats={chats} />
         ) : (
-          <AuthNavigator/>
+          <AuthNavigator />
         )}
       </NavigationContainer>
     );
