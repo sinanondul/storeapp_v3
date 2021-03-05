@@ -168,9 +168,26 @@ const LandingStyles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
+  iconsBar: {
+    justifyContent: "space-around",
+    flexDirection: "row",
+    alignItems: "center",
+    marginTop: 30,
+    marginBottom: 15,
+  },
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  row: {
+    justifyContent: "flex-start",
+    flexDirection: "row",
   },
   //tabs
 });

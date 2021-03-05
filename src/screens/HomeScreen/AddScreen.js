@@ -31,7 +31,7 @@ export default class AddScreen extends React.Component {
       const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
 
       if (status == "granted") {
-        this.setState({imageAllowed: true});
+        this.setState({ imageAllowed: true });
       }
     }
   };
