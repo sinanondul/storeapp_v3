@@ -127,7 +127,7 @@ const LandingStyles = StyleSheet.create({
   },
   postImage: {
     width: "100%",
-    height: 150,
+    height: 380,
     borderRadius: 5,
     marginVertical: 16,
   },
@@ -172,6 +172,26 @@ const LandingStyles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+
+  interactiveBorder: {
+    borderBottomColor: "#dddddd",
+    borderBottomWidth: 1,
+    width: "92%",
+    alignSelf: "center",
+    marginVertical: 15,
+  },
+
+  interactiveArea: {
+    flexDirection: "row",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  interactButtons: {
+    marginRight: 25,
+    alignItems: "center",
+  },
+
   //tabs
 });
 
