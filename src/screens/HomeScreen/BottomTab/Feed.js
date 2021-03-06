@@ -45,7 +45,6 @@ class FeedScreen extends React.Component{
           size={40}
           color='#fff'
           onPress={() => openDrawer()}
-          // onPress={() => Alert.alert('Hello world!')}
       />
     ),
   };

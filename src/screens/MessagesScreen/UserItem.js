@@ -29,7 +29,8 @@ export default class UserItem extends React.Component{
                   id: chatId,
                   participantIds: [this.props.userData.uid, this.props.userInfo.uid],
                 }
-                return(this.props.navigation.navigate('Messaging', {senderInfo: this.props.userInfo, chat: chatItem}));
+                this.props.navigation.goBack();
+                this.props.navigation.navigate('Messaging', {senderInfo: this.props.userInfo, chat: chatItem});
               })
             }}
             style={styles.messageItem}>

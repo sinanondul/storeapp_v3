@@ -189,7 +189,6 @@ export default class DrawerContent extends React.Component {
 }
 
 const onLogoutButtonPress = ({ props }) => {
-  Alert.alert("pressed");
   firebase
     .auth()
     .signOut()
