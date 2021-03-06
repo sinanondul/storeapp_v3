@@ -25,59 +25,6 @@ import AddScreen from "../HousematesScreen/AddScreen";
 const LandingStack = createStackNavigator();
 
 export default class HomeScreen extends React.Component {
-  state={
-    openMessages: false,
-    openAdd: false,
-    openNotifications: false,
-  }
-
-  constructor(props) {
-    super(props)
-
-    this.toggleMessagesModal = this.toggleMessagesModal.bind(this)
-    this.toggleAddModal = this.toggleAddModal.bind(this)
-    this.toggleNotificationsModal = this.toggleNotificationsModal.bind(this)
-  }
-
-  toggleMessagesModal() {
-    if (!this.state.openMessages) {
-      this.navigator && this.navigator.dispatch({ type: 'Navigate', routeName: 'Messages' });
-    }
-    else {
-      this.navigator && this.navigator.dispatch({ type: 'goBack', routeName: 'Messages' });
-    }
-    this.setState({
-      openMessages: !this.state.openMessages
-    })
-  }
-
-  toggleAddModal() {
-    if (!this.state.openAdd) {
-      Alert.alert("", this.state.openAdd.toString());
-      this.navigator && this.navigator.dispatch(
-        CommonActions.navigate({
-        name: 'Add',
-        })
-      );
-    }
-    else {
-      this.navigator && this.navigator.dispatch({ type: 'goBack' });
-    }
-    this.setState({
-      openAdd: !this.state.openAdd
-    })
-  }
-
-  toggleNotificationsModal() {
-    this.setState({
-      openNotifications: !this.state.openNotifications
-    })
-  }
-
-  openMessages = () => {
-    // call navigate for AppNavigator here:
-    this.navigator && this.navigator.dispatch({ type: 'Navigate', routeName: 'Messages' });
-  }
   
   componentDidMount() {
   }
@@ -86,11 +33,10 @@ export default class HomeScreen extends React.Component {
   }
 
   render() {
-    // Alert.alert("", this.state.openMessages.toString())
     return (
       <View style={{flex: 1}}>
         <View style={{flex: 1}}>
-          <SocialNavigator {...this.props} ref={nav => { this.navigator = nav; }}/>
+          <SocialNavigator {...this.props}/>
         </View>
       </View>
     );

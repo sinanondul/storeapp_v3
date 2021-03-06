@@ -9,7 +9,6 @@ const AddModal = (props) => {
       transparent={true}
       visible={true}
       onRequestClose={() => {
-        Alert.alert("Modal has been closed.");
         //setModalVisible(!modalVisible);
         //props.modalVisible = false;
       }}

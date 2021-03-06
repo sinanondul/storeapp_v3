@@ -76,23 +76,24 @@ class Fire {
 
     const chatsRef = this.firestore.collection('chats');
     const timeCreated = this.timestamp;
-    var senderExists = false;
-    var targetExists = false;
     var alreadyExists = false;
     var chatId;
+    var participantMap = {};
+    var query = chatsRef;
 
-    await chatsRef
-    .where('participantIds', 'array-contains-any', participantIds)
+    var i;
+    for (i = 0; i < participantIds.length; i++) {
+      const participantId = participantIds[i];
+      participantMap[participantId.toString()] = true;
+      query = query.where('participantIds.' + participantId.toString(), '==', true);
+    }
+
+    await query
     .get()
     .then((snapshot) => {
       snapshot.forEach((firestoreDocument) =>{
-          if (firestoreDocument.data().participantIds.length === participantIds.length
-          && ((firestoreDocument.data().participantIds[0] === participantIds[0]
-          && firestoreDocument.data().participantIds[1] === participantIds[1])
-          || (firestoreDocument.data().participantIds[1] === participantIds[0]
-          && firestoreDocument.data().participantIds[0] === participantIds[1]))
-          ) {
-            
+          if (Object.keys(firestoreDocument.data().participantIds).length === participantIds.length)
+          {
             alreadyExists = true;
             chatId = firestoreDocument.id;
           }
@@ -103,7 +104,7 @@ class Fire {
 
       const createdChat = await chatsRef.add(
         {
-          participantIds: participantIds,
+          participantIds: participantMap,
           messages: [],
           lastTimestamp: timeCreated,
           lastMessage: null,

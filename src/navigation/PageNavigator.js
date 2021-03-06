@@ -65,7 +65,7 @@ export default class AppPage extends React.Component {
                     timestamp: newChatRef.lastTimestamp,
                     new: newChatRef.new,
                     newCount: newChatRef.newCount,
-                    participantIds: newChatData.participantIds,
+                    participantIds: Array.from(Object.keys(newChatData.participantIds)),
                     lastMessage: newChatData.lastMessage,
                     chatInfo: newChatData.chatInfo
                   };
@@ -86,13 +86,12 @@ export default class AppPage extends React.Component {
               .then((firestoreDocument) => {
                 var newChatData = firestoreDocument.data();       
 
-
                 const newChatItem = {
                   id: newChatRef.id,
                   timestamp: newChatRef.lastTimestamp,
                   new: newChatRef.new,
                   newCount: newChatRef.newCount,
-                  participantIds: newChatData.participantIds,
+                  participantIds: Array.from(Object.keys(newChatData.participantIds)),
                   lastMessage: newChatData.lastMessage,
                   chatInfo: newChatData.chatInfo
                 };
@@ -157,7 +156,7 @@ const PageNavigator = (props) => {
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
       <PageDrawer.Screen name="Onboarding" component={Onboarding} />
-      <PageDrawer.Screen name="Messages" options={MessagesScreen.navigationOptions}>
+      {/* <PageDrawer.Screen name="Messages" options={MessagesScreen.navigationOptions}>
         {(props) => <MessagesScreen {...props} userData={userData} chats={chats} newChatCount={messageCount}/>}
       </PageDrawer.Screen>
       <PageDrawer.Screen name="AddSocial" options={AddScreen.navigationOptions}>
@@ -165,7 +164,7 @@ const PageNavigator = (props) => {
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Notifications" options={NotificationsScreen.navigationOptions}>
         {(props) => <NotificationsScreen {...props}/>}
-      </PageDrawer.Screen>
+      </PageDrawer.Screen> */}
     </PageDrawer.Navigator>
   );
 };

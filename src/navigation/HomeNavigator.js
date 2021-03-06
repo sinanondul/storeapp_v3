@@ -16,7 +16,8 @@ const SocialStack = createStackNavigator();
 export default function SocialNavigator(props) {
   var userData = props.userData;
   var chats = props.chats;
-  var newChatCount = props.newChatCount;
+  const messageCount = props.messageCount;
+  const notificationCount = props.notificationCount;
   return (
     <SocialStack.Navigator 
       options={{}} 
@@ -26,7 +27,7 @@ export default function SocialNavigator(props) {
         name="Default"
         options={LandingScreen.navigationOptions}
       >
-        {(props) =><LandingScreen {...props}/>}
+        {(props) =><LandingScreen {...props} messageCount={messageCount} notificationCount={notificationCount}/>}
       </SocialStack.Screen>
 
       <SocialStack.Screen
