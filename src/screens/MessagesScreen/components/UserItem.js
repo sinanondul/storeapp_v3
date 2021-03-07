@@ -4,9 +4,9 @@ import {Avatar, Badge, withBadge} from "react-native-paper";
 import firebase from 'firebase';
 import moment from 'moment';
 
-import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
-import Fire from "../../firebase/Fire";
-import styles from "./styles";
+import {getFullName, getAvatar} from "../../../functions/UserInfoFormatter";
+import Fire from "../../../firebase/Fire";
+import styles from "../styles";
 
 
 export default class UserItem extends React.Component{
@@ -21,19 +21,7 @@ export default class UserItem extends React.Component{
 
   render(){
       return (
-          <TouchableOpacity 
-            onPress={() => {
-              Fire.shared.addChat({participantIds: [this.props.userData.uid, this.props.userInfo.uid]})
-              .then((chatId) => {
-                const chatItem = {
-                  id: chatId,
-                  participantIds: [this.props.userData.uid, this.props.userInfo.uid],
-                }
-                this.props.navigation.goBack();
-                this.props.navigation.navigate('Messaging', {senderInfo: this.props.userInfo, chat: chatItem});
-              })
-            }}
-            style={styles.messageItem}>
+          <View style={styles.messageItem}>
             <View style={styles.messageAvatar}>
               {getAvatar(this.props.userInfo)}
             </View>
@@ -44,7 +32,7 @@ export default class UserItem extends React.Component{
                 </View>
               </View>
             </View>
-          </TouchableOpacity>
+          </View>
       );
   }
 }

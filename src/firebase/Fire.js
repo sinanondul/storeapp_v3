@@ -72,7 +72,7 @@ class Fire {
   }
 
   //Messaging Stuff
-  addChat = async({participantIds, chatInfo = null}) => {
+  addChat = async({participantIds, groupChatInfo = null}) => {
 
     const chatsRef = this.firestore.collection('chats');
     const timeCreated = this.timestamp;
@@ -102,15 +102,14 @@ class Fire {
     
     if (!alreadyExists) {
 
-      const createdChat = await chatsRef.add(
-        {
-          participantIds: participantMap,
-          messages: [],
-          lastTimestamp: timeCreated,
-          lastMessage: null,
-          chatInfo: chatInfo
-        }
-      );
+      const createdChat = await chatsRef.add({
+        participantIds: participantMap,
+        messages: [],
+        lastTimestamp: timeCreated,
+        lastMessage: null,
+        groupChatInfo: groupChatInfo
+      });
+      
       chatId = createdChat.id;
     }
     

@@ -1,11 +1,12 @@
 import React from "react";
 import {View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, Platform} from "react-native";
 import {Avatar} from "react-native-paper";
-import { createStackNavigator, HeaderBackButton} from "@react-navigation/stack";
+import { HeaderBackButton } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import moment from 'moment';
 
-import ChatItem from './ChatItem';
+import ChatItem from './components/ChatItem';
+import GrouptChatItem from './components/GroupChatItem';
 
 
 import MessagingInterface from "./MessagingInterface";
@@ -19,7 +20,11 @@ export default class LandingScreen extends React.Component{
   };
 
   renderItem = ({item}) => {
-    return (<ChatItem {...this.props} chat={item}/>);
+    return (
+      item.groupChatInfo
+      ? <GroupChatItem {...this.props} chat={item}/>
+      : <ChatItem {...this.props} chat={item}/>
+    );
   }
 
   componentDidMount() {
@@ -42,7 +47,7 @@ export default class LandingScreen extends React.Component{
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           extraData={this.state}
-        ></FlatList>
+        />
         <TouchableOpacity
                 style={{
                     borderWidth:1,

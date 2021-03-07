@@ -4,9 +4,9 @@ import {Avatar, Badge, withBadge} from "react-native-paper";
 import firebase from 'firebase';
 import moment from 'moment';
 
-import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
-import Fire from "../../firebase/Fire";
-import styles from "./styles";
+import {getGroupChatName, getGroupChatAvatar} from "../../../functions/UserInfoFormatter";
+import Fire from "../../../firebase/Fire";
+import styles from "../styles";
 
 function getTimeSince(timestamp) {
   moment.updateLocale('en', {
@@ -24,7 +24,7 @@ function getTimeSince(timestamp) {
 }
 
 
-export default class ChatItem extends React.Component{
+export default class GroupChatItem extends React.Component{
 
   constructor(props) {
     super(props)
@@ -32,33 +32,13 @@ export default class ChatItem extends React.Component{
   }
 
   state= {
-      senderInfo: null,
+      groupChatInfo: null,
       lastTimestamp: null,
       lastMessage: null,
-      nameinit: false,
   }
 
   componentDidMount() {
 
-    //Getting sender info.
-
-    const usersRef = firebase.firestore().collection("users");
-    const participants = this.props.chat.participantIds;
-    const index = participants.findIndex((item) => item !== this.props.userData.uid);
-    const senderId = participants[index];
-    usersRef
-        .doc(senderId)
-        .get()
-        .then((firestoreDocument) => {
-            var userData = firestoreDocument.data();
-            this.setState({ senderInfo: {
-                uid: senderId,
-                name: userData.name,
-                surename: userData.surename,
-                avatar: userData.avatar,
-            }})
-            this.setState({nameinit: true})
-        })
   }
 
   render(){
@@ -72,14 +52,12 @@ export default class ChatItem extends React.Component{
             } 
             style={styles.messageItem}>
             <View style={styles.messageAvatar}>
-              {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
+              {getGroupChatAvatar(this.props.chats.groupChatInfo)}
             </View>
             <View style={styles.messageText}>
               <View style={styles.messageHeader}>
                 <View style={styles.messageTitle}>
-                  {this.state.nameinit ? 
-                  <Text style={styles.titleText} numberOfLines={1}>{getFullName(this.state.senderInfo)}</Text> 
-                  : null}
+                  <Text style={styles.titleText} numberOfLines={1}>{getGroupChatName(this.props.chat.groupChatInfo)}</Text> 
                 </View>
                 <View style={styles.messageTimeStamp}>
                   <Text style={styles.timeStampText} numberOfLines={1}>{getTimeSince(this.props.chat.timestamp)}</Text>

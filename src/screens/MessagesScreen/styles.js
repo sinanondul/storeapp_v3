@@ -6,7 +6,6 @@ const styles = StyleSheet.create({
       flexDirection: "column"
     },
     messageItem: {
-        flex: 1,
         height: 80,
         backgroundColor: "#FFF",
         flexDirection: "row",

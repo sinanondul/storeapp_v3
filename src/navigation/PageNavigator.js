@@ -14,19 +14,12 @@ import Onboarding from "../screens/HelpScreen/Onboarding.js";
 
 
 import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
-import AddScreen from "../screens/HomeScreen/AddScreen";
+import AddScreen from "../screens/HomeScreen/AddScreen/AddScreen";
 import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
 
 import firebase from 'firebase';
-import ChatItem from "../screens/MessagesScreen/ChatItem";
 
 const PageDrawer = createDrawerNavigator();
-
-const screenOptionStyle = {
-  headerStyle: {
-    backgroundColor: "#9AC4F8",
-  },
-};
 
 export default class AppPage extends React.Component {
   state = {
@@ -67,7 +60,7 @@ export default class AppPage extends React.Component {
                     newCount: newChatRef.newCount,
                     participantIds: Array.from(Object.keys(newChatData.participantIds)),
                     lastMessage: newChatData.lastMessage,
-                    chatInfo: newChatData.chatInfo
+                    groupChatInfo: newChatData.groupChatInfo
                   };
 
                   //Adding to array
@@ -93,7 +86,7 @@ export default class AppPage extends React.Component {
                   newCount: newChatRef.newCount,
                   participantIds: Array.from(Object.keys(newChatData.participantIds)),
                   lastMessage: newChatData.lastMessage,
-                  chatInfo: newChatData.chatInfo
+                  groupChatInfo: newChatData.groupChatInfo
                 };
 
                 //Modifying previously added chat. 

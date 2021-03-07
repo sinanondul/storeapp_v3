@@ -9,6 +9,7 @@ import { createStackNavigator} from "@react-navigation/stack";
 import LandingScreen from "./LandingScreen";
 import MessagingInterface from "./MessagingInterface";
 import AddChatScreen from "./AddChatScreen";
+import AddToGroupChatScreen from './AddToGroupChatScreen';
 import styles from "./styles";
 
 export default class MessagesScreen extends React.Component{
@@ -33,6 +34,9 @@ export default class MessagesScreen extends React.Component{
         </MessagesStack.Screen>
         <MessagesStack.Screen name="AddChat" options={AddChatScreen.navigationOptions}>
           {(props) => <AddChatScreen {...props} userData={userData}/>}
+        </MessagesStack.Screen>
+        <MessagesStack.Screen name="AddGroupChat" options={AddToGroupChatScreen.navigationOptions}>
+          {(props) => <AddToGroupChatScreen {...props} userData={userData}/>}
         </MessagesStack.Screen>
       </MessagesStack.Navigator>
     );

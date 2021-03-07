@@ -4,13 +4,11 @@ import {Searchbar} from "react-native-paper";
 import { createStackNavigator, HeaderBackButton} from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import Fire from '../../firebase/Fire';
-import firebase from 'firebase';
-
-import AddGroupChatButton from './components/AddGroupChatButton';
+import ChosenUsersDisplay from './components/ChosenUsersDisplay';
 import UserItem from './components/UserItem';
 import styles from './styles';
 
+import firebase from 'firebase';
 
 const usersRef = firebase.firestore().collection('users');
 
@@ -18,31 +16,41 @@ function nextChar(c) {
     return String.fromCharCode(c.charCodeAt(0) + 1);
 }
 
-export default class AddChatScreen extends React.Component
+export default class AddGroupChatScreen extends React.Component
 {
+    constructor(props) {
+        super(props)
+    
+        this.removeParticipant = this.removeParticipant.bind(this)
+    }
+
     state={
+        participants: [],
         userInfos: [],
         searchQuery: '',
     }
 
     renderItem = ({item}) => {
+        var participantsArray = this.state.participants;
         return (
             <TouchableOpacity 
                 onPress={() => {
-                Fire.shared.addChat({participantIds: [this.props.userData.uid, item.uid]})
-                .then((chatId) => {
-                  const chatItem = {
-                    id: chatId,
-                    participantIds: [this.props.userData.uid, item.uid],
-                  }
-                  this.props.navigation.goBack();
-                  this.props.navigation.navigate('Messaging', {senderInfo: item, chat: chatItem});
-                })
-              }}
+                    participantsArray.unshift(item);
+                    this.setState({participants: participantsArray});
+                }}
             >
                 <UserItem {...this.props} userInfo={item}/>
             </TouchableOpacity>
         );
+    }
+    
+    removeParticipant = (uid) => {
+        var participantsArray = this.state.participants;
+        const index = participantsArray.findIndex(participant => participant.uid === uid);
+        if (index > -1) {
+            participantsArray.splice(index, 1);
+        }
+        this.setState({participants: participantsArray});
     }
 
     onChangeSearch = (searchText => {
@@ -87,19 +95,21 @@ export default class AddChatScreen extends React.Component
     }
   
     render(){
-
+        const difference = this.state.userInfos.filter(user => !this.state.participants.some(participant => user.uid === participant.uid));
         return(
             <View style={styles.container}>
+                {   this.state.participants && this.state.participants.length > 0
+                    ?   <ChosenUsersDisplay {...this.props} participants={this.state.participants} removeParticipant={this.removeParticipant}/>
+                    : null
+                }
+
                 <Searchbar
                     placeholder="Search"
                     onChangeText={this.onChangeSearch}
                     value={this.state.searchQuery}
                 />
-                <TouchableOpacity onPress={() => {this.props.navigation.navigate('AddGroupChat')}}>
-                    <AddGroupChatButton />
-                </TouchableOpacity>
                 <FlatList
-                    data={this.state.userInfos.sort((a, b) => (a.fullName > b.fullName) ? 1 : ((b.fullName > a.fullName) ? -1 : 0))}
+                    data={difference.sort((a, b) => (a.fullName > b.fullName) ? 1 : ((b.fullName > a.fullName) ? -1 : 0))}
                     renderItem={this.renderItem}
                     keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
@@ -110,7 +120,7 @@ export default class AddChatScreen extends React.Component
     }
 
     static navigationOptions = {
-        title: "New Chat",
+        title: "Add participants...",
         headerStyle: {
           backgroundColor: "#2890cf",
         },
