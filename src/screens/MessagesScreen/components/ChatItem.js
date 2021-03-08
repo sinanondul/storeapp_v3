@@ -73,7 +73,7 @@ export default class ChatItem extends React.Component{
             } 
             style={styles.messageItem}>
             <View style={styles.messageAvatar}>
-              {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
+              {this.state.nameinit ? getAvatar(this.state.senderInfo, 47) : null}
             </View>
             <View style={styles.messageText}>
               <View style={styles.messageHeader}>

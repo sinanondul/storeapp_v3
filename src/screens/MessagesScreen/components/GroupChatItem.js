@@ -52,7 +52,7 @@ export default class GroupChatItem extends React.Component{
             } 
             style={styles.messageItem}>
             <View style={styles.messageAvatar}>
-              {getGroupChatAvatar(this.props.chats.groupChatInfo)}
+              {getGroupChatAvatar(this.props.chat.groupChatInfo, 47)}
             </View>
             <View style={styles.messageText}>
               <View style={styles.messageHeader}>

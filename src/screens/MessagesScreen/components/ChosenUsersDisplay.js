@@ -25,26 +25,32 @@ export default class ChosenUsersDisplay extends React.Component{
             <Text style={styles.userName}>{getName(item)}</Text>
 
             {/* X Icon */}
-            <View style={{
-                position: 'absolute',
-                top: 8,
-                right: 8,
-                width: 15,
-                height: 15,
-                borderRadius: 7.5,
-                backgroundColor: '#fff',
-                }}
-            />
-            <Icon
-              name={Platform.OS === "ios" ? "ios-close-circle" : "md-close-circle"}
-              size={22}
-              style={{
-                position: 'absolute',
-                top: 3,
-                right: 3,
-              }}
-              onPress={() => this.props.removeParticipant(item.uid)}
-            />
+            { this.props.participantsRemoveable
+              ? <View style={{
+                  position: 'absolute',
+                  top: 8,
+                  right: 8,
+                  width: 15,
+                  height: 15,
+                  borderRadius: 7.5,
+                  backgroundColor: '#fff',
+                }}/>
+              : null
+            }
+            { this.props.participantsRemoveable
+              ? <Icon
+                  name={Platform.OS === "ios" ? "ios-close-circle" : "md-close-circle"}
+                  size={22}
+                  style={{
+                    position: 'absolute',
+                    top: 3,
+                    right: 3,
+                  }}
+                  onPress={() => this.props.removeParticipant(item.uid)}
+                />
+              : null
+            }
+            
 
         </View>
       );

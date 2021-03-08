@@ -6,7 +6,8 @@ import Icon from "react-native-vector-icons/Ionicons";
 import moment from 'moment';
 
 import ChatItem from './components/ChatItem';
-import GrouptChatItem from './components/GroupChatItem';
+import GroupChatItem from './components/GroupChatItem';
+import BottomRightButton from './components/BottomRightButton';
 
 
 import MessagingInterface from "./MessagingInterface";
@@ -48,29 +49,10 @@ export default class LandingScreen extends React.Component{
           showsVerticalScrollIndicator={false}
           extraData={this.state}
         />
-        <TouchableOpacity
-                style={{
-                    borderWidth:1,
-                    borderColor:'rgba(0,0,0,0.2)',
-                    alignItems:'center',
-                    justifyContent:'center',
-                    width:48,
-                    position: 'absolute',                                          
-                    bottom: 10,                                                    
-                    right: 10,
-                    height:48,
-                    backgroundColor:'#fff',
-                    borderRadius:100,
-                }}
-                onPress={() =>
-                  {this.props.navigation.navigate("AddChat");}
-                }
-                >
-                <Icon 
-                  name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"}
-                  size={48} color="#f4511e" />
-            </TouchableOpacity>
-            
+        <BottomRightButton {...this.props} 
+          name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"} 
+          onPress={() => {this.props.navigation.navigate("AddChat");}}
+        />
       </View>
     );
   }

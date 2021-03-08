@@ -6,6 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import ChosenUsersDisplay from './components/ChosenUsersDisplay';
 import UserItem from './components/UserItem';
+import BottomRightButton from './components/BottomRightButton';
 import styles from './styles';
 
 import firebase from 'firebase';
@@ -99,7 +100,11 @@ export default class AddGroupChatScreen extends React.Component
         return(
             <View style={styles.container}>
                 {   this.state.participants && this.state.participants.length > 0
-                    ?   <ChosenUsersDisplay {...this.props} participants={this.state.participants} removeParticipant={this.removeParticipant}/>
+                    ?   <ChosenUsersDisplay {...this.props} 
+                            participants={this.state.participants}
+                            participantsRemoveable={true} 
+                            removeParticipant={this.removeParticipant}
+                        />
                     : null
                 }
 
@@ -115,6 +120,15 @@ export default class AddGroupChatScreen extends React.Component
                     showsVerticalScrollIndicator={false}
                     extraData={this.state}
                 />
+                {   this.state.participants && this.state.participants.length > 0
+                    ?   <BottomRightButton {...this.props} 
+                            name={Platform.OS === "ios" ? "ios-checkmark-circle" : "md-checkmark-circle"} 
+                            onPress={() => {
+                                this.props.navigation.navigate("CustomizeGroupChat", {participants: this.state.participants});
+                            }}
+                        />
+                    : null
+                }
             </View>
         );
     }

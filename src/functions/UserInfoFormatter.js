@@ -47,20 +47,21 @@ function getAvatar(info, size = 40) {
 }
 
 function getGroupChatName(info) {
-  return capitalizeFirstOfEach(info.name);
+  // return capitalizeFirstOfEach(info.name);
+  return info.name;
 }
 
 function getGroupChatAvatarTag(info) {
   return info.name.charAt(0).toUpperCase();
 }
 
-function getGroupChatAvatar(info) {
+function getGroupChatAvatar(info, size = 40) {
   if (!(info.avatar == null)) {
-    return <Avatar.Image size={40} source={info.avatar} />;
+    return <Avatar.Image size={size} source={info.avatar} />;
   } else {
     return (
       <Avatar.Text
-        size={40}
+        size={size}
         label={getGroupChatAvatarTag(info)}
         style={{ backgroundColor: "#f4511e" }}
       />

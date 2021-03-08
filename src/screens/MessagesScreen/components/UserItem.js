@@ -23,7 +23,7 @@ export default class UserItem extends React.Component{
       return (
           <View style={styles.messageItem}>
             <View style={styles.messageAvatar}>
-              {getAvatar(this.props.userInfo)}
+              {getAvatar(this.props.userInfo, 47)}
             </View>
             <View style={styles.messageText}>
               <View style={styles.messageHeader}>

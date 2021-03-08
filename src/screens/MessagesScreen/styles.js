@@ -83,4 +83,50 @@ const styles = StyleSheet.create({
     }
 });
 
+const CustomizeGroupChatScreenStyles = StyleSheet.create({
+    groupInfoContainer: {
+        flexBasis: 140,
+        height: 140,
+        backgroundColor: '#fff',
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    groupInfoIcon: {
+        width: 52,
+        height: 52,
+        borderRadius: 26,
+        marginLeft: 10,
+        marginRight: 10,
+        backgroundColor: "#f4511e",
+    },
+    groupInfoTextContainer: {
+        flex: 0.8,
+        flexDirection: 'column',
+    },
+    groupInfoText: {
+        fontSize: 18,
+        marginBottom: 4,
+    },
+    groupInfoUnderline: {
+        backgroundColor: '#a9a9a9',
+        height: 3,
+    },
+    participantsContainer: {
+        flexBasis: 140,
+        height: 140,
+        backgroundColor: '#fff',
+        borderTopColor: "#f4f4f4",
+        borderTopWidth: 1,
+    },
+    participantsTitle: {
+        paddingTop: 10,
+        paddingLeft: 10,
+        paddingBottom: 5,
+        fontWeight: 'bold',
+        fontSize: 20,
+    }
+});
+
 export default styles;
+
+export {CustomizeGroupChatScreenStyles};
