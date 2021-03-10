@@ -63,12 +63,8 @@ export default class LandingScreen extends React.Component{
                                     <TouchableOpacity style={styles.dm} 
                                         onPress={() => {
                                             Fire.shared.addChat({participantIds: [this.props.userData.uid, this.props.userInfo.uid]})
-                                            .then((chatId) => {
-                                                const chatItem = {
-                                                    id: chatId,
-                                                    participantIds: [this.props.userData.uid, this.props.userInfo.uid],
-                                                }
-                                                return(this.props.navigation.navigate('MessagingFromProfile', {senderInfo: this.props.userInfo, chat: chatItem}));
+                                            .then((chatInfo) => {
+                                                return(this.props.navigation.navigate('MessagingFromProfile', {senderInfo: this.props.userInfo, chat: chatInfo}));
                                             })
                                         }}
                                     >

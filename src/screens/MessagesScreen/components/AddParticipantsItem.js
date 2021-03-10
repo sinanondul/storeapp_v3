@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 import styles from "../styles";
 
 
-export default class AddGroupChatButton extends React.Component{
+export default class AddParticipantsItem extends React.Component{
 
   constructor(props) {
     super(props)
@@ -19,7 +19,7 @@ export default class AddGroupChatButton extends React.Component{
           <View style={styles.messageItem}>
             <View style={styles.messageAvatar}>
                 <Icon
-                    name={Platform.OS === "ios" ? "ios-people" : "md-people"}
+                    name={Platform.OS === "ios" ? "ios-person-add" : "md-person-add"}
                     size={40}
                     color="#f4511e"
                     style={{
@@ -29,7 +29,7 @@ export default class AddGroupChatButton extends React.Component{
             <View style={styles.messageText}>
               <View style={styles.messageHeader}>
                 <View style={styles.messageTitle}>
-                  <Text style={styles.titleText}> New Group </Text>
+                  <Text style={styles.titleText}> Add Participant </Text>
                 </View>
               </View>
             </View>

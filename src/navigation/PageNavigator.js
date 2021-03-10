@@ -69,7 +69,8 @@ export default class AppPage extends React.Component {
                   if (index === array.length -1) resolve();
                 })
             }
-            else if (change.type === "modified") {
+            else if (change.type === "modified") 
+            {
               const newChatRef = change.doc.data();
               firebase
               .firestore()
@@ -95,6 +96,16 @@ export default class AppPage extends React.Component {
                 
                 if (index === array.length -1) resolve();
               })
+            }
+            else if (change.type === "removed") 
+            {
+              const newChatRef = change.doc.data();
+
+              //Modifying previously added chat. 
+              const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
+              chatsArray.splice(index, 1);
+              
+              if (index === array.length -1) resolve();
             }
           });
         });

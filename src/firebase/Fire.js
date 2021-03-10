@@ -1,5 +1,6 @@
 import firebaseKeys from "./config";
 import firebase from "firebase";
+import deleteCollection from './deleteCollection';
 import moment from 'moment';
 import { Alert } from "react-native";
 
@@ -77,10 +78,16 @@ class Fire {
     const chatsRef = this.firestore.collection('chats');
     const timeCreated = this.timestamp;
     var alreadyExists = false;
+    var chatInfo = {
+      id: null,
+      participantIds: participantIds,
+      groupChatInfo: groupChatInfo
+    }
     var chatId;
     var participantMap = {};
     var query = chatsRef;
 
+    //Check if chat with same participants exists.
     var i;
     for (i = 0; i < participantIds.length; i++) {
       const participantId = participantIds[i];
@@ -88,6 +95,12 @@ class Fire {
       query = query.where('participantIds.' + participantId.toString(), '==', true);
     }
 
+    //Check if group chat with same name exists.
+    if (groupChatInfo){
+      query.where('groupChatInfo.name', '==', groupChatInfo.name);
+    }
+
+    //Check if chat with *exactly* same participants exists.
     await query
     .get()
     .then((snapshot) => {
@@ -96,26 +109,28 @@ class Fire {
           {
             alreadyExists = true;
             chatId = firestoreDocument.id;
+            chatInfo.id = chatId;
+            chatInfo.groupChatInfo = firestoreDocument.data().groupChatInfo;
           }
       })
     })
     
+    //Create chat item.
     if (!alreadyExists) {
 
       const createdChat = await chatsRef.add({
         participantIds: participantMap,
-        messages: [],
         lastTimestamp: timeCreated,
         lastMessage: null,
         groupChatInfo: groupChatInfo
       });
       
       chatId = createdChat.id;
+      chatInfo.id = chatId;
     }
     
-    
+    //Add chat if doesn't exist and return.
     const usersRef = this.firestore.collection('users');
-
     return new Promise((res, rej) => {
       if (!alreadyExists) {
         usersRef
@@ -130,11 +145,11 @@ class Fire {
               newCount: 0,
             })
           })
-          res(chatId);
+          res(chatInfo);
         })
       }
       else {
-        res(chatId);
+        res(chatInfo);
       }
     })
   }
@@ -212,6 +227,61 @@ class Fire {
               rej(error);
             });
       });
+  }
+
+
+  deleteChat = async({uid, chatId}) => {
+
+    //Setting deleted timestamp.
+    const userRef = this.firestore().collection('users').doc(uid);
+    userRef
+      .collection('chats')
+      .where('id', '==', chatId)
+      .get()
+      .then(response => {
+        response.docs.forEach((doc) => {
+          doc.ref.update({deletedTimestamp: this.timestamp});
+        })
+      })
+    
+  }
+
+  leaveGroupChat = async({uid, chatId}) => {
+  
+      //Deleting from current user's chats.
+      const userRef = this.firestore().collection('users').doc(uid);
+      userRef
+        .collection('chats')
+        .where('id', '==', chatId)
+        .get()
+        .then(response => {
+          response.docs.forEach((doc) => {
+            doc.ref.delete();
+          })
+        })
+
+      //Removing user from chat document.
+      const chatRef = this.firestore().collection('chats').doc(chatId);
+      var participantMap = {};
+      participantMap['participantIds.' + uid] = false;
+      await chatRef.update(participantMap);
+
+      //Delete chat document if all users have left.
+
+      var stillLeft = false;
+      await chatRef.get().then(firestoreDocument => {
+        const participantsArray = firestoreDocument.data().participantIds;
+        participantsArray.forEach(participantExists => {
+          if(participantExists) {
+            stillLeft = true;
+          }
+        })
+      })
+      if (!stillLeft) {
+        deleteCollection(chatRef, 'messages', 100).then(() => {
+          chatRef.delete();
+        })
+      }
   }
 }
 

@@ -73,13 +73,13 @@ const styles = StyleSheet.create({
     headerAvatar: {
         alignItems: 'center',
         justifyContent: 'center',
-        paddingRight: 10,
+        marginRight: 5,
     },
     headerText: {
         fontSize: 19,
         fontWeight: 'bold',
         color: '#fff',
-        paddingLeft: 10,
+        marginLeft: 5,
     }
 });
 
@@ -127,6 +127,46 @@ const CustomizeGroupChatScreenStyles = StyleSheet.create({
     }
 });
 
+const GroupChatDescriptionScreenStyles = StyleSheet.create({ 
+    headerContainer: {
+        backgroundColor: '#fff',
+        height: 240,
+        marginTop: 10,
+    },
+
+
+    participantListContainer: {
+        backgroundColor: '#fff',
+        marginTop: 10,
+    },
+    participantsTitle: {
+        marginTop: 10,
+        marginLeft: 20,
+        marginBottom: 10,
+        fontSize: 16,
+    },
+
+
+    leaveGroupContainer: {
+        backgroundColor: '#fff',
+        height: 55,
+        marginTop: 10,
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    leaveGroupIcon: {
+        marginLeft: 20,
+        marginRight: 10,
+        marginTop: 10,
+        marginBottom: 10,
+    },
+    leaveGroupText: {
+        color: '#D00000',
+        fontSize: 16,
+        marginLeft: 10,
+    }
+});
+
 export default styles;
 
-export {CustomizeGroupChatScreenStyles};
+export { CustomizeGroupChatScreenStyles, GroupChatDescriptionScreenStyles };

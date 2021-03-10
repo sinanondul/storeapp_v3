@@ -28,10 +28,17 @@ export default class MessagingInterface extends React.Component{
       //Setting navigation options.
       this.props.navigation.setOptions({
         headerTitle: () => (
-          <View style={styles.headerTitleContainer}>
+          <TouchableOpacity 
+            style={styles.headerTitleContainer}
+            onPress={() => {
+              if (this.props.route.params.chat.groupChatInfo) {
+                this.props.navigation.navigate("GroupChatDescription", {chat: this.props.route.params.chat});
+              }
+            }}
+          >
             <View style={styles.headerAvatar}>
               { this.props.route.params.chat.groupChatInfo
-                ? getGroupChatAvatar(this.props.route.params.groupChatInfo)
+                ? getGroupChatAvatar(this.props.route.params.chat.groupChatInfo)
                 : getAvatar(this.props.route.params.senderInfo)
               }
             </View>
@@ -42,7 +49,7 @@ export default class MessagingInterface extends React.Component{
                 : getFullName(this.props.route.params.senderInfo) 
               }
             </Text>
-          </View>
+          </TouchableOpacity>
         ),
       });
 

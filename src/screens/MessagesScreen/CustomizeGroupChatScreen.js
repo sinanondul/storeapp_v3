@@ -79,15 +79,11 @@ export default class AddGroupChatScreen extends React.Component
                                     avatar: null
                                 }
                                 Fire.shared.addChat({participantIds: this.state.participantIds, groupChatInfo: groupChatInfo})
-                                    .then((chatId) => {
-                                        const chatItem = {
-                                            id: chatId,
-                                            participantIds: [this.props.userData.uid, item.uid],
-                                        }
-                                    this.props.navigation.goBack();
-                                    this.props.navigation.goBack();
-                                    this.props.navigation.goBack();
-                                    // this.props.navigation.navigate('Messaging', {senderInfo: item, chat: chatItem});
+                                    .then((chatInfo) => {
+                                        this.props.navigation.goBack();
+                                        this.props.navigation.goBack();
+                                        this.props.navigation.goBack();
+                                        this.props.navigation.navigate('Messaging', {chat: chatInfo});
                                     })
                             }}
                         />

@@ -3,7 +3,7 @@ import {View, Platform, Header, Text, TouchableOpacity, StyleSheet, FlatList, Al
 import {Avatar} from "react-native-paper";
 import {GiftedChat} from "react-native-gifted-chat";
 import Icon from "react-native-vector-icons/Ionicons";
-import { createStackNavigator} from "@react-navigation/stack";
+import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 
 
 import LandingScreen from "./LandingScreen";
@@ -11,6 +11,7 @@ import MessagingInterface from "./MessagingInterface";
 import AddChatScreen from "./AddChatScreen";
 import AddToGroupChatScreen from './AddToGroupChatScreen';
 import CustomizeGroupChatScreen from './CustomizeGroupChatScreen';
+import GroupChatDescriptionScreen from './GroupChatDescriptionScreen'
 import styles from "./styles";
 
 export default class MessagesScreen extends React.Component{
@@ -26,6 +27,9 @@ export default class MessagesScreen extends React.Component{
     return (
       <MessagesStack.Navigator
         initialRouteName="Landing"
+        screenOptions={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}
       >
         <MessagesStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
           {(props) => <LandingScreen {...props} userData={userData} chats={chats}/>}
@@ -41,6 +45,9 @@ export default class MessagesScreen extends React.Component{
         </MessagesStack.Screen>
         <MessagesStack.Screen name="CustomizeGroupChat" options={CustomizeGroupChatScreen.navigationOptions}>
           {(props) => <CustomizeGroupChatScreen {...props} userData={userData}/>}
+        </MessagesStack.Screen>
+        <MessagesStack.Screen name="GroupChatDescription" options={GroupChatDescriptionScreen.navigationOptions}>
+          {(props) => <GroupChatDescriptionScreen {...props} userData={userData}/>}
         </MessagesStack.Screen>
       </MessagesStack.Navigator>
     );

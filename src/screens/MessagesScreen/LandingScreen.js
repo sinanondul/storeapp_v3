@@ -1,16 +1,11 @@
 import React from "react";
-import {View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, Platform} from "react-native";
-import {Avatar} from "react-native-paper";
+import {View, Text, FlatList, Alert, Platform} from "react-native";
 import { HeaderBackButton } from "@react-navigation/stack";
-import Icon from "react-native-vector-icons/Ionicons";
-import moment from 'moment';
 
 import ChatItem from './components/ChatItem';
 import GroupChatItem from './components/GroupChatItem';
 import BottomRightButton from './components/BottomRightButton';
 
-
-import MessagingInterface from "./MessagingInterface";
 import styles from "./styles";
 
 export default class LandingScreen extends React.Component{
@@ -22,9 +17,10 @@ export default class LandingScreen extends React.Component{
 
   renderItem = ({item}) => {
     return (
-      item.groupChatInfo
-      ? <GroupChatItem {...this.props} chat={item}/>
-      : <ChatItem {...this.props} chat={item}/>
+        item.groupChatInfo
+        ? <GroupChatItem {...this.props} chat={item}/>
+        : <ChatItem {...this.props} chat={item}/>
+        
     );
   }
 

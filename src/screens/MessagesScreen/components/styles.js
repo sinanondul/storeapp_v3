@@ -20,7 +20,41 @@ const componentStyles = StyleSheet.create({
     },
     userName: {
         marginTop: 3,
+    },
+})
+
+const GroupChatItemStyles = StyleSheet.create({ 
+    deleteButton: {
+        flex: 1,
+        backgroundColor: '#dd2c00',
+        alignItems: 'center',
+        justifyContent: 'center',
+        width: 75,
+    },
+    deleteText: {
+        color: '#fff',
+        fontSize: 17,
+        fontWeight: 'bold',
+    },
+})
+
+const ParticipantListItemStyles = StyleSheet.create({ 
+    participantListItem: {
+        height: 80,
+        backgroundColor: "#FFF",
+        flexDirection: "row",
+        alignItems: 'center',
+    },
+    avatar: {
+    },
+    nameText: {
+        fontSize: 17,
+    },
+    adminText: {
+        color: "#f4511e",
+        fontSize: 14,
     }
 })
 
 export default componentStyles;
+export { GroupChatItemStyles, ParticipantListItemStyles };
