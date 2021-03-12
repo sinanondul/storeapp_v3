@@ -104,7 +104,7 @@ class Fire {
     await query
     .get()
     .then((snapshot) => {
-      snapshot.forEach((firestoreDocument) =>{
+      snapshot.forEach((firestoreDocument) => {
           if (Object.keys(firestoreDocument.data().participantIds).length === participantIds.length)
           {
             alreadyExists = true;
@@ -282,6 +282,35 @@ class Fire {
           chatRef.delete();
         })
       }
+  }
+
+  //Courses
+
+  addCourse = async(uid, courseInfo) => {
+    
+  }
+
+  joinCourse = async(uid, courseCode, sectionNumber) => {
+    const coursesRef = this.firestore.collection('courses');
+    var alreadyExists = false;
+    var courseId = null;
+
+    //Check if course already exists.
+    coursesRef
+    .where('code', '==', courseCode)
+    .get()
+    .then((snapshot) => {
+      snapshot.forEach((firestoreDocument) => {
+        alreadyExists = true;
+        courseId = firestoreDocument.id();
+      })
+    })
+
+    //Create course if doesn't exist.
+
+    //Join course if exists.
+    
+
   }
 }
 

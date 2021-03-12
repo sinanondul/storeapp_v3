@@ -6,7 +6,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import ChosenUsersDisplay from './components/ChosenUsersDisplay';
 import UserItem from './components/UserItem';
-import BottomRightButton from './components/BottomRightButton';
+import BottomRightButton from '../../components/BottomRightButton';
 import styles from './styles';
 
 import firebase from 'firebase';

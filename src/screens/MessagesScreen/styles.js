@@ -90,6 +90,7 @@ const CustomizeGroupChatScreenStyles = StyleSheet.create({
         backgroundColor: '#fff',
         flexDirection: 'row',
         alignItems: 'center',
+        margin: 5,
     },
     groupInfoIcon: {
         width: 52,
@@ -117,6 +118,7 @@ const CustomizeGroupChatScreenStyles = StyleSheet.create({
         backgroundColor: '#fff',
         borderTopColor: "#f4f4f4",
         borderTopWidth: 1,
+        margin: 5,
     },
     participantsTitle: {
         paddingTop: 10,

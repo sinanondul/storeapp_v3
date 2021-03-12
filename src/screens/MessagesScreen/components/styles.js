@@ -56,5 +56,35 @@ const ParticipantListItemStyles = StyleSheet.create({
     }
 })
 
+const GroupImageStyles = StyleSheet.create({
+    defaultBackground: {
+        flex: 1,
+        backgroundColor: "#f4511e",
+        alignItems: 'center',
+        justifyContent: 'flex-start',
+    },
+    defaultIconContainer: {
+        height: 180,
+        flexBasis: 180,
+        alignItems: 'center',
+        justifyContent: 'center',
+    },
+    textContainer: {
+        width: '100%',
+        height: 60,
+        flexBasis: 60,
+        alignItems: 'flex-start',
+        justifyContent: 'flex-end',
+        paddingBottom: 20,
+        paddingLeft: 20,
+        paddingRight: 20,
+    },
+    groupTitle: {
+        color: '#fff',
+        fontSize: 24,
+        fontWeight: 'bold',
+    }
+})
+
 export default componentStyles;
-export { GroupChatItemStyles, ParticipantListItemStyles };
+export { GroupChatItemStyles, ParticipantListItemStyles, GroupImageStyles };

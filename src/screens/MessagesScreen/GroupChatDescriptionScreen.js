@@ -10,6 +10,7 @@ import firebase from 'firebase';
 
 import {getFullName, getAvatar, getGroupChatName, getGroupChatAvatar} from "../../functions/UserInfoFormatter";
 import ParticipantListItem from './components/ParticipantListItem';
+import GroupImage from './components/GroupImage';
 import styles, {GroupChatDescriptionScreenStyles as pageStyles} from "./styles";
 
 
@@ -47,9 +48,15 @@ export default class GroupChatDescriptionScreen extends React.Component{
             ),
         });
         //Getting user infos.
-        var youItem = this.props.userData;
+        var youItem = {
+            uid: this.props.userData.uid,
+            name: this.props.userData.name,
+            surename: this.props.userData.surename,
+            fullName: 'you',
+            avatar: this.props.userData.avatar
+        }
         youItem.fullName = 'you';
-        let usersArray = [youItem];
+        let usersArray = [];
         const usersRef = firebase.firestore().collection('users');
         var getUsers = new Promise((resolve, reject) => {
             usersRef
@@ -74,6 +81,8 @@ export default class GroupChatDescriptionScreen extends React.Component{
             })
         });
         getUsers.then(() => {
+            usersArray = usersArray.sort((a, b) => (a.fullName > b.fullName) ? 1 : ((b.fullName > a.fullName) ? -1 : 0));
+            usersArray.unshift(youItem);
             this.setState({userInfos: usersArray});
         });
      
@@ -94,17 +103,18 @@ export default class GroupChatDescriptionScreen extends React.Component{
     }
 
     render() {
+        const chat = this.props.route.params.chat;
         return(
             <ScrollView style={{flex: 1}}>
                 <View style={pageStyles.headerContainer}>
-
+                    <GroupImage groupChatInfo={chat.groupChatInfo}/>
                 </View>
                 <View style={pageStyles.participantListContainer}>
                     <Text style={pageStyles.participantsTitle}>
                         {this.props.route.params.chat.participantIds.length.toString() + " participants"}
                     </Text>
                     <FlatList
-                        data={this.state.userInfos.sort((a, b) => (a.fullName > b.fullName) ? 1 : ((b.fullName > a.fullName) ? -1 : 0))}
+                        data={this.state.userInfos}
                         renderItem={this.renderItem}
                         keyExtractor={(item) => item.id}
                         showsVerticalScrollIndicator={false}

@@ -39,8 +39,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   bottomDrawerSection: {
-    flex: 0.2,
-    marginBottom: 100,
     borderTopColor: "#f4f4f4",
     borderTopWidth: 1,
   },

@@ -4,7 +4,7 @@ import { HeaderBackButton } from "@react-navigation/stack";
 
 import ChatItem from './components/ChatItem';
 import GroupChatItem from './components/GroupChatItem';
-import BottomRightButton from './components/BottomRightButton';
+import BottomRightButton from '../../components/BottomRightButton';
 
 import styles from "./styles";
 

@@ -4,7 +4,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import ChosenUsersDisplay from './components/ChosenUsersDisplay';
 import UserItem from './components/UserItem';
-import BottomRightButton from './components/BottomRightButton';
+import BottomRightButton from '../../components/BottomRightButton';
 import styles, {CustomizeGroupChatScreenStyles as pageStyles} from './styles';
 
 import Fire from '../../firebase/Fire';
