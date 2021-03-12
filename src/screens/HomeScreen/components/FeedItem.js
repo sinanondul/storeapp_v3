@@ -12,12 +12,12 @@ import {
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
-import Fire from "../../firebase/Fire";
+import Fire from "../../../firebase/Fire";
 import { Avatar } from "react-native-paper";
 import moment from "moment";
 
-import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
-import styles from "./styles";
+import {getFullName, getAvatar} from "../../../functions/UserInfoFormatter";
+import styles from "../styles";
 
 const usersRef = firebase.firestore().collection("users");
 
@@ -33,6 +33,7 @@ export default class FeedItem extends React.Component {
   
     state = {
       senderInfo: {
+        fullName: null,
         name: null,
         surename: null,
         avatar: null,
@@ -50,6 +51,7 @@ export default class FeedItem extends React.Component {
           this.setState({
             senderInfo: {
               uid: userData.id,
+              fullName: userData.fullName,
               name: userData.name,
               surename: userData.surename,
               avatar: userData.avatar,

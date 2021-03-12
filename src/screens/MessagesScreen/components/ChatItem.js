@@ -4,9 +4,9 @@ import {Avatar, Badge, withBadge} from "react-native-paper";
 import firebase from 'firebase';
 import moment from 'moment';
 
-import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
-import Fire from "../../firebase/Fire";
-import styles from "./styles";
+import {getFullName, getAvatar} from "../../../functions/UserInfoFormatter";
+import Fire from "../../../firebase/Fire";
+import styles from "../styles";
 
 function getTimeSince(timestamp) {
   moment.updateLocale('en', {
@@ -53,6 +53,7 @@ export default class ChatItem extends React.Component{
             var userData = firestoreDocument.data();
             this.setState({ senderInfo: {
                 uid: senderId,
+                fullName: userData.fullName,
                 name: userData.name,
                 surename: userData.surename,
                 avatar: userData.avatar,
@@ -72,7 +73,7 @@ export default class ChatItem extends React.Component{
             } 
             style={styles.messageItem}>
             <View style={styles.messageAvatar}>
-              {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
+              {this.state.nameinit ? getAvatar(this.state.senderInfo, 47) : null}
             </View>
             <View style={styles.messageText}>
               <View style={styles.messageHeader}>

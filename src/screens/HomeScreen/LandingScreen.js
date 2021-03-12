@@ -18,7 +18,7 @@ import moment from "moment";
 
 import { openDrawer } from "../../../App";
 import DefaultFooter from '../../components/DefaultFooter';
-import FeedItem from "./FeedItem";
+import FeedItem from "./components/FeedItem";
 import styles from "./styles";
 
 const usersRef = firebase.firestore().collection("users");

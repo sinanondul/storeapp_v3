@@ -1,14 +1,11 @@
 import React from "react";
-import {View, Text, TouchableOpacity, StyleSheet, FlatList, Alert, Platform} from "react-native";
-import {Avatar} from "react-native-paper";
-import { createStackNavigator, HeaderBackButton} from "@react-navigation/stack";
-import Icon from "react-native-vector-icons/Ionicons";
-import moment from 'moment';
+import {View, Text, FlatList, Alert, Platform} from "react-native";
+import { HeaderBackButton } from "@react-navigation/stack";
 
-import ChatItem from './ChatItem';
+import ChatItem from './components/ChatItem';
+import GroupChatItem from './components/GroupChatItem';
+import BottomRightButton from '../../components/BottomRightButton';
 
-
-import MessagingInterface from "./MessagingInterface";
 import styles from "./styles";
 
 export default class LandingScreen extends React.Component{
@@ -19,7 +16,12 @@ export default class LandingScreen extends React.Component{
   };
 
   renderItem = ({item}) => {
-    return (<ChatItem {...this.props} chat={item}/>);
+    return (
+        item.groupChatInfo
+        ? <GroupChatItem {...this.props} chat={item}/>
+        : <ChatItem {...this.props} chat={item}/>
+        
+    );
   }
 
   componentDidMount() {
@@ -42,30 +44,11 @@ export default class LandingScreen extends React.Component{
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
           extraData={this.state}
-        ></FlatList>
-        <TouchableOpacity
-                style={{
-                    borderWidth:1,
-                    borderColor:'rgba(0,0,0,0.2)',
-                    alignItems:'center',
-                    justifyContent:'center',
-                    width:48,
-                    position: 'absolute',                                          
-                    bottom: 10,                                                    
-                    right: 10,
-                    height:48,
-                    backgroundColor:'#fff',
-                    borderRadius:100,
-                }}
-                onPress={() =>
-                  {this.props.navigation.navigate("AddChat");}
-                }
-                >
-                <Icon 
-                  name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"}
-                  size={48} color="#f4511e" />
-            </TouchableOpacity>
-            
+        />
+        <BottomRightButton {...this.props} 
+          name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"} 
+          onPress={() => {this.props.navigation.navigate("AddChat");}}
+        />
       </View>
     );
   }

@@ -93,6 +93,21 @@ export default class DrawerContent extends React.Component {
                         size={size}
                       />
                     )}
+                    label="Courses"
+                    labelStyle={styles.drawerItem}
+                    onPress={() => {
+                      this.props.navigation.navigate("Courses");
+                    }}
+                  />
+
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <Icon
+                        name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+                        color={color}
+                        size={size}
+                      />
+                    )}
                     label="Supplies"
                     labelStyle={styles.drawerItem}
                     onPress={() => {

@@ -4,7 +4,7 @@ import {Avatar} from "react-native-paper";
 import {GiftedChat} from "react-native-gifted-chat";
 import {HeaderBackButton} from "@react-navigation/stack";
 
-import {getFullName, getAvatar} from "../../functions/UserInfoFormatter";
+import {getFullName, getAvatar, getGroupChatName, getGroupChatAvatar} from "../../functions/UserInfoFormatter";
 import styles from "./styles";
 import Fire from "../../firebase/Fire";
 import firebase from 'firebase';
@@ -27,14 +27,29 @@ export default class MessagingInterface extends React.Component{
     componentDidMount() {
       //Setting navigation options.
       this.props.navigation.setOptions({
-        headerTitle: (props) => (
-          <View style={styles.headerTitleContainer}>
+        headerTitle: () => (
+          <TouchableOpacity 
+            style={styles.headerTitleContainer}
+            onPress={() => {
+              if (this.props.route.params.chat.groupChatInfo) {
+                this.props.navigation.navigate("GroupChatDescription", {chat: this.props.route.params.chat});
+              }
+            }}
+          >
             <View style={styles.headerAvatar}>
-              {getAvatar(this.props.route.params.senderInfo)}
+              { this.props.route.params.chat.groupChatInfo
+                ? getGroupChatAvatar(this.props.route.params.chat.groupChatInfo)
+                : getAvatar(this.props.route.params.senderInfo)
+              }
             </View>
 
-            <Text style={styles.headerText}>{getFullName(this.props.route.params.senderInfo)}</Text>
-          </View>
+            <Text style={styles.headerText}>
+              { this.props.route.params.chat.groupChatInfo
+                ? getGroupChatName(this.props.route.params.chat.groupChatInfo)
+                : getFullName(this.props.route.params.senderInfo) 
+              }
+            </Text>
+          </TouchableOpacity>
         ),
       });
 
@@ -52,6 +67,7 @@ export default class MessagingInterface extends React.Component{
             var userData = firestoreDocument.data();
             const userInfo = {
                 uid: userData.id,
+                fullName: userData.fullName,
                 name: userData.name,
                 surename: userData.surename,
                 avatar: userData.avatar

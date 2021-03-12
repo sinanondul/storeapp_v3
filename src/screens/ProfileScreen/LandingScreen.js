@@ -1,6 +1,7 @@
 import React from "react";
 import {View, Platform, Text, SafeAreaView, ScrollView, Image, Alert} from "react-native";
 import {Avatar} from "react-native-paper";
+import { HeaderBackButton } from "@react-navigation/stack";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
@@ -27,10 +28,20 @@ export default class LandingScreen extends React.Component{
     }
 
     componentDidMount() {
-
+        
         //Navigation update.
         this.props.navigation.setOptions({
-
+            headerLeft: () => (
+                this.props.userData.uid !== this.props.userInfo.uid
+                ?   <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.goBack()}}/>
+                :   <Icon 
+                        name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
+                        style={{marginLeft:10}}
+                        size={40}
+                        color='#fff'
+                        onPress={() => openDrawer()}
+                    />
+            )
         });
 
         //Checking if own profile.
@@ -52,12 +63,8 @@ export default class LandingScreen extends React.Component{
                                     <TouchableOpacity style={styles.dm} 
                                         onPress={() => {
                                             Fire.shared.addChat({participantIds: [this.props.userData.uid, this.props.userInfo.uid]})
-                                            .then((chatId) => {
-                                                const chatItem = {
-                                                    id: chatId,
-                                                    participantIds: [this.props.userData.uid, this.props.userInfo.uid],
-                                                }
-                                                return(this.props.navigation.navigate('MessagingFromProfile', {senderInfo: this.props.userInfo, chat: chatItem}));
+                                            .then((chatInfo) => {
+                                                return(this.props.navigation.navigate('MessagingFromProfile', {senderInfo: this.props.userInfo, chat: chatInfo}));
                                             })
                                         }}
                                     >
@@ -141,18 +148,10 @@ export default class LandingScreen extends React.Component{
       headerTintColor: '#fff',
       headerTitleStyle: {
         flex: 0.6,
+        paddingRight: 60,
         alignSelf: 'center', 
         alignItems: 'center',
         fontWeight: 'bold',
       },
-      headerLeft: () => (
-        <Icon 
-            name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
-            style={{marginLeft:10}}
-            size={40}
-            color='#fff'
-            onPress={() => openDrawer()}
-        />
-      ),
     };
   }
