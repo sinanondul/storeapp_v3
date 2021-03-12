@@ -24,7 +24,9 @@ import { color } from "react-native-reanimated";
 import firebase from "firebase";
 import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
 
-function getUID() {}
+function getUID(info) {
+  return info.uid;
+}
 
 function getFullName(info) {
   return info.name + " " + info.surename;
@@ -135,6 +137,7 @@ export default class LandingScreen extends React.Component {
     const unsubscribe = firebase
       .firestore()
       .collection("posts")
+      .where("uid", "==", getUID(this.props.userData))
       .orderBy("timestamp")
       .onSnapshot((snapshot) => {
         let changes = snapshot.docChanges();
@@ -162,31 +165,9 @@ export default class LandingScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          {/* <View style={styles.profileImageContainer}>
+          <View style={styles.profileImageContainer}>
             <View style={styles.profileImage}>
               {getAvatar(this.props.userData)}
-            </View>
-            <View style={styles.dm}>
-              <MaterialIcons
-                name="chat"
-                size={18}
-                color="#DFD8C8"
-              ></MaterialIcons>
-            </View>
-            <View style={styles.add}>
-              <Ionicons
-                name="ios-add"
-                size={36}
-                color="#DFD8C8"
-                style={{ marginTop: 3 }}
-              ></Ionicons>
-            </View>
-          </View> */}
-          <View /*style={styles.userInfoSection}*/>
-            <View style={styles.profileImageContainer}>
-              <View style={styles.profileImage}>
-                {getAvatar(this.props.userData)}
-              </View>
             </View>
           </View>
 
@@ -344,7 +325,7 @@ export default class LandingScreen extends React.Component {
   static navigationOptions = {
     title: <Text>Profile</Text>,
     headerStyle: {
-      // backgroundColor: "#2ab20c",
+      backgroundColor: "#2890cf",
     },
     headerTintColor: "#000",
     headerTitleStyle: {

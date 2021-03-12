@@ -20,6 +20,8 @@ import styles from "./styles";
 
 const usersRef = firebase.firestore().collection("users");
 
+
+
 function getFullName(info) {
   return info.name + " " + info.surename;
 }
