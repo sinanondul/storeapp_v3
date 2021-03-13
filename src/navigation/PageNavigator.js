@@ -63,33 +63,25 @@ export default class AppPage extends React.Component {
                   groupChatInfo: newChatData.groupChatInfo
                 };
             
-                if (change.type === "added") {
-                  
-
-                      //Adding to array
-                      chatsArray.unshift(newChatItem);
-                      
-                      if (index === array.length -1) resolve();
+                if (change.type === "added") 
+                {
+                  //Adding to array
+                  chatsArray.unshift(newChatItem);
                 }
                 else if (change.type === "modified") 
                 {
-                
-
-                    //Modifying previously added chat. 
-                    const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
-                    chatsArray[index] = newChatItem;
-                    
-                    if (index === array.length -1) resolve();
+                  //Modifying previously added chat. 
+                  const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+                  chatsArray[index] = newChatItem;
                 }
                 else if (change.type === "removed") 
                 {
-
                   //Modifying previously added chat. 
                   const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
                   chatsArray.splice(index, 1);
-                  
-                  if (index === array.length -1) resolve();
                 }
+                
+                if (index === array.length -1) resolve();
             });
           });
         });

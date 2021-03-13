@@ -1,5 +1,5 @@
 import React from "react";
-import {View, Text, FlatList, Alert, Platform} from "react-native";
+import {View, Text, TouchableOpacity, FlatList, Alert, Platform} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import { openDrawer } from "../../../App";
@@ -30,7 +30,9 @@ export default class LandingScreen extends React.Component{
 
   renderItem = ({item}) => {
     return (
+      <TouchableOpacity style={styles.container} onPress={() => this.props.navigation.navigate('CourseItem', {courseInfo: item})}>
         <CourseItem {...this.props} courseInfo={item}/>
+      </TouchableOpacity>
     );
   }
 
@@ -53,7 +55,7 @@ export default class LandingScreen extends React.Component{
           />
           <BottomRightButton {...this.props} 
             name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"} 
-            onPress={() => {}}
+            onPress={() => {this.props.navigation.navigate('Add')}}
           />
         </View>
       </View>

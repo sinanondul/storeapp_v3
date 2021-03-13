@@ -83,15 +83,16 @@ export default class AddScreen extends React.Component {
             {getAvatar(this.props.userData)}
 
             <View>
-              <TextInput
-                outerFocus={true}
-                multiline={true}
-                numberOfLines={4}
-                style={{ flex: 1 }}
-                placeholder="Type Here"
-                onChangeText={(text) => this.setState({ text })}
-                value={this.state.text}
-              />
+              <View>
+                <TextInput
+                  outerFocus={true}
+                  multiline={true}
+                  numberOfLines={4}
+                  placeholder="Type Here"
+                  onChangeText={(text) => this.setState({ text })}
+                  value={this.state.text}
+                />
+              </View>
 
               
               { this.state.image
