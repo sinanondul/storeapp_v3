@@ -5,7 +5,7 @@ import CourseTag from './CourseTag';
 import styles from './styles';
 
 
-export default class UserItem extends React.Component{
+export default class CourseItem extends React.Component{
 
   constructor(props) {
     super(props)
@@ -19,14 +19,14 @@ export default class UserItem extends React.Component{
     const courseInfo = this.props.courseInfo;
     const courseColor = courseInfo.color;
     return (
-        <TouchableOpacity style={styles.listItem} onPress={() => this.props.navigation.navigate('CourseItem', {courseInfo: courseInfo})}>
-          <CourseTag height={30} color={courseColor} text={courseInfo.code}/>
+        <View style={styles.listItem}>
+          <CourseTag height={26} color={courseColor} text={courseInfo.code}/>
           <View style={styles.textContainer}>
-            <Text style={styles.text} numberOfLines={1}>
+            <Text style={styles.text} numberOfLines={2}>
               {courseInfo.name}
             </Text>
           </View>
-        </TouchableOpacity>
+        </View>
     );
   }
 }

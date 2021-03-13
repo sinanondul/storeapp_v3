@@ -2,7 +2,8 @@ import {StyleSheet} from "react-native";
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
+        height: 80,
+        overflow:'hidden',
     },
     listItem: {
         height: 80,
@@ -16,12 +17,23 @@ const styles = StyleSheet.create({
     },
     textContainer: {
         flex: 1,
-        marginRight: 10,
-        alignItems: 'center'
+        marginRight: 50,
     },
     text: {
         fontSize: 17,
         fontWeight: 'bold'
+    },
+    sectionItem: {
+        height: 60,
+        backgroundColor: '#fff',
+        justifyContent: 'center',
+        borderBottomColor:'#f4f4f4',
+        borderBottomWidth: 1,
+    },
+    sectionItemText: {
+        fontSize: 15,
+        fontWeight: 'bold',
+        marginLeft: 40,
     }
 });
 
