@@ -76,8 +76,7 @@ export default class ExpandableCourseItem extends React.Component{
 
     render(){
         const sectionMap = this.props.courseInfo.sections;
-        var sectionNames = Array.from(Object.keys(sectionMap));
-        sectionNames = sectionNames.filter(sectionName => sectionName !== 'general');
+        var sectionNames = Array.from(Object.values(sectionMap));
         return (
             <Animated.View style={[styles.container,{height: this.state.animation}]}>
                 <TouchableOpacity 

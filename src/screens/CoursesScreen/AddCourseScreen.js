@@ -39,7 +39,7 @@ export default class LandingScreen extends React.Component{
             const limitString = formattedText.replace(/.$/, nextChar(formattedText.charAt(formattedText.length - 1)));
 
             //Getting course document refs.
-            var coursesQuery = coursesRef.where('code', '>=', formattedText.toUpperCase()).where('code', '<', limitString);
+            var coursesQuery = coursesRef.where('code', '>=', formattedText.toUpperCase()).where('code', '<', limitString).orderBy('code').limit(10);
             var coursesPromise = coursesQuery.get();
             var getCourseRefs = coursesPromise.then(function(coursesSnapshot) {
                 var results = [];
