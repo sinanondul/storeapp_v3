@@ -3,9 +3,13 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import LandingScreen from "./LandingScreen";
 import MessagingInterface from "../MessagesScreen/MessagingInterface";
+import EditProfileScreen from "./EditProfile";
+import { openDrawer } from "../../../App";
 //import AddScreen from "./AddScreen";
 import styles from "./styles";
 import { Alert } from "react-native";
+
+import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 
 export default class ProfileScreen extends React.Component {
   componentDidMount() {}
@@ -21,10 +25,43 @@ export default class ProfileScreen extends React.Component {
       }
     }
     return (
-      <ProfileStack.Navigator initialRouteName="Landing">
+      <ProfileStack.Navigator
+        initialRouteName="Landing"
+        screenOptions={{
+          headerStyle: {
+            backgroundColor: "fff",
+            shadowColor: "fff",
+          },
+          headerTintColor: "#000",
+          headerTitleStyle: {
+            fontWeight: "bold",
+          },
+        }}
+      >
         <ProfileStack.Screen
           name="Landing"
-          options={LandingScreen.navigationOptions}
+          options={{
+            title: "Profile",
+            headerLeft: () => (
+              <Icon
+                name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
+                style={{ marginLeft: 10 }}
+                backgroundColor="#1f65ff"
+                size={40}
+                color="#fff"
+                onPress={() => openDrawer()}
+              />
+            ),
+            headerRight: () => (
+              <Icon
+                name="account-edit"
+                style={{ marginRight: 10 }}
+                size={30}
+                color="#fff"
+                onPress={() => this.props.navigation.navigate("EditProfile")}
+              />
+            ),
+          }}
         >
           {(props) => (
             <LandingScreen
@@ -37,12 +74,11 @@ export default class ProfileScreen extends React.Component {
         </ProfileStack.Screen>
         <ProfileStack.Screen
           name="EditProfile"
-          options={LandingScreen.navigationOptions}
-        >
-          {(props) => (
-            <EditProfileScreen {...props} userData={this.props.userData} />
-          )}
-        </ProfileStack.Screen>
+          options={{
+            title: "Edit Profile",
+          }}
+          component={EditProfileScreen}
+        ></ProfileStack.Screen>
         <ProfileStack.Screen
           name="MessagingFromProfile"
           options={MessagingInterface.navigationOptions}

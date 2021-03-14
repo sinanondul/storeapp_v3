@@ -116,19 +116,19 @@ export default class LandingScreen extends React.Component {
     recentActivity2: "",
   };
 
-  componentDidMount() {
-    this.props.navigation.setOptions({
-      headerRight: () => (
-        <Icon
-          name="account-edit"
-          style={{ marginRight: 10 }}
-          size={30}
-          color="#fff"
-          onPress={() => this.props.navigation.navigate("EditProfile")}
-        />
-      ),
-    });
-  }
+  //   componentDidMount() {
+  //     this.props.navigation.setOptions({
+  //       headerRight: () => (
+  //         <Icon
+  //           name="account-edit"
+  //           style={{ marginRight: 10 }}
+  //           size={30}
+  //           color="#fff"
+  //           onPress={() => this.props.navigation.navigate("EditProfile")}
+  //         />
+  //       ),
+  //     });
+  //   }
   renderItem = ({ item }) => {
     return <MyPostFeedItem post={item} />;
   };
@@ -339,6 +339,15 @@ export default class LandingScreen extends React.Component {
         size={40}
         color="#fff"
         onPress={() => openDrawer()}
+      />
+    ),
+    headerRight: () => (
+      <Icon
+        name="account-edit"
+        style={{ marginRight: 10 }}
+        size={30}
+        color="#fff"
+        onPress={() => this.props.navigation.navigate("EditProfile")}
       />
     ),
   };
