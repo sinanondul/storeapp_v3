@@ -24,6 +24,8 @@ const EditProfileScreen = () => {
     "https://api.adorable.io/avatars/80/abott@adorable.png"
   );
   const { colors } = useTheme();
+  bs = React.createRef();
+  fall = new Animated.Value(1);
 
   const takePhotoFromCamera = () => {
     ImagePicker.openCamera({
@@ -85,9 +87,6 @@ const EditProfileScreen = () => {
       </View>
     </View>
   );
-
-  this.bs = React.createRef();
-  fall = new Animated.Value(1);
 
   return (
     <View style={styles.container}>
