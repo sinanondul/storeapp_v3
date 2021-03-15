@@ -24,19 +24,36 @@ import Constants from "expo-constants";
 import firebase from "firebase";
 //import firestore from "@react-native-firebase/firestore";
 
+import { getFullName, getAvatar } from "../../functions/UserInfoFormatter";
+
+
+const bs = React.createRef();
+
 export default class EditProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       image: "https://api.adorable.io/avatars/80/abott@adorable.png",
+      fall: new Animated.Value(1),
     };
   }
 
+  getPermission = async () => {
+    if (Platform.OS !== "web") {
+      const {
+        status,
+      } = await ImagePicker.requestMediaLibraryPermissionsAsync();
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
+      }
+    }
+  };
+
   componentDidMount() {
-    bs = React.createRef();
-    fall = new Animated.Value(1);
-    const { colors } = useTheme();
+    this.getPermission();
   }
+
+
 
   // getUser = async () => {
   //   const currentUser = await firebase
@@ -52,18 +69,6 @@ export default class EditProfile extends React.Component {
   // };
 
   //const handleUpdate = () => {};
-  componentDidMount() {
-    const getPermission = async () => {
-      if (Platform.OS !== "web") {
-        const {
-          status,
-        } = await ImagePicker.requestMediaLibraryPermissionsAsync();
-        if (status !== "granted") {
-          alert("Sorry, we need camera roll permissions to make this work!");
-        }
-      }
-    };
-  }
 
   choosePhotoFromLibrary = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -115,6 +120,7 @@ export default class EditProfile extends React.Component {
     </View>
   );
   render() {
+    
     return (
       <View style={styles.container}>
         <BottomSheet
@@ -123,14 +129,14 @@ export default class EditProfile extends React.Component {
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           initialSnap={1}
-          callbackNode={this.fall}
+          callbackNode={this.state.fall}
           enabledGestureInteraction={true}
           enabledContentTapInteraction={false}
         />
         <Animated.View
           style={{
             margin: 20,
-            opacity: Animated.add(0.1, Animated.multiply(this.fall, 1.0)),
+            opacity: Animated.add(0.1, Animated.multiply(this.state.fall, 1.0)),
           }}
         >
           <View style={{ alignItems: "center" }}>
@@ -181,7 +187,7 @@ export default class EditProfile extends React.Component {
           </View>
 
           <View style={styles.action}>
-            <FontAwesome name="user-o" color={this.colors} size={20} />
+            <FontAwesome name="user-o" color={this.props.textColor} size={20} />
             <TextInput
               placeholder="First Name"
               placeholderTextColor="#666666"
@@ -189,13 +195,13 @@ export default class EditProfile extends React.Component {
               style={[
                 styles.textInput,
                 {
-                  color: this.colors,
+                  color: this.props.textColor,
                 },
               ]}
             />
           </View>
           <View style={styles.action}>
-            <FontAwesome name="user-o" color={this.colors} size={20} />
+            <FontAwesome name="user-o" color={this.props.textColor} size={20} />
             <TextInput
               placeholder="Last Name"
               placeholderTextColor="#666666"
@@ -203,13 +209,13 @@ export default class EditProfile extends React.Component {
               style={[
                 styles.textInput,
                 {
-                  color: this.colors,
+                  color: this.props.textColor,
                 },
               ]}
             />
           </View>
           <View style={styles.action}>
-            <Feather name="phone" color={this.colors} size={20} />
+            <Feather name="phone" color={this.props.textColor} size={20} />
             <TextInput
               placeholder="Phone"
               placeholderTextColor="#666666"
@@ -218,13 +224,13 @@ export default class EditProfile extends React.Component {
               style={[
                 styles.textInput,
                 {
-                  color: this.colors,
+                  color: this.props.textColor,
                 },
               ]}
             />
           </View>
           <View style={styles.action}>
-            <FontAwesome name="envelope-o" color={this.colors} size={20} />
+            <FontAwesome name="envelope-o" color={this.props.textColor} size={20} />
             <TextInput
               placeholder="Email"
               placeholderTextColor="#666666"
@@ -233,13 +239,13 @@ export default class EditProfile extends React.Component {
               style={[
                 styles.textInput,
                 {
-                  color: this.colors,
+                  color: this.props.textColor,
                 },
               ]}
             />
           </View>
           <View style={styles.action}>
-            <FontAwesome name="globe" color={this.colors} size={20} />
+            <FontAwesome name="globe" color={this.props.textColor} size={20} />
             <TextInput
               placeholder="Country"
               placeholderTextColor="#666666"
@@ -247,13 +253,13 @@ export default class EditProfile extends React.Component {
               style={[
                 styles.textInput,
                 {
-                  color: this.colors,
+                  color: this.props.textColor,
                 },
               ]}
             />
           </View>
           <View style={styles.action}>
-            <Icon name="map-marker-outline" color={this.colors} size={20} />
+            <Icon name="map-marker-outline" color={this.props.textColor} size={20} />
             <TextInput
               placeholder="City"
               placeholderTextColor="#666666"
@@ -261,7 +267,7 @@ export default class EditProfile extends React.Component {
               style={[
                 styles.textInput,
                 {
-                  color: this.colors,
+                  color: this.props.textColor,
                 },
               ]}
             />
