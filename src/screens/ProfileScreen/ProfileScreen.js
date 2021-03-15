@@ -75,13 +75,14 @@ export default class ProfileScreen extends React.Component {
           options={{
             title: "Edit Profile",
           }}
-          component={EditProfileScreen}
-        />
+        >
+          {(props) => <EditProfileScreen {...this.props} {...props} userData={this.props.userData} userInfo={userInfo} textColor={'#0000000'}/>}
+        </ProfileStack.Screen>
         <ProfileStack.Screen
           name="MessagingFromProfile"
           options={MessagingInterface.navigationOptions}
         >
-          {(props) => <MessagingInterface {...this.props} {...props} />}
+          {(props) => <MessagingInterface {...this.props} {...props} userData={this.props.userData} userInfo={userInfo}/>}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
