@@ -38,28 +38,7 @@ export default class ProfileScreen extends React.Component {
       >
         <ProfileStack.Screen
           name="Landing"
-          options={{
-            title: "Profile",
-            headerLeft: () => (
-              <Icon
-                name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
-                style={{ marginLeft: 10 }}
-                backgroundColor="#1f65ff"
-                size={40}
-                color="#fff"
-                onPress={() => openDrawer()}
-              />
-            ),
-            headerRight: () => (
-              <Icon
-                name="account-edit"
-                style={{ marginRight: 10 }}
-                size={30}
-                color="#fff"
-                onPress={() => this.props.navigation.navigate("EditProfile")}
-              />
-            ),
-          }}
+          options={LandingScreen.navigationOptions}
         >
           {(props) => (
             <LandingScreen

@@ -74,6 +74,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center", 
+    marginTop: 15
   },
   infoBoxWrapper: {
     borderBottomColor: "#dddddd",
@@ -82,6 +84,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     flexDirection: "row",
     height: 100,
+    justifyContent: "center"
   },
   infoBox: {
     width: "50%",
