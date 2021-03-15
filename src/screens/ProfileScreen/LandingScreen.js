@@ -103,6 +103,8 @@ export default class LandingScreen extends React.Component {
     return params;
   };
 
+  userInfo = this.props.userInfo;
+
   state = {
     posts: [],
     name: "",
@@ -116,19 +118,6 @@ export default class LandingScreen extends React.Component {
     recentActivity2: "",
   };
 
-  //   componentDidMount() {
-  //     this.props.navigation.setOptions({
-  //       headerRight: () => (
-  //         <Icon
-  //           name="account-edit"
-  //           style={{ marginRight: 10 }}
-  //           size={30}
-  //           color="#fff"
-  //           onPress={() => this.props.navigation.navigate("EditProfile")}
-  //         />
-  //       ),
-  //     });
-  //   }
   renderItem = ({ item }) => {
     return <MyPostFeedItem post={item} />;
   };
@@ -282,7 +271,7 @@ export default class LandingScreen extends React.Component {
             data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
             renderItem={this.renderItem}
             keyExtractor={(item) => item.id}
-            //showsVerticalScrollIndicator={true}
+            showsVerticalScrollIndicator={true}
           ></FlatList>
           <View style={styles.menuWrapper}>
             {/*"TODO"*/}

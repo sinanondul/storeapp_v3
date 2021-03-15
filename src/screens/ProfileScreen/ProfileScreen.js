@@ -7,15 +7,12 @@ import EditProfileScreen from "./EditProfile";
 import { openDrawer } from "../../../App";
 //import AddScreen from "./AddScreen";
 import styles from "./styles";
-import { Alert } from "react-native";
+import { Alert, Platform } from "react-native";
 
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
+import { useTheme } from "react-native-paper";
 
 export default class ProfileScreen extends React.Component {
-  componentDidMount() {}
-
-  componentWillUnmount() {}
-
   render() {
     const ProfileStack = createStackNavigator();
     var userInfo = this.props.userData;
@@ -31,6 +28,7 @@ export default class ProfileScreen extends React.Component {
           headerStyle: {
             backgroundColor: "fff",
             shadowColor: "fff",
+            elevation: 0,
           },
           headerTintColor: "#000",
           headerTitleStyle: {
@@ -78,7 +76,7 @@ export default class ProfileScreen extends React.Component {
             title: "Edit Profile",
           }}
           component={EditProfileScreen}
-        ></ProfileStack.Screen>
+        />
         <ProfileStack.Screen
           name="MessagingFromProfile"
           options={MessagingInterface.navigationOptions}
