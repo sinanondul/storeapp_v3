@@ -43,7 +43,7 @@ export default class LandingScreen extends React.Component {
       //Navigation update.
       this.props.navigation.setOptions({
           headerLeft: () => (
-              this.props.userData.uid !== this.props.userInfo.uid
+              this.props.fromFeed
               ?   <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.goBack()}}/>
               :   <Ionicons 
                       name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
@@ -118,9 +118,7 @@ export default class LandingScreen extends React.Component {
               {getAvatar(this.props.userInfo, 140)}
             </View>
             {otherProfile ? (
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-evenly" }}
-              >
+              <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                   style={styles.dm}
                   onPress={() => {
@@ -134,7 +132,7 @@ export default class LandingScreen extends React.Component {
                       .then((chatInfo) => {
                         return this.props.navigation.navigate(
                           "MessagingFromProfile",
-                          { senderInfo: this.props.userInfo, chat: chatInfo }
+                          { senderInfo: this.props.userInfo, chat: chatInfo}
                         );
                       });
                   }}

@@ -46,7 +46,7 @@ export default function SocialNavigator(props) {
         options={NotificationsScreen.navigationOptions}
       />
       <SocialStack.Screen name='ProfileFromHome' options={{headerShown: false}}>
-        {(props) => <ProfileScreen {...props} userData={userData}/>}
+        {(props) => <ProfileScreen {...props} userData={userData} fromFeed={true}/>}
       </SocialStack.Screen>
     </SocialStack.Navigator>
   );
