@@ -74,8 +74,8 @@ const styles = StyleSheet.create({
     marginBottom: 25,
     flexDirection: "row",
     justifyContent: "center",
-    alignItems: "center", 
-    marginTop: 15
+    alignItems: "center",
+    marginTop: 15,
   },
   infoBoxWrapper: {
     borderBottomColor: "#dddddd",
@@ -84,7 +84,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     flexDirection: "row",
     height: 100,
-    justifyContent: "center"
+    justifyContent: "center",
   },
   infoBox: {
     width: "50%",
@@ -105,16 +105,21 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
   myposts: {
-    marginLeft: 10,
+    marginHorizontal: 10,
+    marginVertical: 10,
   },
   MyPostFeedItem: {
+    flex: 0.9,
     backgroundColor: "#FFF",
     borderRadius: 5,
+    borderWidth: 1,
     padding: 0,
-    flexDirection: "row",
+    flexDirection: "column",
     marginVertical: 0,
-    width: 300,
-    borderColor: "black",
+    //marginHorizontal: 10,
+    width: "100%",
+    borderColor: "gray",
+    marginVertical: 2,
   },
   feedHeader: {
     flex: 1,
@@ -167,9 +172,10 @@ const styles = StyleSheet.create({
   },
   postImage: {
     width: "100%",
-    height: 380,
+    height: 200,
     borderRadius: 5,
     marginVertical: 16,
+    alignSelf: "center",
   },
   centeredView: {
     flex: 1,
@@ -207,12 +213,6 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
-  },
-  postImage: {
-    width: "100%",
-    height: 200,
-    borderRadius: 5,
-    marginVertical: 16,
   },
   centeredView: {
     flex: 1,

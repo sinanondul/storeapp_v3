@@ -79,7 +79,6 @@ export default class MyPostFeedItem extends React.Component {
               <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
             </View>
           </View>
-
           <View style={styles.mainText}>
             <Text style={styles.post}>{this.props.post.text}</Text>
           </View>
@@ -90,7 +89,9 @@ export default class MyPostFeedItem extends React.Component {
                 style={styles.postImage}
                 resizeMode="cover"
               />
-            ) : null}
+            ) : (
+              <View style={styles.postImage}></View>
+            )}
             {/*Change Here */}
           </View>
         </View>
