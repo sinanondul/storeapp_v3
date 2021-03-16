@@ -33,19 +33,19 @@ export default class EditProfile extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      image: "https://api.adorable.io/avatars/80/abott@adorable.png",
+      image: null,
       fall: new Animated.Value(1),
       user: {
-        uid: "",
-        name: "",
-        handle: "",
-        about: "",
-        surename: "",
-        fullName: "",
-        email: "",
-        location: "",
-        phone: "",
-        userImg: "",
+        id: null,
+        name: null,
+        handle: null,
+        about: null,
+        surename: null,
+        fullName: null,
+        email: null,
+        location: null,
+        phone: null,
+        avatar: null,
       },
       uploading: [],
       transferred: [],
@@ -64,8 +64,23 @@ export default class EditProfile extends React.Component {
   };
 
   componentDidMount() {
+    this.setState({
+      user:
+      {
+        id: this.props.userData.uid,
+        name: this.props.userData.name,
+        // handle: this.props.userData.handle,
+        // about: this.props.userData.about,
+        surename: this.props.userData.surename,
+        fullName: this.props.userData.fullName,
+        email: this.props.userData.email,
+        avatar: this.props.userData.avatar,
+        // location: this.props.userData.location,
+        // phone: this.props.userData.phone,
+        // userImg: this.props.userData.userImg,
+      }
+    })
     this.getPermission();
-    this.getUser();
   }
 
   getUser = async () => {
@@ -83,25 +98,28 @@ export default class EditProfile extends React.Component {
   };
 
   handleUpdate = async () => {
-    let imgUrl = await this.uploadPhoto();
-
-    if (imgUrl == null && this.state.user.userImg) {
-      imgUrl = this.state.user.userImg;
+    let imgUrl = null;
+    Alert.alert("a");
+    if (this.state.image)
+    {
+      imgUrl = await this.uploadPhoto(this.state.image);
     }
+    else {
+      imgUrl = this.props.userData.avatar;
+    }
+
+    Alert.alert(this.props.userData.uid);
     firebase
       .firestore()
       .collection("users")
-      .doc(this.state.user.uid)
-      .update({
+      .doc(this.props.userData.uid)
+      .set({
+        id: this.state.user.id,
         name: this.state.user.name,
         surename: this.state.user.surename,
-        about: this.state.user.about,
-        handle: this.state.user.handle,
+        fullName: this.state.user.fullName,
         email: this.state.user.email,
-        location: this.state.user.location,
-        phone: this.state.user.phone,
-        location: this.state.user.location,
-        userImg: this.props.imgUrl,
+        avatar: imgUrl,
       })
       .then(() => {
         console.log("User Updated!");
@@ -257,9 +275,9 @@ export default class EditProfile extends React.Component {
               placeholder={this.state.user.name}
               placeholderTextColor="#666666"
               autoCorrect={false}
-              value={this.state.user ? this.state.user.name : ""}
+              value={this.state.user.name}
               onChangeText={(txt) =>
-                this.setState({ ...this.state.user, name: txt })
+                this.setState({ user:{...this.state.user, name: txt }})
               }
               style={[
                 styles.textInput,
@@ -351,7 +369,7 @@ export default class EditProfile extends React.Component {
           <TouchableOpacity
             style={styles.commandButton}
             onPress={() => {
-              this.handleUpdate;
+              this.handleUpdate();
             }}
           >
             <Text style={styles.panelButtonTitle}>Update</Text>
