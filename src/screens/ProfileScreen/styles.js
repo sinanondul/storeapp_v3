@@ -106,7 +106,7 @@ const styles = StyleSheet.create({
   },
   myposts: {
     marginHorizontal: 10,
-    marginVertical: 10,
+    marginTop: 10,
   },
   MyPostFeedItem: {
     flex: 0.9,
