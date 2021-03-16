@@ -65,6 +65,7 @@ export default class App extends React.Component {
             var userData = firestoreDocument.data();
             this.setState({ userInfo: {
               uid: userData.id,
+              email: userData.email,
               fullName: userData.fullName,
               name: userData.name,
               surename: userData.surename,

@@ -7,6 +7,7 @@ import {
   TextInput,
   StyleSheet,
   Platform,
+  Alert,
 } from "react-native";
 import * as Permissions from "expo-permissions";
 
@@ -26,7 +27,6 @@ import firebase from "firebase";
 
 import { getFullName, getAvatar } from "../../functions/UserInfoFormatter";
 
-
 const bs = React.createRef();
 
 export default class EditProfile extends React.Component {
@@ -35,6 +35,20 @@ export default class EditProfile extends React.Component {
     this.state = {
       image: "https://api.adorable.io/avatars/80/abott@adorable.png",
       fall: new Animated.Value(1),
+      user: {
+        uid: "",
+        name: "",
+        handle: "",
+        about: "",
+        surename: "",
+        fullName: "",
+        email: "",
+        location: "",
+        phone: "",
+        userImg: "",
+      },
+      uploading: [],
+      transferred: [],
     };
   }
 
@@ -51,24 +65,75 @@ export default class EditProfile extends React.Component {
 
   componentDidMount() {
     this.getPermission();
+    this.getUser();
   }
 
+  getUser = async () => {
+    const currentUser = await firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userData.uid)
+      .get()
+      .then((documentSnapshot) => {
+        if (documentSnapshot.exists) {
+          console.log("User Data", documentSnapshot.data());
+          this.setState({ user: documentSnapshot.data() });
+        }
+      });
+  };
 
+  handleUpdate = async () => {
+    let imgUrl = await this.uploadPhoto();
 
-  // getUser = async () => {
-  //   const currentUser = await firebase
-  //     .firestore()
-  //     .collection("users")
-  //     .doc(/*get userData.uid here */)
-  //     .get()
-  //     .then((documentSnapshot) => {
-  //       if (documentSnapshot.exists) {
-  //         setUserData(documentSnapshot.data());
-  //       }
-  //     });
-  // };
+    if (imgUrl == null && this.state.user.userImg) {
+      imgUrl = this.state.user.userImg;
+    }
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(this.state.user.uid)
+      .update({
+        name: this.state.user.name,
+        surename: this.state.user.surename,
+        about: this.state.user.about,
+        handle: this.state.user.handle,
+        email: this.state.user.email,
+        location: this.state.user.location,
+        phone: this.state.user.phone,
+        location: this.state.user.location,
+        userImg: this.props.imgUrl,
+      })
+      .then(() => {
+        console.log("User Updated!");
+        Alert.alert(
+          "Profile Updated!",
+          "Your Profile has been updated succesfully."
+        );
+      });
+  };
 
-  //const handleUpdate = () => {};
+  uploadPhoto = async (uri) => {
+    const path = `profilePhotos/${this.uid}/${Date.now()}.jpg`;
+
+    return new Promise(async (res, rej) => {
+      const response = await fetch(uri);
+      const file = await response.blob();
+
+      let upload = firebase.storage().ref(path).put(file);
+
+      upload.on(
+        "state_changed",
+        (snapshot) => {},
+        (err) => {
+          rej(err);
+        },
+        async () => {
+          const url = await upload.snapshot.ref.getDownloadURL();
+          res(url);
+        }
+      );
+    });
+  };
 
   choosePhotoFromLibrary = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
@@ -105,7 +170,7 @@ export default class EditProfile extends React.Component {
       </TouchableOpacity>
       <TouchableOpacity
         style={styles.panelButton}
-        onPress={() => this.bs.current.snapTo(1)}
+        onPress={() => bs.current.snapTo(1)}
       >
         <Text style={styles.panelButtonTitle}>Cancel</Text>
       </TouchableOpacity>
@@ -120,12 +185,11 @@ export default class EditProfile extends React.Component {
     </View>
   );
   render() {
-    
     return (
       <View style={styles.container}>
         <BottomSheet
-          ref={this.bs}
-          snapPoints={[330, 0]}
+          ref={bs}
+          snapPoints={[270, 0]}
           renderContent={this.renderInner}
           renderHeader={this.renderHeader}
           initialSnap={1}
@@ -140,7 +204,7 @@ export default class EditProfile extends React.Component {
           }}
         >
           <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => this.bs.current.snapTo(0)}>
+            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
               <View
                 style={{
                   height: 100,
@@ -152,7 +216,7 @@ export default class EditProfile extends React.Component {
               >
                 <ImageBackground
                   source={{
-                    uri: this.image,
+                    uri: this.state.image,
                   }}
                   style={{ height: 100, width: 100 }}
                   imageStyle={{ borderRadius: 15 }}
@@ -167,7 +231,7 @@ export default class EditProfile extends React.Component {
                     <Icon
                       name="camera"
                       size={35}
-                      color="#fff"
+                      color="#ffffff"
                       style={{
                         opacity: 0.7,
                         alignItems: "center",
@@ -182,16 +246,21 @@ export default class EditProfile extends React.Component {
               </View>
             </TouchableOpacity>
             <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
-              John Doe
+              {this.state.user ? this.state.user.name : ""}{" "}
+              {this.state.user ? this.state.user.surename : ""}
             </Text>
           </View>
 
           <View style={styles.action}>
             <FontAwesome name="user-o" color={this.props.textColor} size={20} />
             <TextInput
-              placeholder="First Name"
+              placeholder={this.state.user.name}
               placeholderTextColor="#666666"
               autoCorrect={false}
+              value={this.state.user ? this.state.user.name : ""}
+              onChangeText={(txt) =>
+                this.setState({ ...this.state.user, name: txt })
+              }
               style={[
                 styles.textInput,
                 {
@@ -203,9 +272,13 @@ export default class EditProfile extends React.Component {
           <View style={styles.action}>
             <FontAwesome name="user-o" color={this.props.textColor} size={20} />
             <TextInput
-              placeholder="Last Name"
+              placeholder={this.state.user.surename}
               placeholderTextColor="#666666"
               autoCorrect={false}
+              value={this.state.user ? this.state.user.surename : ""}
+              onChangeText={(txt) =>
+                this.setState({ ...this.state.user, surename: txt })
+              }
               style={[
                 styles.textInput,
                 {
@@ -221,6 +294,10 @@ export default class EditProfile extends React.Component {
               placeholderTextColor="#666666"
               keyboardType="number-pad"
               autoCorrect={false}
+              value={this.state.user ? this.state.user.phone : ""}
+              onChangeText={(txt) =>
+                this.setState({ ...this.state.user, phone: txt })
+              }
               style={[
                 styles.textInput,
                 {
@@ -230,12 +307,20 @@ export default class EditProfile extends React.Component {
             />
           </View>
           <View style={styles.action}>
-            <FontAwesome name="envelope-o" color={this.props.textColor} size={20} />
+            <FontAwesome
+              name="envelope-o"
+              color={this.props.textColor}
+              size={20}
+            />
             <TextInput
-              placeholder="Email"
+              placeholder={this.state.user.email}
               placeholderTextColor="#666666"
               keyboardType="email-address"
               autoCorrect={false}
+              value={this.state.user ? this.state.user.email : ""}
+              onChangeText={(txt) =>
+                this.setState({ ...this.state.user, email: txt })
+              }
               style={[
                 styles.textInput,
                 {
@@ -247,9 +332,13 @@ export default class EditProfile extends React.Component {
           <View style={styles.action}>
             <FontAwesome name="globe" color={this.props.textColor} size={20} />
             <TextInput
-              placeholder="Country"
+              placeholder="Location"
               placeholderTextColor="#666666"
               autoCorrect={false}
+              value={this.state.user ? this.state.user.location : ""}
+              onChangeText={(txt) =>
+                this.setState({ ...this.state.user, location: txt })
+              }
               style={[
                 styles.textInput,
                 {
@@ -258,24 +347,11 @@ export default class EditProfile extends React.Component {
               ]}
             />
           </View>
-          <View style={styles.action}>
-            <Icon name="map-marker-outline" color={this.props.textColor} size={20} />
-            <TextInput
-              placeholder="City"
-              placeholderTextColor="#666666"
-              autoCorrect={false}
-              style={[
-                styles.textInput,
-                {
-                  color: this.props.textColor,
-                },
-              ]}
-            />
-          </View>
+
           <TouchableOpacity
             style={styles.commandButton}
             onPress={() => {
-              handleUpdate;
+              this.handleUpdate;
             }}
           >
             <Text style={styles.panelButtonTitle}>Update</Text>
@@ -349,7 +425,7 @@ const styles = StyleSheet.create({
   panelButtonTitle: {
     fontSize: 17,
     fontWeight: "bold",
-    color: "white",
+    color: "#ffffff",
   },
   action: {
     flexDirection: "row",
