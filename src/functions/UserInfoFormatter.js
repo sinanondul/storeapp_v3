@@ -34,7 +34,7 @@ function getAvatarTag(info) {
 
 function getAvatar(info, size = 40) {
   if (!(info.avatar == null)) {
-    return <Avatar.Image size={size} source={info.avatar} />;
+    return <Avatar.Image size={size} source={{uri: info.avatar}} />;
   } else {
     return (
       <Avatar.Text

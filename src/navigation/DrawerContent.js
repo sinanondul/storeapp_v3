@@ -21,23 +21,9 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import {getFullName, getAvatarTag} from '../functions/UserInfoFormatter';
+import {getFullName, getAvatar} from '../functions/UserInfoFormatter';
 import styles from "./styles";
 
-function getAvatar(info) {
-  if (!(info.avatar == null)) {
-    return <Avatar.Image size={50} source={info.avatar} />;
-  } else {
-    return (
-      <Avatar.Text
-        size={50}
-        label={getAvatarTag(info)}
-        marginLeft={15}
-        style={{ backgroundColor: "#f4511e" }}
-      />
-    );
-  }
-}
 
 export default class DrawerContent extends React.Component {
   render() {
@@ -51,7 +37,7 @@ export default class DrawerContent extends React.Component {
                 })
               }>
             <View style={styles.userAvatar}>
-              {getAvatar(this.props.userData)}
+              {getAvatar(this.props.userData, 50)}
             </View>
             <View style={styles.userTextWrapper}>
               <View style={styles.userName}>

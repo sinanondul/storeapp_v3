@@ -10,6 +10,7 @@ import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 import AddScreen from "../screens/HomeScreen/AddScreen/AddScreen";
 import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
 import AddModal from "../screens/HomeScreen/AddScreen/AddModal";
+import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 
 const SocialStack = createStackNavigator();
 
@@ -44,6 +45,9 @@ export default function SocialNavigator(props) {
         component={NotificationsScreen}
         options={NotificationsScreen.navigationOptions}
       />
+      <SocialStack.Screen name='ProfileFromHome' options={{headerShown: false}}>
+        {(props) => <ProfileScreen {...props} userData={userData}/>}
+      </SocialStack.Screen>
     </SocialStack.Navigator>
   );
 }

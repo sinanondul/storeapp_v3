@@ -69,7 +69,11 @@ export default class App extends React.Component {
               fullName: userData.fullName,
               name: userData.name,
               surename: userData.surename,
-              avatar: userData.avatar
+              avatar: userData.avatar,
+              handle: userData.handle,
+              location: userData.location,
+              phone: userData.phone,
+              about: userData.about,
             }})
             this.setState({ isLoggedIn: true });
           })

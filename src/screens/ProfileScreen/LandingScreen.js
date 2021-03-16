@@ -66,8 +66,47 @@ export default class LandingScreen extends React.Component {
         ) : null,
     });
 
-    //Getting own posts.
+    componentDidMount() {
+      const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
+      var paddingRight = 0;
+      if (otherProfile) {
+        paddingRight = 60;
+      }
+      //Navigation update.
+      this.props.navigation.setOptions({
+          headerLeft: () => (
+              this.props.userData.uid !== this.props.userInfo.uid
+              ?   <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.goBack()}}/>
+              :   <Ionicons 
+                      name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
+                      style={{marginLeft:10}}
+                      size={40}
+                      color='#fff'
+                      onPress={() => openDrawer()}
+                  />
+          ),
+          headerRight: () => (
+            this.props.userData.uid === this.props.userInfo.uid
+            ?  <Icon
+                name="account-edit"
+                style={{ marginRight: 10 }}
+                size={30}
+                color="#fff"
+                onPress={() => this.props.navigation.navigate("EditProfile")}
+              />
+            : null
+          ),
+          headerTitleStyle: {
+            flex: 0.6,
+            paddingRight: paddingRight,
+            alignSelf: 'center', 
+            alignItems: 'center',
+            fontWeight: 'bold',
+          },
+      });
 
+      //Getting own posts.
+    
     let postsArray = [];
     const unsubscribe = firebase
       .firestore()
