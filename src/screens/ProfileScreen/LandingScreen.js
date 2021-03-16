@@ -34,38 +34,6 @@ export default class LandingScreen extends React.Component {
     return params;
   };
 
-  componentDidMount() {
-    //Navigation update.
-    this.props.navigation.setOptions({
-      headerLeft: () =>
-        this.props.userData.uid !== this.props.userInfo.uid ? (
-          <HeaderBackButton
-            tintColor={"#fff"}
-            onPress={() => {
-              this.props.navigation.goBack();
-            }}
-          />
-        ) : (
-          <Ionicons
-            name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
-            style={{ marginLeft: 10 }}
-            size={40}
-            color="#fff"
-            onPress={() => openDrawer()}
-          />
-        ),
-      headerRight: () =>
-        this.props.userData.uid === this.props.userInfo.uid ? (
-          <Icon
-            name="account-edit"
-            style={{ marginRight: 10 }}
-            size={30}
-            color="#fff"
-            onPress={() => this.props.navigation.navigate("EditProfile")}
-          />
-        ) : null,
-    });
-
     componentDidMount() {
       const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
       var paddingRight = 0;
