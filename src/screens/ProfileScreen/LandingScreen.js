@@ -118,9 +118,7 @@ export default class LandingScreen extends React.Component {
               {getAvatar(this.props.userInfo, 140)}
             </View>
             {otherProfile ? (
-              <View
-                style={{ flexDirection: "row", justifyContent: "space-evenly" }}
-              >
+              <View style={styles.buttonsContainer}>
                 <TouchableOpacity
                   style={styles.dm}
                   onPress={() => {
