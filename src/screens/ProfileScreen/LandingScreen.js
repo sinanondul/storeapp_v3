@@ -31,6 +31,11 @@ export default class LandingScreen extends React.Component{
     }
 
     componentDidMount() {
+      const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
+      var paddingRight = 0;
+      if (otherProfile) {
+        paddingRight = 60;
+      }
       //Navigation update.
       this.props.navigation.setOptions({
           headerLeft: () => (
@@ -55,6 +60,13 @@ export default class LandingScreen extends React.Component{
               />
             : null
           ),
+          headerTitleStyle: {
+            flex: 0.6,
+            paddingRight: paddingRight,
+            alignSelf: 'center', 
+            alignItems: 'center',
+            fontWeight: 'bold',
+          },
       });
 
       //Getting own posts.

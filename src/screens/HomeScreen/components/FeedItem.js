@@ -69,7 +69,7 @@ export default class FeedItem extends React.Component {
               <View style={styles.feedHeader}>
                 <TouchableOpacity style={styles.userInfo}
                   onPress={() => {
-                       this.props.navigation.navigate("Profile", {
+                       this.props.navigation.navigate("ProfileFromHome", {
                        userInfo: this.state.senderInfo,
                        otherProfile: true,
                      })

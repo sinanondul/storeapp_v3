@@ -65,19 +65,19 @@ export default class EditProfile extends React.Component {
 
   componentDidMount() {
     this.setState({
+      image: null,
       user:
       {
         id: this.props.userData.uid,
         name: this.props.userData.name,
-        // handle: this.props.userData.handle,
-        // about: this.props.userData.about,
+        handle: this.props.userData.handle,
+        about: this.props.userData.about,
         surename: this.props.userData.surename,
         fullName: this.props.userData.fullName,
         email: this.props.userData.email,
         avatar: this.props.userData.avatar,
-        // location: this.props.userData.location,
-        // phone: this.props.userData.phone,
-        // userImg: this.props.userData.userImg,
+        location: this.props.userData.location,
+        phone: this.props.userData.phone,
       }
     })
     this.getPermission();
@@ -99,7 +99,6 @@ export default class EditProfile extends React.Component {
 
   handleUpdate = async () => {
     let imgUrl = null;
-    Alert.alert("a");
     if (this.state.image)
     {
       imgUrl = await this.uploadPhoto(this.state.image);
@@ -108,7 +107,6 @@ export default class EditProfile extends React.Component {
       imgUrl = this.props.userData.avatar;
     }
 
-    Alert.alert(this.props.userData.uid);
     firebase
       .firestore()
       .collection("users")
@@ -119,6 +117,10 @@ export default class EditProfile extends React.Component {
         surename: this.state.user.surename,
         fullName: this.state.user.fullName,
         email: this.state.user.email,
+        handle: this.state.user.handle,
+        about: this.state.user.about,
+        location: this.state.user.location,
+        phone: this.state.user.phone,
         avatar: imgUrl,
       })
       .then(() => {
@@ -203,6 +205,10 @@ export default class EditProfile extends React.Component {
     </View>
   );
   render() {
+    let displayImage = this.props.userData.avatar;
+    if (this.state.image) {
+      displayImage = this.state.image;
+    }
     return (
       <View style={styles.container}>
         <BottomSheet
@@ -234,7 +240,7 @@ export default class EditProfile extends React.Component {
               >
                 <ImageBackground
                   source={{
-                    uri: this.state.image,
+                    uri: displayImage,
                   }}
                   style={{ height: 100, width: 100 }}
                   imageStyle={{ borderRadius: 15 }}
@@ -293,9 +299,9 @@ export default class EditProfile extends React.Component {
               placeholder={this.state.user.surename}
               placeholderTextColor="#666666"
               autoCorrect={false}
-              value={this.state.user ? this.state.user.surename : ""}
+              value={this.state.user.surename}
               onChangeText={(txt) =>
-                this.setState({ ...this.state.user, surename: txt })
+                this.setState({user:{...this.state.user, surename: txt }})
               }
               style={[
                 styles.textInput,
@@ -312,9 +318,9 @@ export default class EditProfile extends React.Component {
               placeholderTextColor="#666666"
               keyboardType="number-pad"
               autoCorrect={false}
-              value={this.state.user ? this.state.user.phone : ""}
+              value={this.state.user.phone}
               onChangeText={(txt) =>
-                this.setState({ ...this.state.user, phone: txt })
+                this.setState({ user:{...this.state.user, phone: txt }})
               }
               style={[
                 styles.textInput,
@@ -335,9 +341,9 @@ export default class EditProfile extends React.Component {
               placeholderTextColor="#666666"
               keyboardType="email-address"
               autoCorrect={false}
-              value={this.state.user ? this.state.user.email : ""}
+              value={this.state.user.email}
               onChangeText={(txt) =>
-                this.setState({ ...this.state.user, email: txt })
+                this.setState({ user:{...this.state.user, email: txt }})
               }
               style={[
                 styles.textInput,
@@ -353,9 +359,9 @@ export default class EditProfile extends React.Component {
               placeholder="Location"
               placeholderTextColor="#666666"
               autoCorrect={false}
-              value={this.state.user ? this.state.user.location : ""}
+              value={this.state.user.location}
               onChangeText={(txt) =>
-                this.setState({ ...this.state.user, location: txt })
+                this.setState({ user:{...this.state.user, location: txt }})
               }
               style={[
                 styles.textInput,
