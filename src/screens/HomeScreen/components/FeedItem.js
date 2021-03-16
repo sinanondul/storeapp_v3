@@ -94,17 +94,21 @@ export default class FeedItem extends React.Component {
                 </View>
               </View>
   
-              <View style={styles.mainText}>
-                <Text style={styles.post}>{this.props.post.text}</Text>
-              </View>
+              { this.props.post.text && this.props.post.text !== ""
+                ? <View style={styles.mainText}>
+                    <Text style={styles.post}>{this.props.post.text}</Text>
+                  </View>
+                : null
+              }
               <View>
-                {this.props.post.image != null ? (
-                  <Image
-                    source={{ uri: this.props.post.image }}
-                    style={styles.postImage}
-                    resizeMode="cover"
-                  />
-                ) : null}
+                { this.props.post.image 
+                  ? <Image
+                      source={{ uri: this.props.post.image }}
+                      style={styles.postImage}
+                      resizeMode="cover"
+                    />
+                  : null
+                }
               </View>
             </View>
           </View>

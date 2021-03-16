@@ -51,6 +51,8 @@ export default class MyPostFeedItem extends React.Component {
             name: userData.name,
             surename: userData.surename,
             avatar: userData.avatar,
+            fullName: userData.fullName,
+            handle: userData.handle,
           },
         });
         this.setState({ nameinit: true });
@@ -66,11 +68,11 @@ export default class MyPostFeedItem extends React.Component {
               {this.state.nameinit ? getAvatar(this.state.senderInfo) : null}
             </View>
             <View style={styles.userText}>
-              {/* {this.state.nameinit ? (
+              {this.state.nameinit ? (
                 <Text style={styles.name}>
                   {getFullName(this.state.senderInfo)}
                 </Text>
-              ) : null} */}
+              ) : null}
               <Text style={styles.timestamp}>
                 {getTimeSince(this.props.post.timestamp)}
               </Text>
@@ -79,19 +81,21 @@ export default class MyPostFeedItem extends React.Component {
               <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
             </View>
           </View>
-          <View style={styles.mainText}>
-            <Text style={styles.post}>{this.props.post.text}</Text>
-          </View>
+          { this.props.post.text && this.props.post.text !== ""
+            ? <View style={styles.mainText}>
+                <Text style={styles.post}>{this.props.post.text}</Text>
+              </View>
+            : null
+          }
           <View>
-            {this.props.post.image != null ? (
-              <Image
-                source={{ uri: this.props.post.image }}
-                style={styles.postImage}
-                resizeMode="cover"
-              />
-            ) : (
-              <View style={styles.postImage}></View>
-            )}
+            { this.props.post.image 
+              ? <Image
+                  source={{ uri: this.props.post.image }}
+                  style={styles.postImage}
+                  resizeMode="cover"
+                />
+              : null
+            }
             {/*Change Here */}
           </View>
         </View>
