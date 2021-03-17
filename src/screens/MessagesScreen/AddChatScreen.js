@@ -29,10 +29,10 @@ export default class AddChatScreen extends React.Component
         return (
             <TouchableOpacity 
                 onPress={() => {
-                Fire.shared.addChat({participantIds: [this.props.userData.uid, item.uid]})
-                .then((chatInfo) => {
-                  this.props.navigation.goBack();
-                  this.props.navigation.navigate('Messaging', {senderInfo: item, chat: chatInfo});
+                    Fire.shared.addChat({participantIds: [this.props.userData.uid, item.uid]})
+                    .then((chatInfo) => {
+                    this.props.navigation.goBack();
+                    this.props.navigation.navigate('Messaging', {senderInfo: item, chat: chatInfo});
                 })
               }}
             >

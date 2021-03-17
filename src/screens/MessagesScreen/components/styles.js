@@ -51,8 +51,9 @@ const ParticipantListItemStyles = StyleSheet.create({
         fontSize: 17,
     },
     adminText: {
+        marginRight: 20,
         color: "#f4511e",
-        fontSize: 14,
+        fontSize: 15,
     }
 })
 
@@ -86,5 +87,25 @@ const GroupImageStyles = StyleSheet.create({
     }
 })
 
+
+const ParticipantItemDialogStyles = StyleSheet.create({
+    container: {
+    },
+    row: {
+        height: 50,
+        borderBottomWidth: 1,
+        borderBottomColor: '#f4f4f4',
+        justifyContent: 'center',
+        paddingLeft: 10
+    },
+    text: {
+        fontSize: 17,
+    },
+    redText: {
+        color: '#D00000',
+        fontSize: 17,
+    }
+})
+
 export default componentStyles;
-export { GroupChatItemStyles, ParticipantListItemStyles, GroupImageStyles };
+export { GroupChatItemStyles, ParticipantListItemStyles, GroupImageStyles, ParticipantItemDialogStyles };

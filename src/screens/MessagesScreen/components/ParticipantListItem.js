@@ -28,7 +28,7 @@ export default class ParticipantListItem extends React.Component{
             <View style={styles.messageText}>
                 <Text style={pageStyles.nameText} numberOfLines={1}>{getFullName(this.props.userInfo)}</Text>
             </View>
-            { this.props.isAdmin
+            { this.props.userInfo.isAdmin
               ? <Text style={pageStyles.adminText}>
                   Admin
                 </Text>

@@ -169,6 +169,7 @@ const GroupChatDescriptionScreenStyles = StyleSheet.create({
     }
 });
 
+
 export default styles;
 
 export { CustomizeGroupChatScreenStyles, GroupChatDescriptionScreenStyles };
