@@ -1,15 +1,14 @@
 import firebaseKeys from "./config";
 import firebase from "firebase";
-import deleteCollection from './deleteCollection';
-import moment from 'moment';
+import deleteCollection from "./deleteCollection";
+import moment from "moment";
 import { Alert } from "react-native";
 
 class Fire {
   constructor() {
     if (!firebase.apps.length) {
       firebase.initializeApp(firebaseKeys);
-    }
-    else {
+    } else {
       firebase.app();
     }
   }
@@ -73,17 +72,16 @@ class Fire {
   }
 
   //Messaging Stuff
-  addChat = async({participantIds, groupChatInfo = null}) => {
-
-    const chatsRef = this.firestore.collection('chats');
+  addChat = async ({ participantIds, groupChatInfo = null }) => {
+    const chatsRef = this.firestore.collection("chats");
     const timeCreated = this.timestamp;
     var alreadyExists = false;
     var chatInfo = {
       id: null,
       lastMessage: null,
       participantIds: participantIds,
-      groupChatInfo: groupChatInfo
-    }
+      groupChatInfo: groupChatInfo,
+    };
     var chatId;
     var participantMap = {};
     var query = chatsRef;
@@ -93,18 +91,20 @@ class Fire {
     for (i = 0; i < participantIds.length; i++) {
       const participantId = participantIds[i];
       participantMap[participantId.toString()] = true;
-      query = query.where('participantIds.' + participantId.toString(), '==', true);
+      query = query.where(
+        "participantIds." + participantId.toString(),
+        "==",
+        true
+      );
     }
 
     //Check if group chat with same name exists.
-    if (groupChatInfo){
-      query.where('groupChatInfo.name', '==', groupChatInfo.name);
+    if (groupChatInfo) {
+      query.where("groupChatInfo.name", "==", groupChatInfo.name);
     }
 
     //Check if chat with *exactly* same participants exists.
-    await query
-    .get()
-    .then((snapshot) => {
+    await query.get().then((snapshot) => {
       snapshot.forEach((firestoreDocument) => {
           if (Object.keys(firestoreDocument.data().participantIds).length === participantIds.length)
           {
@@ -132,110 +132,111 @@ class Fire {
         participantIds: participantMap,
         lastTimestamp: timeCreated,
         lastMessage: null,
-        groupChatInfo: groupChatInfo
+        groupChatInfo: groupChatInfo,
       });
-      
+
       chatId = createdChat.id;
       chatInfo.id = chatId;
     }
-    
+
     //Add chat if doesn't exist and return.
-    const usersRef = this.firestore.collection('users');
+    const usersRef = this.firestore.collection("users");
     return new Promise((res, rej) => {
       if (!alreadyExists) {
         usersRef
-        .where('id', 'in', participantIds)
-        .get()
-        .then((snapshot) => {
-          snapshot.forEach(doc => {
-            usersRef.doc(doc.data().id).collection("chats").add({
-              id: chatId,
-              lastTimestamp: timeCreated,
-              new: true,
-              newCount: 0,
-            })
-          })
-          res(chatInfo);
-        })
-      }
-      else {
+          .where("id", "in", participantIds)
+          .get()
+          .then((snapshot) => {
+            snapshot.forEach((doc) => {
+              usersRef.doc(doc.data().id).collection("chats").add({
+                id: chatId,
+                lastTimestamp: timeCreated,
+                new: true,
+                newCount: 0,
+              });
+            });
+            res(chatInfo);
+          });
+      } else {
         res(chatInfo);
       }
-    })
-  }
+    });
+  };
 
-  resetNewCount = async ({uid, chatId}) => {
-    const chatsRef = this.firestore.collection('users').doc(uid).collection('chats');
+  resetNewCount = async ({ uid, chatId }) => {
+    const chatsRef = this.firestore
+      .collection("users")
+      .doc(uid)
+      .collection("chats");
     var chatRef;
 
-    
-    
     return new Promise((res, rej) => {
       chatsRef
-        .where('id', '==', chatId)
+        .where("id", "==", chatId)
         .get()
-        .then(response => {
+        .then((response) => {
           response.docs.forEach((doc) => {
-            chatsRef.doc(doc.id).update({new: false, newCount: 0})
+            chatsRef
+              .doc(doc.id)
+              .update({ new: false, newCount: 0 })
               .then((ref) => {
                 res(ref);
               })
               .catch((error) => {
                 rej(error);
               });
-          })
-        })
-        
-    })
-  }
+          });
+        });
+    });
+  };
 
-  addMessage = async ({senderId, text, chatId, participantIds}) =>{
-
-    const chatRef = this.firestore.collection('chats').doc(chatId);
-    const messagesRef = chatRef.collection('messages');
-    const usersRef = this.firestore.collection('users');
+  addMessage = async ({ senderId, text, chatId, participantIds }) => {
+    const chatRef = this.firestore.collection("chats").doc(chatId);
+    const messagesRef = chatRef.collection("messages");
+    const usersRef = this.firestore.collection("users");
     const timeCreated = this.timestamp;
 
-    await chatRef.update({lastMessage: text, lastTimestamp: timeCreated})
+    await chatRef.update({ lastMessage: text, lastTimestamp: timeCreated });
 
     await participantIds.forEach((participantId) => {
       usersRef
-      .doc(participantId)
-      .collection('chats')
-      .where('id', '==', chatId)
-      .get()
-      .then(response => {
-        response.docs.forEach((doc) => {
-            const docRef = usersRef.doc(participantId).collection('chats').doc(doc.id)
+        .doc(participantId)
+        .collection("chats")
+        .where("id", "==", chatId)
+        .get()
+        .then((response) => {
+          response.docs.forEach((doc) => {
+            const docRef = usersRef
+              .doc(participantId)
+              .collection("chats")
+              .doc(doc.id);
             var newCount;
             docRef.get().then((firestoreDocument) => {
               const docData = firestoreDocument.data();
-              if (docData.newCount)
-                newCount = docData.newCount;
-              else
-                newCount = 0;
-              if (participantId !== senderId){
+              if (docData.newCount) newCount = docData.newCount;
+              else newCount = 0;
+              if (participantId !== senderId) {
                 newCount = newCount + 1;
               }
-              docRef.update({lastTimestamp: timeCreated, newCount: newCount})
-            })
-        })
-      })
-    })
+              docRef.update({ lastTimestamp: timeCreated, newCount: newCount });
+            });
+          });
+        });
+    });
 
     return new Promise((res, rej) => {
       messagesRef
-            .add({ 
-              text,
-              timestamp: timeCreated,
-              senderId: senderId,
-            })
-            .then((ref) => {
-              res(ref);
-            })
-            .catch((error) => {
-              rej(error);
-            });
+        .add({ 
+          text,
+          timestamp: timeCreated,
+          senderId: senderId,
+        })
+        .then((ref) => {
+          res(ref);
+        })
+        .catch((error) => {
+          rej(error);
+        });
       });
   }
 
@@ -268,88 +269,129 @@ class Fire {
     })
   }
 
-  deleteChat = async({uid, chatId}) => {
-
+  deleteChat = async ({ uid, chatId }) => {
     //Setting deleted timestamp.
-    const userRef = this.firestore().collection('users').doc(uid);
+    const userRef = this.firestore().collection("users").doc(uid);
     userRef
-      .collection('chats')
-      .where('id', '==', chatId)
+      .collection("chats")
+      .where("id", "==", chatId)
       .get()
-      .then(response => {
+      .then((response) => {
         response.docs.forEach((doc) => {
-          doc.ref.update({deletedTimestamp: this.timestamp});
-        })
-      })
-    
-  }
+          doc.ref.update({ deletedTimestamp: this.timestamp });
+        });
+      });
+  };
 
-  leaveGroupChat = async({uid, chatId}) => {
-  
-      //Deleting from current user's chats.
-      const userRef = this.firestore().collection('users').doc(uid);
-      userRef
-        .collection('chats')
-        .where('id', '==', chatId)
-        .get()
-        .then(response => {
-          response.docs.forEach((doc) => {
-            doc.ref.delete();
-          })
-        })
+  leaveGroupChat = async ({ uid, chatId }) => {
+    //Deleting from current user's chats.
+    const userRef = this.firestore().collection("users").doc(uid);
+    userRef
+      .collection("chats")
+      .where("id", "==", chatId)
+      .get()
+      .then((response) => {
+        response.docs.forEach((doc) => {
+          doc.ref.delete();
+        });
+      });
 
-      //Removing user from chat document.
-      const chatRef = this.firestore().collection('chats').doc(chatId);
-      var participantMap = {};
-      participantMap['participantIds.' + uid] = false;
-      await chatRef.update(participantMap);
+    //Removing user from chat document.
+    const chatRef = this.firestore().collection("chats").doc(chatId);
+    var participantMap = {};
+    participantMap["participantIds." + uid] = false;
+    await chatRef.update(participantMap);
 
-      //Delete chat document if all users have left.
+    //Delete chat document if all users have left.
 
-      var stillLeft = false;
-      await chatRef.get().then(firestoreDocument => {
-        const participantsArray = firestoreDocument.data().participantIds;
-        participantsArray.forEach(participantExists => {
-          if(participantExists) {
-            stillLeft = true;
-          }
+    var stillLeft = false;
+    await chatRef.get().then((firestoreDocument) => {
+      const participantsArray = firestoreDocument.data().participantIds;
+      participantsArray.forEach((participantExists) => {
+        if (participantExists) {
+          stillLeft = true;
+        }
+      });
+    });
+    if (!stillLeft) {
+      deleteCollection(chatRef, "messages", 100).then(() => {
+        chatRef.delete();
+      });
+    }
+  };
+
+  //Social Methods
+  follow = async ({ userID, targetID }) => {
+    const userRef = this.firestore.collection("users").doc(userID);
+    const targetUserRef = this.firestore.collection("users").doc(targetID);
+    const followingRef = userRef.collection("following");
+    const followersRef = targetUserRef.collection("followers");
+    const timeFollowed = this.timestamp;
+    Alert.alert(userID);
+    Alert.alert(targetID);
+    return new Promise((res, rej) => {
+      followersRef
+        .add({
+          userID,
+          timestamp: timeFollowed,
         })
-      })
-      if (!stillLeft) {
-        deleteCollection(chatRef, 'messages', 100).then(() => {
-          chatRef.delete();
+        .then((ref) => {
+          followingRef
+            .add({
+              targetID,
+              timestamp: timeFollowed,
+              followerDocId: ref.id,
+            })
+            .then((ref) => {
+              res(ref);
+            })
+            .catch((error) => {
+              rej(error);
+            });
         })
-      }
-  }
+        .catch((error) => {
+          rej(error);
+        });
+    });
+  };
+
+  // unfollow = async ({ userID, targetID }) => {
+  //   const userRef = this.firestore.collection("users").doc(userID);
+  //   const targetUserRef = this.firestore.collection("users").doc(targetID);
+  //   const followingRef = userRef.collection("following");
+  //   const followersRef = targetUserRef.collection("followers");
+  //   //const timeFollowed = this.timestamp;
+  //   Alert.alert(userID);
+  //   Alert.alert(targetID);
+  //   return new Promise((res, rej) => {
+  //     followingRef.doc(targetID).remove();
+  //   });
+  // };
 
   //Courses
 
-  addCourse = async(uid, courseInfo) => {
-    
-  }
+  addCourse = async (uid, courseInfo) => {};
 
-  joinCourse = async(uid, courseCode, sectionNumber) => {
-    const coursesRef = this.firestore.collection('courses');
+  joinCourse = async (uid, courseCode, sectionNumber) => {
+    const coursesRef = this.firestore.collection("courses");
     var alreadyExists = false;
     var courseId = null;
 
     //Check if course already exists.
     coursesRef
-    .where('code', '==', courseCode)
-    .get()
-    .then((snapshot) => {
-      snapshot.forEach((firestoreDocument) => {
-        alreadyExists = true;
-        courseId = firestoreDocument.id();
-      })
-    })
+      .where("code", "==", courseCode)
+      .get()
+      .then((snapshot) => {
+        snapshot.forEach((firestoreDocument) => {
+          alreadyExists = true;
+          courseId = firestoreDocument.id();
+        });
+      });
 
     //Create course if doesn't exist.
 
     //Join course if exists.
-    
-
-  }
+  };
 }
 
 Fire.shared = new Fire();
