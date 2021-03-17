@@ -76,7 +76,8 @@ export default class AddGroupChatScreen extends React.Component
                                 const groupChatInfo = 
                                 {
                                     name: this.state.groupName, 
-                                    avatar: null
+                                    avatar: null,
+                                    admins: [this.props.userData.uid],
                                 }
                                 Fire.shared.addChat({participantIds: this.state.participantIds, groupChatInfo: groupChatInfo})
                                     .then((chatInfo) => {

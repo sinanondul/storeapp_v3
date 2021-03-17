@@ -10,15 +10,24 @@ import firebase from 'firebase';
 
 import {getFullName, getAvatar, getGroupChatName, getGroupChatAvatar} from "../../functions/UserInfoFormatter";
 import ParticipantListItem from './components/ParticipantListItem';
+import ParticipantItemDialog from './components/ParticipantItemDialog';
 import GroupImage from './components/GroupImage';
 import styles, {GroupChatDescriptionScreenStyles as pageStyles} from "./styles";
 
 
 export default class GroupChatDescriptionScreen extends React.Component{
     
+    constructor(props) {
+        super(props)
+    
+        this.toggleDialog = this.toggleDialog.bind(this)
+    }
     
     state={
-        userInfos: []
+        userInfos: [],
+        showParticipantDialog: false,
+        amAdmin: false,
+        dialogTarget: null,
     }
 
     static navigationOptions = ({ navigation }) => {
@@ -48,12 +57,15 @@ export default class GroupChatDescriptionScreen extends React.Component{
             ),
         });
         //Getting user infos.
+        const amAdmin = this.props.route.params.chat.groupChatInfo.admins.includes(this.props.userData.uid)
+        this.setState({amAdmin: amAdmin});
         var youItem = {
             uid: this.props.userData.uid,
             name: this.props.userData.name,
             surename: this.props.userData.surename,
             fullName: 'you',
-            avatar: this.props.userData.avatar
+            avatar: this.props.userData.avatar,
+            isAdmin: amAdmin,
         }
         youItem.fullName = 'you';
         let usersArray = [];
@@ -66,12 +78,14 @@ export default class GroupChatDescriptionScreen extends React.Component{
                 snapshot.forEach((firestoreDocument) =>{
                     
                     var userData = firestoreDocument.data();
+                    var isAdmin = this.props.route.params.chat.groupChatInfo.admins.includes(userData.id);
                     const userInfo = {
                         uid: userData.id,
                         name: userData.name,
                         surename: userData.surename,
                         fullName: userData.fullName,
-                        avatar: userData.avatar
+                        avatar: userData.avatar,
+                        isAdmin: isAdmin,
                     }
                     if (userData.id !== this.props.userData.uid) {
                         usersArray.unshift(userInfo);
@@ -91,51 +105,76 @@ export default class GroupChatDescriptionScreen extends React.Component{
     componentWillUnmount() {
     }
 
+    toggleDialog () {
+        this.setState({showParticipantDialog: !this.state.showParticipantDialog});
+    }
+
     renderItem = ({item}) => {
+        const ownItem = item.uid === this.props.userData.uid;
         return (
-            <TouchableOpacity 
-                onPress={() => {
-              }}
-            >
-                <ParticipantListItem {...this.props} userInfo={item}/>
-            </TouchableOpacity>
+            ownItem
+            ?   <View>
+                    <ParticipantListItem {...this.props} userInfo={item}/>
+                </View>
+            :   <TouchableOpacity 
+                    onPress={() => {
+                        this.setState({dialogTarget: item})
+                        this.toggleDialog();
+                    }}
+                >
+                    <ParticipantListItem {...this.props} userInfo={item}/>
+                </TouchableOpacity>
+            
+            
         );
     }
 
     render() {
         const chat = this.props.route.params.chat;
         return(
-            <ScrollView style={{flex: 1}}>
-                <View style={pageStyles.headerContainer}>
-                    <GroupImage groupChatInfo={chat.groupChatInfo}/>
-                </View>
-                <View style={pageStyles.participantListContainer}>
-                    <Text style={pageStyles.participantsTitle}>
-                        {this.props.route.params.chat.participantIds.length.toString() + " participants"}
-                    </Text>
-                    <FlatList
-                        data={this.state.userInfos}
-                        renderItem={this.renderItem}
-                        keyExtractor={(item) => item.id}
-                        showsVerticalScrollIndicator={false}
-                        extraData={this.state}
-                    />
-                </View>
-                <TouchableOpacity style={pageStyles.leaveGroupContainer} onPress={() => {}}>
-                    <View style={pageStyles.leaveGroupIcon}>
-                        <Icon
-                            name={Platform.OS === "ios" ? "ios-exit-outline" : "md-exit-outline"}
-                            size={30}
-                            color="#D00000"
-                            style={{
-                            }}
+            <View style={{flex: 1}}>
+                <ScrollView style={{flex: 1}}>
+                    <View style={pageStyles.headerContainer}>
+                        <GroupImage groupChatInfo={chat.groupChatInfo}/>
+                    </View>
+                    <View style={pageStyles.participantListContainer}>
+                        <Text style={pageStyles.participantsTitle}>
+                            {this.props.route.params.chat.participantIds.length.toString() + " participants"}
+                        </Text>
+                        <FlatList
+                            data={this.state.userInfos}
+                            renderItem={this.renderItem}
+                            keyExtractor={(item) => item.id}
+                            showsVerticalScrollIndicator={false}
+                            extraData={this.state}
                         />
                     </View>
-                    <Text style={pageStyles.leaveGroupText}>
-                        Leave group
-                    </Text>
-                </TouchableOpacity>
-            </ScrollView>
+                    <TouchableOpacity style={pageStyles.leaveGroupContainer} onPress={() => {}}>
+                        <View style={pageStyles.leaveGroupIcon}>
+                            <Icon
+                                name={Platform.OS === "ios" ? "ios-exit-outline" : "md-exit-outline"}
+                                size={30}
+                                color="#D00000"
+                                style={{
+                                }}
+                            />
+                        </View>
+                        <Text style={pageStyles.leaveGroupText}>
+                            Leave group
+                        </Text>
+                    </TouchableOpacity>
+                </ScrollView>
+                {   this.state.showParticipantDialog
+                    ?   <ParticipantItemDialog 
+                            toggleDialog={this.toggleDialog} 
+                            amAdmin={this.state.amAdmin} 
+                            target={this.state.dialogTarget} 
+                            chatId={this.props.route.params.chat.id}
+                        /> 
+                    :   null
+                }
+
+            </View>
         );
     }
 

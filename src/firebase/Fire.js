@@ -78,6 +78,7 @@ class Fire {
     var alreadyExists = false;
     var chatInfo = {
       id: null,
+      lastMessage: null,
       participantIds: participantIds,
       groupChatInfo: groupChatInfo,
     };
@@ -105,18 +106,26 @@ class Fire {
     //Check if chat with *exactly* same participants exists.
     await query.get().then((snapshot) => {
       snapshot.forEach((firestoreDocument) => {
-        if (
-          Object.keys(firestoreDocument.data().participantIds).length ===
-          participantIds.length
-        ) {
-          alreadyExists = true;
-          chatId = firestoreDocument.id;
-          chatInfo.id = chatId;
-          chatInfo.groupChatInfo = firestoreDocument.data().groupChatInfo;
-        }
-      });
-    });
-
+          if (Object.keys(firestoreDocument.data().participantIds).length === participantIds.length)
+          {
+            if (firestoreDocument.data().lastMessage)
+            {
+              alreadyExists = true;
+              chatId = firestoreDocument.id;
+              chatInfo.id = chatId;
+              chatInfo.groupChatInfo = firestoreDocument.data().groupChatInfo;
+              chatInfo.lastMessage = firestoreDocument.data().lastMessage;
+            }
+            else 
+            {
+              let previousData = firestoreDocument.get().data();
+              previousData.groupChatInfo = groupChatInfo;
+              firestoreDocument.ref.set(previousData);
+            }
+          }
+      })
+    })
+    
     //Create chat item.
     if (!alreadyExists) {
       const createdChat = await chatsRef.add({
@@ -217,7 +226,7 @@ class Fire {
 
     return new Promise((res, rej) => {
       messagesRef
-        .add({
+        .add({ 
           text,
           timestamp: timeCreated,
           senderId: senderId,
@@ -228,8 +237,37 @@ class Fire {
         .catch((error) => {
           rej(error);
         });
-    });
-  };
+      });
+  }
+
+  setAdmin = async(chatId, uid) => {
+    let chatRef = this.firestore.collection('chats').doc(chatId);
+    return new Promise((resolve, reject) => {
+      chatRef.get().then(doc => {
+        const docData = doc.data();
+        let adminsArray = docData.groupChatInfo.admins;
+        if (!adminsArray.includes(uid)) {
+          adminsArray.push(uid);
+          this.firestore.collection('chats').doc(chatId).set({
+            lastMessage: docData.lastMessage,
+            lastTimestamp: docData.lastTimestamp,
+            participantIds: docData.participantIds,
+            groupChatInfo: {
+              avatar: docData.groupChatInfo.avatar,
+              name: docData.groupChatInfo.name,
+              admins: adminsArray
+            }
+          })
+          .then((ref) => {
+            resolve(ref);
+          })
+        }
+        else {
+          resolve();
+        }
+      })
+    })
+  }
 
   deleteChat = async ({ uid, chatId }) => {
     //Setting deleted timestamp.

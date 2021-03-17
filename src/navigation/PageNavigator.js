@@ -62,17 +62,20 @@ export default class AppPage extends React.Component {
                   lastMessage: newChatData.lastMessage,
                   groupChatInfo: newChatData.groupChatInfo
                 };
-            
                 if (change.type === "added") 
                 {
                   //Adding to array
-                  chatsArray.unshift(newChatItem);
+                  if (newChatItem.lastMessage)  {
+                    chatsArray.unshift(newChatItem);
+                  }
                 }
                 else if (change.type === "modified") 
                 {
                   //Modifying previously added chat. 
-                  const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
-                  chatsArray[index] = newChatItem;
+                  if (newChatItem.lastMessage)  {
+                    const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+                    chatsArray[index] = newChatItem;
+                  }
                 }
                 else if (change.type === "removed") 
                 {
