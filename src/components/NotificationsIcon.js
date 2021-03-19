@@ -12,7 +12,10 @@ export default class NotificationsIcon extends React.Component
     render() 
     {
         return (
-            <TouchableOpacity style={styles.footerButtonContainer}>
+            <TouchableOpacity 
+                style={styles.footerButtonContainer} 
+                onPress={() => this.props.navigation.navigate('Notifications')}
+            >
                 
                 
                 <Icon
@@ -23,7 +26,6 @@ export default class NotificationsIcon extends React.Component
                     }
                     size={30}
                     color='#000'
-                    onPress={() => this.props.navigation.navigate('Notifications')}
                 />
                 <Badge
                     visible={this.props.notificationCount > 0}

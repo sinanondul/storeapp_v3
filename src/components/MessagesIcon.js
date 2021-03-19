@@ -11,8 +11,10 @@ export default class MessagesIcon extends React.Component
     render() 
     {
         return (
-            <TouchableOpacity style={styles.footerButtonContainer} 
-                onPress={() => this.props.navigation.navigate('Messages')}>
+            <TouchableOpacity 
+                style={styles.footerButtonContainer} 
+                onPress={() => this.props.navigation.navigate('Messages')}
+            >
                 <Icon
                     name={
                     Platform.OS === "ios"

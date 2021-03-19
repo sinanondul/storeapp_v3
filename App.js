@@ -88,7 +88,6 @@ export default class App extends React.Component {
     const chats = this.state.chats;
     return (
       <PaperProvider theme={theme}>
-
         <NavigationContainer ref={navigationRef}>
           {this.state.isLoggedIn ? (
             <AppPage userData={userData} chats={chats}/>
