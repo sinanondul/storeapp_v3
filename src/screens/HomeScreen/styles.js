@@ -185,7 +185,12 @@ const LandingStyles = StyleSheet.create({
   },
   intButtons: {
     flexDirection: "row",
-    
+  },
+  seperator: {
+    width: "100%",
+    height: 0.1,
+    backgroundColor: "gray",
+    shadowColor: "black",
   },
   //tabs
 });

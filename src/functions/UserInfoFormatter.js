@@ -1,27 +1,26 @@
 import React from "react";
-import {Avatar} from 'react-native-paper';
+import { Avatar } from "react-native-paper";
 
 function capitalizeFirstOfEach(words) {
-  var separateWord = words.toLowerCase().split(' ');
+  var separateWord = words.toLowerCase().split(" ");
   for (var i = 0; i < separateWord.length; i++) {
-     separateWord[i] = separateWord[i].charAt(0).toUpperCase() +
-     separateWord[i].substring(1);
+    separateWord[i] =
+      separateWord[i].charAt(0).toUpperCase() + separateWord[i].substring(1);
   }
-  return separateWord.join(' ');
+  return separateWord.join(" ");
 }
 
-function upperCaseFirst(string) 
-{
-    return string.charAt(0).toUpperCase() + string.slice(1);
+function upperCaseFirst(string) {
+  return string.charAt(0).toUpperCase() + string.slice(1);
 }
 
 function getName(info) {
   var nameString = info.name;
-  const index = nameString.indexOf(' ');
+  const index = nameString.indexOf(" ");
   if (index > 0) {
-    nameString = nameString.substr(0, nameString.indexOf(' '))
+    nameString = nameString.substr(0, nameString.indexOf(" "));
   }
-  return upperCaseFirst(nameString); 
+  return upperCaseFirst(nameString);
 }
 
 function getFullName(info) {
@@ -32,9 +31,9 @@ function getAvatarTag(info) {
   return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
 }
 
-function getAvatar(info, size = 40) {
+function getAvatar(info, size) {
   if (!(info.avatar == null)) {
-    return <Avatar.Image size={size} source={{uri: info.avatar}} />;
+    return <Avatar.Image size={size} source={{ uri: info.avatar }} />;
   } else {
     return (
       <Avatar.Text
@@ -69,4 +68,11 @@ function getGroupChatAvatar(info, size = 40) {
   }
 }
 
-export {getName, getFullName, getAvatarTag, getAvatar, getGroupChatName, getGroupChatAvatar}
+export {
+  getName,
+  getFullName,
+  getAvatarTag,
+  getAvatar,
+  getGroupChatName,
+  getGroupChatAvatar,
+};

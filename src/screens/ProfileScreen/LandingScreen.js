@@ -34,47 +34,52 @@ export default class LandingScreen extends React.Component {
     return params;
   };
 
-    componentDidMount() {
-      const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
-      var paddingRight = 0;
-      if (otherProfile) {
-        paddingRight = 60;
-      }
-      //Navigation update.
-      this.props.navigation.setOptions({
-          headerLeft: () => (
-              this.props.fromFeed
-              ?   <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.goBack()}}/>
-              :   <Ionicons 
-                      name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
-                      style={{marginLeft:10}}
-                      size={40}
-                      color='#fff'
-                      onPress={() => openDrawer()}
-                  />
-          ),
-          headerRight: () => (
-            this.props.userData.uid === this.props.userInfo.uid
-            ?  <Icon
-                name="account-edit"
-                style={{ marginRight: 10 }}
-                size={30}
-                color="#fff"
-                onPress={() => this.props.navigation.navigate("EditProfile")}
-              />
-            : null
-          ),
-          headerTitleStyle: {
-            flex: 0.6,
-            paddingRight: paddingRight,
-            alignSelf: 'center', 
-            alignItems: 'center',
-            fontWeight: 'bold',
-          },
-      });
+  componentDidMount() {
+    const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
+    var paddingRight = 0;
+    if (otherProfile) {
+      paddingRight = 60;
+    }
+    //Navigation update.
+    this.props.navigation.setOptions({
+      headerLeft: () =>
+        this.props.fromFeed ? (
+          <HeaderBackButton
+            tintColor={"#fff"}
+            onPress={() => {
+              this.props.navigation.goBack();
+            }}
+          />
+        ) : (
+          <Ionicons
+            name={Platform.OS === "ios" ? "ios-menu-outline" : "md-menu"}
+            style={{ marginLeft: 10 }}
+            size={40}
+            color="#fff"
+            onPress={() => openDrawer()}
+          />
+        ),
+      headerRight: () =>
+        this.props.userData.uid === this.props.userInfo.uid ? (
+          <Icon
+            name="account-edit"
+            style={{ marginRight: 10 }}
+            size={30}
+            color="#fff"
+            onPress={() => this.props.navigation.navigate("EditProfile")}
+          />
+        ) : null,
+      headerTitleStyle: {
+        flex: 0.6,
+        paddingRight: paddingRight,
+        alignSelf: "center",
+        alignItems: "center",
+        fontWeight: "bold",
+      },
+    });
 
-      //Getting own posts.
-    
+    //Getting own posts.
+
     let postsArray = [];
     const unsubscribe = firebase
       .firestore()
@@ -113,114 +118,116 @@ export default class LandingScreen extends React.Component {
     return (
       <SafeAreaView style={styles.container}>
         <ScrollView showsVerticalScrollIndicator={false}>
-          <View style={styles.profileImageContainer}>
-            <View style={styles.profileImage}>
-              {getAvatar(this.props.userInfo, 140)}
-            </View>
-            {otherProfile ? (
-              <View style={styles.buttonsContainer}>
-                <TouchableOpacity
-                  style={styles.dm}
-                  onPress={() => {
-                    Fire.shared
-                      .addChat({
-                        participantIds: [
-                          this.props.userData.uid,
-                          this.props.userInfo.uid,
-                        ],
-                      })
-                      .then((chatInfo) => {
-                        return this.props.navigation.navigate(
-                          "MessagingFromProfile",
-                          { senderInfo: this.props.userInfo, chat: chatInfo}
-                        );
-                      });
-                  }}
-                >
-                  <MaterialIcons name="chat" size={18} color="#DFD8C8" />
-                </TouchableOpacity>
-                <TouchableOpacity style={styles.add}>
-                  <Ionicons
-                    name="ios-add"
-                    size={36}
-                    color="#DFD8C8"
-                    style={{ marginTop: 3 }}
-                  ></Ionicons>
-                </TouchableOpacity>
+          <View style={styles.profileTop}>
+            <View style={styles.profileImageContainer}>
+              <View style={styles.profileImage}>
+                {getAvatar(this.props.userInfo, 80)}
               </View>
-            ) : null}
-          </View>
+              {otherProfile ? (
+                <View style={styles.buttonsContainer}>
+                  <TouchableOpacity
+                    style={styles.dm}
+                    onPress={() => {
+                      Fire.shared
+                        .addChat({
+                          participantIds: [
+                            this.props.userData.uid,
+                            this.props.userInfo.uid,
+                          ],
+                        })
+                        .then((chatInfo) => {
+                          return this.props.navigation.navigate(
+                            "MessagingFromProfile",
+                            { senderInfo: this.props.userInfo, chat: chatInfo }
+                          );
+                        });
+                    }}
+                  >
+                    <MaterialIcons name="mail" size={18} color="#DFD8C8" />
+                  </TouchableOpacity>
+                  <TouchableOpacity style={styles.follow}>
+                    <Ionicons
+                      name="add"
+                      size={15}
+                      color="#DFD8C8"
+                      style={{ alignItems: "center", justifyContent: "center" }}
+                    >
+                      <Text style={{ fontSize: 15, alignSelf: "center" }}>
+                        Follow
+                      </Text>
+                    </Ionicons>
+                  </TouchableOpacity>
+                </View>
+              ) : null}
+            </View>
 
-          <View style={styles.infoContainer}>
-            <Text style={[styles.text, { fontWeight: "200", fontSize: 36 }]}>
-              {getFullName(this.props.userInfo)}
-            </Text>
-            <Text style={[styles.text, { color: "gray", fontSize: 18 }]}>
-              @USER_HANDLE
-            </Text>
-            <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-              Computer Science
-            </Text>
-          </View>
+            <View style={styles.infoContainer}>
+              <Text style={[styles.text, { fontWeight: "500", fontSize: 20 }]}>
+                {getFullName(this.props.userInfo)}
+              </Text>
+              <Text style={[styles.text, { color: "gray", fontSize: 14 }]}>
+                @userhandle
+              </Text>
+              <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
+                Computer Science
+              </Text>
+              <Text
+                style={[
+                  styles.text,
+                  { color: "black", fontSize: 14, width: 200, paddingTop: 10 },
+                ]}
+              >
+                Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden
+                oluşmaz.
+              </Text>
+            </View>
 
-          <View style={styles.userInfoSection}>
-            <View style={styles.row}>
+            <View style={styles.userInfoSection}>
+              {/* <View style={styles.row}>
               <Icon name="map-marker-radius" color="#777777" />
               <Text>Ankara, Turkey</Text>
+            </View> */}
+              <View style={styles.row}>
+                <Icon name="phone" color="#777777" />
+                <Text>+901231832183</Text>
+              </View>
+              <View style={styles.row}>
+                <Icon name="email" color="#777777" />
+                <Text>{this.props.userData.email}</Text>
+              </View>
             </View>
-            <View style={styles.row}>
-              <Icon name="phone" color="#777777" />
-              <Text>+901231832183</Text>
+            <View style={styles.userInfoSectionLower}>
+              <View style={styles.row}>
+                <Icon name="calendar" color="#777777" />
+                <Text>Member Since TIMESTAMP</Text>
+              </View>
             </View>
-            <View style={styles.row}>
-              <Icon name="email" color="#777777" />
-              <Text>{this.props.userData.email}</Text>
-            </View>
-          </View>
-          {/* TODO */}
-          <View style={styles.infoBoxWrapper}>
-            <View
-              style={
-                (styles.infoBox,
-                {
-                  borderRightColor: "#dddddd",
-                  borderRightWidth: 1,
-                })
-              }
-            >
-              <Title>140</Title>
-              <Caption>Followers</Caption>
-            </View>
-            <View
-              style={
-                (styles.infoBox,
-                {
-                  borderRightColor: "#dddddd",
-                  borderRightWidth: 1,
-                })
-              }
-            >
-              <Title>23</Title>
-              <Caption>Following</Caption>
-            </View>
-            <View
-              style={
-                (styles.infoBox,
-                {
-                  borderRightColor: "#dddddd",
-                  borderRightWidth: 1,
-                })
-              }
-            >
-              <Title>19</Title>
-              <Caption>Posts</Caption>
-            </View>
-          </View>
 
-          <View style={styles.infoContainer}>
+            {/* TODO */}
+            <View style={styles.infoBoxWrapper}>
+              <View style={styles.infoBox}>
+                <Text style={{ fontWeight: "500" }}>
+                  140
+                  <Text style={{ fontWeight: "100" }}> Followers</Text>
+                </Text>
+              </View>
+              <View style={styles.infoBox}>
+                <Text style={{ fontWeight: "500" }}>
+                  54
+                  <Text style={{ fontWeight: "100" }}> Following</Text>
+                </Text>
+              </View>
+              <View style={styles.infoBox}>
+                <Text style={{ fontWeight: "500" }}>
+                  4<Text style={{ fontWeight: "100" }}> Posts</Text>
+                </Text>
+              </View>
+            </View>
+
+            {/* <View style={styles.infoContainer}>
             <Text style={[styles.subText, styles.recent]}>Recent Activity</Text>
-          </View>
-          <View style={{ alignItems: "center" }}>
+          </View> */}
+            {/* <View style={{ alignItems: "center" }}>
             <View style={styles.recentItem}>
               <View style={styles.activityIndicator}></View>
               <View style={{ width: 250 }}>
@@ -245,6 +252,7 @@ export default class LandingScreen extends React.Component {
                 </Text>
               </View>
             </View>
+          </View> */}
           </View>
 
           <FlatList
