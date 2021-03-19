@@ -82,7 +82,7 @@ const LandingStyles = StyleSheet.create({
     alignItems: "center",
   },
   userInfo: {
-    height: 80,
+    height: 20,
     flex: 0.9,
     flexDirection: "row",
     alignItems: "center",
@@ -181,6 +181,11 @@ const LandingStyles = StyleSheet.create({
   interactiveBar: {
     height: 30,
     width: "100%",
+    flexDirection: "row",
+  },
+  intButtons: {
+    flexDirection: "row",
+    
   },
   //tabs
 });

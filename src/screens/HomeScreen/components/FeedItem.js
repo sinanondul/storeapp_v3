@@ -111,7 +111,24 @@ export default class FeedItem extends React.Component {
               </View>
             ) : null}
             <View style={styles.interactiveBar}>
-                
+              <Ionicons
+                style={styles.intButtons}
+                name="ellipsis-horizontal"
+                size={24}
+                color="#73788"
+              />
+              <Ionicons
+                style={styles.intButtons}
+                name="ellipsis-horizontal"
+                size={24}
+                color="#73788"
+              />
+              <Ionicons
+                style={styles.intButtons}
+                name="ellipsis-horizontal"
+                size={24}
+                color="#73788"
+              />
             </View>
           </View>
         </View>
