@@ -17,7 +17,7 @@ import { Avatar } from "react-native-paper";
 import moment from "moment";
 
 import { openDrawer } from "../../../App";
-import DefaultFooter from '../../components/DefaultFooter';
+import DefaultFooter from "../../components/DefaultFooter";
 import FeedItem from "./components/FeedItem";
 import styles from "./styles";
 
@@ -73,11 +73,7 @@ export default class LandingScreen extends React.Component {
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
         ></FlatList>
-        <DefaultFooter {...this.props}/>
-        {/* Todo- */}
-        {/* <TouchableOpacity onPressOut={(this.setModalVisible = false)}>
-          <AddModal modalVisible={true} />
-        </TouchableOpacity> */}
+        <DefaultFooter {...this.props} />
       </View>
     );
   }

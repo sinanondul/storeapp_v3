@@ -1,11 +1,12 @@
-import React from 'react';
+import React from "react";
 import { View, Platform } from "react-native";
-import { TouchableOpacity } from 'react-native-gesture-handler';
+import { TouchableOpacity } from "react-native-gesture-handler";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import styles from './styles';
+import styles from "./styles";
 
 //#f4511e
+
 
 export default class AddIcon extends React.Component 
 {

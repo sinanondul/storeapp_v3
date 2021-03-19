@@ -66,8 +66,7 @@ export default class EditProfile extends React.Component {
   componentDidMount() {
     this.setState({
       image: null,
-      user:
-      {
+      user: {
         id: this.props.userData.uid,
         name: this.props.userData.name,
         handle: this.props.userData.handle,
@@ -78,8 +77,8 @@ export default class EditProfile extends React.Component {
         avatar: this.props.userData.avatar,
         location: this.props.userData.location,
         phone: this.props.userData.phone,
-      }
-    })
+      },
+    });
     this.getPermission();
   }
 
@@ -99,11 +98,9 @@ export default class EditProfile extends React.Component {
 
   handleUpdate = async () => {
     let imgUrl = null;
-    if (this.state.image)
-    {
+    if (this.state.image) {
       imgUrl = await this.uploadPhoto(this.state.image);
-    }
-    else {
+    } else {
       imgUrl = this.props.userData.avatar;
     }
 
@@ -160,7 +157,7 @@ export default class EditProfile extends React.Component {
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
       aspect: [4, 3],
-      quality: 1,
+      quality: 0,
     });
 
     console.log(result);
@@ -283,7 +280,7 @@ export default class EditProfile extends React.Component {
               autoCorrect={false}
               value={this.state.user.name}
               onChangeText={(txt) =>
-                this.setState({ user:{...this.state.user, name: txt }})
+                this.setState({ user: { ...this.state.user, name: txt } })
               }
               style={[
                 styles.textInput,
@@ -301,7 +298,7 @@ export default class EditProfile extends React.Component {
               autoCorrect={false}
               value={this.state.user.surename}
               onChangeText={(txt) =>
-                this.setState({user:{...this.state.user, surename: txt }})
+                this.setState({ user: { ...this.state.user, surename: txt } })
               }
               style={[
                 styles.textInput,
@@ -320,7 +317,7 @@ export default class EditProfile extends React.Component {
               autoCorrect={false}
               value={this.state.user.phone}
               onChangeText={(txt) =>
-                this.setState({ user:{...this.state.user, phone: txt }})
+                this.setState({ user: { ...this.state.user, phone: txt } })
               }
               style={[
                 styles.textInput,
@@ -343,7 +340,7 @@ export default class EditProfile extends React.Component {
               autoCorrect={false}
               value={this.state.user.email}
               onChangeText={(txt) =>
-                this.setState({ user:{...this.state.user, email: txt }})
+                this.setState({ user: { ...this.state.user, email: txt } })
               }
               style={[
                 styles.textInput,
@@ -361,7 +358,7 @@ export default class EditProfile extends React.Component {
               autoCorrect={false}
               value={this.state.user.location}
               onChangeText={(txt) =>
-                this.setState({ user:{...this.state.user, location: txt }})
+                this.setState({ user: { ...this.state.user, location: txt } })
               }
               style={[
                 styles.textInput,

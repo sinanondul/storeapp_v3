@@ -66,7 +66,7 @@ const LandingStyles = StyleSheet.create({
   },
 
   feed: {
-    marginHorizontal: 16,
+    marginHorizontal: 5,
   },
 
   feedItem: {
@@ -82,10 +82,10 @@ const LandingStyles = StyleSheet.create({
     alignItems: "center",
   },
   userInfo: {
-    height: 80,
+    height: 20,
     flex: 0.9,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   userAvatar: {
     height: 80,
@@ -108,7 +108,7 @@ const LandingStyles = StyleSheet.create({
   },
 
   mainText: {
-    paddingLeft: 10,
+    paddingLeft: 2,
   },
 
   avatar: {
@@ -133,9 +133,9 @@ const LandingStyles = StyleSheet.create({
   },
   postImage: {
     width: "100%",
-    height: 150,
+    height: 200,
     borderRadius: 5,
-    marginVertical: 16,
+    marginVertical: 0,
   },
   centeredView: {
     flex: 1,
@@ -178,17 +178,23 @@ const LandingStyles = StyleSheet.create({
     marginBottom: 15,
     textAlign: "center",
   },
+  interactiveBar: {
+    height: 30,
+    width: "100%",
+    flexDirection: "row",
+  },
+  intButtons: {
+    flexDirection: "row",
+    
+  },
   //tabs
 });
 
-const MainStyles = StyleSheet.create({ 
+const MainStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
-
-  
-
-})
+});
 
 export default LandingStyles;
-export {MainStyles};
+export { MainStyles };

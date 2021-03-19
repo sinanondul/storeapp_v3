@@ -6,7 +6,7 @@ import {
   SafeAreaView,
   ScrollView,
   Image,
-  Platform
+  Platform,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
@@ -17,8 +17,8 @@ import * as Permissions from "expo-permissions";
 import Fire from "../../../firebase/Fire";
 import * as ImagePicker from "expo-image-picker";
 
-import {getAvatar} from '../../../functions/UserInfoFormatter';
-import styles from './styles';
+import { getAvatar } from "../../../functions/UserInfoFormatter";
+import styles from "./styles";
 
 export default class AddScreen extends React.Component {
   state = {
@@ -36,7 +36,7 @@ export default class AddScreen extends React.Component {
       const { status } = await Permissions.askAsync(Permissions.MEDIA_LIBRARY);
 
       if (status == "granted") {
-        this.setState({imageAllowed: true});
+        this.setState({ imageAllowed: true });
       }
     }
   };
@@ -57,6 +57,7 @@ export default class AddScreen extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
+      quality: 0,
     });
 
     if (!result.cancelled) {
@@ -67,7 +68,6 @@ export default class AddScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-
         <View style={styles.header}>
           <TouchableOpacity
             style={{ alignItems: "center" }}
@@ -77,68 +77,60 @@ export default class AddScreen extends React.Component {
           </TouchableOpacity>
         </View>
 
-          
-          <View style={styles.inputContainer}>
-            
-            {getAvatar(this.props.userData)}
+        <View style={styles.inputContainer}>
+          {getAvatar(this.props.userData)}
 
+          <View>
             <View>
-              <View>
-                <TextInput
-                  outerFocus={true}
-                  multiline={true}
-                  numberOfLines={4}
-                  placeholder="Type Here"
-                  onChangeText={(text) => this.setState({ text })}
-                  value={this.state.text}
-                />
-              </View>
-
-              
-              { this.state.image
-                ? <View>
-                    <Image
-                      source={{ uri: this.state.image }}
-                      style={{ width: "100%", height: "100%" }}
-                    />
-                    <View style={{
-                        position: 'absolute',
-                        top: 15,
-                        right: 15,
-                        width: 15,
-                        height: 15,
-                        borderRadius: 20,
-                        backgroundColor: '#fff',
-                        }}
-                    />
-                    <Icon
-                      name={Platform.OS === "ios" ? "ios-close-circle" : "md-close-circle"}
-                      size={32}
-                      style={{
-                        position: 'absolute',
-                        top: 5,
-                        right: 5,
-                      }}
-                      onPress={() => this.setState({image: null})}
-                    />
-                  </View>
-                : <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                    <Ionicons
-                      name="md-camera"
-                      size={32}
-                      color="black"
-                    ></Ionicons>
-                  </TouchableOpacity>
-              }
-
+              <TextInput
+                outerFocus={true}
+                multiline={true}
+                numberOfLines={4}
+                placeholder="Type Here"
+                onChangeText={(text) => this.setState({ text })}
+                value={this.state.text}
+              />
             </View>
 
+            {this.state.image ? (
+              <View>
+                <Image
+                  source={{ uri: this.state.image }}
+                  style={{ width: "100%", height: "100%" }}
+                />
+                <View
+                  style={{
+                    position: "absolute",
+                    top: 15,
+                    right: 15,
+                    width: 15,
+                    height: 15,
+                    borderRadius: 20,
+                    backgroundColor: "#fff",
+                  }}
+                />
+                <Icon
+                  name={
+                    Platform.OS === "ios"
+                      ? "ios-close-circle"
+                      : "md-close-circle"
+                  }
+                  size={32}
+                  style={{
+                    position: "absolute",
+                    top: 5,
+                    right: 5,
+                  }}
+                  onPress={() => this.setState({ image: null })}
+                />
+              </View>
+            ) : (
+              <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
+                <Ionicons name="md-camera" size={32} color="black"></Ionicons>
+              </TouchableOpacity>
+            )}
           </View>
-
-        
-
-        
-
+        </View>
       </SafeAreaView>
     );
   }
