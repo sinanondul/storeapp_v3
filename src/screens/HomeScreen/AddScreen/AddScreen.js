@@ -67,6 +67,11 @@ export default class AddScreen extends React.Component {
     }
   };
 
+  combinedFunctions = () => {
+    this.handlePost();
+    this.setState({ image: null });
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
@@ -128,7 +133,8 @@ export default class AddScreen extends React.Component {
                   },
                   styles.post,
                 ]}
-                onPress={() => this.setState({ image: null })}
+                // onPress={() => this.setState({ image: null })}
+                onPress={() => this.combinedFunctions()}
               />
             </TouchableOpacity>
           </View>

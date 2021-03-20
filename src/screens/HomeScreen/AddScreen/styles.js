@@ -18,8 +18,8 @@ const AddStyles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 32,
     paddingVertical: 12,
-    borderTopWidth: 0.5,
-    borderTopColor: "#FF6433",
+    // borderTopWidth: 0.5,
+    // borderTopColor: "#FF6433",
   },
 
   inputContainer: {
