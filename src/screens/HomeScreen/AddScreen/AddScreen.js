@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   Platform,
+  Dimensions,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
@@ -19,6 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { getAvatar } from "../../../functions/UserInfoFormatter";
 import styles from "./styles";
+import DropShadow from "react-native-drop-shadow";
 
 export default class AddScreen extends React.Component {
   state = {
@@ -68,19 +70,9 @@ export default class AddScreen extends React.Component {
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={{ alignItems: "center" }}
-            onPress={this.handlePost}
-          >
-            <Text style={{ fontWeight: "400" }}>Post</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.inputContainer}>
-          {getAvatar(this.props.userData)}
-
+        <ScrollView style={styles.inputContainer}>
           <View>
+            {getAvatar(this.props.userData)}
             <View>
               <TextInput
                 outerFocus={true}
@@ -89,9 +81,18 @@ export default class AddScreen extends React.Component {
                 placeholder="Type Here"
                 onChangeText={(text) => this.setState({ text })}
                 value={this.state.text}
+                style={styles.textStyle}
               />
             </View>
-
+          </View>
+        </ScrollView>
+        <View style={styles.bottom}>
+          <View>
+            <TouchableOpacity onPress={this.handlePost}>
+              <Text style={styles.post}>Post</Text>
+            </TouchableOpacity>
+          </View>
+          <View>
             {this.state.image ? (
               <View>
                 <Image
@@ -126,7 +127,7 @@ export default class AddScreen extends React.Component {
               </View>
             ) : (
               <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                <Ionicons name="md-camera" size={32} color="black"></Ionicons>
+                <Ionicons name="md-camera" size={28} color="#FF6433"></Ionicons>
               </TouchableOpacity>
             )}
           </View>
