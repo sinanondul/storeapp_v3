@@ -32,7 +32,7 @@ const AddStyles = StyleSheet.create({
 
   photo: {
     alignItems: "flex-end",
-    padding: 15,
+    padding: 10,
   },
   textStyle: {
     //width: 300,
@@ -41,19 +41,24 @@ const AddStyles = StyleSheet.create({
   },
   post: {
     color: "#FF6433",
-    padding: 15,
-    opacity: 0.8,
-    borderRadius: 5,
-    fontSize: 20,
+  },
+  postButton: {
+    //backgroundColor: "#FF6433",
+    borderRadius: 10,
+    justifyContent: "center",
   },
   shadow: {
-    shadowColor: "#FF6E33",
+    shadowColor: "#fff",
     shadowOffset: {
       width: 10,
       height: 10,
     },
     shadowOpacity: 1,
     shadowRadius: 5,
+  },
+  camera: {
+    backgroundColor: "#FF6433",
+    backgroundColor: "blue",
   },
 });
 

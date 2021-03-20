@@ -86,10 +86,50 @@ export default class AddScreen extends React.Component {
             </View>
           </View>
         </ScrollView>
-        <View style={styles.bottom}>
+        <View
+          style={[
+            styles.bottom,
+            {
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 5,
+                height: 5,
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
+              elevation: 13,
+            },
+          ]}
+        >
           <View>
-            <TouchableOpacity onPress={this.handlePost}>
-              <Text style={styles.post}>Post</Text>
+            <TouchableOpacity onPress={this.handlePost} style={styles.post}>
+              <Icon
+                name={
+                  Platform.OS === "ios"
+                    ? "ios-navigate-outline"
+                    : "md-navigate-outline"
+                }
+                size={28}
+                style={[
+                  {
+                    position: "absolute",
+                    top: 5,
+                    left: 5,
+                  },
+                  {
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 3,
+                      height: 3,
+                    },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 3,
+                    elevation: 10,
+                  },
+                  styles.post,
+                ]}
+                onPress={() => this.setState({ image: null })}
+              />
             </TouchableOpacity>
           </View>
           <View>
@@ -99,17 +139,7 @@ export default class AddScreen extends React.Component {
                   source={{ uri: this.state.image }}
                   style={{ width: "100%", height: "100%" }}
                 />
-                <View
-                  style={{
-                    position: "absolute",
-                    top: 15,
-                    right: 15,
-                    width: 15,
-                    height: 15,
-                    borderRadius: 20,
-                    backgroundColor: "#fff",
-                  }}
-                />
+
                 <Icon
                   name={
                     Platform.OS === "ios"
@@ -117,11 +147,24 @@ export default class AddScreen extends React.Component {
                       : "md-close-circle"
                   }
                   size={32}
-                  style={{
-                    position: "absolute",
-                    top: 5,
-                    right: 5,
-                  }}
+                  style={[
+                    {
+                      position: "absolute",
+                      top: 5,
+                      right: 5,
+                    },
+                    {
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 3,
+                        height: 3,
+                      },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 3,
+                      elevation: 10,
+                    },
+                    styles.camera,
+                  ]}
                   onPress={() => this.setState({ image: null })}
                 />
               </View>
