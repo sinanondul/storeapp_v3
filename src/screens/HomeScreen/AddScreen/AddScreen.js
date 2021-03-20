@@ -68,8 +68,8 @@ export default class AddScreen extends React.Component {
   };
 
   combinedFunctions = () => {
-    this.handlePost();
     this.setState({ image: null });
+    this.handlePost();
   };
 
   render() {
@@ -107,12 +107,12 @@ export default class AddScreen extends React.Component {
           ]}
         >
           <View>
-            <TouchableOpacity onPress={this.handlePost} style={styles.post}>
+            <View style={styles.post}>
               <Icon
                 name={
                   Platform.OS === "ios"
                     ? "ios-navigate-outline"
-                    : "md-navigate-outline"
+                    : "navigate-outline"
                 }
                 size={28}
                 style={[
@@ -136,7 +136,7 @@ export default class AddScreen extends React.Component {
                 // onPress={() => this.setState({ image: null })}
                 onPress={() => this.combinedFunctions()}
               />
-            </TouchableOpacity>
+            </View>
           </View>
           <View>
             {this.state.image ? (
