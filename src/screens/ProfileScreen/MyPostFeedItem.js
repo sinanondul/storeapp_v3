@@ -63,12 +63,14 @@ export default class MyPostFeedItem extends React.Component {
   render() {
     return (
       <View style={styles.MyPostFeedItem}>
-        <View>
+        <View style={styles.feedHeader}>
           <View style={styles.userAvatar}>
             {this.state.nameinit ? getAvatar(this.state.senderInfo, 50) : null}
+          </View>
+          <View>
             <View style={styles.userText}>
               {this.state.nameinit ? (
-                <Text style={[styles.name, { marginLeft: 35 }]}>
+                <Text style={[styles.name]}>
                   {getFullName(this.state.senderInfo)}
                 </Text>
               ) : null}
@@ -95,29 +97,29 @@ export default class MyPostFeedItem extends React.Component {
                 {getTimeSince(this.props.post.timestamp)}
               </Text>
             </View>
+            {this.props.post.text && this.props.post.text !== "" ? (
+              <View style={styles.mainText}>
+                <Text style={styles.post}>{this.props.post.text}</Text>
+              </View>
+            ) : null}
           </View>
+        </View>
 
-          {/* <View style={styles.moreButton} >
+        {/* <View style={styles.moreButton} >
               <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
             </View> */}
 
-          {this.props.post.text && this.props.post.text !== "" ? (
-            <View style={styles.mainText}>
-              <Text style={styles.post}>{this.props.post.text}</Text>
-            </View>
+        <View>
+          {this.props.post.image ? (
+            <TouchableOpacity>
+              <Image
+                source={{ uri: this.props.post.image }}
+                style={styles.postImage}
+                resizeMode="cover"
+              />
+            </TouchableOpacity>
           ) : null}
-          <View>
-            {this.props.post.image ? (
-              <TouchableOpacity>
-                <Image
-                  source={{ uri: this.props.post.image }}
-                  style={styles.postImage}
-                  resizeMode="cover"
-                />
-              </TouchableOpacity>
-            ) : null}
-            {/*Change Here */}
-          </View>
+          {/*Change Here */}
         </View>
       </View>
     );

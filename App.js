@@ -8,7 +8,7 @@ import { Alert, LogBox } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { render } from "react-dom";
 
-import { DefaultTheme, Provider as PaperProvider } from 'react-native-paper';
+import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
 import firebase from "firebase";
 LogBox.ignoreAllLogs(true);
@@ -16,7 +16,8 @@ LogBox.ignoreAllLogs(true);
 //firebase.initializeApp(firebaseConfig);
 
 if (!firebase.apps.length) {
-  firebase.initializeApp(firebaseConfig);s
+  firebase.initializeApp(firebaseConfig);
+  s;
 }
 const navigationRef = React.createRef();
 
@@ -26,7 +27,7 @@ const theme = {
   colors: {
     ...DefaultTheme.colors,
     primary: "#2890cf",
-    accent: '#f1c40f',
+    accent: "#f1c40f",
   },
 };
 
@@ -37,13 +38,12 @@ export function openDrawer() {
 
 export default class App extends React.Component {
   constructor(props) {
-    super(props)
-
+    super(props);
   }
 
   state = {
     isLoggedIn: false,
-    userInfo:{
+    userInfo: {
       uid: null,
       name: "Blank",
       surename: "Blankovich",
@@ -63,20 +63,22 @@ export default class App extends React.Component {
           .get()
           .then((firestoreDocument) => {
             var userData = firestoreDocument.data();
-            this.setState({ userInfo: {
-              uid: userData.id,
-              email: userData.email,
-              fullName: userData.fullName,
-              name: userData.name,
-              surename: userData.surename,
-              avatar: userData.avatar,
-              handle: userData.handle,
-              location: userData.location,
-              phone: userData.phone,
-              about: userData.about,
-            }})
+            this.setState({
+              userInfo: {
+                uid: userData.id,
+                email: userData.email,
+                fullName: userData.fullName,
+                name: userData.name,
+                surename: userData.surename,
+                avatar: userData.avatar,
+                handle: userData.handle,
+                location: userData.location,
+                phone: userData.phone,
+                about: userData.about,
+              },
+            });
             this.setState({ isLoggedIn: true });
-          })
+          });
       } else {
         this.setState({ isLoggedIn: false });
       }
@@ -90,9 +92,9 @@ export default class App extends React.Component {
       <PaperProvider theme={theme}>
         <NavigationContainer ref={navigationRef}>
           {this.state.isLoggedIn ? (
-            <AppPage userData={userData} chats={chats}/>
+            <AppPage userData={userData} chats={chats} />
           ) : (
-            <AuthNavigator/>
+            <AuthNavigator />
           )}
         </NavigationContainer>
       </PaperProvider>

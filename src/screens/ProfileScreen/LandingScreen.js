@@ -22,8 +22,11 @@ import { getFullName, getAvatar } from "../../functions/UserInfoFormatter";
 import { openDrawer } from "../../../App";
 
 import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
-import styles from "./styles";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import MyPosts from "./MyPosts";
 
+import styles from "./styles";
+const Tab = createMaterialTopTabNavigator();
 export default class LandingScreen extends React.Component {
   state = {
     posts: [],
@@ -115,9 +118,15 @@ export default class LandingScreen extends React.Component {
 
   render() {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
+    const postarr = this.state.posts;
     return (
       <SafeAreaView style={styles.container}>
-        <ScrollView showsVerticalScrollIndicator={false}>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          nestedScrollEnabled={true}
+          //keyboardShouldPersistTaps='handled'
+          style={{ flex: 1 }}
+        >
           <View style={styles.profileTop}>
             <View style={styles.profileImageContainer}>
               <View style={styles.profileImage}>
@@ -223,79 +232,29 @@ export default class LandingScreen extends React.Component {
                 </Text>
               </View>
             </View>
-
-            {/* <View style={styles.infoContainer}>
-            <Text style={[styles.subText, styles.recent]}>Recent Activity</Text>
-          </View> */}
-            {/* <View style={{ alignItems: "center" }}>
-            <View style={styles.recentItem}>
-              <View style={styles.activityIndicator}></View>
-              <View style={{ width: 250 }}>
-                <Text
-                  style={[styles.text, { color: "#41444B", fontWeight: "300" }]}
-                >
-                  Started following{" "}
-                  <Text style={{ fontWeight: "400" }}>Jake Challeahe</Text> and{" "}
-                  <Text style={{ fontWeight: "400" }}>Luis Poteer</Text>
-                </Text>
-              </View>
-            </View>
-
-            <View style={styles.recentItem}>
-              <View style={styles.activityIndicator}></View>
-              <View style={{ width: 250 }}>
-                <Text
-                  style={[styles.text, { color: "#41444B", fontWeight: "300" }]}
-                >
-                  Started following{" "}
-                  <Text style={{ fontWeight: "400" }}>Luke Harper</Text>
-                </Text>
-              </View>
-            </View>
-          </View> */}
           </View>
-
-          <FlatList
-            style={styles.myposts}
-            //horizontal
-            data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
-            renderItem={this.renderItem}
-            keyExtractor={(item) => item.id}
-            showsVerticalScrollIndicator={true}
-          />
-          <View style={styles.menuWrapper}>
-            {/*"TODO"*/}
-            <TouchableOpacity>
-              <View style={styles.menuItem}>
-                <Icon name="heart-outline" color="#FF6347" size={25} />
-                <Text style={styles.menuItemText}>Favorite Posts</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.menuItem}>
-                <Icon name="credit-card-outline" color="#FF6347" size={25} />
-                <Text style={styles.menuItemText}>Payment</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.menuItem}>
-                <Icon name="share-outline" color="#FF6347" size={25} />
-                <Text style={styles.menuItemText}>Share with Friends</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.menuItem}>
-                <Icon name="account-check-outline" color="#FF6347" size={25} />
-                <Text style={styles.menuItemText}>Support</Text>
-              </View>
-            </TouchableOpacity>
-            <TouchableOpacity>
-              <View style={styles.menuItem}>
-                <Icon name="account-settings" color="#FF6347" size={25} />
-                <Text style={styles.menuItemText}>Account Settings</Text>
-              </View>
-            </TouchableOpacity>
+          <View style={{ marginTop: 10, height: 1000, flex: 1 }}>
+            <Tab.Navigator
+              headerMode={false}
+              initialRouteName="My Posts"
+              tabBarOptions={{
+                labelStyle: {
+                  fontSize: 11,
+                },
+              }}
+              style={{ flex: 1 }}
+            >
+              <Tab.Screen name="My Posts" style={{ flex: 1 }}>
+                {() => <MyPosts {...this.props} posts={postarr} />}
+              </Tab.Screen>
+              <Tab.Screen name="Posts & comments">{(props) => null}</Tab.Screen>
+              <Tab.Screen name="UP'd Posts">{(props) => null}</Tab.Screen>
+              {otherProfile ? null : (
+                <Tab.Screen name="Saved">{(props) => null}</Tab.Screen>
+              )}
+            </Tab.Navigator>
           </View>
+          {/* <MyPosts {...this.props} posts={this.state.posts} /> */}
         </ScrollView>
       </SafeAreaView>
     );
@@ -315,3 +274,43 @@ export default class LandingScreen extends React.Component {
     },
   };
 }
+// {/* <FlatList
+//   style={styles.myposts}
+//   //horizontal
+//   data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
+//   renderItem={this.renderItem}
+//   keyExtractor={(item) => item.id}
+//   showsVerticalScrollIndicator={true}
+// /> */}
+// {/* <View style={styles.menuWrapper}>
+//   <TouchableOpacity>
+//     <View style={styles.menuItem}>
+//       <Icon name="heart-outline" color="#FF6347" size={25} />
+//       <Text style={styles.menuItemText}>Favorite Posts</Text>
+//     </View>
+//   </TouchableOpacity>
+//   <TouchableOpacity>
+//     <View style={styles.menuItem}>
+//       <Icon name="credit-card-outline" color="#FF6347" size={25} />
+//       <Text style={styles.menuItemText}>Payment</Text>
+//     </View>
+//   </TouchableOpacity>
+//   <TouchableOpacity>
+//     <View style={styles.menuItem}>
+//       <Icon name="share-outline" color="#FF6347" size={25} />
+//       <Text style={styles.menuItemText}>Share with Friends</Text>
+//     </View>
+//   </TouchableOpacity>
+//   <TouchableOpacity>
+//     <View style={styles.menuItem}>
+//       <Icon name="account-check-outline" color="#FF6347" size={25} />
+//       <Text style={styles.menuItemText}>Support</Text>
+//     </View>
+//   </TouchableOpacity>
+//   <TouchableOpacity>
+//     <View style={styles.menuItem}>
+//       <Icon name="account-settings" color="#FF6347" size={25} />
+//       <Text style={styles.menuItemText}>Account Settings</Text>
+//     </View>
+//   </TouchableOpacity>
+// </View> */}

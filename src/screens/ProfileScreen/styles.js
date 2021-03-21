@@ -73,8 +73,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   infoContainer: {
-    // alignSelf: "center",
-    // alignItems: "center",
     marginTop: 16,
     flexDirection: "column",
     paddingLeft: 12,
@@ -98,8 +96,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     marginBottom: 3,
     flexDirection: "row",
-    // justifyContent: "center",
-    // alignItems: "center",
+
     marginTop: 15,
     paddingStart: 12,
   },
@@ -107,24 +104,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
     marginBottom: 0,
     flexDirection: "row",
-    // justifyContent: "center",
-    // alignItems: "center",
+
     marginTop: 0,
     paddingStart: 12,
   },
   infoBoxWrapper: {
     borderTopColor: "#dddddd",
-    //borderTopWidth: 0.5,
+
     flexDirection: "row",
     width: "100%",
-    //height: 100,
-    //justifyContent: "center",
+
     paddingStart: 12,
   },
   infoBox: {
     marginRight: 30,
-    // alignItems: "center",
-    // justifyContent: "center",
   },
 
   menuItem: {
@@ -139,8 +132,7 @@ const styles = StyleSheet.create({
     lineHeight: 26,
   },
   myposts: {
-    //marginHorizontal: 10,
-    marginTop: 60,
+    marginTop: 0,
   },
   MyPostFeedItem: {
     flex: 1,
@@ -148,36 +140,36 @@ const styles = StyleSheet.create({
     padding: 0,
     flexDirection: "column",
     marginVertical: 0,
-    //marginTop: 10,
-    //marginHorizontal: 10,
+
     width: "100%",
     borderColor: "gray",
-    marginVertical: 2,
-    //borderBottomWidth: 2,
+    marginVertical: 1,
     minHeight: 100,
   },
   feedHeader: {
-    paddingTop: 9,
-    flex: 0.5,
+    flex: 1,
     flexDirection: "row",
-    //alignItems: "center",
-    paddingLeft: 12,
-    height: 25,
+
+    height: 69,
   },
   userAvatar: {
     paddingTop: 9,
-    flex: 0.3,
+
     flexDirection: "row",
-    //alignItems: "center",
+
     paddingLeft: 12,
-    //height: 50,
+
+    width: 80,
+    height: 80,
   },
   userText: {
-    //flex: 0.1,
-    //paddingRight: 12,
-    //paddingRight: 50,
+    flex: 0.2,
+
+    height: 25,
+
+    paddingTop: 9,
+
     flexDirection: "row",
-    //paddingBottom: 10,
   },
   moreButton: {
     height: 80,
@@ -189,7 +181,10 @@ const styles = StyleSheet.create({
   },
 
   mainText: {
-    paddingLeft: 16,
+    paddingTop: 1,
+    flex: 0.5,
+    flexDirection: "column",
+    fontWeight: "100",
   },
   loneText: {
     paddingLeft: 0,
@@ -205,27 +200,29 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontWeight: "500",
     color: "#454D65",
-    //marginLeft: 12,
+
     paddingBottom: 15,
     flexDirection: "row",
-    //paddingRight: 5,
   },
   timestamp: {
     fontSize: 11,
     color: "#C4C6CE",
     marginTop: 2,
-    //paddingBottom: 50,
+
     flexDirection: "row",
   },
   post: {
     fontSize: 14,
-    marginLeft: 55,
+    marginRight: 9,
+    width: 260,
+    height: 70,
   },
   postImage: {
     width: "100%",
     height: 200,
     borderRadius: 5,
-    marginVertical: 16,
+
+    marginVertical: 20,
     alignSelf: "center",
   },
   centeredView: {
