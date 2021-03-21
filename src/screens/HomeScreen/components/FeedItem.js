@@ -77,7 +77,7 @@ export default class FeedItem extends React.Component {
               >
                 <View style={styles.userAvatar}>
                   {this.state.nameinit
-                    ? getAvatar(this.state.senderInfo)
+                    ? getAvatar(this.state.senderInfo, 40)
                     : null}
                 </View>
                 <View style={styles.userText}>
@@ -110,25 +110,34 @@ export default class FeedItem extends React.Component {
                 <Text style={styles.post}>{this.props.post.text}</Text>
               </View>
             ) : null}
+            {/* <View style={styles.seperator}></View> */}
             <View style={styles.interactiveBar}>
-              <Ionicons
-                style={styles.intButtons}
-                name="ellipsis-horizontal"
-                size={24}
-                color="#73788"
-              />
-              <Ionicons
-                style={styles.intButtons}
-                name="ellipsis-horizontal"
-                size={24}
-                color="#73788"
-              />
-              <Ionicons
-                style={styles.intButtons}
-                name="ellipsis-horizontal"
-                size={24}
-                color="#73788"
-              />
+              <TouchableOpacity>
+                <Ionicons
+                  style={styles.intButtons}
+                  name="heart-outline"
+                  size={24}
+                  color="#73788"
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <Ionicons
+                  style={styles.intButtons}
+                  name="comment"
+                  size={24}
+                  color="#73788"
+                />
+              </TouchableOpacity>
+
+              <TouchableOpacity>
+                <Ionicons
+                  style={styles.intButtons}
+                  name="ellipsis-horizontal"
+                  size={24}
+                  color="#73788"
+                />
+              </TouchableOpacity>
             </View>
           </View>
         </View>

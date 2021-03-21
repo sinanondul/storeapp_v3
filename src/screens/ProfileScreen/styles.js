@@ -3,7 +3,16 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFF",
+    backgroundColor: "#FFAAAA",
+    //paddingStart: 12,
+  },
+  profileTop: {
+    //borderBottomWidth: 2,
+  },
+  containerHeader: {
+    borderBottomColor: "black",
+    height: 80,
+    width: "100%",
   },
   text: {
     //fontFamily: "HelveticaNeue",
@@ -22,18 +31,29 @@ const styles = StyleSheet.create({
     fontWeight: "500",
   },
   profileImageContainer: {
-    alignSelf: "center",
+    //alignSelf: "center",
+    flexDirection: "row",
+    flex: 1,
+    paddingLeft: 12,
   },
   profileImage: {
-    height: 200,
-    alignItems: "center",
-    justifyContent: "center",
+    // Change this
+    //height: 5,
+    marginTop: 60,
+    borderWidth: 3,
+    borderRadius: 80,
+    width: "23.5%",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
-  buttonsContainer:{
-    justifyContent: "space-evenly",
-    alignItems: 'center',
-    flexDirection: 'row',
-    height: 60,
+  buttonsContainer: {
+    marginTop: 70,
+    flex: 1,
+    paddingRight: 20,
+    justifyContent: "flex-end",
+    alignItems: "flex-end",
+    alignItems: "center",
+    flexDirection: "row",
   },
   dm: {
     backgroundColor: "#41444B",
@@ -42,24 +62,26 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
+    marginEnd: 5,
   },
-  add: {
+  follow: {
     backgroundColor: "#41444B",
-    width: 40,
+    width: 80,
     height: 40,
     borderRadius: 20,
     alignItems: "center",
     justifyContent: "center",
   },
   infoContainer: {
-    alignSelf: "center",
-    alignItems: "center",
     marginTop: 16,
+    flexDirection: "column",
+    paddingLeft: 12,
   },
   statsContainer: {
     flexDirection: "column",
     alignSelf: "center",
     marginTop: 32,
+    paddingLeft: 12,
   },
   statsBox: {
     alignItems: "center",
@@ -71,26 +93,31 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   userInfoSection: {
-    paddingHorizontal: 30,
-    marginBottom: 25,
+    paddingHorizontal: 0,
+    marginBottom: 3,
     flexDirection: "row",
-    justifyContent: "center",
-    alignItems: "center",
+
     marginTop: 15,
+    paddingStart: 12,
+  },
+  userInfoSectionLower: {
+    paddingHorizontal: 2,
+    marginBottom: 0,
+    flexDirection: "row",
+
+    marginTop: 0,
+    paddingStart: 12,
   },
   infoBoxWrapper: {
-    borderBottomColor: "#dddddd",
-    borderBottomWidth: 1,
     borderTopColor: "#dddddd",
-    borderTopWidth: 1,
+
     flexDirection: "row",
-    height: 100,
-    justifyContent: "center",
+    width: "100%",
+
+    paddingStart: 12,
   },
   infoBox: {
-    width: "50%",
-    alignItems: "center",
-    justifyContent: "center",
+    marginRight: 30,
   },
 
   menuItem: {
@@ -100,43 +127,49 @@ const styles = StyleSheet.create({
   },
   menuItemText: {
     color: "#777777",
-    marginLeft: 20,
     fontWeight: "600",
     fontSize: 16,
     lineHeight: 26,
   },
   myposts: {
-    marginHorizontal: 10,
-    marginTop: 10,
+    marginTop: 0,
   },
   MyPostFeedItem: {
-    flex: 0.9,
+    flex: 1,
     backgroundColor: "#FFF",
-    borderRadius: 5,
-    borderWidth: 1,
     padding: 0,
     flexDirection: "column",
     marginVertical: 0,
-    //marginHorizontal: 10,
+
     width: "100%",
     borderColor: "gray",
-    marginVertical: 2,
+    marginVertical: 1,
+    minHeight: 100,
   },
   feedHeader: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
+
+    height: 69,
   },
   userAvatar: {
+    paddingTop: 9,
+
+    flexDirection: "row",
+
+    paddingLeft: 12,
+
+    width: 80,
     height: 80,
-    flex: 0.2,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    paddingLeft: 5,
-    paddingTop: 20,
   },
   userText: {
-    flex: 0.7,
+    flex: 0.2,
+
+    height: 25,
+
+    paddingTop: 9,
+
+    flexDirection: "row",
   },
   moreButton: {
     height: 80,
@@ -148,7 +181,13 @@ const styles = StyleSheet.create({
   },
 
   mainText: {
-    paddingLeft: 10,
+    paddingTop: 1,
+    flex: 0.5,
+    flexDirection: "column",
+    fontWeight: "100",
+  },
+  loneText: {
+    paddingLeft: 0,
   },
 
   avatar: {
@@ -158,24 +197,32 @@ const styles = StyleSheet.create({
     marginRight: 16,
   },
   name: {
-    fontSize: 15,
+    fontSize: 14,
     fontWeight: "500",
     color: "#454D65",
+
+    paddingBottom: 15,
+    flexDirection: "row",
   },
   timestamp: {
     fontSize: 11,
     color: "#C4C6CE",
-    marginTop: 4,
+    marginTop: 2,
+
+    flexDirection: "row",
   },
   post: {
-    marginTop: 16,
     fontSize: 14,
+    marginRight: 9,
+    width: 260,
+    height: 70,
   },
   postImage: {
     width: "100%",
     height: 200,
     borderRadius: 5,
-    marginVertical: 16,
+
+    marginVertical: 20,
     alignSelf: "center",
   },
   centeredView: {
