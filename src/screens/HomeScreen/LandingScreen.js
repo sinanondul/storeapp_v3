@@ -8,6 +8,7 @@ import {
   Image,
   Alert,
   TouchableOpacity,
+  SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
@@ -65,7 +66,7 @@ export default class LandingScreen extends React.Component {
 
   render() {
     return (
-      <View style={styles.container}>
+      <SafeAreaView style={styles.container}>
         <FlatList
           style={styles.feed}
           data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
@@ -74,7 +75,7 @@ export default class LandingScreen extends React.Component {
           showsVerticalScrollIndicator={false}
         ></FlatList>
         <DefaultFooter {...this.props} />
-      </View>
+      </SafeAreaView>
     );
   }
 

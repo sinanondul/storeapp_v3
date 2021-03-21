@@ -7,6 +7,7 @@ import {
   ScrollView,
   Image,
   Platform,
+  Dimensions,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
@@ -19,6 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { getAvatar } from "../../../functions/UserInfoFormatter";
 import styles from "./styles";
+import DropShadow from "react-native-drop-shadow";
 
 export default class AddScreen extends React.Component {
   state = {
@@ -65,22 +67,17 @@ export default class AddScreen extends React.Component {
     }
   };
 
+  combinedFunctions = () => {
+    this.setState({ image: null });
+    this.handlePost();
+  };
+
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <View style={styles.header}>
-          <TouchableOpacity
-            style={{ alignItems: "center" }}
-            onPress={this.handlePost}
-          >
-            <Text style={{ fontWeight: "400" }}>Post</Text>
-          </TouchableOpacity>
-        </View>
-
-        <View style={styles.inputContainer}>
-          {getAvatar(this.props.userData)}
-
+        <ScrollView style={styles.inputContainer}>
           <View>
+            {getAvatar(this.props.userData)}
             <View>
               <TextInput
                 outerFocus={true}
@@ -89,26 +86,66 @@ export default class AddScreen extends React.Component {
                 placeholder="Type Here"
                 onChangeText={(text) => this.setState({ text })}
                 value={this.state.text}
+                style={styles.textStyle}
               />
             </View>
-
+          </View>
+        </ScrollView>
+        <View
+          style={[
+            styles.bottom,
+            {
+              shadowColor: "#000",
+              shadowOffset: {
+                width: 5,
+                height: 5,
+              },
+              shadowOpacity: 0.5,
+              shadowRadius: 8,
+              elevation: 13,
+            },
+          ]}
+        >
+          <View>
+            <View style={styles.post}>
+              <Icon
+                name={
+                  Platform.OS === "ios"
+                    ? "ios-navigate-outline"
+                    : "navigate-outline"
+                }
+                size={28}
+                style={[
+                  {
+                    position: "absolute",
+                    top: 5,
+                    left: 5,
+                  },
+                  {
+                    shadowColor: "#000",
+                    shadowOffset: {
+                      width: 3,
+                      height: 3,
+                    },
+                    shadowOpacity: 0.3,
+                    shadowRadius: 3,
+                    elevation: 10,
+                  },
+                  styles.post,
+                ]}
+                // onPress={() => this.setState({ image: null })}
+                onPress={() => this.combinedFunctions()}
+              />
+            </View>
+          </View>
+          <View>
             {this.state.image ? (
               <View>
                 <Image
                   source={{ uri: this.state.image }}
                   style={{ width: "100%", height: "100%" }}
                 />
-                <View
-                  style={{
-                    position: "absolute",
-                    top: 15,
-                    right: 15,
-                    width: 15,
-                    height: 15,
-                    borderRadius: 20,
-                    backgroundColor: "#fff",
-                  }}
-                />
+
                 <Icon
                   name={
                     Platform.OS === "ios"
@@ -116,17 +153,30 @@ export default class AddScreen extends React.Component {
                       : "md-close-circle"
                   }
                   size={32}
-                  style={{
-                    position: "absolute",
-                    top: 5,
-                    right: 5,
-                  }}
+                  style={[
+                    {
+                      position: "absolute",
+                      top: 5,
+                      right: 5,
+                    },
+                    {
+                      shadowColor: "#000",
+                      shadowOffset: {
+                        width: 3,
+                        height: 3,
+                      },
+                      shadowOpacity: 0.3,
+                      shadowRadius: 3,
+                      elevation: 10,
+                    },
+                    styles.camera,
+                  ]}
                   onPress={() => this.setState({ image: null })}
                 />
               </View>
             ) : (
               <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                <Ionicons name="md-camera" size={32} color="black"></Ionicons>
+                <Ionicons name="md-camera" size={28} color="#FF6433"></Ionicons>
               </TouchableOpacity>
             )}
           </View>
