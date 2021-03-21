@@ -18,7 +18,15 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Fire from "../../firebase/Fire";
 import firebase from "firebase";
 
-import { getFullName, getAvatar } from "../../functions/UserInfoFormatter";
+import {
+  getFullName,
+  getAvatar,
+  getHandle,
+  getPhone,
+  getLocation,
+  getAbout,
+  getDepartment,
+} from "../../functions/UserInfoFormatter";
 import { openDrawer } from "../../../App";
 
 import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
@@ -120,7 +128,7 @@ export default class LandingScreen extends React.Component {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
     const postarr = this.state.posts;
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={styles.container} nestedScrollEnabled={true}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}
@@ -175,10 +183,10 @@ export default class LandingScreen extends React.Component {
                 {getFullName(this.props.userInfo)}
               </Text>
               <Text style={[styles.text, { color: "gray", fontSize: 14 }]}>
-                @userhandle
+                @{getHandle(this.props.userInfo)}
               </Text>
               <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-                Computer Science
+                {getDepartment(this.props.userInfo)}
               </Text>
               <Text
                 style={[
@@ -186,8 +194,7 @@ export default class LandingScreen extends React.Component {
                   { color: "black", fontSize: 14, width: 200, paddingTop: 10 },
                 ]}
               >
-                Yaygın inancın tersine, Lorem Ipsum rastgele sözcüklerden
-                oluşmaz.
+                {getAbout(this.props.userInfo)}
               </Text>
             </View>
 
@@ -198,7 +205,7 @@ export default class LandingScreen extends React.Component {
             </View> */}
               <View style={styles.row}>
                 <Icon name="phone" color="#777777" />
-                <Text>+901231832183</Text>
+                <Text>{getPhone(this.props.userInfo)}</Text>
               </View>
               <View style={styles.row}>
                 <Icon name="email" color="#777777" />
@@ -207,8 +214,8 @@ export default class LandingScreen extends React.Component {
             </View>
             <View style={styles.userInfoSectionLower}>
               <View style={styles.row}>
-                <Icon name="calendar" color="#777777" />
-                <Text>Member Since TIMESTAMP</Text>
+                <Icon name="map" color="#777777" />
+                <Text>{getLocation(this.props.userInfo)}</Text>
               </View>
             </View>
 
@@ -216,19 +223,20 @@ export default class LandingScreen extends React.Component {
             <View style={styles.infoBoxWrapper}>
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
-                  140
+                  140{/* {getFollowers(this.props.userInfo)} */}
                   <Text style={{ fontWeight: "100" }}> Followers</Text>
                 </Text>
               </View>
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
-                  54
+                  200{/* {getFollowing(this.props.userInfo)} */}
                   <Text style={{ fontWeight: "100" }}> Following</Text>
                 </Text>
               </View>
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
-                  4<Text style={{ fontWeight: "100" }}> Posts</Text>
+                  30 {/* {getPostCount(this.props.userInfo)} */}
+                  <Text style={{ fontWeight: "100" }}> Posts</Text>
                 </Text>
               </View>
             </View>
@@ -261,7 +269,7 @@ export default class LandingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: <Text>Profile</Text>,
+    title: <Text>Pass Params Here</Text>,
     headerStyle: {
       backgroundColor: "#2890cf",
     },
