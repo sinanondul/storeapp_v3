@@ -20,7 +20,7 @@ import * as ImagePicker from "expo-image-picker";
 
 import { getAvatar } from "../../../functions/UserInfoFormatter";
 import styles from "./styles";
-import DropShadow from "react-native-drop-shadow";
+//import DropShadow from "react-native-drop-shadow";
 
 export default class AddScreen extends React.Component {
   state = {
