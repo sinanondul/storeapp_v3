@@ -16,7 +16,11 @@ import Fire from "../../../firebase/Fire";
 import { Avatar } from "react-native-paper";
 import moment from "moment";
 
-import { getFullName, getAvatar } from "../../../functions/UserInfoFormatter";
+import {
+  getFullName,
+  getAvatar,
+  getHandle,
+} from "../../../functions/UserInfoFormatter";
 import styles from "../styles";
 
 const usersRef = firebase.firestore().collection("users");
@@ -36,6 +40,7 @@ export default class FeedItem extends React.Component {
       name: null,
       surename: null,
       avatar: null,
+      handle: null,
     },
     nameinit: false,
   };
@@ -67,7 +72,6 @@ export default class FeedItem extends React.Component {
           <View style={{ flex: 1 }}>
             <View style={styles.feedHeader}>
               <TouchableOpacity
-                style={styles.userInfo}
                 onPress={() => {
                   this.props.navigation.navigate("ProfileFromHome", {
                     userInfo: this.state.senderInfo,
@@ -77,23 +81,48 @@ export default class FeedItem extends React.Component {
               >
                 <View style={styles.userAvatar}>
                   {this.state.nameinit
-                    ? getAvatar(this.state.senderInfo, 40)
+                    ? getAvatar(this.state.senderInfo, 50)
                     : null}
                 </View>
-                <View style={styles.userText}>
-                  {this.state.nameinit ? (
-                    <Text style={styles.name}>
-                      {getFullName(this.state.senderInfo)}
-                    </Text>
-                  ) : null}
-                  <Text style={styles.timestamp}>
-                    {getTimeSince(this.props.post.timestamp)}
-                  </Text>
-                </View>
               </TouchableOpacity>
-              <View style={styles.moreButton}>
-                <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
+              <View
+                style={{
+                  flexDirection: "column",
+                  justifyContent: "flex-start",
+                  marginLeft: 4,
+                }}
+              >
+                <TouchableOpacity
+                  onPress={() => {
+                    this.props.navigation.navigate("ProfileFromHome", {
+                      userInfo: this.state.senderInfo,
+                      otherProfile: true,
+                    });
+                  }}
+                >
+                  <View style={styles.userText}>
+                    {this.state.nameinit ? (
+                      <Text style={styles.name}>
+                        {getFullName(this.state.senderInfo)}
+                      </Text>
+                    ) : null}
+                    <Text style={styles.name}>@fixhandlepassing</Text>
+                    <Text style={styles.timestamp}>
+                      {getTimeSince(this.props.post.timestamp)}
+                    </Text>
+                  </View>
+                </TouchableOpacity>
+
+                {this.props.post.text && this.props.post.text !== "" ? (
+                  <View style={styles.mainText}>
+                    <Text style={styles.post}>{this.props.post.text}</Text>
+                  </View>
+                ) : null}
               </View>
+              {/* </TouchableOpacity> */}
+              {/* <View style={styles.moreButton}>
+                <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
+              </View> */}
             </View>
 
             <View>
@@ -105,17 +134,13 @@ export default class FeedItem extends React.Component {
                 />
               ) : null}
             </View>
-            {this.props.post.text && this.props.post.text !== "" ? (
-              <View style={styles.mainText}>
-                <Text style={styles.post}>{this.props.post.text}</Text>
-              </View>
-            ) : null}
+
             {/* <View style={styles.seperator}></View> */}
             <View style={styles.interactiveBar}>
               <TouchableOpacity>
                 <Ionicons
                   style={styles.intButtons}
-                  name="heart-outline"
+                  name="arrow-up-circle-outline"
                   size={24}
                   color="#73788"
                 />
@@ -124,16 +149,23 @@ export default class FeedItem extends React.Component {
               <TouchableOpacity>
                 <Ionicons
                   style={styles.intButtons}
-                  name="comment"
+                  name="chatbubble-outline"
                   size={24}
                   color="#73788"
                 />
               </TouchableOpacity>
-
               <TouchableOpacity>
                 <Ionicons
                   style={styles.intButtons}
-                  name="ellipsis-horizontal"
+                  name="send-outline"
+                  size={24}
+                  color="#73788"
+                />
+              </TouchableOpacity>
+              <TouchableOpacity>
+                <Ionicons
+                  style={styles.intButtons}
+                  name="bookmark-outline"
                   size={24}
                   color="#73788"
                 />

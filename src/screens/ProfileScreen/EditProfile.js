@@ -8,6 +8,9 @@ import {
   StyleSheet,
   Platform,
   Alert,
+  KeyboardAvoidingView,
+  Keyboard,
+  TouchableWithoutFeedback,
 } from "react-native";
 import * as Permissions from "expo-permissions";
 
@@ -26,6 +29,7 @@ import firebase from "firebase";
 //import firestore from "@react-native-firebase/firestore";
 
 import { getFullName, getAvatar } from "../../functions/UserInfoFormatter";
+import { ScrollView } from "react-native-gesture-handler";
 
 const bs = React.createRef();
 
@@ -206,6 +210,7 @@ export default class EditProfile extends React.Component {
     if (this.state.image) {
       displayImage = this.state.image;
     }
+
     return (
       <View style={styles.container}>
         <BottomSheet
@@ -218,79 +223,331 @@ export default class EditProfile extends React.Component {
           enabledGestureInteraction={true}
           enabledContentTapInteraction={false}
         />
-        <Animated.View
-          style={{
-            margin: 20,
-            opacity: Animated.add(0.1, Animated.multiply(this.state.fall, 1.0)),
-          }}
+        <KeyboardAvoidingView
+          style={styles.container}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          //keyboardVerticalOffset="200" IMPORTANT && ADD KEYBOARDLISTENER TO FIND KEYBOARD HEIGHT AND ADD INSTEAD OF 200 !!!
         >
-          <View style={{ alignItems: "center" }}>
-            <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
+          <ScrollView>
+            <Animated.View
+              style={{
+                margin: 20,
+                opacity: Animated.add(
+                  0.1,
+                  Animated.multiply(this.state.fall, 1.0)
+                ),
+              }}
+            >
               <View
-                style={{
-                  height: 100,
-                  width: 100,
-                  borderRadius: 15,
-                  justifyContent: "center",
-                  alignItems: "center",
-                }}
+                style={{ alignItems: "center" }}
+                // onPress={Keyboard.dismiss} /**/
               >
-                <ImageBackground
-                  source={{
-                    uri: displayImage,
-                  }}
-                  style={{ height: 100, width: 100 }}
-                  imageStyle={{ borderRadius: 15 }}
-                >
+                <TouchableOpacity onPress={() => bs.current.snapTo(0)}>
                   <View
                     style={{
-                      flex: 1,
+                      height: 100,
+                      width: 100,
+                      borderRadius: 15,
                       justifyContent: "center",
                       alignItems: "center",
                     }}
                   >
-                    <Icon
-                      name="camera"
-                      size={35}
-                      color="#ffffff"
-                      style={{
-                        opacity: 0.7,
-                        alignItems: "center",
-                        justifyContent: "center",
-                        borderWidth: 1,
-                        borderColor: "#fff",
-                        borderRadius: 10,
+                    <ImageBackground
+                      source={{
+                        uri: displayImage,
                       }}
+                      style={{ height: 100, width: 100 }}
+                      imageStyle={{ borderRadius: 15 }}
+                    >
+                      <View
+                        style={{
+                          flex: 1,
+                          justifyContent: "center",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Icon
+                          name="camera"
+                          size={35}
+                          color="#ffffff"
+                          style={{
+                            opacity: 0.7,
+                            alignItems: "center",
+                            justifyContent: "center",
+                            borderWidth: 1,
+                            borderColor: "#fff",
+                            borderRadius: 10,
+                          }}
+                        />
+                      </View>
+                    </ImageBackground>
+                  </View>
+                </TouchableOpacity>
+                <Text
+                  style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}
+                >
+                  {this.state.user ? this.state.user.name : ""}{" "}
+                  {this.state.user ? this.state.user.surename : ""}
+                </Text>
+              </View>
+              <View style={styles.action}>
+                <View style={{ marginRight: 5, paddingTop: 1 }}>
+                  <FontAwesome
+                    name="user-o"
+                    color={this.props.textColor}
+                    size={20}
+                  />
+                </View>
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      placeholder={this.state.user.name}
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      value={this.state.user.name}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, name: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
                     />
                   </View>
-                </ImageBackground>
+                </TouchableWithoutFeedback>
               </View>
-            </TouchableOpacity>
-            <Text style={{ marginTop: 10, fontSize: 18, fontWeight: "bold" }}>
-              {this.state.user ? this.state.user.name : ""}{" "}
-              {this.state.user ? this.state.user.surename : ""}
-            </Text>
-          </View>
+              <View style={styles.action}>
+                <View style={{ paddingTop: 1, width: 20 }}>
+                  <FontAwesome
+                    name="user-o"
+                    color={this.props.textColor}
+                    size={20}
+                  />
+                </View>
 
-          <View style={styles.action}>
-            <FontAwesome name="user-o" color={this.props.textColor} size={20} />
-            <TextInput
-              placeholder={this.state.user.name}
-              placeholderTextColor="#666666"
-              autoCorrect={false}
-              value={this.state.user.name}
-              onChangeText={(txt) =>
-                this.setState({ user: { ...this.state.user, name: txt } })
-              }
-              style={[
-                styles.textInput,
-                {
-                  color: this.props.textColor,
-                },
-              ]}
-            />
-          </View>
-          <View style={styles.action}>
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      placeholder={this.state.user.surename}
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      value={this.state.user.surename}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, surename: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <View style={styles.action}>
+                <View style={{ paddingTop: 1, width: 20 }}>
+                  <FontAwesome
+                    name="phone"
+                    color={this.props.textColor}
+                    size={20}
+                  />
+                </View>
+
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      placeholder={this.state.user.phone}
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      keyboardType="number-pad"
+                      value={this.state.user.phone}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, phone: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <View style={styles.action}>
+                <View style={{ paddingTop: 1, width: 20 }}>
+                  <FontAwesome
+                    name="map"
+                    color={this.props.textColor}
+                    size={20}
+                  />
+                </View>
+
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      placeholder={this.state.user.location}
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      value={this.state.user.location}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, location: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="comment"
+                  color={this.props.textColor}
+                  size={20}
+                />
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      placeholder={this.state.user.about}
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      value={this.state.user.about}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, about: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="university"
+                  color={this.props.textColor}
+                  size={20}
+                />
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      // placeholder= {{ this.state.user.department ? ({this.state.user.department})  : ("department" )}};
+
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      value={this.state.user.department}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, department: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <View style={styles.action}>
+                <FontAwesome
+                  name="envelope"
+                  color={this.props.textColor}
+                  size={20}
+                />
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      placeholder={this.state.user.email}
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      value={this.state.user.email}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, email: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              <View style={styles.action}>
+                <FontAwesome name="at" color={this.props.textColor} size={20} />
+                <TouchableWithoutFeedback
+                  onPress={Keyboard.dismiss}
+                  style={{ flex: 1, width: 200 }}
+                >
+                  <View style={{ justifyContent: "space-around" }}>
+                    <TextInput
+                      placeholder={this.state.user.handle}
+                      placeholderTextColor="#666666"
+                      autoCorrect={false}
+                      value={this.state.user.handle}
+                      onChangeText={(txt) =>
+                        this.setState({
+                          user: { ...this.state.user, handle: txt },
+                        })
+                      }
+                      style={[
+                        styles.textInput,
+                        {
+                          color: this.props.textColor,
+                        },
+                      ]}
+                    />
+                  </View>
+                </TouchableWithoutFeedback>
+              </View>
+              {/* <View style={styles.action}>
             <FontAwesome name="user-o" color={this.props.textColor} size={20} />
             <TextInput
               placeholder={this.state.user.surename}
@@ -326,8 +583,8 @@ export default class EditProfile extends React.Component {
                 },
               ]}
             />
-          </View>
-          <View style={styles.action}>
+          </View> */}
+              {/* <View style={styles.action}>
             <FontAwesome
               name="envelope-o"
               color={this.props.textColor}
@@ -368,16 +625,105 @@ export default class EditProfile extends React.Component {
               ]}
             />
           </View>
-
-          <TouchableOpacity
-            style={styles.commandButton}
-            onPress={() => {
-              this.handleUpdate();
-            }}
-          >
-            <Text style={styles.panelButtonTitle}>Update</Text>
-          </TouchableOpacity>
-        </Animated.View>
+          <View style={styles.action}>
+            <FontAwesome
+              name="comment-alt"
+              color={this.props.textColor}
+              size={20}
+            />
+            <TextInput
+              placeholder="About.."
+              placeholderTextColor="#666666"
+              autoCorrect={false}
+              value={this.state.user.about}
+              onChangeText={(txt) =>
+                this.setState({ user: { ...this.state.user, about: txt } })
+              }
+              style={[
+                styles.textInput,
+                {
+                  color: this.props.textColor,
+                },
+              ]}
+            />
+          </View>
+          <View style={styles.action}>
+            <FontAwesome
+              name="university"
+              color={this.props.textColor}
+              size={20}
+            />
+            <TextInput
+              placeholder="Department"
+              placeholderTextColor="#666666"
+              autoCorrect={false}
+              value={this.state.user.department}
+              onChangeText={(txt) =>
+                this.setState({ user: { ...this.state.user, department: txt } })
+              }
+              style={[
+                styles.textInput,
+                {
+                  color: this.props.textColor,
+                },
+              ]}
+            />
+          </View>
+          <View style={styles.action}>
+            <FontAwesome name="at" color={this.props.textColor} size={20} />
+            <TextInput
+              placeholder="Handle"
+              placeholderTextColor="#666666"
+              autoCorrect={false}
+              value={this.state.user.handle}
+              onChangeText={(txt) =>
+                this.setState({ user: { ...this.state.user, handle: txt } })
+              }
+              style={[
+                styles.textInput,
+                {
+                  color: this.props.textColor,
+                },
+              ]}
+            />
+          </View> */}
+              {/* <View style={styles.action}>
+            <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+              <View>
+                <FontAwesome
+                  name="user-o"
+                  color={this.props.textColor}
+                  size={20}
+                />
+                <TextInput
+                  placeholder="TEST"
+                  placeholderTextColor="#666666"
+                  autoCorrect={false}
+                  value={this.state.user.name}
+                  onChangeText={(txt) =>
+                    this.setState({ user: { ...this.state.user, name: txt } })
+                  }
+                  style={[
+                    styles.textInput,
+                    {
+                      color: this.props.textColor,
+                    },
+                  ]}
+                />
+              </View>
+            </TouchableWithoutFeedback>
+          </View> */}
+              <TouchableOpacity
+                style={styles.commandButton}
+                onPress={() => {
+                  this.handleUpdate();
+                }}
+              >
+                <Text style={styles.panelButtonTitle}>Update</Text>
+              </TouchableOpacity>
+            </Animated.View>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
     );
   }
@@ -386,6 +732,11 @@ export default class EditProfile extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  inner: {
+    padding: 24,
+    flex: 1,
+    justifyContent: "space-around",
   },
   commandButton: {
     padding: 15,
@@ -407,11 +758,11 @@ const styles = StyleSheet.create({
   },
   header: {
     backgroundColor: "#FFFFFF",
-    shadowColor: "#333333",
+    shadowColor: "#000000",
     shadowOffset: { width: -1, height: -3 },
     shadowRadius: 2,
     shadowOpacity: 0.4,
-    // elevation: 5,
+    elevation: 5,
     paddingTop: 20,
     borderTopLeftRadius: 20,
     borderTopRightRadius: 20,
@@ -468,5 +819,7 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === "ios" ? 0 : -12,
     paddingLeft: 10,
     color: "#05375a",
+    height: 30,
+    width: 300,
   },
 });

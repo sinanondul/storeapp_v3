@@ -8,7 +8,7 @@ import { openDrawer } from "../../../App";
 //import AddScreen from "./AddScreen";
 import styles from "./styles";
 import { Alert, Platform } from "react-native";
-
+import MyHeader from "../../components/MyHeader";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useTheme } from "react-native-paper";
 

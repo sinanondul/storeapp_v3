@@ -30,6 +30,21 @@ function getFullName(info) {
 function getAvatarTag(info) {
   return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
 }
+function getHandle(info) {
+  return info.handle;
+}
+function getAbout(info) {
+  return info.about;
+}
+function getPhone(info) {
+  return info.phone;
+}
+function getLocation(info) {
+  return info.location;
+}
+function getDepartment(info) {
+  return info.department;
+}
 
 function getAvatar(info, size) {
   if (!(info.avatar == null)) {
@@ -75,4 +90,9 @@ export {
   getAvatar,
   getGroupChatName,
   getGroupChatAvatar,
+  getAbout,
+  getLocation,
+  getHandle,
+  getPhone,
+  getDepartment,
 };
