@@ -72,31 +72,42 @@ const LandingStyles = StyleSheet.create({
   feedItem: {
     backgroundColor: "#FFF",
     borderRadius: 5,
-    padding: 8,
-    flexDirection: "row",
-    marginVertical: 8,
+    padding: 0,
+    flexDirection: "column",
+    marginVertical: 2,
+    paddingLeft: 10,
+    paddingRight: 10,
+    width: "100%",
   },
   feedHeader: {
     flex: 1,
     flexDirection: "row",
     alignItems: "center",
+    paddingTop: 8,
+    //paddingRight: 10,
   },
   userInfo: {
     height: 20,
-    flex: 0.9,
+    paddingLeft: 10,
+    flex: 1,
+    borderWidth: 4,
     flexDirection: "row",
     alignItems: "center",
   },
   userAvatar: {
-    height: 80,
-    flex: 0.2,
-    justifyContent: "flex-start",
-    alignItems: "flex-start",
-    paddingLeft: 5,
-    paddingTop: 20,
+    //paddingTop: 20,
+    //flexDirection: "row",
+    //paddingLeft: 12,
+    flex: 1,
+    //marginRight: 5,
+    width: 50,
+    height: 50,
   },
   userText: {
-    flex: 0.7,
+    flexDirection: "row",
+    flex: 0.5,
+    height: 20,
+    //justifyContet: "center",
   },
   moreButton: {
     height: 80,
@@ -108,7 +119,12 @@ const LandingStyles = StyleSheet.create({
   },
 
   mainText: {
-    paddingLeft: 2,
+    flexDirection: "column",
+    flex: 0.5,
+    paddingRight: 10,
+    width: "95%",
+
+    //paddingLeft: 80,
   },
 
   avatar: {
@@ -118,17 +134,19 @@ const LandingStyles = StyleSheet.create({
     marginRight: 16,
   },
   name: {
-    fontSize: 15,
+    flexDirection: "row",
+    fontSize: 12,
     fontWeight: "500",
     color: "#454D65",
   },
   timestamp: {
+    flexDirection: "row",
     fontSize: 11,
     color: "#C4C6CE",
     marginTop: 4,
   },
   post: {
-    marginTop: 16,
+    //marginTop: 16,
     fontSize: 14,
   },
   postImage: {
@@ -181,14 +199,19 @@ const LandingStyles = StyleSheet.create({
   interactiveBar: {
     height: 30,
     width: "100%",
+    //alignItems: "center",
+    //justifyContent: "center",
+    marginTop: 10,
+    alignItems: "center",
     flexDirection: "row",
   },
   intButtons: {
     flexDirection: "row",
+    marginLeft: 53,
   },
   seperator: {
     width: "100%",
-    height: 0.1,
+    height: 1,
     backgroundColor: "gray",
     shadowColor: "black",
   },

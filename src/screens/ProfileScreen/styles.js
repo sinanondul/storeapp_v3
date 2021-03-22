@@ -149,26 +149,19 @@ const styles = StyleSheet.create({
   feedHeader: {
     flex: 1,
     flexDirection: "row",
-
     height: 69,
   },
   userAvatar: {
     paddingTop: 9,
-
     flexDirection: "row",
-
     paddingLeft: 12,
-
     width: 80,
     height: 80,
   },
   userText: {
     flex: 0.2,
-
     height: 25,
-
     paddingTop: 9,
-
     flexDirection: "row",
   },
   moreButton: {
