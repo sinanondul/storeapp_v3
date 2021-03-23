@@ -4,6 +4,11 @@ const AddStyles = StyleSheet.create({
   container: {
     flex: 1,
   },
+  inner: {
+    padding: 24,
+    flex: 1,
+    justifyContent: "space-around",
+  },
 
   headerTitleStyle: {
     flex: 0.6,
@@ -14,33 +19,53 @@ const AddStyles = StyleSheet.create({
   },
 
   bottom: {
+    alignSelf: "flex-end",
     flexDirection: "row",
-    justifyContent: "space-between",
-    paddingHorizontal: 32,
+    paddingRight: 10,
+    justifyContent: "flex-end",
     paddingVertical: 12,
-    // borderTopWidth: 0.5,
-    // borderTopColor: "#FF6433",
   },
 
   inputContainer: {
-    marginHorizontal: 20,
-    marginTop: 20,
+    marginLeft: 15,
+    marginRight: 15,
+    marginTop: 15,
     flexDirection: "row",
-    //backgroundColor: "red",
-    padding: 10,
+    height: Dimensions.get("window").height - 350,
+    minHeight: 50,
+  },
+  postPhoto: {
+    flex: 0.5,
+    width: "100%",
+    height: "100%",
   },
 
   photo: {
-    alignItems: "flex-end",
-    padding: 10,
+    //padding: 20,
   },
   textStyle: {
-    //width: 300,
-    marginTop: 10,
-    width: Dimensions.get("window").width - 50,
+    flex: 0.3,
+    width: Dimensions.get("window").width - 80,
+    height: Dimensions.get("window").height - 400,
+  },
+  wholePost: {
+    flex: 1,
+    marginTop: 5,
+    marginLeft: 10,
+    // width: Dimensions.get("window").width - 80,
+    // height: Dimensions.get("window").height - 400,
   },
   post: {
     color: "#FF6433",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 10,
+    marginRight: 20,
   },
   postButton: {
     //backgroundColor: "#FF6433",
@@ -59,6 +84,27 @@ const AddStyles = StyleSheet.create({
   camera: {
     backgroundColor: "#FF6433",
     backgroundColor: "blue",
+
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 10,
+  },
+  close: {
+    backgroundColor: "#FF6433",
+    shadowColor: "#000",
+    width: 30,
+    shadowOffset: {
+      width: 3,
+      height: 3,
+    },
+    shadowOpacity: 0.3,
+    shadowRadius: 3,
+    elevation: 10,
   },
 });
 

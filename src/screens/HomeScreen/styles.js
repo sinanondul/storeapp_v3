@@ -150,10 +150,11 @@ const LandingStyles = StyleSheet.create({
     fontSize: 14,
   },
   postImage: {
-    width: "100%",
+    width: "85%",
     height: 200,
     borderRadius: 5,
     marginVertical: 0,
+    marginLeft: 54,
   },
   centeredView: {
     flex: 1,
