@@ -55,6 +55,10 @@ export default class EditProfile extends React.Component {
       transferred: [],
     };
   }
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return params;
+  };
 
   getPermission = async () => {
     if (Platform.OS !== "web") {
@@ -130,6 +134,7 @@ export default class EditProfile extends React.Component {
           "Profile Updated!",
           "Your Profile has been updated succesfully."
         );
+        this.props.navigation.goBack();
       });
   };
 
@@ -225,8 +230,8 @@ export default class EditProfile extends React.Component {
         />
         <KeyboardAvoidingView
           style={styles.container}
-          behavior={Platform.OS === "ios" ? "padding" : "height"}
-          //keyboardVerticalOffset="200" IMPORTANT && ADD KEYBOARDLISTENER TO FIND KEYBOARD HEIGHT AND ADD INSTEAD OF 200 !!!
+          behavior="position"
+          keyboardVerticalOffset="60"
         >
           <ScrollView>
             <Animated.View
@@ -250,6 +255,8 @@ export default class EditProfile extends React.Component {
                       borderRadius: 15,
                       justifyContent: "center",
                       alignItems: "center",
+                      borderWidth: 1,
+                      borderColor: "#BBBBBB",
                     }}
                   >
                     <ImageBackground
@@ -269,13 +276,13 @@ export default class EditProfile extends React.Component {
                         <Icon
                           name="camera"
                           size={35}
-                          color="#ffffff"
+                          color="#BBBBBB"
                           style={{
                             opacity: 0.7,
                             alignItems: "center",
                             justifyContent: "center",
                             borderWidth: 1,
-                            borderColor: "#fff",
+                            borderColor: "#BBBBBB",
                             borderRadius: 10,
                           }}
                         />
@@ -727,6 +734,19 @@ export default class EditProfile extends React.Component {
       </View>
     );
   }
+  static navigationOptions = {
+    title: <Text>Edit Profile</Text>,
+    headerStyle: {
+      backgroundColor: "#2890cf",
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      flex: 0.6,
+      alignSelf: "center",
+      alignItems: "center",
+      fontWeight: "bold",
+    },
+  };
 }
 
 const styles = StyleSheet.create({
@@ -749,12 +769,6 @@ const styles = StyleSheet.create({
     padding: 20,
     backgroundColor: "#FFFFFF",
     paddingTop: 20,
-    // borderTopLeftRadius: 20,
-    // borderTopRightRadius: 20,
-    // shadowColor: '#000000',
-    // shadowOffset: {width: 0, height: 0},
-    // shadowRadius: 5,
-    // shadowOpacity: 0.4,
   },
   header: {
     backgroundColor: "#FFFFFF",

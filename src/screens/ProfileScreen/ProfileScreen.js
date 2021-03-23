@@ -51,9 +51,7 @@ export default class ProfileScreen extends React.Component {
         </ProfileStack.Screen>
         <ProfileStack.Screen
           name="EditProfile"
-          options={{
-            title: "Edit Profile",
-          }}
+          options={EditProfileScreen.navigationOptions}
         >
           {(props) => (
             <EditProfileScreen
