@@ -8,6 +8,8 @@ import {
   Image,
   Platform,
   Dimensions,
+  KeyboardAvoidingView,
+  Keyboard,
 } from "react-native";
 
 import Icon from "react-native-vector-icons/Ionicons";
@@ -28,9 +30,29 @@ export default class AddScreen extends React.Component {
     image: null,
     imageAllowed: false,
   };
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return params;
+  };
 
   componentDidMount() {
     this.getPhotoPermission();
+    this.props.navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity>
+          <Ionicons
+            name={
+              Platform.OS === "ios"
+                ? "ios-navigate-outline"
+                : "navigate-outline"
+            }
+            style={styles.post}
+            size={28}
+            onPress={() => this.combinedFunctions()}
+          />
+        </TouchableOpacity>
+      ),
+    });
   }
 
   getPhotoPermission = async () => {
@@ -74,24 +96,66 @@ export default class AddScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
-        <ScrollView style={styles.inputContainer}>
-          <View>
-            {getAvatar(this.props.userData)}
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        style={styles.container}
+      >
+        <View style={styles.inputContainer}>
+          <View style={{ flexDirection: "row" }}>
+            {getAvatar(this.props.userData, 40)}
             <View>
-              <TextInput
-                outerFocus={true}
-                multiline={true}
-                numberOfLines={4}
-                placeholder="Type Here"
-                onChangeText={(text) => this.setState({ text })}
-                value={this.state.text}
-                style={styles.textStyle}
-              />
+              <View style={styles.wholePost}>
+                <TextInput
+                  autoFocus={true}
+                  outerFocus={true}
+                  multiline={true}
+                  numberOfLines={4}
+                  placeholder="Type Here"
+                  onChangeText={(text) => this.setState({ text })}
+                  value={this.state.text}
+                  style={styles.textStyle}
+                />
+                {this.state.image ? (
+                  <View style={styles.postPhoto}>
+                    <Image
+                      source={{ uri: this.state.image }}
+                      style={{ width: "100%", height: "100%" }}
+                      resizeMode="cover"
+                    />
+
+                    <Icon
+                      name={
+                        Platform.OS === "ios"
+                          ? "ios-close-circle"
+                          : "md-close-circle"
+                      }
+                      size={32}
+                      style={styles.close}
+                      onPress={() => this.setState({ image: null })}
+                    />
+                  </View>
+                ) : null}
+              </View>
+              {this.state.image ? null : (
+                <View style={styles.bottom}>
+                  <TouchableOpacity
+                    style={styles.photo}
+                    onPress={this.pickImage}
+                  >
+                    <Ionicons
+                      name="md-camera"
+                      size={28}
+                      color="#FF6433"
+                    ></Ionicons>
+                  </TouchableOpacity>
+                </View>
+              )}
             </View>
           </View>
-        </ScrollView>
-        <View
+          <View></View>
+        </View>
+      </KeyboardAvoidingView>
+      /* <View
           style={[
             styles.bottom,
             {
@@ -106,91 +170,18 @@ export default class AddScreen extends React.Component {
             },
           ]}
         >
-          <View>
-            <View style={styles.post}>
-              <Icon
-                name={
-                  Platform.OS === "ios"
-                    ? "ios-navigate-outline"
-                    : "navigate-outline"
-                }
-                size={28}
-                style={[
-                  {
-                    position: "absolute",
-                    top: 5,
-                    left: 5,
-                  },
-                  {
-                    shadowColor: "#000",
-                    shadowOffset: {
-                      width: 3,
-                      height: 3,
-                    },
-                    shadowOpacity: 0.3,
-                    shadowRadius: 3,
-                    elevation: 10,
-                  },
-                  styles.post,
-                ]}
-                // onPress={() => this.setState({ image: null })}
-                onPress={() => this.combinedFunctions()}
-              />
-            </View>
-          </View>
-          <View>
-            {this.state.image ? (
-              <View>
-                <Image
-                  source={{ uri: this.state.image }}
-                  style={{ width: "100%", height: "100%" }}
-                />
 
-                <Icon
-                  name={
-                    Platform.OS === "ios"
-                      ? "ios-close-circle"
-                      : "md-close-circle"
-                  }
-                  size={32}
-                  style={[
-                    {
-                      position: "absolute",
-                      top: 5,
-                      right: 5,
-                    },
-                    {
-                      shadowColor: "#000",
-                      shadowOffset: {
-                        width: 3,
-                        height: 3,
-                      },
-                      shadowOpacity: 0.3,
-                      shadowRadius: 3,
-                      elevation: 10,
-                    },
-                    styles.camera,
-                  ]}
-                  onPress={() => this.setState({ image: null })}
-                />
-              </View>
-            ) : (
-              <TouchableOpacity style={styles.photo} onPress={this.pickImage}>
-                <Ionicons name="md-camera" size={28} color="#FF6433"></Ionicons>
-              </TouchableOpacity>
-            )}
-          </View>
-        </View>
-      </SafeAreaView>
+        </View> */
     );
   }
 
   //
   static navigationOptions = {
     title: <Text>Add Post</Text>,
+    //headerBackTitle: "Cancel",
     headerStyle: {
-      backgroundColor: "#2890cf",
+      backgroundColor: "#FFFFFF",
     },
-    headerTintColor: "#fff",
+    // headerTintColor: "#fff",
   };
 }
