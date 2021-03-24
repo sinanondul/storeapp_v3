@@ -14,11 +14,15 @@ class Fire {
   }
 
   //Post Stuff
-  addPost = async ({ text, localUri }) => {
+
+  //Adding a post.
+  addPost = async ({ userData, text, localUri }) => {
     var remoteUri = null;
     if (localUri != null) {
       remoteUri = await this.uploadPhotoAsync(localUri);
     }
+
+    const userRef = this.firestore.collection('users').doc(userData.uid);
 
     return new Promise((res, rej) => {
       this.firestore
@@ -28,9 +32,14 @@ class Fire {
           uid: this.uid,
           timestamp: this.timestamp,
           image: remoteUri,
+          upCount: 0,
+          comments: {},
         })
         .then((ref) => {
-          res(ref);
+          userData.myPosts[ref.id] = true;
+          userRef.set({
+            "myPosts": userData.myPosts
+          }, {merge:true})
         })
         .catch((error) => {
           rej(error);
@@ -38,6 +47,47 @@ class Fire {
     });
   };
 
+  //
+  upPost(userData, postId) {
+
+    Alert.alert(userData.uid, postId);
+    //Local update.
+    userData.upedPosts[postId] = true;
+
+    //Firebase consts.
+    const userRef = this.firestore.collection('users').doc(userData.uid);
+    const postRef = this.firestore.collection('posts').doc(postId);
+    const increment = firebase.firestore.FieldValue.increment(1);
+
+    //Incrementing up count of post.
+    postRef.update({upCount: increment})
+
+    //Server update.
+    userRef.set({
+      "upedPosts": userData.upedPosts
+    }, {merge:true})
+  }
+
+  //
+  removeUpPost = async(userData, postId) => {
+    //Local update.
+    delete userData.upedPosts.postId;
+
+    //Firebase consts.
+    const userRef = this.firestore.collection('users').doc(userData.uid);
+    const postRef = this.firestore.collection('posts').doc(postId);
+    const decrement = firebase.firestore.FieldValue.increment(-1);
+
+    //Incrementing up count of post.
+    postRef.update({upCount: decrement})
+
+    //Server update.
+    userRef.set({ upedPosts: {
+      [postId]: firebase.firestore.FieldValue.delete()
+    }}, {merge:true})
+  }
+
+  //Uploading local image to cloud storage.
   uploadPhotoAsync = async (uri) => {
     const path = `photos/${this.uid}/${Date.now()}.jpg`;
 

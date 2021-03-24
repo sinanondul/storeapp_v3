@@ -11,6 +11,22 @@ const styles = StyleSheet.create({
     },
     button: {
         marginRight: '20%'
+    },
+    buttonInner: {
+        flexDirection: 'row',
+        alignItems: 'center',
+    },
+    upedText: {
+        position: 'absolute',
+        right: - 20,
+        color: "#f4511e",
+        fontSize: 24,
+    },
+    regularText: {
+        position: 'absolute',
+        right: - 20,
+        color: 'black',
+        fontSize: 24,
     }
 })
 

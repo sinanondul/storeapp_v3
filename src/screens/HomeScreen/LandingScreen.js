@@ -49,6 +49,7 @@ export default class LandingScreen extends React.Component {
         changes.forEach((change) => {
           if (change.type === "added") {
             const newPost = change.doc.data();
+            const uped = change.doc.id in this.props.userData.upedPosts;
             const newPostData = {
               id: change.doc.id,
               name: newPost.name,
@@ -56,6 +57,9 @@ export default class LandingScreen extends React.Component {
               timestamp: newPost.timestamp,
               image: newPost.image,
               senderId: newPost.uid,
+              upCount: newPost.upCount,
+              comments: newPost.comments,
+              uped: uped,
             };
             postsArray.unshift(newPostData);
           }
@@ -73,7 +77,7 @@ export default class LandingScreen extends React.Component {
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
-        ></FlatList>
+        />
         <DefaultFooter {...this.props} />
       </SafeAreaView>
     );

@@ -28,6 +28,7 @@ export default function SocialNavigator(props) {
         {(props) => (
           <LandingScreen
             {...props}
+            userData={userData}
             messageCount={messageCount}
             notificationCount={notificationCount}
           />
