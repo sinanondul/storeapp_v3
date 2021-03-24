@@ -8,6 +8,9 @@ import {
     TouchableOpacity,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
+
+import Fire from '../../../firebase/Fire';
+
 import styles from "./styles"
 
 
@@ -17,25 +20,50 @@ export default class InteractiveBar extends React.Component
         uped: false,
     }
 
+    componentDidMount () {
+        this.setState({uped: this.props.post.uped})
+    }
+
     toggleUped = () => {
-        this.setState({uped: !this.state.uped});
+        if (!this.state.uped) {
+            Fire.shared.upPost(this.props.userData, this.props.post.id)
+            this.props.post.upCount = this.props.post.upCount + 1;
+            this.setState({uped: true});
+        }
+        else {
+            Fire.shared.removeUpPost(this.props.userData, this.props.post.id)
+            this.props.post.upCount = this.props.post.upCount - 1;
+            this.setState({uped: false});
+        }
     }
 
     render() {
+        const post = this.props.post;
+        const upCount = post.upCount;
         return(
             <View style={styles.interactiveBar}>
                 <TouchableOpacity style={styles.button} onPress={this.toggleUped}>
                     {   this.state.uped 
-                        ?   <Image
-                                source={require('../assets/Post_UP_Icon_Filled.png')}
-                                style = {{width: 28, height: 28, borderRadius: 14}}
-                                resizeMode = "stretch"
-                            />
-                        :   <Image
-                                source={require('../assets/Post_UP_Icon_Outline.png')}
-                                style = {{width: 28, height: 28, borderRadius: 14}}
-                                resizeMode = "stretch"
-                            />
+                        ?   <View style={styles.buttonInner}>
+                                <Image
+                                    source={require('../assets/Post_UP_Icon_Filled.png')}
+                                    style = {{width: 28, height: 28, borderRadius: 14}}
+                                    resizeMode = "stretch"
+                                />
+                                <Text style={styles.upedText}>
+                                    {upCount}
+                                </Text>
+                            </View>
+                        :   <View style={styles.buttonInner}>
+                                <Image
+                                    source={require('../assets/Post_UP_Icon_Outline.png')}
+                                    style = {{width: 28, height: 28, borderRadius: 14}}
+                                    resizeMode = "stretch"
+                                />
+                                <Text style={styles.regularText}>
+                                    {upCount}
+                                </Text>
+                            </View>
                     }
                     
                 </TouchableOpacity>

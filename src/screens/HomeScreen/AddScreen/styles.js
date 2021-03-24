@@ -1,9 +1,86 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 const AddStyles = StyleSheet.create({
+
   container: {
     flex: 1,
   },
+  talkBubble: {
+    backgroundColor: "transparent",
+  },
+  talkBubbleSquare: {
+    width: 240,
+    marginLeft: 30,
+    backgroundColor: "white",
+    borderRadius: 10,
+    flexDirection: 'column',
+  },
+  talkBubbleTriangle: {
+    position: "absolute",
+    left: -26,
+    top: 8,
+    width: 0,
+    height: 0,
+    marginLeft: 30,
+    borderTopColor: "transparent",
+    borderTopWidth: 13,
+    borderRightWidth: 26,
+    borderRightColor: "white",
+    borderBottomWidth: 13,
+    borderBottomColor: "transparent",
+  },
+
+  textWrapper: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    padding: 10,
+  },
+  textStyle: {
+    alignItems: 'flex-start',
+    justifyContent: 'flex-start',
+    width: '100%',
+    textAlignVertical: 'top',
+  },
+
+  postPhoto: {
+    height: 200,
+    justifyContent: 'center',
+    padding: 10,
+  },
+
+  postButton: {
+    flexBasis: 30,
+    width: 60,
+    height: 30,
+    borderRadius: 18,
+    backgroundColor: '#f4511e',
+    marginRight: 10,
+    marginLeft: 'auto',
+    marginVertical: 10,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  postButtonText: {
+    color: 'white',
+  },
+
+  bottomBar: {
+    width: '100%',
+    alignSelf: 'flex-end',
+    flexDirection: 'row',
+    height: 50,
+    backgroundColor: 'white',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+  },
+  bottomButton: {
+    padding: 10,
+  },  
+
+
+
+
+
   inner: {
     padding: 24,
     flex: 1,
@@ -27,26 +104,16 @@ const AddStyles = StyleSheet.create({
   },
 
   inputContainer: {
+    flex: 1,
     marginLeft: 15,
     marginRight: 15,
     marginTop: 15,
     flexDirection: "row",
-    height: Dimensions.get("window").height - 350,
     minHeight: 50,
-  },
-  postPhoto: {
-    flex: 0.5,
-    width: "100%",
-    height: "100%",
   },
 
   photo: {
     //padding: 20,
-  },
-  textStyle: {
-    flex: 0.3,
-    width: Dimensions.get("window").width - 80,
-    height: Dimensions.get("window").height - 400,
   },
   wholePost: {
     flex: 1,
@@ -66,11 +133,6 @@ const AddStyles = StyleSheet.create({
     shadowRadius: 3,
     elevation: 10,
     marginRight: 20,
-  },
-  postButton: {
-    //backgroundColor: "#FF6433",
-    borderRadius: 10,
-    justifyContent: "center",
   },
   shadow: {
     shadowColor: "#fff",

@@ -10,7 +10,9 @@ import {
   Dimensions,
   KeyboardAvoidingView,
   Keyboard,
+  Alert,
 } from "react-native";
+import { HeaderBackButton } from "@react-navigation/stack";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,6 +22,7 @@ import * as Permissions from "expo-permissions";
 import Fire from "../../../firebase/Fire";
 import * as ImagePicker from "expo-image-picker";
 
+import XButton from '../../../components/XButton';
 import { getAvatar } from "../../../functions/UserInfoFormatter";
 import styles from "./styles";
 //import DropShadow from "react-native-drop-shadow";
@@ -38,22 +41,30 @@ export default class AddScreen extends React.Component {
   componentDidMount() {
     this.getPhotoPermission();
     this.props.navigation.setOptions({
+      headerLeft: () => (
+        <HeaderBackButton tintColor={"#000"} 
+          onPress = {() => {
+            Keyboard.dismiss()
+            setTimeout(() => {
+              this.props.navigation.goBack();
+              }, 160);
+          }}
+        />
+      ),
       headerRight: () => (
-        <TouchableOpacity>
-          <Ionicons
-            name={
-              Platform.OS === "ios"
-                ? "ios-navigate-outline"
-                : "navigate-outline"
-            }
-            style={styles.post}
-            size={28}
-            onPress={() => this.combinedFunctions()}
-          />
-        </TouchableOpacity>
+        null
       ),
     });
   }
+
+  onChangeText = (text) => {
+    const maxLines = 10;
+    const lines = text.split("\n");
+
+    if (lines.length <= (maxLines || 1)) {
+      this.setState({ text })
+    }
+ };
 
   getPhotoPermission = async () => {
     if (Constants.platform.ios) {
@@ -66,22 +77,25 @@ export default class AddScreen extends React.Component {
   };
 
   handlePost = () => {
-    Fire.shared
-      .addPost({
-        text: this.state.text.trim(),
-        localUri: this.state.image,
-      })
-      .catch((error) => {
-        alert(error);
-      });
-    this.props.navigation.goBack();
+    if (this.state.text !== "" || this.state.image) {
+      Fire.shared
+        .addPost({
+          userData: this.props.userData,
+          text: this.state.text.trim(),
+          localUri: this.state.image,
+        })
+        .catch((error) => {
+          alert(error);
+        });
+      this.props.navigation.goBack();
+    }
   };
 
   pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.Images,
       allowsEditing: true,
-      quality: 0,
+      quality: 1,
     });
 
     if (!result.cancelled) {
@@ -96,82 +110,74 @@ export default class AddScreen extends React.Component {
 
   render() {
     return (
-      <KeyboardAvoidingView
-        behavior={Platform.OS === "ios" ? "padding" : "height"}
+      <View
         style={styles.container}
       >
         <View style={styles.inputContainer}>
-          <View style={{ flexDirection: "row" }}>
-            {getAvatar(this.props.userData, 40)}
-            <View>
-              <View style={styles.wholePost}>
-                <TextInput
-                  autoFocus={true}
-                  outerFocus={true}
-                  multiline={true}
-                  numberOfLines={4}
-                  placeholder="Type Here"
-                  onChangeText={(text) => this.setState({ text })}
-                  value={this.state.text}
-                  style={styles.textStyle}
-                />
-                {this.state.image ? (
-                  <View style={styles.postPhoto}>
-                    <Image
-                      source={{ uri: this.state.image }}
-                      style={{ width: "100%", height: "100%" }}
-                      resizeMode="cover"
-                    />
 
-                    <Icon
-                      name={
-                        Platform.OS === "ios"
-                          ? "ios-close-circle"
-                          : "md-close-circle"
-                      }
-                      size={32}
-                      style={styles.close}
-                      onPress={() => this.setState({ image: null })}
+            {getAvatar(this.props.userData, 50)}
+
+            <View style={{flexDirection: 'column'}}>
+            
+              <View style={styles.talkBubble}>
+
+                <View style={styles.talkBubbleTriangle}/>
+
+                <View style={styles.talkBubbleSquare}>
+                  <View style={styles.textWrapper}>
+                    <TextInput
+                      autoFocus={true}
+                      outerFocus={true}
+                      multiline={true}
+                      maxLength={280}
+                      placeholder="Type your post here..."
+                      onChangeText={this.onChangeText}
+                      value={this.state.text}
+                      style={styles.textStyle}
                     />
                   </View>
-                ) : null}
-              </View>
-              {this.state.image ? null : (
-                <View style={styles.bottom}>
-                  <TouchableOpacity
-                    style={styles.photo}
-                    onPress={this.pickImage}
-                  >
-                    <Ionicons
-                      name="md-camera"
-                      size={28}
-                      color="#FF6433"
-                    ></Ionicons>
-                  </TouchableOpacity>
-                </View>
-              )}
-            </View>
-          </View>
-          <View></View>
-        </View>
-      </KeyboardAvoidingView>
-      /* <View
-          style={[
-            styles.bottom,
-            {
-              shadowColor: "#000",
-              shadowOffset: {
-                width: 5,
-                height: 5,
-              },
-              shadowOpacity: 0.5,
-              shadowRadius: 8,
-              elevation: 13,
-            },
-          ]}
-        >
+                  { this.state.image 
+                    ? <View style={styles.postPhoto}>
+                        <Image
+                          source={{ uri: this.state.image }}
+                          style={{ width: "100%", height: "100%" }}
+                          resizeMode="contain"
+                        />
+                        <XButton onPress={() => this.setState({image: null})}/>
 
-        </View> */
+                      </View>
+                    : null
+                  }
+                </View>
+
+              </View>
+              
+              { this.state.text !== "" || this.state.image
+                ? <TouchableOpacity style={styles.postButton} onPress={this.handlePost}>
+                      <Text style={styles.postButtonText}>
+                        Post
+                      </Text>
+                  </TouchableOpacity>
+                : null
+              }
+            </View>
+
+        </View>
+
+        <View style={styles.bottomBar}>
+          <TouchableOpacity
+            style={styles.bottomButton}
+            onPress={this.pickImage}
+          >
+            <Ionicons
+              name='camera'
+              size={28}
+              color="black"
+            />
+          </TouchableOpacity>
+        </View>
+
+      </View>
     );
   }
 

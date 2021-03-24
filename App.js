@@ -75,6 +75,9 @@ export default class App extends React.Component {
                 location: userData.location,
                 phone: userData.phone,
                 about: userData.about,
+                myPosts: userData.myPosts,
+                upedPosts: userData.upedPosts,
+                favPosts: userData.favPosts,
               },
             });
             this.setState({ isLoggedIn: true });

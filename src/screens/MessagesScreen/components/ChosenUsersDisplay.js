@@ -2,11 +2,13 @@ import React from 'react';
 import {View, Text, Platform, TouchableOpacity, FlatList, Alert} from "react-native";
 import {Avatar, Badge, withBadge} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
-import firebase from 'firebase';
 import moment from 'moment';
 
-import {getName, getAvatar} from "../../../functions/UserInfoFormatter";
+import firebase from 'firebase';
 import Fire from "../../../firebase/Fire";
+
+import {getName, getAvatar} from "../../../functions/UserInfoFormatter";
+import XButton from "../../../components/XButton";
 import styles from "./styles";
 
 
@@ -26,28 +28,7 @@ export default class ChosenUsersDisplay extends React.Component{
 
             {/* X Icon */}
             { this.props.participantsRemoveable
-              ? <View style={{
-                  position: 'absolute',
-                  top: 8,
-                  right: 8,
-                  width: 15,
-                  height: 15,
-                  borderRadius: 7.5,
-                  backgroundColor: '#fff',
-                }}/>
-              : null
-            }
-            { this.props.participantsRemoveable
-              ? <Icon
-                  name={Platform.OS === "ios" ? "ios-close-circle" : "md-close-circle"}
-                  size={22}
-                  style={{
-                    position: 'absolute',
-                    top: 3,
-                    right: 3,
-                  }}
-                  onPress={() => this.props.removeParticipant(item.uid)}
-                />
+              ? <XButton onPress={() => this.props.removeParticipant(item.uid)}/>
               : null
             }
             

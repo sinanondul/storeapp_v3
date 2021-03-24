@@ -127,8 +127,7 @@ export default class FeedItem extends React.Component {
                 : null
               }
             </View>
-            
-            <InteractiveBar/>
+            <InteractiveBar userData={this.props.userData} post={this.props.post}/>
           </View>
         </View>
       </View>
