@@ -72,18 +72,16 @@ const LandingStyles = StyleSheet.create({
   feedItem: {
     backgroundColor: "#FFF",
     borderRadius: 5,
-    padding: 0,
+    marginVertical: 8,
+    marginHorizontal: 2,
     flexDirection: "column",
-    marginVertical: 2,
-    paddingLeft: 10,
-    paddingRight: 10,
-    width: "100%",
+    elevation: 1,
   },
   feedHeader: {
     flex: 1,
     flexDirection: "row",
-    alignItems: "center",
-    paddingTop: 8,
+    alignItems: "flex-start",
+    padding: 10
     //paddingRight: 10,
   },
   userInfo: {
@@ -98,15 +96,15 @@ const LandingStyles = StyleSheet.create({
     //paddingTop: 20,
     //flexDirection: "row",
     //paddingLeft: 12,
-    flex: 1,
     //marginRight: 5,
     width: 50,
     height: 50,
   },
   userText: {
-    flexDirection: "row",
+    flexDirection: "column",
     flex: 0.5,
     height: 20,
+    paddingLeft: 10,
     //justifyContet: "center",
   },
   moreButton: {
@@ -118,13 +116,15 @@ const LandingStyles = StyleSheet.create({
     paddingBottom: 40,
   },
 
-  mainText: {
-    flexDirection: "column",
-    flex: 0.5,
+  feedContent: {
+    flexDirection: 'column',
     paddingRight: 10,
-    width: "95%",
+    paddingLeft: 10,
+  },
 
-    //paddingLeft: 80,
+  mainText: {
+    marginTop: 10,
+    marginBottom: 10
   },
 
   avatar: {
@@ -134,15 +134,18 @@ const LandingStyles = StyleSheet.create({
     marginRight: 16,
   },
   name: {
-    flexDirection: "row",
-    fontSize: 12,
-    fontWeight: "500",
+    fontSize: 14,
+    fontWeight: 'bold',
     color: "#454D65",
   },
+  handle: {
+    fontSize: 12,
+    fontWeight: 'bold',
+    color: "#666666",
+  },
   timestamp: {
-    flexDirection: "row",
     fontSize: 11,
-    color: "#C4C6CE",
+    color: "#999999",
     marginTop: 4,
   },
   post: {
