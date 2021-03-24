@@ -64,7 +64,10 @@ export default class FeedItem extends React.Component {
             handle: userData.handle,
             about: userData.about,
             phone: userData.phone,
-            location: userData.location
+            location: userData.location,
+            myPosts: userData.myPosts,
+            favPosts: userData.favPosts,
+            upedPosts: userData.upedPosts
           },
         });
         this.setState({ nameinit: true });
