@@ -60,28 +60,27 @@ export default class App extends React.Component {
         const usersRef = firebase.firestore().collection("users");
         usersRef
           .doc(uid)
-          .get()
-          .then((firestoreDocument) => {
-            var userData = firestoreDocument.data();
-            this.setState({
-              userInfo: {
-                uid: userData.id,
-                email: userData.email,
-                fullName: userData.fullName,
-                name: userData.name,
-                surename: userData.surename,
-                avatar: userData.avatar,
-                handle: userData.handle,
-                location: userData.location,
-                phone: userData.phone,
-                about: userData.about,
-                myPosts: userData.myPosts,
-                upedPosts: userData.upedPosts,
-                favPosts: userData.favPosts,
-              },
+          .onSnapshot(snapshot => {
+              var userData = snapshot.data();
+              this.setState({
+                userInfo: {
+                  uid: userData.id,
+                  email: userData.email,
+                  fullName: userData.fullName,
+                  name: userData.name,
+                  surename: userData.surename,
+                  avatar: userData.avatar,
+                  handle: userData.handle,
+                  location: userData.location,
+                  phone: userData.phone,
+                  about: userData.about,
+                  myPosts: userData.myPosts,
+                  upedPosts: userData.upedPosts,
+                  favPosts: userData.favPosts,
+                },
+              });
+              this.setState({ isLoggedIn: true });
             });
-            this.setState({ isLoggedIn: true });
-          });
       } else {
         this.setState({ isLoggedIn: false });
       }

@@ -50,6 +50,7 @@ export default class LandingScreen extends React.Component {
           if (change.type === "added") {
             const newPost = change.doc.data();
             const uped = change.doc.id in this.props.userData.upedPosts;
+            const faved = change.doc.id in this.props.userData.favPosts;
             const newPostData = {
               id: change.doc.id,
               name: newPost.name,
@@ -60,6 +61,7 @@ export default class LandingScreen extends React.Component {
               upCount: newPost.upCount,
               comments: newPost.comments,
               uped: uped,
+              faved: faved,
             };
             postsArray.unshift(newPostData);
           }

@@ -18,10 +18,11 @@ export default class InteractiveBar extends React.Component
 {
     state = {
         uped: false,
+        faved: false,
     }
 
     componentDidMount () {
-        this.setState({uped: this.props.post.uped})
+        this.setState({uped: this.props.post.uped, faved: this.props.post.faved})
     }
 
     toggleUped = () => {
@@ -34,6 +35,17 @@ export default class InteractiveBar extends React.Component
             Fire.shared.removeUpPost(this.props.userData, this.props.post.id)
             this.props.post.upCount = this.props.post.upCount - 1;
             this.setState({uped: false});
+        }
+    }
+
+    toggleFaved = () => {
+        if (!this.state.faved) {
+            Fire.shared.favPost(this.props.userData, this.props.post.id)
+            this.setState({faved: true});
+        }
+        else {
+            Fire.shared.removeFavPost(this.props.userData, this.props.post.id)
+            this.setState({faved: false});
         }
     }
 
@@ -86,14 +98,25 @@ export default class InteractiveBar extends React.Component
                     />
                 </TouchableOpacity>
                 
-                <TouchableOpacity>
-                    <Ionicons
-                        style={styles.intButtons}
-                        name="bookmark-outline"
-                        size={30}
-                        color="#73788"
-                    />
-                </TouchableOpacity>
+                {   this.state.faved
+                    ?   <TouchableOpacity onPress={this.toggleFaved}>
+                            <Ionicons
+                                style={styles.intButtons}
+                                name="bookmark"
+                                size={30}
+                                color='#f4511e'
+                            />
+                        </TouchableOpacity>
+                    :   <TouchableOpacity onPress={this.toggleFaved}>
+                            <Ionicons
+                                style={styles.intButtons}
+                                name="bookmark-outline"
+                                size={30}
+                                color='black'
+                            />
+                        </TouchableOpacity>
+                }
+                
             </View>
               
         );

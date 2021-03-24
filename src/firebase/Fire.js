@@ -47,10 +47,9 @@ class Fire {
     });
   };
 
-  //
+  //Upping (liking) a post.
   upPost(userData, postId) {
 
-    Alert.alert(userData.uid, postId);
     //Local update.
     userData.upedPosts[postId] = true;
 
@@ -68,7 +67,7 @@ class Fire {
     }, {merge:true})
   }
 
-  //
+  //Removing up (like) from already uped post.
   removeUpPost = async(userData, postId) => {
     //Local update.
     delete userData.upedPosts.postId;
@@ -83,6 +82,35 @@ class Fire {
 
     //Server update.
     userRef.set({ upedPosts: {
+      [postId]: firebase.firestore.FieldValue.delete()
+    }}, {merge:true})
+  }
+
+  //Favouriting post.
+  favPost(userData, postId) {
+
+    //Local update.
+    userData.favPosts[postId] = true;
+
+    //Firebase consts.
+    const userRef = this.firestore.collection('users').doc(userData.uid);
+
+    //Server update.
+    userRef.set({
+      "favPosts": userData.favPosts
+    }, {merge:true})
+  }
+
+  //Removing post from favourites.
+  removeFavPost = async(userData, postId) => {
+    //Local update.
+    delete userData.favPosts.postId;
+
+    //Firebase consts.
+    const userRef = this.firestore.collection('users').doc(userData.uid);
+
+    //Server update.
+    userRef.set({ favPosts: {
       [postId]: firebase.firestore.FieldValue.delete()
     }}, {merge:true})
   }

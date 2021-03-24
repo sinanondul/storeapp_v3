@@ -7,7 +7,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
   ScrollView,
-  Image,
+  Dimensions,
   Alert,
 } from "react-native";
 import { Avatar, Title, Caption, TouchableRipple } from "react-native-paper";
@@ -31,6 +31,7 @@ import { openDrawer } from "../../../App";
 
 import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+import PostList from './components/PostList';
 import MyPosts from "./MyPosts";
 
 import styles from "./styles";
@@ -88,51 +89,25 @@ export default class LandingScreen extends React.Component {
         fontWeight: "bold",
       },
     });
-
-    //Getting own posts.
-
-    let postsArray = [];
-    const unsubscribe = firebase
-      .firestore()
-      .collection("posts")
-      .where("uid", "==", this.props.userInfo.uid)
-      .orderBy("timestamp")
-      .onSnapshot((snapshot) => {
-        let changes = snapshot.docChanges();
-
-        changes.forEach((change) => {
-          if (change.type === "added") {
-            const newPost = change.doc.data();
-            const newPostData = {
-              id: change.doc.id,
-              name: newPost.name,
-              text: newPost.text,
-              timestamp: newPost.timestamp,
-              image: newPost.image,
-              senderId: newPost.uid,
-            };
-            postsArray.unshift(newPostData);
-          }
-        });
-        this.setState({ posts: postsArray });
-      });
-
-    //Checking if own profile.
   }
-
-  renderItem = ({ item }) => {
-    return <MyPostFeedItem post={item} />;
-  };
 
   render() {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
-    const postarr = this.state.posts;
+    const userData = this.props.userData;
+    var myPosts = this.props.userInfo.myPosts;
+    var favPosts = this.props.userInfo.favPosts;
+    var upedPosts = this.props.userInfo.upedPosts;
+    if (!otherProfile)
+    {
+      myPosts = userData.myPosts;
+      favPosts = userData.favPosts;
+      upedPosts = userData.upedPosts;
+    }
     return (
       <SafeAreaView style={styles.container} nestedScrollEnabled={true}>
         <ScrollView
           showsVerticalScrollIndicator={false}
           nestedScrollEnabled={true}
-          //keyboardShouldPersistTaps='handled'
           style={{ flex: 1 }}
         >
           <View style={styles.profileTop}>
@@ -241,28 +216,34 @@ export default class LandingScreen extends React.Component {
               </View>
             </View>
           </View>
-          <View style={{ marginTop: 10, height: 1000, flex: 1 }}>
+          
+          <View style={{ marginTop: 10, height: Dimensions.get("window").height - 56, flex: 1 }}>
             <Tab.Navigator
               headerMode={false}
-              initialRouteName="My Posts"
+              initialRouteName="Posts"
               tabBarOptions={{
                 labelStyle: {
                   fontSize: 11,
                 },
               }}
+              lazy={false}
               style={{ flex: 1 }}
             >
-              <Tab.Screen name="My Posts" style={{ flex: 1 }}>
-                {() => <MyPosts {...this.props} posts={postarr} />}
+              <Tab.Screen name="Posts">
+                {(props) => <PostList {...props} userData={userData} postIds={myPosts}/>}
               </Tab.Screen>
-              <Tab.Screen name="Posts & comments">{(props) => null}</Tab.Screen>
-              <Tab.Screen name="UP'd Posts">{(props) => null}</Tab.Screen>
-              {otherProfile ? null : (
-                <Tab.Screen name="Saved">{(props) => null}</Tab.Screen>
-              )}
+              {/* <Tab.Screen name="Posts & comments">
+                {(props) => null}
+              </Tab.Screen> */}
+              <Tab.Screen name="UPed Posts">
+                {(props) => <PostList {...props} userData={userData} postIds={upedPosts}/>}
+              </Tab.Screen>
+              <Tab.Screen name="Favourites">
+                {(props) => <PostList {...props} userData={userData} postIds={favPosts}/>}
+              </Tab.Screen>
             </Tab.Navigator>
           </View>
-          {/* <MyPosts {...this.props} posts={this.state.posts} /> */}
+
         </ScrollView>
       </SafeAreaView>
     );
@@ -282,43 +263,3 @@ export default class LandingScreen extends React.Component {
     },
   };
 }
-// {/* <FlatList
-//   style={styles.myposts}
-//   //horizontal
-//   data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
-//   renderItem={this.renderItem}
-//   keyExtractor={(item) => item.id}
-//   showsVerticalScrollIndicator={true}
-// /> */}
-// {/* <View style={styles.menuWrapper}>
-//   <TouchableOpacity>
-//     <View style={styles.menuItem}>
-//       <Icon name="heart-outline" color="#FF6347" size={25} />
-//       <Text style={styles.menuItemText}>Favorite Posts</Text>
-//     </View>
-//   </TouchableOpacity>
-//   <TouchableOpacity>
-//     <View style={styles.menuItem}>
-//       <Icon name="credit-card-outline" color="#FF6347" size={25} />
-//       <Text style={styles.menuItemText}>Payment</Text>
-//     </View>
-//   </TouchableOpacity>
-//   <TouchableOpacity>
-//     <View style={styles.menuItem}>
-//       <Icon name="share-outline" color="#FF6347" size={25} />
-//       <Text style={styles.menuItemText}>Share with Friends</Text>
-//     </View>
-//   </TouchableOpacity>
-//   <TouchableOpacity>
-//     <View style={styles.menuItem}>
-//       <Icon name="account-check-outline" color="#FF6347" size={25} />
-//       <Text style={styles.menuItemText}>Support</Text>
-//     </View>
-//   </TouchableOpacity>
-//   <TouchableOpacity>
-//     <View style={styles.menuItem}>
-//       <Icon name="account-settings" color="#FF6347" size={25} />
-//       <Text style={styles.menuItemText}>Account Settings</Text>
-//     </View>
-//   </TouchableOpacity>
-// </View> */}
