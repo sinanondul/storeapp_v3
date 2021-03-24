@@ -10,15 +10,28 @@ import styles from "./styles";
 
 export default class AddIcon extends React.Component 
 {
-    render() 
+    render()
     {
+        var paddingLeft;
+        var paddingBottom;
+        if (Platform.OS === "web") {
+            paddingLeft = -6;
+            paddingBottom = 2;
+        }
+        else {
+            paddingLeft = 2;
+            paddingBottom = 0;
+        }
+
         return (
-            <TouchableOpacity style={styles.footerButtonContainer} onPress={() => this.props.navigation.navigate('Add')}>
+            <TouchableOpacity onPress={() => this.props.navigation.navigate('Add')}>
                 <Icon
                     name={Platform.OS === "ios" ? "ios-add-circle" : "md-add-circle"}
-                    size={50}
+                    size= {60}
                     color="#f4511e"
                     style={{
+                        paddingLeft: paddingLeft,
+                        paddingBottom: paddingBottom,
                     }}
                 />
             </TouchableOpacity>

@@ -5,7 +5,6 @@ import {
   Text,
   StyleSheet,
   FlatList,
-  Image,
   Alert,
   TouchableOpacity,
 } from "react-native";
@@ -14,6 +13,7 @@ import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
 import Fire from "../../../firebase/Fire";
 import { Avatar } from "react-native-paper";
+import { Image } from "react-native-expo-image-cache";
 import moment from "moment";
 
 import {
@@ -21,6 +21,7 @@ import {
   getAvatar,
   getHandle,
 } from "../../../functions/UserInfoFormatter";
+import InteractiveBar from "./InteractiveBar";
 import styles from "../styles";
 
 const usersRef = firebase.firestore().collection("users");
@@ -55,10 +56,15 @@ export default class FeedItem extends React.Component {
         this.setState({
           senderInfo: {
             uid: userData.id,
+            email: userData.email,
             fullName: userData.fullName,
             name: userData.name,
             surename: userData.surename,
             avatar: userData.avatar,
+            handle: userData.handle,
+            about: userData.about,
+            phone: userData.phone,
+            location: userData.location
           },
         });
         this.setState({ nameinit: true });
@@ -70,107 +76,59 @@ export default class FeedItem extends React.Component {
       <View>
         <View style={styles.feedItem}>
           <View style={{ flex: 1 }}>
-            <View style={styles.feedHeader}>
-              <TouchableOpacity
-                onPress={() => {
-                  this.props.navigation.navigate("ProfileFromHome", {
-                    userInfo: this.state.senderInfo,
-                    otherProfile: true,
-                  });
-                }}
-              >
-                <View style={styles.userAvatar}>
-                  {this.state.nameinit
-                    ? getAvatar(this.state.senderInfo, 50)
-                    : null}
-                </View>
-              </TouchableOpacity>
-              <View
-                style={{
-                  flexDirection: "column",
-                  justifyContent: "flex-start",
-                  marginLeft: 4,
-                }}
-              >
-                <TouchableOpacity
-                  onPress={() => {
-                    this.props.navigation.navigate("ProfileFromHome", {
-                      userInfo: this.state.senderInfo,
-                      otherProfile: true,
-                    });
-                  }}
-                >
-                  <View style={styles.userText}>
-                    {this.state.nameinit ? (
-                      <Text style={styles.name}>
-                        {getFullName(this.state.senderInfo)}
-                      </Text>
-                    ) : null}
-                    <Text style={styles.name}>@fixhandlepassing</Text>
-                    <Text style={styles.timestamp}>
-                      {getTimeSince(this.props.post.timestamp)}
-                    </Text>
-                  </View>
-                </TouchableOpacity>
+            <TouchableOpacity style={styles.feedHeader}
+              onPress={() => {
+                this.props.navigation.navigate("ProfileFromHome", {
+                  userInfo: this.state.senderInfo,
+                  otherProfile: true,
+                });
+              }}
+            >
+              
+              {this.state.nameinit
+                ? getAvatar(this.state.senderInfo, 50)
+                : null}
 
-                {this.props.post.text && this.props.post.text !== "" ? (
-                  <View style={styles.mainText}>
+              <View style={styles.userText}>
+
+                {this.state.nameinit ? (
+                  <Text style={styles.name}>
+                    {getFullName(this.state.senderInfo)}
+                  </Text>
+                ) : null}
+
+                <Text style={styles.handle}>
+                  {"@" + this.state.senderInfo.handle}
+                </Text>
+
+                <Text style={styles.timestamp}>
+                  {getTimeSince(this.props.post.timestamp)}
+                </Text>
+
+              </View>
+
+            </TouchableOpacity>
+
+            <View style={styles.feedContent}>
+              { this.props.post.text && this.props.post.text !== "" 
+                ? <View style={styles.mainText}>
                     <Text style={styles.post}>{this.props.post.text}</Text>
                   </View>
-                ) : null}
-              </View>
-              {/* </TouchableOpacity> */}
-              {/* <View style={styles.moreButton}>
-                <Ionicons name="ellipsis-horizontal" size={24} color="#73788" />
-              </View> */}
-            </View>
+                : null
+              }
+            
 
-            <View>
-              {this.props.post.image ? (
-                <Image
-                  source={{ uri: this.props.post.image }}
-                  style={styles.postImage}
-                  resizeMode="cover"
-                />
-              ) : null}
+              { this.props.post.image 
+                ? <Image
+                    {...{ uri: this.props.post.image }}
+                    resizeMode={'contain'}
+                    style={styles.postImage}
+                  />
+                : null
+              }
             </View>
-
-            {/* <View style={styles.seperator}></View> */}
-            <View style={styles.interactiveBar}>
-              <TouchableOpacity>
-                <Ionicons
-                  style={styles.intButtons}
-                  name="arrow-up-circle-outline"
-                  size={24}
-                  color="#73788"
-                />
-              </TouchableOpacity>
-
-              <TouchableOpacity>
-                <Ionicons
-                  style={styles.intButtons}
-                  name="chatbubble-outline"
-                  size={24}
-                  color="#73788"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Ionicons
-                  style={styles.intButtons}
-                  name="send-outline"
-                  size={24}
-                  color="#73788"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity>
-                <Ionicons
-                  style={styles.intButtons}
-                  name="bookmark-outline"
-                  size={24}
-                  color="#73788"
-                />
-              </TouchableOpacity>
-            </View>
+            
+            <InteractiveBar/>
           </View>
         </View>
       </View>

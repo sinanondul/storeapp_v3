@@ -209,7 +209,7 @@ export default class LandingScreen extends React.Component {
               </View>
               <View style={styles.row}>
                 <Icon name="email" color="#777777" />
-                <Text>{this.props.userData.email}</Text>
+                <Text>{this.props.userInfo.email}</Text>
               </View>
             </View>
             <View style={styles.userInfoSectionLower}>

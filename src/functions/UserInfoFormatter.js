@@ -1,5 +1,6 @@
 import React from "react";
 import { Avatar } from "react-native-paper";
+import { Image } from "react-native-expo-image-cache";
 
 function capitalizeFirstOfEach(words) {
   var separateWord = words.toLowerCase().split(" ");
@@ -48,7 +49,24 @@ function getDepartment(info) {
 
 function getAvatar(info, size) {
   if (!(info.avatar == null)) {
-    return <Avatar.Image size={size} source={{ uri: info.avatar }} />;
+    return (
+      <View 
+        style = {{
+          width: size,
+          height: size,
+          borderRadius: size / 2,
+        }}
+      >
+        <Image
+          {...{ uri: info.avatar }}
+          style={{
+            width: size,
+            height: size,
+          }}
+          resizeMode={'stretch'}
+        />
+      </View>
+    );
   } else {
     return (
       <Avatar.Text
