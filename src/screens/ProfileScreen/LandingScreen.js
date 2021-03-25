@@ -73,11 +73,7 @@ export default class LandingScreen extends React.Component {
             onPress={() => openDrawer()}
           />
         ),
-    });
-    if (this.props.fromFeed) { 
-      this.props.navigation.setOptions({
-        
-      headerRight: () =>
+        headerRight: () =>
         !otherProfile ? (
           <Icon
             name="account-edit"
@@ -87,6 +83,11 @@ export default class LandingScreen extends React.Component {
             onPress={() => this.props.navigation.navigate("EditProfile")}
           />
         ) : null,
+    });
+    if (this.props.fromFeed) { 
+      this.props.navigation.setOptions({
+        
+      
       headerTitle: () => (
         <View style={styles.headerTitleContainer}>
             <View style={styles.headerAvatar}>

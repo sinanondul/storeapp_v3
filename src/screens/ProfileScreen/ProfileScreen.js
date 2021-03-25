@@ -14,18 +14,17 @@ import { useTheme } from "react-native-paper";
 
 export default class ProfileScreen extends React.Component {
   render() {
+    Alert.alert(this.props.ownerId);
     const ProfileStack = createStackNavigator();
     const userData = this.props.userData;
     var userInfo = this.props.userData;
-    var ownerId = this.props.userData.uid;
+    var ownerId = this.props.ownerId;
     if (this.props.route.params) {
       if (this.props.route.params.userInfo) {
         userInfo = this.props.route.params.userInfo;
       }
-      if (this.props.route) {
-        if (this.props.route.params.ownerId) {
-          ownerId = this.props.route.params.ownerId;
-        }
+      if (this.props.route.params.ownerId) {
+        ownerId = this.props.route.params.ownerId;
       }
     }
     return (
