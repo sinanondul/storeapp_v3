@@ -43,7 +43,7 @@ const ComponentStyles = StyleSheet.create({
 
     notificationsButton: {
 
-    }
+    },
 })
 
 export default ComponentStyles;

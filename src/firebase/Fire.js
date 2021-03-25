@@ -70,7 +70,7 @@ class Fire {
   //Removing up (like) from already uped post.
   removeUpPost = async(userData, postId) => {
     //Local update.
-    delete userData.upedPosts.postId;
+    delete userData.upedPosts[postId];
 
     //Firebase consts.
     const userRef = this.firestore.collection('users').doc(userData.uid);
@@ -104,7 +104,7 @@ class Fire {
   //Removing post from favourites.
   removeFavPost = async(userData, postId) => {
     //Local update.
-    delete userData.favPosts.postId;
+    delete userData.favPosts[postId];
 
     //Firebase consts.
     const userRef = this.firestore.collection('users').doc(userData.uid);
@@ -399,52 +399,51 @@ class Fire {
   };
 
   //Social Methods
-  follow = async ({ userID, targetID }) => {
-    const userRef = this.firestore.collection("users").doc(userID);
-    const targetUserRef = this.firestore.collection("users").doc(targetID);
-    const followingRef = userRef.collection("following");
-    const followersRef = targetUserRef.collection("followers");
+
+  //
+  follow = async ( userData, targetId ) => {
+    const userRef = this.firestore.collection("users").doc(userData.uid);
+    const targetUserRef = this.firestore.collection("users").doc(targetId);
     const timeFollowed = this.timestamp;
-    Alert.alert(userID);
-    Alert.alert(targetID);
-    return new Promise((res, rej) => {
-      followersRef
-        .add({
-          userID,
-          timestamp: timeFollowed,
-        })
-        .then((ref) => {
-          followingRef
-            .add({
-              targetID,
-              timestamp: timeFollowed,
-              followerDocId: ref.id,
-            })
-            .then((ref) => {
-              res(ref);
-            })
-            .catch((error) => {
-              rej(error);
-            });
-        })
-        .catch((error) => {
-          rej(error);
-        });
-    });
+
+    //Local update.
+    userData.following[targetId] = timeFollowed;
+
+    //Server update for user.
+    userRef.set({
+      "following": userData.following
+    }, {merge:true})
+
+    //Server update for target.
+    targetUserRef.set({ followers: {
+      [userData.uid]: timeFollowed
+    }}, {merge:true})
   };
 
-  // unfollow = async ({ userID, targetID }) => {
-  //   const userRef = this.firestore.collection("users").doc(userID);
-  //   const targetUserRef = this.firestore.collection("users").doc(targetID);
-  //   const followingRef = userRef.collection("following");
-  //   const followersRef = targetUserRef.collection("followers");
-  //   //const timeFollowed = this.timestamp;
-  //   Alert.alert(userID);
-  //   Alert.alert(targetID);
-  //   return new Promise((res, rej) => {
-  //     followingRef.doc(targetID).remove();
-  //   });
-  // };
+  //
+  unFollow = async ( userData, targetId ) => {
+    const userRef = this.firestore.collection("users").doc(userData.uid);
+    const targetUserRef = this.firestore.collection("users").doc(targetId);
+
+    
+    Alert.alert(userData.uid.toString(), targetId.toString())
+
+    //Local update.
+    delete userData.following[targetId];
+
+    
+    Alert.alert(Object.keys(userData.following).length.toString());
+
+    //Server update for user.
+    userRef.set({ following: {
+      [targetId]: firebase.firestore.FieldValue.delete()
+    }}, {merge:true})
+
+    //Server update for target.
+    targetUserRef.set({ followers: {
+      [userData.uid]: firebase.firestore.FieldValue.delete()
+    }}, {merge:true})
+  };
 
   //Courses
 

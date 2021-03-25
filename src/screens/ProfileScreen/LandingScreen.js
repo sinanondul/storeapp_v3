@@ -32,12 +32,14 @@ import { openDrawer } from "../../../App";
 import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import PostList from './components/PostList';
+import FollowButton from './components/FollowButton';
 import MyPosts from "./MyPosts";
 
 import styles from "./styles";
 const Tab = createMaterialTopTabNavigator();
 export default class LandingScreen extends React.Component {
   state = {
+    focusRefresh: false,
     posts: [],
   };
 
@@ -46,12 +48,12 @@ export default class LandingScreen extends React.Component {
     return params;
   };
 
+  myPostsRef;
+  upedPostsRef;
+  favPostsRef;
+
   componentDidMount() {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
-    var paddingRight = 0;
-    if (otherProfile) {
-      paddingRight = 60;
-    }
     //Navigation update.
     this.props.navigation.setOptions({
       headerLeft: () =>
@@ -71,8 +73,12 @@ export default class LandingScreen extends React.Component {
             onPress={() => openDrawer()}
           />
         ),
+    });
+    if (this.props.fromFeed) { 
+      this.props.navigation.setOptions({
+        
       headerRight: () =>
-        this.props.userData.uid === this.props.userInfo.uid ? (
+        !otherProfile ? (
           <Icon
             name="account-edit"
             style={{ marginRight: 10 }}
@@ -81,14 +87,31 @@ export default class LandingScreen extends React.Component {
             onPress={() => this.props.navigation.navigate("EditProfile")}
           />
         ) : null,
-      headerTitleStyle: {
-        flex: 0.6,
-        paddingRight: paddingRight,
-        alignSelf: "center",
-        alignItems: "center",
-        fontWeight: "bold",
-      },
-    });
+      headerTitle: () => (
+        <View style={styles.headerTitleContainer}>
+            <View style={styles.headerAvatar}>
+                {getAvatar(this.props.userInfo)}
+            </View>
+
+          <Text style={styles.headerText}>
+              {getFullName(this.props.userInfo)} 
+          </Text>
+        </View>
+      ),
+      })
+    }
+
+    this._unsubscribe = this.props.navigation.addListener('focus', () => {
+        if (this.myPostsRef) {
+          this.myPostsRef.getPosts();
+        }
+        if (this.upedPostsRef) {
+          this.upedPostsRef.getPosts();
+        }
+        if (this.favPostsRef) {
+          this.favPostsRef.getPosts();
+        }
+    })
   }
 
   render() {
@@ -137,18 +160,9 @@ export default class LandingScreen extends React.Component {
                   >
                     <MaterialIcons name="mail" size={18} color="#DFD8C8" />
                   </TouchableOpacity>
-                  <TouchableOpacity style={styles.follow}>
-                    <Ionicons
-                      name="add"
-                      size={15}
-                      color="#DFD8C8"
-                      style={{ alignItems: "center", justifyContent: "center" }}
-                    >
-                      <Text style={{ fontSize: 15, alignSelf: "center" }}>
-                        Follow
-                      </Text>
-                    </Ionicons>
-                  </TouchableOpacity>
+
+                  <FollowButton userData={userData} targetId={this.props.userInfo.uid}/>
+
                 </View>
               ) : null}
             </View>
@@ -230,16 +244,16 @@ export default class LandingScreen extends React.Component {
               style={{ flex: 1 }}
             >
               <Tab.Screen name="Posts">
-                {(props) => <PostList {...props} userData={userData} postIds={myPosts}/>}
+                {(props) => <PostList ref={child => {this.myPostsRef = child}} {...props} userData={userData} postIds={myPosts} ownerId={this.props.ownerId}/>}
               </Tab.Screen>
               {/* <Tab.Screen name="Posts & comments">
                 {(props) => null}
               </Tab.Screen> */}
               <Tab.Screen name="UPed Posts">
-                {(props) => <PostList {...props} userData={userData} postIds={upedPosts}/>}
+                {(props) => <PostList ref={child => {this.upedPostsRef = child}} {...props} userData={userData} postIds={upedPosts} ownerId={this.props.ownerId}/>}
               </Tab.Screen>
               <Tab.Screen name="Favourites">
-                {(props) => <PostList {...props} userData={userData} postIds={favPosts}/>}
+                {(props) => <PostList ref={child => {this.favPostsRef = child}} {...props} userData={userData} postIds={favPosts} ownerId={this.props.ownerId}/>}
               </Tab.Screen>
             </Tab.Navigator>
           </View>
@@ -250,7 +264,7 @@ export default class LandingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: <Text>Pass Params Here</Text>,
+    title: <Text>Profile</Text>,
     headerStyle: {
       backgroundColor: "#2890cf",
     },
@@ -261,5 +275,6 @@ export default class LandingScreen extends React.Component {
       alignItems: "center",
       fontWeight: "bold",
     },
+    headerRight: () => <View style={{width: '20%'}}></View>
   };
 }

@@ -6,6 +6,26 @@ const styles = StyleSheet.create({
     backgroundColor: "#FFAAAA",
     //paddingStart: 12,
   },
+
+  headerTitleContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  headerAvatar: {
+      alignItems: 'center',
+      justifyContent: 'center',
+      marginRight: 5,
+  },
+  headerText: {
+      fontSize: 19,
+      fontWeight: 'bold',
+      color: '#fff',
+      marginLeft: 5,
+  },
+
+
+
+
   profileTop: {
     //borderBottomWidth: 2,
   },
@@ -63,14 +83,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     marginEnd: 5,
-  },
-  follow: {
-    backgroundColor: "#41444B",
-    width: 80,
-    height: 40,
-    borderRadius: 20,
-    alignItems: "center",
-    justifyContent: "center",
   },
   infoContainer: {
     marginTop: 16,

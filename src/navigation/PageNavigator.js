@@ -143,7 +143,7 @@ const PageNavigator = (props) => {
       <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
       <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
       <PageDrawer.Screen name="Profile">
-        {(props) => <ProfileScreen {...props} userData={userData} />}
+        {(props) => <ProfileScreen {...props} userData={userData} ownerId={userData.uid}/>}
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
       <PageDrawer.Screen name="Onboarding" component={Onboarding} />
