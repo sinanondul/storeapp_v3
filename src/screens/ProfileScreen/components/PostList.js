@@ -77,7 +77,7 @@ export default class PostList extends React.Component {
 
     componentDidMount() {
         this.getPosts();
-        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+        this._unsubscribeFocus = this.props.navigation.addListener('focus', () => {
             this.getPosts();
             // let postsArray = this.state.posts;
             // postsArray.forEach(post => {
@@ -98,9 +98,14 @@ export default class PostList extends React.Component {
             // })
             // this.setState({posts: postsArray})
         })
+        this._unsubscribeBlur = this.props.navigation.addListener('blur', () => {
+            this.setState({posts: []})
+        })
     }
 
     componentWillUnmount() {
+        this._unsubscribeFocus();
+        this._unsubscribeBlur();
     }
 
     renderItem = ({ item }) => {
@@ -111,14 +116,14 @@ export default class PostList extends React.Component {
         return (
             <View>
                 <FlatList
-                style={styles.myposts}
-                //horizontal
-                data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
-                renderItem={this.renderItem}
-                keyExtractor={(item) => item.id} 
-                nestedScrollEnabled
-                showsVerticalScrollIndicator={true}
-                extraData={this.state}
+                    style={styles.myposts}
+                    //horizontal
+                    data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
+                    renderItem={this.renderItem}
+                    keyExtractor={(item) => item.id} 
+                    nestedScrollEnabled
+                    showsVerticalScrollIndicator={true}
+                    extraData={this.state}
                 />
             </View>
         );

@@ -55,6 +55,7 @@ export default class LandingScreen extends React.Component {
   componentDidMount() {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
     //Navigation update.
+
     this.props.navigation.setOptions({
       headerLeft: () =>
         this.props.fromFeed ? (
@@ -84,6 +85,7 @@ export default class LandingScreen extends React.Component {
           />
         ) : null,
     });
+
     if (this.props.fromFeed) { 
       this.props.navigation.setOptions({
         headerTitle: () => (
@@ -100,17 +102,18 @@ export default class LandingScreen extends React.Component {
       })
     }
 
-    this._unsubscribe = this.props.navigation.addListener('focus', () => {
-        if (this.myPostsRef) {
-          this.myPostsRef.getPosts();
-        }
-        if (this.upedPostsRef) {
-          this.upedPostsRef.getPosts();
-        }
-        if (this.favPostsRef) {
-          this.favPostsRef.getPosts();
-        }
-    })
+    //Focus listener.
+    // this._unsubscribe = this.props.navigation.addListener('focus', () => {
+    //     if (this.myPostsRef) {
+    //       this.myPostsRef.getPosts();
+    //     }
+    //     if (this.upedPostsRef) {
+    //       this.upedPostsRef.getPosts();
+    //     }
+    //     if (this.favPostsRef) {
+    //       this.favPostsRef.getPosts();
+    //     }
+    // })
   }
 
   render() {
