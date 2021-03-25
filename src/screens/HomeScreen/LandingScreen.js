@@ -70,6 +70,9 @@ export default class LandingScreen extends React.Component {
       });
   }
 
+  componentWillUnmount() {
+  }
+
   render() {
     return (
       <SafeAreaView style={styles.container}>

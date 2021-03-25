@@ -86,19 +86,17 @@ export default class LandingScreen extends React.Component {
     });
     if (this.props.fromFeed) { 
       this.props.navigation.setOptions({
-        
-      
-      headerTitle: () => (
-        <View style={styles.headerTitleContainer}>
-            <View style={styles.headerAvatar}>
-                {getAvatar(this.props.userInfo)}
-            </View>
+        headerTitle: () => (
+          <View style={styles.headerTitleContainer}>
+              <View style={styles.headerAvatar}>
+                  {getAvatar(this.props.userInfo)}
+              </View>
 
-          <Text style={styles.headerText}>
-              {getFullName(this.props.userInfo)} 
-          </Text>
-        </View>
-      ),
+            <Text style={styles.headerText}>
+                {getFullName(this.props.userInfo)} 
+            </Text>
+          </View>
+        ),
       })
     }
 

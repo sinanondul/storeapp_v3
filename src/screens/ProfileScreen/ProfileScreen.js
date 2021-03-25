@@ -14,7 +14,6 @@ import { useTheme } from "react-native-paper";
 
 export default class ProfileScreen extends React.Component {
   render() {
-    Alert.alert(this.props.ownerId);
     const ProfileStack = createStackNavigator();
     const userData = this.props.userData;
     var userInfo = this.props.userData;
@@ -44,6 +43,7 @@ export default class ProfileScreen extends React.Component {
               {...props}
               userData={this.props.userData}
               userInfo={userInfo}
+              ownerId={ownerId}
             />
           )}
         </ProfileStack.Screen>

@@ -110,7 +110,9 @@ export default class AddScreen extends React.Component {
 
   render() {
     return (
-      <View
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={65}
         style={styles.container}
       >
         <View style={styles.inputContainer}>
@@ -177,7 +179,7 @@ export default class AddScreen extends React.Component {
           </TouchableOpacity>
         </View>
 
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -186,6 +188,7 @@ export default class AddScreen extends React.Component {
     title: <Text>Add Post</Text>,
     //headerBackTitle: "Cancel",
     headerStyle: {
+      height: 65,
       backgroundColor: "#FFFFFF",
     },
     // headerTintColor: "#fff",
