@@ -34,6 +34,15 @@ export default function RegistrationScreen({ navigation }) {
           surename: surename.toLowerCase(),
           fullName: name.toLowerCase() + " " + surename.toLowerCase(),
           avatar: null,
+          handle: null,
+          location: null,
+          phone: null,
+          about: null,
+          myPosts: {},
+          upedPosts: {},
+          favPosts: {},
+          following: {},
+          followers: {},
         };
         const usersRef = firebase.firestore().collection("users");
         usersRef
