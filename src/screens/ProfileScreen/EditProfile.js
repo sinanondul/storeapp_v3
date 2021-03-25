@@ -13,6 +13,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as Permissions from "expo-permissions";
+import * as ImageManipulator from 'expo-image-manipulator';
 
 import { useTheme } from "react-native-paper";
 
@@ -123,7 +124,7 @@ export default class EditProfile extends React.Component {
         location: this.state.user.location,
         phone: this.state.user.phone,
         avatar: imgUrl,
-      })
+      }, {merge:true})
       .then(() => {
         console.log("User Updated!");
         Alert.alert(
@@ -134,9 +135,10 @@ export default class EditProfile extends React.Component {
   };
 
   uploadPhoto = async (uri) => {
-    const path = `profilePhotos/${this.uid}/${Date.now()}.jpg`;
+    const path = `profilePhotos/${this.props.userData.uid}/${Date.now()}.jpg`;
 
     return new Promise(async (res, rej) => {
+      
       const response = await fetch(uri);
       const file = await response.blob();
 
@@ -160,14 +162,18 @@ export default class EditProfile extends React.Component {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3],
-      quality: 0,
+      quality: 1,
     });
 
+    const manipResult = await ImageManipulator.manipulateAsync(
+      result.localUri || result.uri,
+      [{ resize: { width: 140, height: 140 } }],
+      { format: ImageManipulator.SaveFormat.PNG}
+    );
     console.log(result);
 
     if (!result.cancelled) {
-      this.setState({ image: result.uri });
+      this.setState({ image: manipResult.uri });
     }
   };
 

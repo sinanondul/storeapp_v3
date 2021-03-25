@@ -1,4 +1,5 @@
 import React from "react";
+import {View} from 'react-native';
 import { Avatar } from "react-native-paper";
 import { Image } from "react-native-expo-image-cache";
 
@@ -47,7 +48,7 @@ function getDepartment(info) {
   return info.department;
 }
 
-function getAvatar(info, size) {
+function getAvatar(info, size = 40) {
   if (!(info.avatar == null)) {
     return (
       <View 
@@ -55,6 +56,7 @@ function getAvatar(info, size) {
           width: size,
           height: size,
           borderRadius: size / 2,
+          overflow: 'hidden',
         }}
       >
         <Image

@@ -80,10 +80,12 @@ export default class FeedItem extends React.Component {
         <View style={styles.feedItem}>
           <View style={{ flex: 1 }}>
             <TouchableOpacity style={styles.feedHeader}
+              disabled = {this.props.post.senderId === this.props.ownerId}
               onPress={() => {
-                this.props.navigation.navigate("ProfileFromHome", {
+                this.props.navigation.navigate(this.props.profileRoute, {
                   userInfo: this.state.senderInfo,
                   otherProfile: true,
+                  ownerId: this.props.post.senderId,
                 });
               }}
             >

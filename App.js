@@ -77,6 +77,8 @@ export default class App extends React.Component {
                   myPosts: userData.myPosts,
                   upedPosts: userData.upedPosts,
                   favPosts: userData.favPosts,
+                  following: userData.following,
+                  followers: userData.followers,
                 },
               });
               this.setState({ isLoggedIn: true });

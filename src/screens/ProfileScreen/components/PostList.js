@@ -77,18 +77,34 @@ export default class PostList extends React.Component {
 
     componentDidMount() {
         this.getPosts();
-        // this._unsubscribe = this.props.navigation.addListener('focus', () => {
-        //     if (isNew(this.state.posts, Object.keys(this.props.postIds))) {
-        //         this.getPosts();
-        //     }
-        // })
+        this._unsubscribe = this.props.navigation.addListener('focus', () => {
+            this.getPosts();
+            // let postsArray = this.state.posts;
+            // postsArray.forEach(post => {
+            //     if (post.uped && !Object.keys(this.props.userData.upedPosts).some(postId => post.id === postId)) {
+            //         Alert.alert("howdy")
+            //         post.uped = false;
+            //     }
+            //     else if (!post.uped && Object.keys(this.props.userData.upedPosts).some(postId => post.id === postId)) {
+            //         post.uped = true;
+            //     }
+
+            //     if (post.faved && !Object.keys(this.props.userData.favPosts).some(postId => post.id === postId)) {
+            //         post.faved = false;
+            //     }
+            //     else if (!post.faved && Object.keys(this.props.userData.favPosts).some(postId => post.id === postId)) {
+            //         post.faved = true;
+            //     }
+            // })
+            // this.setState({posts: postsArray})
+        })
     }
 
     componentWillUnmount() {
     }
 
     renderItem = ({ item }) => {
-        return <FeedItem {...this.props} post={item} />;
+        return <FeedItem {...this.props} post={item} profileRoute={"ProfileFromProfile"} ownerId={this.props.ownerId}/>;
     }
 
     render() {

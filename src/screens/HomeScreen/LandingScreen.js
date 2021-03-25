@@ -34,7 +34,7 @@ export default class LandingScreen extends React.Component {
   };
 
   renderItem = ({ item }) => {
-    return <FeedItem {...this.props} post={item} />;
+    return <FeedItem {...this.props} post={item} profileRoute={"ProfileFromHome"} />;
   };
 
   componentDidMount() {

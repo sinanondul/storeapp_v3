@@ -1,5 +1,5 @@
 import React from "react";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 
 import LandingScreen from "./LandingScreen";
 import MessagingInterface from "../MessagesScreen/MessagingInterface";
@@ -15,25 +15,24 @@ import { useTheme } from "react-native-paper";
 export default class ProfileScreen extends React.Component {
   render() {
     const ProfileStack = createStackNavigator();
+    const userData = this.props.userData;
     var userInfo = this.props.userData;
+    var ownerId = this.props.userData.uid;
     if (this.props.route.params) {
       if (this.props.route.params.userInfo) {
         userInfo = this.props.route.params.userInfo;
+      }
+      if (this.props.route) {
+        if (this.props.route.params.ownerId) {
+          ownerId = this.props.route.params.ownerId;
+        }
       }
     }
     return (
       <ProfileStack.Navigator
         initialRouteName="Landing"
         screenOptions={{
-          headerStyle: {
-            backgroundColor: "fff",
-            shadowColor: "fff",
-            elevation: 0,
-          },
-          headerTintColor: "#000",
-          headerTitleStyle: {
-            fontWeight: "bold",
-          },
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
         }}
       >
         <ProfileStack.Screen
@@ -77,6 +76,9 @@ export default class ProfileScreen extends React.Component {
               userInfo={userInfo}
             />
           )}
+        </ProfileStack.Screen>
+        <ProfileStack.Screen name="ProfileFromProfile" options={{headerShown: false}}>
+          {(props) => (<ProfileScreen {...props} userData={userData} fromFeed={true} ownerId={ownerId}/>)}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
