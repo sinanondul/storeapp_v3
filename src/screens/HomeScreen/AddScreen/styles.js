@@ -1,7 +1,6 @@
 import { Dimensions, StyleSheet } from "react-native";
 
 const AddStyles = StyleSheet.create({
-
   container: {
     flex: 1,
   },
@@ -13,7 +12,7 @@ const AddStyles = StyleSheet.create({
     marginLeft: 30,
     backgroundColor: "white",
     borderRadius: 10,
-    flexDirection: 'column',
+    flexDirection: "column",
   },
   talkBubbleTriangle: {
     position: "absolute",
@@ -31,20 +30,20 @@ const AddStyles = StyleSheet.create({
   },
 
   textWrapper: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
     padding: 10,
   },
   textStyle: {
-    alignItems: 'flex-start',
-    justifyContent: 'flex-start',
-    width: '100%',
-    textAlignVertical: 'top',
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    width: "100%",
+    textAlignVertical: "top",
   },
 
   postPhoto: {
     height: 200,
-    justifyContent: 'center',
+    justifyContent: "center",
     padding: 10,
   },
 
@@ -53,33 +52,29 @@ const AddStyles = StyleSheet.create({
     width: 60,
     height: 30,
     borderRadius: 18,
-    backgroundColor: '#f4511e',
+    backgroundColor: "#f4511e",
     marginRight: 10,
-    marginLeft: 'auto',
+    marginLeft: "auto",
     marginVertical: 10,
-    alignItems: 'center',
-    justifyContent: 'center',
+    alignItems: "center",
+    justifyContent: "center",
   },
   postButtonText: {
-    color: 'white',
+    color: "white",
   },
 
   bottomBar: {
-    width: '100%',
-    alignSelf: 'flex-end',
-    flexDirection: 'row',
+    width: "100%",
+    alignSelf: "flex-end",
+    flexDirection: "row",
     height: 50,
-    backgroundColor: 'white',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
+    backgroundColor: "white",
+    justifyContent: "flex-start",
+    alignItems: "center",
   },
   bottomButton: {
     padding: 10,
-  },  
-
-
-
-
+  },
 
   inner: {
     padding: 24,

@@ -12,7 +12,7 @@ import {
   Keyboard,
   Alert,
 } from "react-native";
-import { HeaderBackButton } from "@react-navigation/stack";
+import { HeaderBackButton, Header } from "@react-navigation/stack";
 
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
@@ -22,7 +22,7 @@ import * as Permissions from "expo-permissions";
 import Fire from "../../../firebase/Fire";
 import * as ImagePicker from "expo-image-picker";
 
-import XButton from '../../../components/XButton';
+import XButton from "../../../components/XButton";
 import { getAvatar } from "../../../functions/UserInfoFormatter";
 import styles from "./styles";
 //import DropShadow from "react-native-drop-shadow";
@@ -42,18 +42,17 @@ export default class AddScreen extends React.Component {
     this.getPhotoPermission();
     this.props.navigation.setOptions({
       headerLeft: () => (
-        <HeaderBackButton tintColor={"#000"} 
-          onPress = {() => {
-            Keyboard.dismiss()
+        <HeaderBackButton
+          tintColor={"#000"}
+          onPress={() => {
+            Keyboard.dismiss();
             setTimeout(() => {
               this.props.navigation.goBack();
-              }, 160);
+            }, 160);
           }}
         />
       ),
-      headerRight: () => (
-        null
-      ),
+      headerRight: () => null,
     });
   }
 
@@ -62,9 +61,9 @@ export default class AddScreen extends React.Component {
     const lines = text.split("\n");
 
     if (lines.length <= (maxLines || 1)) {
-      this.setState({ text })
+      this.setState({ text });
     }
- };
+  };
 
   getPhotoPermission = async () => {
     if (Constants.platform.ios) {
@@ -110,58 +109,53 @@ export default class AddScreen extends React.Component {
 
   render() {
     return (
-      <View
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={60}
         style={styles.container}
       >
         <View style={styles.inputContainer}>
+          {getAvatar(this.props.userData, 50)}
 
-            {getAvatar(this.props.userData, 50)}
+          <View style={{ flexDirection: "column" }}>
+            <View style={styles.talkBubble}>
+              <View style={styles.talkBubbleTriangle} />
 
-            <View style={{flexDirection: 'column'}}>
-            
-              <View style={styles.talkBubble}>
-
-                <View style={styles.talkBubbleTriangle}/>
-
-                <View style={styles.talkBubbleSquare}>
-                  <View style={styles.textWrapper}>
-                    <TextInput
-                      autoFocus={true}
-                      outerFocus={true}
-                      multiline={true}
-                      maxLength={280}
-                      placeholder="Type your post here..."
-                      onChangeText={this.onChangeText}
-                      value={this.state.text}
-                      style={styles.textStyle}
-                    />
-                  </View>
-                  { this.state.image 
-                    ? <View style={styles.postPhoto}>
-                        <Image
-                          source={{ uri: this.state.image }}
-                          style={{ width: "100%", height: "100%" }}
-                          resizeMode="contain"
-                        />
-                        <XButton onPress={() => this.setState({image: null})}/>
-
-                      </View>
-                    : null
-                  }
+              <View style={styles.talkBubbleSquare}>
+                <View style={styles.textWrapper}>
+                  <TextInput
+                    autoFocus={true}
+                    outerFocus={true}
+                    multiline={true}
+                    maxLength={280}
+                    placeholder="Type your post here..."
+                    onChangeText={this.onChangeText}
+                    value={this.state.text}
+                    style={styles.textStyle}
+                  />
                 </View>
-
+                {this.state.image ? (
+                  <View style={styles.postPhoto}>
+                    <Image
+                      source={{ uri: this.state.image }}
+                      style={{ width: "100%", height: "100%" }}
+                      resizeMode="contain"
+                    />
+                    <XButton onPress={() => this.setState({ image: null })} />
+                  </View>
+                ) : null}
               </View>
-              
-              { this.state.text !== "" || this.state.image
-                ? <TouchableOpacity style={styles.postButton} onPress={this.handlePost}>
-                      <Text style={styles.postButtonText}>
-                        Post
-                      </Text>
-                  </TouchableOpacity>
-                : null
-              }
             </View>
 
+            {this.state.text !== "" || this.state.image ? (
+              <TouchableOpacity
+                style={styles.postButton}
+                onPress={this.handlePost}
+              >
+                <Text style={styles.postButtonText}>Post</Text>
+              </TouchableOpacity>
+            ) : null}
+          </View>
         </View>
 
         <View style={styles.bottomBar}>
@@ -169,15 +163,10 @@ export default class AddScreen extends React.Component {
             style={styles.bottomButton}
             onPress={this.pickImage}
           >
-            <Ionicons
-              name='camera'
-              size={28}
-              color="black"
-            />
+            <Ionicons name="camera" size={28} color="black" />
           </TouchableOpacity>
         </View>
-
-      </View>
+      </KeyboardAvoidingView>
     );
   }
 
@@ -187,6 +176,7 @@ export default class AddScreen extends React.Component {
     //headerBackTitle: "Cancel",
     headerStyle: {
       backgroundColor: "#FFFFFF",
+      height: 60,
     },
     // headerTintColor: "#fff",
   };
