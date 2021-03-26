@@ -58,7 +58,7 @@ class CommentsScreen extends React.Component {
             <Ionicons
               style={{ alignSelf: "center" }}
               name="send-outline"
-              size={30}
+              size={20}
               color="white"
             ></Ionicons>
           </TouchableOpacity>
