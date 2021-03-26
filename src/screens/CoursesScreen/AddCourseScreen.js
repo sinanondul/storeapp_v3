@@ -17,7 +17,8 @@ function nextChar(c) {
 export default class LandingScreen extends React.Component{
 
     state={
-        courseInfos: [],
+        loadIndex: 0,
+        courses: [],
         searchQuery: '',
     }
 
@@ -32,51 +33,91 @@ export default class LandingScreen extends React.Component{
         );
     }
 
-    onChangeSearch = (searchText => {
-        if (searchText.length > 0) {
-            const formattedText = searchText.toUpperCase();
-            let coursesArray = [];
-            const limitString = formattedText.replace(/.$/, nextChar(formattedText.charAt(formattedText.length - 1)));
+    getCourseItem = (formattedText, limitString, coursesArray, startAfter = null) => {
 
-            //Getting course document refs.
-            var coursesQuery = coursesRef.where('code', '>=', formattedText.toUpperCase()).where('code', '<', limitString).orderBy('code').limit(10);
-            var coursesPromise = coursesQuery.get();
-            var getCourseRefs = coursesPromise.then(function(coursesSnapshot) {
-                var results = [];
-                coursesSnapshot.forEach(function(courseDoc) {
-                    var docRef = coursesRef.doc(courseDoc.id);
-                    results.push(docRef.get());
+        const queryBase = coursesRef.where('code', '>=', formattedText.toUpperCase()).where('code', '<', limitString)
+        Alert.alert(startAfter)
+        var coursesQuery = startAfter
+            ?   queryBase.orderBy('code').startAfter(startAfter.code).limit(1)
+            :   queryBase.orderBy('code').limit(1)
+
+        return new Promise((resolve, reject) => {
+            coursesQuery.get().then(coursesSnapshot => {
+                coursesSnapshot.forEach(courseDoc => {
+                    const courseData = courseDoc.data();
+                    
+                    let courseInfo = {
+                        code: courseData.code,
+                        color: courseData.color,
+                        name: courseData.name,
+                        sections: courseData.sections,
+                    }
+                    if ( !this.props.courses.some(course => course.code === courseInfo.code) &&
+                        !this.state.courses.some(course => course.code === courseInfo.code) ) {
+                        coursesArray.push(courseInfo);
+                        this.setState({courses: coursesArray})
+                        resolve(courseInfo);
+                    }
                 })
-                return Promise.all(results);
             })
+        })
+    }
 
-            //Adding course document datas.
-            getCourseRefs.then(courseRefs => {
-                if (courseRefs.length > 0)  {
-                    courseRefs.forEach(courseRef => {
-                        const courseData = courseRef.data();
-                        let courseInfo = {
-                            id: courseRef.id,
-                            code: courseData.code,
-                            color: courseData.color,
-                            name: courseData.name,
-                            sections: courseData.sections,
-                        }
-                        if (!this.props.courses.some(course => course.code === courseInfo.code)) {
-                            coursesArray.push(courseInfo);
-                        }
-                    })
-                    this.setState({courseInfos: coursesArray});
-                }
-                else {
-                    this.setState({courseInfos: []})
-                }
+    getCourseItems = (formattedText, limitString, coursesArray, loadIndex, currCount = 0, startAfter = null, maxCount = 10) => {
+        let courseItem;
+        Alert.alert(currCount.toString())
+        if (this.state.loadIndex === loadIndex && currCount < maxCount){
+            this.getCourseItem(formattedText, limitString, coursesArray, startAfter).then(courseItem => {
+                this.getCourseItems(formattedText, limitString, coursesArray, loadIndex, currCount + 1, courseItem, maxCount)
             })
         }
         else {
-            this.setState({courseInfos: []})
+            return;
         }
-        this.setState({searchQuery: searchText});
+    }
+
+    onChangeSearch = (searchText => {
+        
+        const loadIndex = this.state.loadIndex + 1;
+        this.setState({
+            loadIndex: this.state.loadIndex + 1,
+            courses: [],
+            searchQuery: searchText,
+        })
+
+        if (searchText.length > 0) {
+            let coursesArray = [];
+            const formattedText = searchText.toUpperCase();
+            const limitString = formattedText.replace(/.$/, nextChar(formattedText.charAt(formattedText.length - 1)));
+
+            //Getting course document refs.
+            let last;
+            let currCount = 0;
+            setTimeout(() => {
+                this.getCourseItems(formattedText, limitString, coursesArray, loadIndex);
+            }, 1000);
+                
+
+            // //Adding course document datas.
+            // getCourseRefs.then(courseRefs => {
+            //     if (courseRefs.length > 0)  {
+            //         courseRefs.forEach(courseRef => {
+            //             const courseData = courseRef.data();
+            //             let courseInfo = {
+            //                 id: courseRef.id,
+            //                 code: courseData.code,
+            //                 color: courseData.color,
+            //                 name: courseData.name,
+            //                 sections: courseData.sections,
+            //             }
+            //             if (!this.props.courses.some(course => course.code === courseInfo.code)) {
+            //                 coursesArray.push(courseInfo);
+            //             }
+            //         })
+            //         this.setState({courses: coursesArray});
+            //     }
+            // })
+        }
     })
 
     componentDidMount() {
@@ -94,9 +135,9 @@ export default class LandingScreen extends React.Component{
                     value={this.state.searchQuery}
                 />
                 <FlatList
-                    data={this.state.courseInfos.sort((a, b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0))}
+                    data={this.state.courses}
                     renderItem={this.renderItem}
-                    keyExtractor={(item) => item.id}
+                    keyExtractor={(item) => item.code}
                     showsVerticalScrollIndicator={false}
                     extraData={this.state}
                 />
