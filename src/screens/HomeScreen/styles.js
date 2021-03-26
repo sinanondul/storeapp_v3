@@ -81,7 +81,7 @@ const LandingStyles = StyleSheet.create({
     flex: 1,
     flexDirection: "row",
     alignItems: "flex-start",
-    padding: 10
+    padding: 10,
     //paddingRight: 10,
   },
   userInfo: {
@@ -117,14 +117,14 @@ const LandingStyles = StyleSheet.create({
   },
 
   feedContent: {
-    flexDirection: 'column',
+    flexDirection: "column",
     paddingRight: 10,
     paddingLeft: 10,
   },
 
   mainText: {
     marginTop: 10,
-    marginBottom: 10
+    marginBottom: 10,
   },
 
   avatar: {
@@ -135,12 +135,12 @@ const LandingStyles = StyleSheet.create({
   },
   name: {
     fontSize: 14,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#454D65",
   },
   handle: {
     fontSize: 12,
-    fontWeight: 'bold',
+    fontWeight: "bold",
     color: "#666666",
   },
   timestamp: {
@@ -153,7 +153,7 @@ const LandingStyles = StyleSheet.create({
     fontSize: 14,
   },
   postImage: {
-    width: '100%',
+    width: "100%",
     height: 200,
     borderRadius: 5,
     marginVertical: 0,

@@ -31,8 +31,8 @@ import { openDrawer } from "../../../App";
 
 import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import PostList from './components/PostList';
-import FollowButton from './components/FollowButton';
+import PostList from "./components/PostList";
+import FollowButton from "./components/FollowButton";
 import MyPosts from "./MyPosts";
 
 import styles from "./styles";
@@ -74,7 +74,7 @@ export default class LandingScreen extends React.Component {
             onPress={() => openDrawer()}
           />
         ),
-        headerRight: () =>
+      headerRight: () =>
         !otherProfile ? (
           <Icon
             name="account-edit"
@@ -122,8 +122,7 @@ export default class LandingScreen extends React.Component {
     var myPosts = this.props.userInfo.myPosts;
     var favPosts = this.props.userInfo.favPosts;
     var upedPosts = this.props.userInfo.upedPosts;
-    if (!otherProfile)
-    {
+    if (!otherProfile) {
       myPosts = userData.myPosts;
       favPosts = userData.favPosts;
       upedPosts = userData.upedPosts;
@@ -163,8 +162,10 @@ export default class LandingScreen extends React.Component {
                     <MaterialIcons name="mail" size={18} color="#DFD8C8" />
                   </TouchableOpacity>
 
-                  <FollowButton userData={userData} targetId={this.props.userInfo.uid}/>
-
+                  <FollowButton
+                    userData={userData}
+                    targetId={this.props.userInfo.uid}
+                  />
                 </View>
               ) : null}
             </View>
@@ -232,8 +233,14 @@ export default class LandingScreen extends React.Component {
               </View>
             </View>
           </View>
-          
-          <View style={{ marginTop: 10, height: Dimensions.get("window").height - 56, flex: 1 }}>
+
+          <View
+            style={{
+              marginTop: 10,
+              height: Dimensions.get("window").height - 56,
+              flex: 1,
+            }}
+          >
             <Tab.Navigator
               headerMode={false}
               initialRouteName="Posts"
@@ -246,20 +253,49 @@ export default class LandingScreen extends React.Component {
               style={{ flex: 1 }}
             >
               <Tab.Screen name="Posts">
-                {(props) => <PostList ref={child => {this.myPostsRef = child}} {...props} userData={userData} postIds={myPosts} ownerId={this.props.ownerId}/>}
+                {(props) => (
+                  <PostList
+                    ref={(child) => {
+                      this.myPostsRef = child;
+                    }}
+                    {...props}
+                    userData={userData}
+                    postIds={myPosts}
+                    ownerId={this.props.ownerId}
+                  />
+                )}
               </Tab.Screen>
               {/* <Tab.Screen name="Posts & comments">
                 {(props) => null}
               </Tab.Screen> */}
               <Tab.Screen name="UPed Posts">
-                {(props) => <PostList ref={child => {this.upedPostsRef = child}} {...props} userData={userData} postIds={upedPosts} ownerId={this.props.ownerId}/>}
+                {(props) => (
+                  <PostList
+                    ref={(child) => {
+                      this.upedPostsRef = child;
+                    }}
+                    {...props}
+                    userData={userData}
+                    postIds={upedPosts}
+                    ownerId={this.props.ownerId}
+                  />
+                )}
               </Tab.Screen>
               <Tab.Screen name="Favourites">
-                {(props) => <PostList ref={child => {this.favPostsRef = child}} {...props} userData={userData} postIds={favPosts} ownerId={this.props.ownerId}/>}
+                {(props) => (
+                  <PostList
+                    ref={(child) => {
+                      this.favPostsRef = child;
+                    }}
+                    {...props}
+                    userData={userData}
+                    postIds={favPosts}
+                    ownerId={this.props.ownerId}
+                  />
+                )}
               </Tab.Screen>
             </Tab.Navigator>
           </View>
-
         </ScrollView>
       </SafeAreaView>
     );
@@ -270,6 +306,7 @@ export default class LandingScreen extends React.Component {
     headerStyle: {
       backgroundColor: "#2890cf",
     },
+
     headerTintColor: "#fff",
     headerTitleStyle: {
       flex: 0.6,
@@ -277,6 +314,6 @@ export default class LandingScreen extends React.Component {
       alignItems: "center",
       fontWeight: "bold",
     },
-    headerRight: () => <View style={{width: '20%'}}></View>
+    headerRight: () => <View style={{ width: "20%" }}></View>,
   };
 }

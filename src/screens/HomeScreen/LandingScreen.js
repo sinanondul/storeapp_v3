@@ -27,6 +27,7 @@ const usersRef = firebase.firestore().collection("users");
 export default class LandingScreen extends React.Component {
   state = {
     posts: [],
+    currentPost: [],
   };
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
@@ -34,7 +35,9 @@ export default class LandingScreen extends React.Component {
   };
 
   renderItem = ({ item }) => {
-    return <FeedItem {...this.props} post={item} profileRoute={"ProfileFromHome"} />;
+    return (
+      <FeedItem {...this.props} post={item} profileRoute={"ProfileFromHome"} />
+    );
   };
 
   componentDidMount() {
