@@ -36,7 +36,6 @@ export default class LandingScreen extends React.Component{
     getCourseItem = (formattedText, limitString, coursesArray, startAfter = null) => {
 
         const queryBase = coursesRef.where('code', '>=', formattedText.toUpperCase()).where('code', '<', limitString)
-        Alert.alert(startAfter)
         var coursesQuery = startAfter
             ?   queryBase.orderBy('code').startAfter(startAfter.code).limit(1)
             :   queryBase.orderBy('code').limit(1)
@@ -64,8 +63,6 @@ export default class LandingScreen extends React.Component{
     }
 
     getCourseItems = (formattedText, limitString, coursesArray, loadIndex, currCount = 0, startAfter = null, maxCount = 10) => {
-        let courseItem;
-        Alert.alert(currCount.toString())
         if (this.state.loadIndex === loadIndex && currCount < maxCount){
             this.getCourseItem(formattedText, limitString, coursesArray, startAfter).then(courseItem => {
                 this.getCourseItems(formattedText, limitString, coursesArray, loadIndex, currCount + 1, courseItem, maxCount)
@@ -96,27 +93,6 @@ export default class LandingScreen extends React.Component{
             setTimeout(() => {
                 this.getCourseItems(formattedText, limitString, coursesArray, loadIndex);
             }, 1000);
-                
-
-            // //Adding course document datas.
-            // getCourseRefs.then(courseRefs => {
-            //     if (courseRefs.length > 0)  {
-            //         courseRefs.forEach(courseRef => {
-            //             const courseData = courseRef.data();
-            //             let courseInfo = {
-            //                 id: courseRef.id,
-            //                 code: courseData.code,
-            //                 color: courseData.color,
-            //                 name: courseData.name,
-            //                 sections: courseData.sections,
-            //             }
-            //             if (!this.props.courses.some(course => course.code === courseInfo.code)) {
-            //                 coursesArray.push(courseInfo);
-            //             }
-            //         })
-            //         this.setState({courses: coursesArray});
-            //     }
-            // })
         }
     })
 
