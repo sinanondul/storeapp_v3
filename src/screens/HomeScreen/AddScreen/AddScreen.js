@@ -111,7 +111,7 @@ export default class AddScreen extends React.Component {
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={60}
+        keyboardVerticalOffset={65}
         style={styles.container}
       >
         <View style={styles.inputContainer}>
@@ -166,6 +166,7 @@ export default class AddScreen extends React.Component {
             <Ionicons name="camera" size={28} color="black" />
           </TouchableOpacity>
         </View>
+
       </KeyboardAvoidingView>
     );
   }
@@ -175,6 +176,7 @@ export default class AddScreen extends React.Component {
     title: <Text>Add Post</Text>,
     //headerBackTitle: "Cancel",
     headerStyle: {
+      height: 65,
       backgroundColor: "#FFFFFF",
       height: 60,
     },

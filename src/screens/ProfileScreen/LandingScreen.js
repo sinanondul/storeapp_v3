@@ -55,6 +55,7 @@ export default class LandingScreen extends React.Component {
   componentDidMount() {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
     //Navigation update.
+
     this.props.navigation.setOptions({
       headerLeft: () =>
         this.props.fromFeed ? (
@@ -84,33 +85,35 @@ export default class LandingScreen extends React.Component {
           />
         ) : null,
     });
-    if (this.props.fromFeed) {
+
+    if (this.props.fromFeed) { 
       this.props.navigation.setOptions({
         headerTitle: () => (
           <View style={styles.headerTitleContainer}>
-            <View style={styles.headerAvatar}>
-              {getAvatar(this.props.userInfo)}
-            </View>
+              <View style={styles.headerAvatar}>
+                  {getAvatar(this.props.userInfo)}
+              </View>
 
             <Text style={styles.headerText}>
-              {getFullName(this.props.userInfo)}
+                {getFullName(this.props.userInfo)} 
             </Text>
           </View>
         ),
-      });
+      })
     }
 
-    this._unsubscribe = this.props.navigation.addListener("focus", () => {
-      if (this.myPostsRef) {
-        this.myPostsRef.getPosts();
-      }
-      if (this.upedPostsRef) {
-        this.upedPostsRef.getPosts();
-      }
-      if (this.favPostsRef) {
-        this.favPostsRef.getPosts();
-      }
-    });
+    //Focus listener.
+    // this._unsubscribe = this.props.navigation.addListener('focus', () => {
+    //     if (this.myPostsRef) {
+    //       this.myPostsRef.getPosts();
+    //     }
+    //     if (this.upedPostsRef) {
+    //       this.upedPostsRef.getPosts();
+    //     }
+    //     if (this.favPostsRef) {
+    //       this.favPostsRef.getPosts();
+    //     }
+    // })
   }
 
   render() {
