@@ -25,6 +25,7 @@ import * as ImagePicker from "expo-image-picker";
 import XButton from "../../../components/XButton";
 import { getAvatar } from "../../../functions/UserInfoFormatter";
 import styles from "./styles";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 //import DropShadow from "react-native-drop-shadow";
 
 export default class AddScreen extends React.Component {
@@ -102,11 +103,6 @@ export default class AddScreen extends React.Component {
     }
   };
 
-  combinedFunctions = () => {
-    this.setState({ image: null });
-    this.handlePost();
-  };
-
   render() {
     return (
       <KeyboardAvoidingView
@@ -114,49 +110,54 @@ export default class AddScreen extends React.Component {
         keyboardVerticalOffset={65}
         style={styles.container}
       >
-        <View style={styles.inputContainer}>
-          {getAvatar(this.props.userData, 50)}
+        <KeyboardAwareScrollView>
+          <View style={styles.inputContainer}>
+            {getAvatar(this.props.userData, 50)}
 
-          <View style={{ flexDirection: "column" }}>
-            <View style={styles.talkBubble}>
-              <View style={styles.talkBubbleTriangle} />
+            <View style={{ flexDirection: "column" }}>
+              <View style={styles.talkBubble}>
+                <View style={styles.talkBubbleTriangle} />
 
-              <View style={styles.talkBubbleSquare}>
-                <View style={styles.textWrapper}>
-                  <TextInput
-                    autoFocus={true}
-                    outerFocus={true}
-                    multiline={true}
-                    maxLength={280}
-                    placeholder="Type your post here..."
-                    onChangeText={this.onChangeText}
-                    value={this.state.text}
-                    style={styles.textStyle}
-                  />
-                </View>
-                {this.state.image ? (
-                  <View style={styles.postPhoto}>
-                    <Image
-                      source={{ uri: this.state.image }}
-                      style={{ width: "100%", height: "100%" }}
-                      resizeMode="contain"
+                <View style={styles.talkBubbleSquare}>
+                  <View style={styles.textWrapper}>
+                    <TextInput
+                      autoFocus={true}
+                      outerFocus={true}
+                      multiline={true}
+                      maxLength={280}
+                      placeholder="Type your post here..."
+                      onChangeText={this.onChangeText}
+                      value={this.state.text}
+                      style={styles.textStyle}
                     />
-                    <XButton onPress={() => this.setState({ image: null })} />
                   </View>
-                ) : null}
+                  {this.state.image ? (
+                    <View style={styles.postPhoto}>
+                      <Image
+                        source={{ uri: this.state.image }}
+                        style={{ width: "100%", height: "100%" }}
+                        resizeMode="contain"
+                      />
+                      <XButton onPress={() => this.setState({ image: null })} />
+                    </View>
+                  ) : null}
+                </View>
               </View>
-            </View>
 
-            {this.state.text !== "" || this.state.image ? (
-              <TouchableOpacity
-                style={styles.postButton}
-                onPress={this.handlePost}
-              >
-                <Text style={styles.postButtonText}>Post</Text>
-              </TouchableOpacity>
-            ) : null}
+              {this.state.text !== "" || this.state.image ? (
+                <TouchableOpacity
+                  style={styles.postButton}
+                  onPress={this.handlePost}
+                >
+                  <Text style={styles.postButtonText}>Post</Text>
+                </TouchableOpacity>
+              ) : null}
+            </View>
           </View>
-        </View>
+
+        </KeyboardAwareScrollView>
+        
+        
 
         <View style={styles.bottomBar}>
           <TouchableOpacity
@@ -176,7 +177,7 @@ export default class AddScreen extends React.Component {
     title: <Text>Add Post</Text>,
     //headerBackTitle: "Cancel",
     headerStyle: {
-      height: 65,
+      height: 90,
       backgroundColor: "#FFFFFF",
       height: 60,
     },
