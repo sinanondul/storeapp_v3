@@ -22,7 +22,7 @@ import {
   getHandle,
 } from "../../../functions/UserInfoFormatter";
 import InteractiveBar from "./InteractiveBar";
-import styles from "../styles";
+import styles from "./styles";
 
 const usersRef = firebase.firestore().collection("users");
 
@@ -30,19 +30,20 @@ function getTimeSince(timestamp) {
   return moment(timestamp).fromNow();
 }
 
-export default class FeedItem extends React.Component {
+export default class CommentItem extends React.Component {
   constructor(props) {
     super(props);
   }
   state = {
     senderInfo: {
-      fullName: null,
-      name: null,
-      surename: null,
+      fullName: " nul32123l",
+      name: "nu211ll",
+      surename: "nul323l",
       avatar: null,
-      handle: null,
+      handle: "sldkj",
     },
-    nameinit: false,
+    comments: ["whatsadasds up", "notasdasd much, u?", "not asdasdbadd"],
+    nameinit: true,
   };
 
   componentDidMount() {
@@ -75,7 +76,7 @@ export default class FeedItem extends React.Component {
 
   render() {
     return (
-      <View>
+      <View style={{ marginBottom: 5 }}>
         <View style={styles.feedItem}>
           <View style={{ flex: 1 }}>
             <TouchableOpacity
@@ -89,31 +90,46 @@ export default class FeedItem extends React.Component {
                 });
               }}
             >
-              {this.state.nameinit
-                ? getAvatar(this.state.senderInfo, 50)
-                : null}
-
-              <View style={styles.userText}>
-                {this.state.nameinit ? (
-                  <Text style={styles.name}>
+              <View style={{ flexDirection: "row" }}>
+                {this.state.nameinit
+                  ? getAvatar(this.state.senderInfo, 30)
+                  : null}
+                <Text style={{ flexDirection: "row" }}>
+                  <Text style={{ fontWeight: "500" }}>
                     {getFullName(this.state.senderInfo)}
                   </Text>
-                ) : null}
-
-                <Text style={styles.handle}>
-                  {"@" + this.state.senderInfo.handle}
-                </Text>
-
-                <Text style={styles.timestamp}>
-                  {getTimeSince(this.props.post.timestamp)}
+                  <Text style={{ fontWeight: "100" }}>
+                    {"@" + this.state.senderInfo.handle}
+                  </Text>
+                  <Text style={{ paddingLeft: 5 }}>
+                    Unhandled promise rejection: TypeError: undefined is not an
+                  </Text>
                 </Text>
               </View>
+              {/* <View style={styles.userText}>
+                  {this.state.nameinit ? (
+                    <Text style={styles.name}>
+                      {getFullName(this.state.senderInfo)}
+                    </Text>
+                  ) : null}
+
+                  <Text style={styles.handle}>
+                    {"@" + this.state.senderInfo.handle}
+                  </Text>
+                  <Text style={{ flex: 0.9 }}>
+                    Thisisacommentthisisacommentasdjnsadjaskndkasndaskdmnaskdn
+                  </Text>
+                </View> */}
+
+              <Text style={styles.timestamp}>
+                {getTimeSince(this.props.post.timestamp)}
+              </Text>
             </TouchableOpacity>
 
             <View style={styles.feedContent}>
               {this.props.post.text && this.props.post.text !== "" ? (
                 <View style={styles.mainText}>
-                  <Text style={styles.post}>{this.props.post.text}</Text>
+                  <Text style={styles.post}>{this.state.comments}</Text>
                 </View>
               ) : null}
 
@@ -125,10 +141,6 @@ export default class FeedItem extends React.Component {
                 />
               ) : null}
             </View>
-            <InteractiveBar
-              userData={this.props.userData}
-              post={this.props.post}
-            />
           </View>
         </View>
       </View>
