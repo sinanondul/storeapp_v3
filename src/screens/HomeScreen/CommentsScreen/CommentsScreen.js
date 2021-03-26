@@ -32,7 +32,7 @@ class CommentsScreen extends React.Component {
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
-        ></FlatList>
+        />
         <View style={{ flexDirection: "row" }}>
           <TextInput
             placeholder="...add comment"
