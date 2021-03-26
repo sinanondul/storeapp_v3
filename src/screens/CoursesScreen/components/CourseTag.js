@@ -23,8 +23,8 @@ export default class UserItem extends React.Component{
     return (
           <View style={{
                 height: this.props.height,
-                width: this.props.height * 3,
-                flexBasis: this.props.height * 3,
+                width: this.props.height * 3.5,
+                flexBasis: this.props.height * 3.5,
                 flexDirection: 'row',
                 backgroundColor: this.props.color,
                 borderRadius: 10,

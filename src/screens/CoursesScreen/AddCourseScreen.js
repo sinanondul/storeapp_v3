@@ -5,6 +5,7 @@ import Icon from "react-native-vector-icons/Ionicons";
 
 import firebase from 'firebase';
 
+import CourseItem from './components/CourseItem';
 import ExpandableCourseItem from './components/ExpandableCourseItem';
 import styles from "./styles";
 
@@ -29,7 +30,10 @@ export default class LandingScreen extends React.Component{
 
     renderItem = ({item}) => {
         return (
-            <ExpandableCourseItem {...this.props} courseInfo={item} onPress={() => {}}/>
+            <TouchableOpacity onPress={() => {}}>
+                <CourseItem courseInfo={item}/>
+            </TouchableOpacity>
+            // <ExpandableCourseItem {...this.props} courseInfo={item} onPress={() => {}}/>
         );
     }
 
@@ -46,6 +50,7 @@ export default class LandingScreen extends React.Component{
                     const courseData = courseDoc.data();
                     
                     let courseInfo = {
+                        id: courseDoc.id,
                         code: courseData.code,
                         color: courseData.color,
                         name: courseData.name,
@@ -88,8 +93,6 @@ export default class LandingScreen extends React.Component{
             const limitString = formattedText.replace(/.$/, nextChar(formattedText.charAt(formattedText.length - 1)));
 
             //Getting course document refs.
-            let last;
-            let currCount = 0;
             setTimeout(() => {
                 this.getCourseItems(formattedText, limitString, coursesArray, loadIndex);
             }, 1000);
@@ -113,7 +116,7 @@ export default class LandingScreen extends React.Component{
                 <FlatList
                     data={this.state.courses}
                     renderItem={this.renderItem}
-                    keyExtractor={(item) => item.code}
+                    keyExtractor={(item) => item.id}
                     showsVerticalScrollIndicator={false}
                     extraData={this.state}
                 />

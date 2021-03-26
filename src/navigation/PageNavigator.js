@@ -35,7 +35,7 @@ export default class AppPage extends React.Component {
     let chatsArray = [];
     let messageCount = 0;
     const userRef = firebase.firestore().collection('users').doc(this.props.userData.uid);
-    const unsubscribeChats = userRef
+    this._unsubscribeChats = userRef
       .collection('chats')
       .onSnapshot((snapshot) => {
         
@@ -104,11 +104,58 @@ export default class AppPage extends React.Component {
           })
         });
       });
-    const unsubscribeCourses = userRef
-      .collection('courses')
-      .onSnapshot((courseSnapshot) => {
-        let courseChanges = courseSnapshot.docChanges();
-      });
+    // this._unsubscribeCourses = userRef
+    //   .collection('courses')
+    //   .onSnapshot((courseSnapshot) => {
+    //     let courseChanges = courseSnapshot.docChanges();
+    //     var getCourses = new Promise((resolve, reject) => {
+    //       courseChanges.forEach((change, index, array) => {
+
+    //         const newCourseData = change.doc.data();
+    //         firebase
+    //           .firestore()
+    //           .collection('courses')
+    //           .doc(newCourseRef.id)
+    //           .get()
+    //           .then((firestoreDocument) => {
+    //             var newChatData = firestoreDocument.data();
+
+    //             const newChatItem = {
+    //               id: newChatRef.id,
+    //               timestamp: newChatRef.lastTimestamp,
+    //               new: newChatRef.new,
+    //               newCount: newChatRef.newCount,
+    //               participantIds: Array.from(Object.keys(newChatData.participantIds)),
+    //               lastMessage: newChatData.lastMessage,
+    //               groupChatInfo: newChatData.groupChatInfo
+    //             };
+    //             if (change.type === "added") 
+    //             {
+    //               //Adding to array
+    //               if (newChatItem.lastMessage)  {
+    //                 chatsArray.unshift(newChatItem);
+    //               }
+    //             }
+    //             else if (change.type === "modified") 
+    //             {
+    //               //Modifying previously added chat. 
+    //               if (newChatItem.lastMessage)  {
+    //                 const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+    //                 chatsArray[index] = newChatItem;
+    //               }
+    //             }
+    //             else if (change.type === "removed") 
+    //             {
+    //               //Modifying previously added chat. 
+    //               const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
+    //               chatsArray.splice(index, 1);
+    //             }
+                
+    //             if (index === array.length -1) resolve();
+    //         });
+    //       });
+    //     })
+    //   });
   }
 
   render() {
