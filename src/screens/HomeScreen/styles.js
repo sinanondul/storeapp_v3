@@ -72,7 +72,7 @@ const LandingStyles = StyleSheet.create({
   feedItem: {
     backgroundColor: "#FFF",
     borderRadius: 5,
-    marginVertical: 8,
+    marginVertical: 2,
     marginHorizontal: 2,
     flexDirection: "column",
     elevation: 1,

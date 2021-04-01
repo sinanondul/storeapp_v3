@@ -21,21 +21,22 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import {getFullName, getAvatar} from '../functions/UserInfoFormatter';
+import { getFullName, getAvatar } from "../functions/UserInfoFormatter";
 import styles from "./styles";
-
 
 export default class DrawerContent extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
-          <TouchableOpacity style={styles.userInfoWrapper} 
-              onPress={() =>
-                this.props.navigation.navigate("Profile", {
-                  userInfo: this.props.userData,
-                })
-              }>
+          <TouchableOpacity
+            style={styles.userInfoWrapper}
+            onPress={() =>
+              this.props.navigation.navigate("Profile", {
+                userInfo: this.props.userData,
+              })
+            }
+          >
             <View style={styles.userAvatar}>
               {getAvatar(this.props.userData, 50)}
             </View>
@@ -132,6 +133,24 @@ export default class DrawerContent extends React.Component {
                       });
                     }}
                   />
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <Icon
+                        name={
+                          Platform.OS === "ios"
+                            ? "planet-outline"
+                            : "planet-outline"
+                        }
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="Sponsored"
+                    labelStyle={styles.drawerItem}
+                    onPress={() => {
+                      this.props.navigation.navigate("Sponsored");
+                    }}
+                  />
                 </Drawer.Section>
               </View>
             </View>
@@ -140,7 +159,7 @@ export default class DrawerContent extends React.Component {
 
         <View style={styles.bottomDrawerSection}>
           <Drawer.Section>
-            <DrawerItem
+            {/* <DrawerItem
               icon={({ color, size }) => (
                 <Icon
                   name={Platform.OS === "ios" ? "ios-help" : "md-help"}
@@ -153,7 +172,7 @@ export default class DrawerContent extends React.Component {
               onPress={() => {
                 this.props.navigation.navigate("Onboarding");
               }}
-            />
+            /> */}
             <DrawerItem
               icon={({ color, size }) => (
                 <Icon
