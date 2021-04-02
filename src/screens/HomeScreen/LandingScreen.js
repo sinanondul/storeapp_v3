@@ -119,7 +119,9 @@ export default class LandingScreen extends React.Component {
     ),
     headerRight: () => (
       <Icon
-        name="filter-circle-outline"
+        name={
+          Platform.OS === "ios" ? "ios-filter-outline" : "md-filter-outline"
+        }
         style={{ marginRight: 12 }}
         size={30}
         color="#fff"
