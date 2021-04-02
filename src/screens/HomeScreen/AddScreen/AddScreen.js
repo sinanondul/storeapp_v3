@@ -176,11 +176,16 @@ export default class AddScreen extends React.Component {
   //
   static navigationOptions = {
     title: <Text>Add Post</Text>,
-    //headerBackTitle: "Cancel",
     headerStyle: {
-      height: 90,
       backgroundColor: "#2890cf",
-      height: 60,
+    },
+
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      flex: 0.6,
+      alignSelf: "center",
+      alignItems: "center",
+      fontWeight: "bold",
     },
     // headerTintColor: "#fff",
   };
