@@ -17,7 +17,7 @@ export default class FeedList extends React.Component {
     }
 
     componentDidMount() {
-        let postsArray = [{id: 0, isAd: true}];
+        let postsArray = [];
         let postsQuery;
         if (!(this.props.followingOnly && Object.keys(this.props.userData.following).length <= 0)) {
             if (!this.props.followingOnly){
@@ -61,6 +61,8 @@ export default class FeedList extends React.Component {
                             postsArray.splice(index, 1);
                         }
                     });
+                    postsArray.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : ((b.timestamp < a.timestamp) ? -1 : 0))
+                    postsArray.unshift({id: 'adId0000', isAd: true});
                     this.setState({ posts: postsArray });
                 });
         }
