@@ -3,17 +3,21 @@ import { View, Text, FlatList, Alert, Platform } from "react-native";
 
 import firebase from 'firebase';
 
+import AdItem from './AdItem'
 import FeedItem from './FeedItem';
 import styles from ".././styles";
+
+const adStep = 10;
 
 export default class FeedList extends React.Component {
 
     state = {
         posts: [],
+        adCount: 0,
     }
 
     componentDidMount() {
-        let postsArray = [];
+        let postsArray = [{id: 0, isAd: true}];
         let postsQuery;
         if (!(this.props.followingOnly && Object.keys(this.props.userData.following).length <= 0)) {
             if (!this.props.followingOnly){
@@ -67,7 +71,11 @@ export default class FeedList extends React.Component {
     }
 
     renderItem = ({ item }) => {
-        return <FeedItem {...this.props} post={item} profileRoute={"ProfileFromHome"} />;
+        return (
+            item.isAd 
+            ?   <AdItem/>
+            :   <FeedItem {...this.props} post={item} profileRoute={"ProfileFromHome"} />
+        );
     }
 
     render() {
