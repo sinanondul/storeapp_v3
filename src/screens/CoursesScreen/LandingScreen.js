@@ -2,6 +2,8 @@ import React from "react";
 import {View, Text, TouchableOpacity, FlatList, Alert, Platform} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
+import firebase from 'firebase';
+
 import { openDrawer } from "../../../App";
 import BottomRightButton from '../../components/BottomRightButton';
 import DefaultFooter from '../../components/DefaultFooter';
@@ -22,6 +24,10 @@ const courseItems = [
 ]
 
 export default class LandingScreen extends React.Component{
+
+  state={
+    courses: [],
+  }
 
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;

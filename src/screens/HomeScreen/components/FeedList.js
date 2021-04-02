@@ -15,7 +15,7 @@ export default class FeedList extends React.Component {
     componentDidMount() {
         let postsArray = [];
         let postsQuery;
-        if (!(this.props.followingOnly && Object.keys(this.props.userData.following).length > 0)) {
+        if (!(this.props.followingOnly && Object.keys(this.props.userData.following).length <= 0)) {
             if (!this.props.followingOnly){
                 postsQuery = firebase.firestore().collection("posts").orderBy("timestamp", 'desc')
             }
@@ -48,13 +48,13 @@ export default class FeedList extends React.Component {
                         }
                         else if (change.type === 'modified') {
                             const index = postsArray.findIndex((item) => item.id === newPostData.id)
-                            chatsArray[index] = newPostData;
+                            postsArray[index] = newPostData;
                         }
                         else if (change.type === 'removed') 
                         {
-                        //Modifying previously added chat. 
-                        const index = postsArray.findIndex((item) => item.id === newPostData.id)
-                        postsArray.splice(index, 1);
+                            //Modifying previously added chat. 
+                            const index = postsArray.findIndex((item) => item.id === newPostData.id)
+                            postsArray.splice(index, 1);
                         }
                     });
                     this.setState({ posts: postsArray });
@@ -63,7 +63,7 @@ export default class FeedList extends React.Component {
     }
 
     componentWillUnmount() {
-        this._unsubscribe();
+        // this._unsubscribe();
     }
 
     renderItem = ({ item }) => {

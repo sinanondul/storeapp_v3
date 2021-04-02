@@ -79,6 +79,7 @@ export default class App extends React.Component {
                   favPosts: userData.favPosts,
                   following: userData.following,
                   followers: userData.followers,
+                  courses: userData.courses,
                 },
               });
               this.setState({ isLoggedIn: true });
