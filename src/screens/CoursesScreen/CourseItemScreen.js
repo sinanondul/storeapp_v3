@@ -12,6 +12,8 @@ import {
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 
 import SectionsList from "./components/SectionsList";
+import SectionMessagingInterface from './SectionMessagingInterface';
+import CourseTag from './components/CourseTag';
 import styles, { CourseItemScreenStyles as pageStyles } from "./styles";
 
 const Tab = createMaterialTopTabNavigator();
@@ -56,7 +58,6 @@ export default class CourseItemScreen extends React.Component {
     });
 
     //Getting participant info.
-    let usersArray = [];
   }
 
   componentWillUnmount() {}
@@ -65,11 +66,18 @@ export default class CourseItemScreen extends React.Component {
     const courseInfo = this.props.route.params.courseInfo;
     return (
       <View style={styles.container}>
-        <View style={pageStyles.groupInfoContainer}></View>
+        <View style={pageStyles.groupInfoContainer}>
+          <CourseTag height={26} color={courseInfo.color} text={courseInfo.code}/>
+          <View style={styles.textContainer}>
+            <Text style={styles.text} numberOfLines={2}>
+              {courseInfo.name}
+            </Text>
+          </View>
+        </View>
 
         <Tab.Navigator headerMode={false}>
           <Tab.Screen name="Sections">
-            {() => null}
+            {(props) => null}
           </Tab.Screen>
           <Tab.Screen name="Groups">{(props) => null}</Tab.Screen>
         </Tab.Navigator>
