@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const LandingStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f0fbff",
   },
   formContainer: {
     flexDirection: "row",
@@ -67,6 +68,7 @@ const LandingStyles = StyleSheet.create({
 
   feed: {
     marginHorizontal: 5,
+    marginTop: 10,
   },
 
   feedItem: {
@@ -157,6 +159,7 @@ const LandingStyles = StyleSheet.create({
     height: 200,
     borderRadius: 5,
     marginVertical: 0,
+    borderWidth: 3,
   },
   centeredView: {
     flex: 1,
