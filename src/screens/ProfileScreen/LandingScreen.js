@@ -86,20 +86,20 @@ export default class LandingScreen extends React.Component {
         ) : null,
     });
 
-    if (this.props.fromFeed) { 
+    if (this.props.fromFeed) {
       this.props.navigation.setOptions({
         headerTitle: () => (
           <View style={styles.headerTitleContainer}>
-              <View style={styles.headerAvatar}>
-                  {getAvatar(this.props.userInfo)}
-              </View>
+            <View style={styles.headerAvatar}>
+              {getAvatar(this.props.userInfo, 30)}
+            </View>
 
             <Text style={styles.headerText}>
-                {getFullName(this.props.userInfo)} 
+              {getFullName(this.props.userInfo)}
             </Text>
           </View>
         ),
-      })
+      });
     }
 
     //Focus listener.

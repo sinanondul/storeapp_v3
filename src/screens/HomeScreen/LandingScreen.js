@@ -113,5 +113,14 @@ export default class LandingScreen extends React.Component {
         onPress={() => openDrawer()}
       />
     ),
+    headerRight: () => (
+      <Icon
+        name="filter-circle-outline"
+        style={{ marginRight: 12 }}
+        size={30}
+        color="#fff"
+        //onPress={() => this.props.navigation.navigate("EditProfile")}
+      />
+    ),
   };
 }
