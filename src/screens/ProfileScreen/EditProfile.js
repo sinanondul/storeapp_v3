@@ -13,7 +13,7 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import * as Permissions from "expo-permissions";
-import * as ImageManipulator from 'expo-image-manipulator';
+import * as ImageManipulator from "expo-image-manipulator";
 
 import { useTheme } from "react-native-paper";
 
@@ -113,18 +113,21 @@ export default class EditProfile extends React.Component {
       .firestore()
       .collection("users")
       .doc(this.props.userData.uid)
-      .set({
-        id: this.state.user.id,
-        name: this.state.user.name,
-        surename: this.state.user.surename,
-        fullName: this.state.user.fullName,
-        email: this.state.user.email,
-        handle: this.state.user.handle,
-        about: this.state.user.about,
-        location: this.state.user.location,
-        phone: this.state.user.phone,
-        avatar: imgUrl,
-      }, {merge:true})
+      .set(
+        {
+          id: this.state.user.id,
+          name: this.state.user.name,
+          surename: this.state.user.surename,
+          fullName: this.state.user.fullName,
+          email: this.state.user.email,
+          handle: this.state.user.handle,
+          about: this.state.user.about,
+          location: this.state.user.location,
+          phone: this.state.user.phone,
+          avatar: imgUrl,
+        },
+        { merge: true }
+      )
       .then(() => {
         console.log("User Updated!");
         Alert.alert(
@@ -138,7 +141,6 @@ export default class EditProfile extends React.Component {
     const path = `profilePhotos/${this.props.userData.uid}/${Date.now()}.jpg`;
 
     return new Promise(async (res, rej) => {
-      
       const response = await fetch(uri);
       const file = await response.blob();
 
@@ -168,7 +170,7 @@ export default class EditProfile extends React.Component {
     const manipResult = await ImageManipulator.manipulateAsync(
       result.localUri || result.uri,
       [{ resize: { width: 140, height: 140 } }],
-      { format: ImageManipulator.SaveFormat.PNG}
+      { format: ImageManipulator.SaveFormat.PNG }
     );
     console.log(result);
 
@@ -738,6 +740,7 @@ export default class EditProfile extends React.Component {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f0fbff",
   },
   inner: {
     padding: 24,
@@ -809,7 +812,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginTop: 10,
     marginBottom: 10,
-    borderBottomWidth: 1,
+    borderBottomWidth: 2,
     borderBottomColor: "#f2f2f2",
     paddingBottom: 5,
   },

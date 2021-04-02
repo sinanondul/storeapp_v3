@@ -3,28 +3,25 @@ import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#FFAAAA",
+    backgroundColor: "#f0fbff",
     //paddingStart: 12,
   },
 
   headerTitleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
   headerAvatar: {
-      alignItems: 'center',
-      justifyContent: 'center',
-      marginRight: 5,
+    alignItems: "center",
+    justifyContent: "center",
+    marginRight: 3,
   },
   headerText: {
-      fontSize: 19,
-      fontWeight: 'bold',
-      color: '#fff',
-      marginLeft: 5,
+    fontSize: 19,
+    fontWeight: "bold",
+    color: "#fff",
+    marginLeft: 5,
   },
-
-
-
 
   profileTop: {
     //borderBottomWidth: 2,

@@ -53,7 +53,13 @@ export default class AddScreen extends React.Component {
           }}
         />
       ),
-      headerRight: () => null,
+      headerRight: () => (
+        //this.state.text !== "" || this.state.image ? (
+        <TouchableOpacity style={styles.postButton} onPress={this.handlePost}>
+          <Text style={styles.postButtonText}>Post</Text>
+        </TouchableOpacity>
+      ),
+      // ) : null,
     });
   }
 
@@ -88,6 +94,8 @@ export default class AddScreen extends React.Component {
           alert(error);
         });
       this.props.navigation.goBack();
+    } else {
+      Alert.alert("Cannot Post Blank");
     }
   };
 
@@ -143,21 +151,9 @@ export default class AddScreen extends React.Component {
                   ) : null}
                 </View>
               </View>
-
-              {this.state.text !== "" || this.state.image ? (
-                <TouchableOpacity
-                  style={styles.postButton}
-                  onPress={this.handlePost}
-                >
-                  <Text style={styles.postButtonText}>Post</Text>
-                </TouchableOpacity>
-              ) : null}
             </View>
           </View>
-
         </KeyboardAwareScrollView>
-        
-        
 
         <View style={styles.bottomBar}>
           <TouchableOpacity
@@ -166,8 +162,13 @@ export default class AddScreen extends React.Component {
           >
             <Ionicons name="camera" size={28} color="black" />
           </TouchableOpacity>
+          <TouchableOpacity
+            style={styles.bottomButton}
+            //onPress={this.pickImage} /* TODO add files etc.
+          >
+            <Ionicons name="add-circle-outline" size={28} color="black" />
+          </TouchableOpacity>
         </View>
-
       </KeyboardAvoidingView>
     );
   }
@@ -178,7 +179,7 @@ export default class AddScreen extends React.Component {
     //headerBackTitle: "Cancel",
     headerStyle: {
       height: 90,
-      backgroundColor: "#FFFFFF",
+      backgroundColor: "#2890cf",
       height: 60,
     },
     // headerTintColor: "#fff",
