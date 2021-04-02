@@ -158,11 +158,6 @@ export default class DrawerContent extends React.Component {
 
                   <DrawerItem
                     icon={({ color, size }) =>
-                      // <Icon
-                      //   name={Platform.OS === "ios" ? "ios-home" : "md-home"}
-                      //   color={color}
-                      //   size={size}
-                      // />
                       getAvatar(this.props.userData, 25)
                     }
                     label="Profile"
