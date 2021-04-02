@@ -110,73 +110,73 @@ export default class AppPage extends React.Component {
         });
       });
 
-    // let coursesArray = [];
-    // let courseNotificationCount = 0;
-    // this._unsubscribeCourses = userRef
-    //   .collection('courses')
-    //   .onSnapshot((courseSnapshot) => {
-    //     let courseChanges = courseSnapshot.docChanges();
-    //     var getCourses = new Promise((resolve, reject) => {
-    //       courseChanges.forEach((change, index, array) => {
+    let coursesArray = [];
+    let courseNotificationCount = 0;
+    this._unsubscribeCourses = userRef
+      .collection('courses')
+      .onSnapshot((courseSnapshot) => {
+        let courseChanges = courseSnapshot.docChanges();
+        var getCourses = new Promise((resolve, reject) => {
+          courseChanges.forEach((change, index, array) => {
 
-    //         const newCourseRef = change.doc.data();
-    //         firebase
-    //           .firestore()
-    //           .collection('courses')
-    //           .doc(change.doc.id)
-    //           .get()
-    //           .then((firestoreDocument) => {
-    //             let newCourseData = firestoreDocument.data();
-    //             let sections = {};
+            const newCourseRef = change.doc.data();
+            firebase
+              .firestore()
+              .collection('courses')
+              .doc(change.doc.id)
+              .get()
+              .then((firestoreDocument) => {
+                let newCourseData = firestoreDocument.data();
+                let sections = {};
 
-    //             const newCourseItem = {
-    //               id: change.doc.id,
-    //               timestamp: newCourseRef.lastTimestamp,
-    //               new: newCourseRef.new,
-    //               newCount: newCourseRef.newCount,
-    //               code: newCourseData.color,
-    //               name: newCourseData.name,
-    //               color: newCourseData.color,
-    //               sections: newCourseData.sections,
-    //             };
-    //             if (change.type === "added") 
-    //             {
-    //               //Adding to array
-    //               coursesArray.unshift(newCourseItem);
-    //             }
-    //             else if (change.type === "modified") 
-    //             {
-    //               //Modifying previously added chat. 
-    //               const index = coursesArray.findIndex((item) => item.id === newChatItem.id)
-    //               coursesArray[index] = newCourseItem;
-    //             }
-    //             else if (change.type === "removed") 
-    //             {
-    //               //Modifying previously added chat. 
-    //               const index = coursesArray.findIndex((item) => item.id === newCourseItem.id)
-    //               coursesArray.splice(index, 1);
-    //             }
+                const newCourseItem = {
+                  id: change.doc.id,
+                  lastTimestamp: newCourseRef.lastTimestamp,
+                  new: newCourseRef.new,
+                  newCount: newCourseRef.newCount,
+                  code: newCourseData.code,
+                  name: newCourseData.name,
+                  color: newCourseData.color,
+                  sections: newCourseData.sections,
+                };
+                if (change.type === "added") 
+                {
+                  //Adding to array
+                  coursesArray.unshift(newCourseItem);
+                }
+                else if (change.type === "modified") 
+                {
+                  //Modifying previously added chat. 
+                  const index = coursesArray.findIndex((item) => item.id === newChatItem.id)
+                  coursesArray[index] = newCourseItem;
+                }
+                else if (change.type === "removed") 
+                {
+                  //Modifying previously added chat. 
+                  const index = coursesArray.findIndex((item) => item.id === newCourseItem.id)
+                  coursesArray.splice(index, 1);
+                }
                 
-    //             if (index === array.length -1) resolve();
-    //         });
-    //       });
-    //     })
+                if (index === array.length -1) resolve();
+            });
+          });
+        })
 
-    //     getCourses.then(() => {
-    //       var getCourseCount = new Promise((resolve, reject) => {
-    //         coursesArray.forEach((item, index, array) => {
-    //           if (item.newCount > 0) {
-    //             courseNotificationCount = courseNotificationCount + 1;
-    //           }
-    //           if (index === array.length -1) resolve();
-    //         })
-    //       });
-    //       getCourseCount.then(() => {
-    //         this.setState({ courses: coursesArray, courseNotificationCount: courseNotificationCount })
-    //         courseNotificationCount = 0;
-    //       })
-    //     });
-    //   });
+        getCourses.then(() => {
+          var getCourseCount = new Promise((resolve, reject) => {
+            coursesArray.forEach((item, index, array) => {
+              if (item.newCount > 0) {
+                courseNotificationCount = courseNotificationCount + 1;
+              }
+              if (index === array.length -1) resolve();
+            })
+          });
+          getCourseCount.then(() => {
+            this.setState({ courses: coursesArray, courseNotificationCount: courseNotificationCount })
+            courseNotificationCount = 0;
+          })
+        });
+      });
   }
 
   render() {

@@ -25,10 +25,6 @@ const courseItems = [
 
 export default class LandingScreen extends React.Component{
 
-  state={
-    courses: [],
-  }
-
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;
@@ -53,7 +49,7 @@ export default class LandingScreen extends React.Component{
       <View style={styles.container}>
         <View style={styles.container}>
           <FlatList
-            data={courseItems.sort((a, b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0))}
+            data={this.props.courses.sort((a, b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0))}
             renderItem={this.renderItem}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}

@@ -69,7 +69,7 @@ export default class CourseItemScreen extends React.Component {
 
         <Tab.Navigator headerMode={false}>
           <Tab.Screen name="Sections">
-            {() => <SectionsList {...this.props} courseInfo={courseInfo} />}
+            {() => null}
           </Tab.Screen>
           <Tab.Screen name="Groups">{(props) => null}</Tab.Screen>
         </Tab.Navigator>
