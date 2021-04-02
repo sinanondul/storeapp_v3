@@ -5,7 +5,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userInfoSection: {
-    flex: 0.45,
+    flex: 0.4,
     backgroundColor: "#5DADE2",
   },
   userInfoWrapper: {

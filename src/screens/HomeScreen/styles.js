@@ -68,16 +68,14 @@ const LandingStyles = StyleSheet.create({
 
   feed: {
     marginHorizontal: 5,
-    marginTop: 10,
   },
 
   feedItem: {
     backgroundColor: "#FFF",
     borderRadius: 5,
-    marginVertical: 2,
-    marginHorizontal: 2,
+    marginVertical: 5,
     flexDirection: "column",
-    elevation: 1,
+    elevation: 5,
   },
   feedHeader: {
     flex: 1,
@@ -103,7 +101,7 @@ const LandingStyles = StyleSheet.create({
     height: 50,
   },
   userText: {
-    flexDirection: "column",
+    flexDirection: "row",
     flex: 0.5,
     height: 20,
     paddingLeft: 10,
@@ -141,14 +139,26 @@ const LandingStyles = StyleSheet.create({
     color: "#454D65",
   },
   handle: {
+    paddingLeft: 4,
+    paddingTop: 1,
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: "normal",
     color: "#666666",
   },
   timestamp: {
     fontSize: 11,
     color: "#999999",
-    marginTop: 4,
+    marginTop: 2,
+  },
+  seperatorDot: {
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    fontSize: 4,
+    paddingLeft: 3,
+    paddingRight: 3,
+    paddingBottom: 2,
+    color: "#999999",
   },
   post: {
     //marginTop: 16,
@@ -159,7 +169,7 @@ const LandingStyles = StyleSheet.create({
     height: 200,
     borderRadius: 5,
     marginVertical: 0,
-    borderWidth: 3,
+    borderWidth: 1,
   },
   centeredView: {
     flex: 1,
