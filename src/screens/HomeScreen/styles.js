@@ -118,7 +118,7 @@ const LandingStyles = StyleSheet.create({
 
   feedContent: {
     flexDirection: "column",
-    paddingRight: 10,
+    paddingRight: 12,
     paddingLeft: 10,
   },
 

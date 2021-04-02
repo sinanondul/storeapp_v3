@@ -49,7 +49,7 @@ const Onboarding = () => {
           ref={slidesRef}
         />
         <View style={styles.text}>
-          <View style={styles.dotContainer}>
+          {/* <View style={styles.dotContainer}>
             <Text>Expanding Dot</Text>
             <ExpandingDot
               data={OnboardingSlides}
@@ -68,8 +68,8 @@ const Onboarding = () => {
                 top: 30,
               }}
             />
-          </View>
-          <View style={styles.dotContainer}>
+          </View> */}
+          {/* <View style={styles.dotContainer}>
             <Text>Scaling Dot</Text>
             <ScalingDot
               data={OnboardingSlides}
@@ -80,9 +80,9 @@ const Onboarding = () => {
               inActiveDotColor={"#347af0"}
               activeDotColor={"#347af0"}
             />
-          </View>
+          </View> */}
 
-          <View style={styles.dotContainer}>
+          {/* <View style={styles.dotContainer}>
             <Text>Sliding Border</Text>
             <SlidingBorder
               containerStyle={{ top: 30 }}
@@ -91,10 +91,10 @@ const Onboarding = () => {
               dotSize={24}
               borderPadding={-5}
             />
-            {/*<Pagination data={OnboardingSlides} scrollX={scrollX} />*/}
-          </View>
+           
+          </View> */}
           <View style={(styles.dotContainer, { marginBottom: 30 })}>
-            <Text>Sliding Dot</Text>
+            <Text></Text>
             <SlidingDot
               marginHorizontal={3}
               containerStyle={{ top: 30 }}
