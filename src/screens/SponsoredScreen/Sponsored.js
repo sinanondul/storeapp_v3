@@ -48,6 +48,14 @@ const Sponsored = () => {
           viewabilityConfig={viewConfig}
           ref={slidesRef}
         />
+
+        <SlidingDot
+          marginHorizontal={3}
+          containerStyle={{ top: 30 }}
+          data={SponsoredSlides}
+          scrollX={scrollX}
+          dotSize={12}
+        />
       </View>
     </View>
   );
