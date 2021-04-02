@@ -75,7 +75,7 @@ const LandingStyles = StyleSheet.create({
     //borderRadius: 5,
     marginVertical: 5,
     flexDirection: "column",
-    elevation: 5,
+    elevation: 2,
   },
   feedHeader: {
     flex: 1,
