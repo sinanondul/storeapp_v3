@@ -17,6 +17,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 import Fire from "../../firebase/Fire";
 import firebase from "firebase";
+import Ad from "../../components/Ad";
 
 import {
   getFullName,
@@ -134,6 +135,7 @@ export default class LandingScreen extends React.Component {
           nestedScrollEnabled={true}
           style={{ flex: 1 }}
         >
+          <Ad />
           <View style={styles.profileTop}>
             <View style={styles.profileImageContainer}>
               <View style={styles.profileImage}>

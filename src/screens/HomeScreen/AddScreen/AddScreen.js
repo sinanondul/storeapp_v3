@@ -44,7 +44,8 @@ export default class AddScreen extends React.Component {
     this.props.navigation.setOptions({
       headerLeft: () => (
         <HeaderBackButton
-          tintColor={"#000"}
+          headerTintColor="white"
+          tintColor={"#fff"}
           onPress={() => {
             Keyboard.dismiss();
             setTimeout(() => {
@@ -179,7 +180,6 @@ export default class AddScreen extends React.Component {
     headerStyle: {
       backgroundColor: "#2890cf",
     },
-
     headerTintColor: "#fff",
     headerTitleStyle: {
       flex: 0.6,
