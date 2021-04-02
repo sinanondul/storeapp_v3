@@ -22,7 +22,7 @@ export default class CoursesScreen extends React.Component{
     const userData = this.props.userData;
     const chats = this.props.chats;
     const messageCount = this.props.messageCount;
-    const courses = [];
+    const courses = this.props.courses;
     return (
       <CoursesStack.Navigator
         initialRouteName="Landing"

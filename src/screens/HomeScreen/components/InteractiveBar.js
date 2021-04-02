@@ -10,14 +10,16 @@ import {
   Pressable,
   FlatList,
 } from "react-native";
+
 import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
 import Fire from "../../../firebase/Fire";
+
 import FeedItem from "./FeedItem";
 import styles from "./styles";
 import CommentItem from "./CommentItem";
 import CommentsScreen from "../CommentsScreen/CommentsScreen";
-import { TextInput } from "react-native-gesture-handler";
+import TopLeftXButton from './TopLeftXButton';
 
 export default class InteractiveBar extends React.Component {
   state = {
@@ -135,23 +137,23 @@ export default class InteractiveBar extends React.Component {
             />
           </TouchableOpacity>
         )}
+
+        {/* Comments Modal */}
         <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
           onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
             this.setModalVisible(!modalVisible);
           }}
         >
           <View style={styles.centeredView}>
+            
             <View style={styles.modalView}>
-              <CommentsScreen />
 
-              <Pressable
-                style={[styles.button2, styles.buttonClose]}
-                onPress={() => this.setModalVisible(!modalVisible)}
-              ></Pressable>
+              <CommentsScreen />
+              
+              <TopLeftXButton onPress={() => this.setModalVisible(!modalVisible)}/>
             </View>
           </View>
         </Modal>

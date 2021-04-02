@@ -183,7 +183,7 @@ class Fire {
 
     //Check if chat with *exactly* same participants exists.
     await query.get().then((snapshot) => {
-      snapshot.forEach((firestoreDocument) => {
+      snapshot.forEach(async(firestoreDocument) => {
           if (Object.keys(firestoreDocument.data().participantIds).length === participantIds.length)
           {
             if (firestoreDocument.data().lastMessage)
@@ -196,9 +196,16 @@ class Fire {
             }
             else 
             {
-              let previousData = firestoreDocument.get().data();
-              previousData.groupChatInfo = groupChatInfo;
-              firestoreDocument.ref.set(previousData);
+              await participantIds.forEach(async(participantId) => {
+                let currUserChatsRef = this.firestore.collection('users').doc(participantId).collection('chats');
+
+                await currUserChatsRef.where('id', '==', firestoreDocument.id).get().then((participantSnapshot) => {
+                  participantSnapshot.forEach(async(participantDoc) => {
+                    await currUserChatsRef.doc(participantDoc.id).delete();
+                  })
+                })
+              })
+              chatsRef.doc(firestoreDocument.id).delete();
             }
           }
       })
@@ -447,27 +454,56 @@ class Fire {
 
   //Courses
 
-  addCourse = async (uid, courseInfo) => {};
+  addCourse = async (userData, courseInfo) => {};
 
-  joinCourse = async (uid, courseCode, sectionNumber) => {
+  joinCourse = async (userData, courseId, sectionNumber = 0) => {
     const coursesRef = this.firestore.collection("courses");
-    var alreadyExists = false;
-    var courseId = null;
+    const sectionsRef = this.firestore.collection('sections');
+    const userRef = this.firestore.collection('users').doc(userData.uid);
+    const currTime = this.timestamp;
 
-    //Check if course already exists.
+    //Get course sections.
     coursesRef
-      .where("code", "==", courseCode)
+      .doc(courseId)
       .get()
-      .then((snapshot) => {
-        snapshot.forEach((firestoreDocument) => {
-          alreadyExists = true;
-          courseId = firestoreDocument.id();
-        });
+      .then(firestoreDocument => {
+        const courseData = firestoreDocument.data();
+        const sectionIds = Object.keys(courseData.sections);
+        const sectionNames = Object.values(courseData.sections);
+
+        const generalId = sectionIds[sectionNames.indexOf('General')];
+
+        //Adding to section participants list (as student).
+        sectionsRef
+          .doc(generalId)
+          .get()
+          .then(generalSectionDoc => {
+            const sectionData = generalSectionDoc.data();
+            let studentIds = sectionData.studentIds;
+            studentIds[userData.uid] = true;
+            sectionsRef.doc(generalId).set({
+              "studentIds": studentIds
+            }, {merge:true})
+          })
+
+        //Adding to user's own courses list.
+
+        const sections = {[generalId]: {
+          name: 'General',
+          lastTimestamp: currTime,
+          lastMessage: null,
+          new: false,
+          newCount: 0,
+        }}
+
+        userRef.collection('courses').doc(courseId).set({
+          sections: sections,
+          lastTimestamp: currTime,
+          new: false,
+          newCount: 0,
+        })
+
       });
-
-    //Create course if doesn't exist.
-
-    //Join course if exists.
   };
 }
 

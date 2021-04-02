@@ -11,19 +11,18 @@ import {
   SafeAreaView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
-import { Ionicons } from "@expo/vector-icons";
+import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
+
+
 import firebase from "firebase";
-import Fire from "../../firebase/Fire";
-import { Avatar } from "react-native-paper";
-import moment from "moment";
 
 import { openDrawer } from "../../../App";
 import DefaultFooter from "../../components/DefaultFooter";
+import FeedList from './components/FeedList';
 import FeedItem from "./components/FeedItem";
 import styles from "./styles";
 
-const usersRef = firebase.firestore().collection("users");
-
+const Tab = createMaterialTopTabNavigator();
 export default class LandingScreen extends React.Component {
   state = {
     posts: [],
@@ -42,10 +41,10 @@ export default class LandingScreen extends React.Component {
 
   componentDidMount() {
     let postsArray = [];
-    const unsubscribe = firebase
+    this._unsubscribe = firebase
       .firestore()
       .collection("posts")
-      .orderBy("timestamp")
+      .orderBy("timestamp", 'desc')
       .onSnapshot((snapshot) => {
         let changes = snapshot.docChanges();
 
@@ -66,25 +65,30 @@ export default class LandingScreen extends React.Component {
               uped: uped,
               faved: faved,
             };
-            postsArray.unshift(newPostData);
+            postsArray.push(newPostData);
           }
         });
         this.setState({ posts: postsArray });
       });
   }
 
-  componentWillUnmount() {}
+
+  componentWillUnmount() {
+    this._unsubscribe();
+  }
+
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-        <FlatList
-          style={styles.feed}
-          data={this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
-          renderItem={this.renderItem}
-          keyExtractor={(item) => item.id}
-          showsVerticalScrollIndicator={false}
-        />
+        <Tab.Navigator>
+          <Tab.Screen name="All">
+            {(props) => <FeedList {...props} {...this.props} followingOnly={false}/>}
+          </Tab.Screen>
+          <Tab.Screen name="Following">
+            {(props) => <FeedList {...props} {...this.props} followingOnly={true}/>}
+          </Tab.Screen>
+        </Tab.Navigator>
         <DefaultFooter {...this.props} />
       </SafeAreaView>
     );

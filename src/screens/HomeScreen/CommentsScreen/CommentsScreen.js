@@ -25,14 +25,18 @@ class CommentsScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={styles.container}>
+      <SafeAreaView style={{
+          flex: 1,
+          backgroundColor: "#f0fbff",
+          margin: 10}
+        }>
         <FlatList
           style={styles.feed}
           data={this.state.comments} //{this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
           renderItem={this.renderItem}
           keyExtractor={(item) => item.id}
           showsVerticalScrollIndicator={false}
-        ></FlatList>
+        />
         <View style={{ flexDirection: "row" }}>
           <TextInput
             placeholder="...add comment"
