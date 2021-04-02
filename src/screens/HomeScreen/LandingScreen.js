@@ -72,9 +72,11 @@ export default class LandingScreen extends React.Component {
       });
   }
 
+
   componentWillUnmount() {
     this._unsubscribe();
   }
+
 
   render() {
     return (
@@ -93,17 +95,18 @@ export default class LandingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: <Text>Home</Text>,
+    title: <Text style={{ alignItems: "center" }}>Home</Text>,
     headerStyle: {
       backgroundColor: "#2890cf",
     },
     headerTintColor: "#ffff",
     headerTitleStyle: {
       flex: 0.6,
-      paddingRight: 60,
       alignSelf: "center",
       alignItems: "center",
       fontWeight: "bold",
+      alignItems: "center",
+      justifyContent: "center",
     },
     headerLeft: () => (
       <Icon

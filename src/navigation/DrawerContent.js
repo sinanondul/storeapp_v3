@@ -21,21 +21,26 @@ import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";
 
-import {getFullName, getAvatar} from '../functions/UserInfoFormatter';
+import {
+  getFullName,
+  getAvatar,
+  getHandle,
+} from "../functions/UserInfoFormatter";
 import styles from "./styles";
-
 
 export default class DrawerContent extends React.Component {
   render() {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
-          <TouchableOpacity style={styles.userInfoWrapper} 
-              onPress={() =>
-                this.props.navigation.navigate("Profile", {
-                  userInfo: this.props.userData,
-                })
-              }>
+          <View
+            style={styles.userInfoWrapper}
+            onPress={() =>
+              this.props.navigation.navigate("Profile", {
+                userInfo: this.props.userData,
+              })
+            }
+          >
             <View style={styles.userAvatar}>
               {getAvatar(this.props.userData, 50)}
             </View>
@@ -44,10 +49,29 @@ export default class DrawerContent extends React.Component {
                 <Text style={styles.userNameText}>
                   {getFullName(this.props.userData)}
                 </Text>
+                <Text style={styles.handleText}>
+                  @{getHandle(this.props.userData)}
+                </Text>
               </View>
-              <View></View>
             </View>
-          </TouchableOpacity>
+          </View>
+          <View
+            style={{ flexDirection: "row", marginLeft: 20, marginBottom: 18 }}
+          >
+            <Text style={{ fontWeight: "500", color: "#FFF", marginRight: 15 }}>
+              3 {/* {getFollowers(this.props.userInfo)} */}
+              <Text style={{ fontWeight: "100", color: "#FFF" }}>
+                Followers
+              </Text>
+            </Text>
+
+            <Text style={{ fontWeight: "500", color: "#FFF" }}>
+              4 {/* {getFollowing(this.props.userInfo)} */}
+              <Text style={{ fontWeight: "100", color: "#FFF" }}>
+                Following
+              </Text>
+            </Text>
+          </View>
           <View></View>
         </View>
 
@@ -59,12 +83,16 @@ export default class DrawerContent extends React.Component {
                   <DrawerItem
                     icon={({ color, size }) => (
                       <Icon
-                        name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+                        name={
+                          Platform.OS === "ios"
+                            ? "people-circle-outline"
+                            : "people-circle-outline"
+                        }
                         color={color}
                         size={size}
                       />
                     )}
-                    label="Home"
+                    label="Social"
                     labelStyle={styles.drawerItem}
                     onPress={() => {
                       this.props.navigation.navigate("Home");
@@ -74,7 +102,11 @@ export default class DrawerContent extends React.Component {
                   <DrawerItem
                     icon={({ color, size }) => (
                       <Icon
-                        name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+                        name={
+                          Platform.OS === "ios"
+                            ? "school-outline"
+                            : "school-outline"
+                        }
                         color={color}
                         size={size}
                       />
@@ -89,7 +121,11 @@ export default class DrawerContent extends React.Component {
                   <DrawerItem
                     icon={({ color, size }) => (
                       <Icon
-                        name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+                        name={
+                          Platform.OS === "ios"
+                            ? "cart-outline"
+                            : "cart-outline"
+                        }
                         color={color}
                         size={size}
                       />
@@ -104,7 +140,11 @@ export default class DrawerContent extends React.Component {
                   <DrawerItem
                     icon={({ color, size }) => (
                       <Icon
-                        name={Platform.OS === "ios" ? "ios-home" : "md-home"}
+                        name={
+                          Platform.OS === "ios"
+                            ? "home-outline"
+                            : "home-outline"
+                        }
                         color={color}
                         size={size}
                       />
@@ -117,19 +157,33 @@ export default class DrawerContent extends React.Component {
                   />
 
                   <DrawerItem
-                    icon={({ color, size }) => (
-                      <Icon
-                        name={Platform.OS === "ios" ? "ios-home" : "md-home"}
-                        color={color}
-                        size={size}
-                      />
-                    )}
+                    icon={({ color, size }) =>
+                      getAvatar(this.props.userData, 25)
+                    }
                     label="Profile"
                     labelStyle={styles.drawerItem}
                     onPress={() => {
                       this.props.navigation.navigate("Profile", {
                         userData: this.props.userData,
                       });
+                    }}
+                  />
+                  <DrawerItem
+                    icon={({ color, size }) => (
+                      <Icon
+                        name={
+                          Platform.OS === "ios"
+                            ? "planet-outline"
+                            : "planet-outline"
+                        }
+                        color={color}
+                        size={size}
+                      />
+                    )}
+                    label="Sponsored"
+                    labelStyle={styles.drawerItem}
+                    onPress={() => {
+                      this.props.navigation.navigate("Sponsored");
                     }}
                   />
                 </Drawer.Section>
@@ -143,7 +197,7 @@ export default class DrawerContent extends React.Component {
             <DrawerItem
               icon={({ color, size }) => (
                 <Icon
-                  name={Platform.OS === "ios" ? "ios-help" : "md-help"}
+                  name={Platform.OS === "ios" ? "help-outline" : "help-outline"}
                   color={color}
                   size={size}
                 />
@@ -157,7 +211,11 @@ export default class DrawerContent extends React.Component {
             <DrawerItem
               icon={({ color, size }) => (
                 <Icon
-                  name={Platform.OS === "ios" ? "ios-settings" : "md-settings"}
+                  name={
+                    Platform.OS === "ios"
+                      ? "settings-outline"
+                      : "settings-outline"
+                  }
                   color={color}
                   size={size}
                 />
@@ -171,7 +229,7 @@ export default class DrawerContent extends React.Component {
             <DrawerItem
               icon={({ color, size }) => (
                 <Icon
-                  name={Platform.OS === "ios" ? "ios-exit" : "md-exit"}
+                  name={Platform.OS === "ios" ? "exit-outline" : "exit-outline"}
                   color={color}
                   size={size}
                 />
