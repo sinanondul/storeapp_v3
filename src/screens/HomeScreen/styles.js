@@ -3,6 +3,7 @@ import { StyleSheet } from "react-native";
 const LandingStyles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f0fbff",
   },
   formContainer: {
     flexDirection: "row",
@@ -66,16 +67,15 @@ const LandingStyles = StyleSheet.create({
   },
 
   feed: {
-    marginHorizontal: 5,
+    //marginHorizontal: 5,
   },
 
   feedItem: {
     backgroundColor: "#FFF",
-    borderRadius: 5,
-    marginVertical: 8,
-    marginHorizontal: 2,
+    //borderRadius: 5,
+    marginVertical: 5,
     flexDirection: "column",
-    elevation: 1,
+    elevation: 5,
   },
   feedHeader: {
     flex: 1,
@@ -101,7 +101,7 @@ const LandingStyles = StyleSheet.create({
     height: 50,
   },
   userText: {
-    flexDirection: "column",
+    flexDirection: "row",
     flex: 0.5,
     height: 20,
     paddingLeft: 10,
@@ -139,14 +139,26 @@ const LandingStyles = StyleSheet.create({
     color: "#454D65",
   },
   handle: {
+    paddingLeft: 4,
+    paddingTop: 1,
     fontSize: 12,
-    fontWeight: "bold",
+    fontWeight: "normal",
     color: "#666666",
   },
   timestamp: {
     fontSize: 11,
     color: "#999999",
-    marginTop: 4,
+    marginTop: 2,
+  },
+  seperatorDot: {
+    alignItems: "center",
+    justifyContent: "center",
+    alignSelf: "center",
+    fontSize: 4,
+    paddingLeft: 3,
+    paddingRight: 3,
+    paddingBottom: 2,
+    color: "#999999",
   },
   post: {
     //marginTop: 16,
@@ -155,7 +167,7 @@ const LandingStyles = StyleSheet.create({
   postImage: {
     width: "100%",
     height: 200,
-    borderRadius: 5,
+    flexGrow: 2,
     marginVertical: 0,
   },
   centeredView: {

@@ -10,7 +10,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    marginRight: "20%",
+    marginRight: "25%",
   },
   buttonInner: {
     flexDirection: "row",
@@ -20,13 +20,13 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: -20,
     color: "#f4511e",
-    fontSize: 24,
+    fontSize: 20,
   },
   regularText: {
     position: "absolute",
     right: -20,
     color: "black",
-    fontSize: 24,
+    fontSize: 20,
   },
   centeredView: {
     flex: 1,

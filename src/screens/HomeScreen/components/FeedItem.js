@@ -27,6 +27,26 @@ import styles from "../styles";
 const usersRef = firebase.firestore().collection("users");
 
 function getTimeSince(timestamp) {
+  moment.updateLocale("en", {
+    relativeTime: {
+      future: "in %s",
+      past: "%s",
+      s: "now",
+      ss: "%d",
+      m: "1m",
+      mm: "%dm",
+      h: "1h",
+      hh: "%dh",
+      d: "1d",
+      dd: "%dd",
+      w: "1w",
+      ww: "%dw",
+      M: "1m",
+      MM: "%dm",
+      y: "1y",
+      yy: "%d",
+    },
+  });
   return moment(timestamp).fromNow();
 }
 
@@ -77,7 +97,7 @@ export default class FeedItem extends React.Component {
     return (
       <View>
         <View style={styles.feedItem}>
-          <View style={{ flex: 1 }}>
+          <View style={{ flex: 2 }}>
             <TouchableOpacity
               style={styles.feedHeader}
               disabled={this.props.post.senderId === this.props.ownerId}
@@ -103,7 +123,7 @@ export default class FeedItem extends React.Component {
                 <Text style={styles.handle}>
                   {"@" + this.state.senderInfo.handle}
                 </Text>
-
+                <Text style={styles.seperatorDot}>{"\u2B24"}</Text>
                 <Text style={styles.timestamp}>
                   {getTimeSince(this.props.post.timestamp)}
                 </Text>
@@ -116,15 +136,16 @@ export default class FeedItem extends React.Component {
                   <Text style={styles.post}>{this.props.post.text}</Text>
                 </View>
               ) : null}
-
-              {this.props.post.image ? (
-                <Image
-                  {...{ uri: this.props.post.image }}
-                  resizeMode={"contain"}
-                  style={styles.postImage}
-                />
-              ) : null}
             </View>
+
+            {this.props.post.image ? (
+              <Image
+                {...{ uri: this.props.post.image }}
+                resizeMode={"cover"}
+                style={styles.postImage}
+              />
+            ) : null}
+
             <InteractiveBar
               userData={this.props.userData}
               post={this.props.post}

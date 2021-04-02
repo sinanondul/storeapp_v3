@@ -6,19 +6,19 @@ import HomeNavigator from "./HomeNavigator";
 import DrawerContent from "./DrawerContent";
 
 import HomeScreen from "../screens/HomeScreen/HomeScreen";
-import CoursesScreen from '../screens/CoursesScreen/CoursesScreen';
+import CoursesScreen from "../screens/CoursesScreen/CoursesScreen";
 import HousematesScreen from "../screens/HousematesScreen/HousematesScreen";
 import SuppliesScreen from "../screens/SuppliesScreen/SuppliesScreen";
 import ProfileScreen from "../screens/ProfileScreen/ProfileScreen";
 import SettingsScreen from "../screens/SettingsScreen/SettingsScreen";
 import Onboarding from "../screens/HelpScreen/Onboarding.js";
-
+import Sponsored from "../screens/SponsoredScreen/Sponsored";
 
 import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 import AddScreen from "../screens/HomeScreen/AddScreen/AddScreen";
 import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
 
-import firebase from 'firebase';
+import firebase from "firebase";
 
 const PageDrawer = createDrawerNavigator();
 
@@ -27,23 +27,24 @@ export default class AppPage extends React.Component {
     chats: [],
     messageCount: 0,
     courses: [],
-  }
+  };
 
   componentDidMount() {
     //Adding chats
 
     let chatsArray = [];
     let messageCount = 0;
-    const userRef = firebase.firestore().collection('users').doc(this.props.userData.uid);
+    const userRef = firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userData.uid);
     this._unsubscribeChats = userRef
-      .collection('chats')
+      .collection("chats")
       .onSnapshot((snapshot) => {
-        
         let changes = snapshot.docChanges();
 
         var getChats = new Promise((resolve, reject) => {
           changes.forEach((change, index, array) => {
-
             const newChatRef = change.doc.data();
             firebase
               .firestore()
@@ -58,34 +59,35 @@ export default class AppPage extends React.Component {
                   timestamp: newChatRef.lastTimestamp,
                   new: newChatRef.new,
                   newCount: newChatRef.newCount,
-                  participantIds: Array.from(Object.keys(newChatData.participantIds)),
+                  participantIds: Array.from(
+                    Object.keys(newChatData.participantIds)
+                  ),
                   lastMessage: newChatData.lastMessage,
-                  groupChatInfo: newChatData.groupChatInfo
+                  groupChatInfo: newChatData.groupChatInfo,
                 };
-                if (change.type === "added") 
-                {
+                if (change.type === "added") {
                   //Adding to array
-                  if (newChatItem.lastMessage)  {
+                  if (newChatItem.lastMessage) {
                     chatsArray.unshift(newChatItem);
                   }
-                }
-                else if (change.type === "modified") 
-                {
-                  //Modifying previously added chat. 
-                  if (newChatItem.lastMessage)  {
-                    const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+                } else if (change.type === "modified") {
+                  //Modifying previously added chat.
+                  if (newChatItem.lastMessage) {
+                    const index = chatsArray.findIndex(
+                      (item) => item.id === newChatItem.id
+                    );
                     chatsArray[index] = newChatItem;
                   }
-                }
-                else if (change.type === "removed") 
-                {
-                  //Modifying previously added chat. 
-                  const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
+                } else if (change.type === "removed") {
+                  //Modifying previously added chat.
+                  const index = chatsArray.findIndex(
+                    (item) => item.id === newChatRef.id
+                  );
                   chatsArray.splice(index, 1);
                 }
-                
-                if (index === array.length -1) resolve();
-            });
+
+                if (index === array.length - 1) resolve();
+              });
           });
         });
 
@@ -95,13 +97,13 @@ export default class AppPage extends React.Component {
               if (item.newCount > 0) {
                 messageCount = messageCount + 1;
               }
-              if (index === array.length -1) resolve();
-            })
+              if (index === array.length - 1) resolve();
+            });
           });
           getChatCount.then(() => {
-            this.setState({ chats: chatsArray, messageCount: messageCount })
+            this.setState({ chats: chatsArray, messageCount: messageCount });
             messageCount = 0;
-          })
+          });
         });
       });
     // this._unsubscribeCourses = userRef
@@ -129,28 +131,28 @@ export default class AppPage extends React.Component {
     //               lastMessage: newChatData.lastMessage,
     //               groupChatInfo: newChatData.groupChatInfo
     //             };
-    //             if (change.type === "added") 
+    //             if (change.type === "added")
     //             {
     //               //Adding to array
     //               if (newChatItem.lastMessage)  {
     //                 chatsArray.unshift(newChatItem);
     //               }
     //             }
-    //             else if (change.type === "modified") 
+    //             else if (change.type === "modified")
     //             {
-    //               //Modifying previously added chat. 
+    //               //Modifying previously added chat.
     //               if (newChatItem.lastMessage)  {
     //                 const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
     //                 chatsArray[index] = newChatItem;
     //               }
     //             }
-    //             else if (change.type === "removed") 
+    //             else if (change.type === "removed")
     //             {
-    //               //Modifying previously added chat. 
+    //               //Modifying previously added chat.
     //               const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
     //               chatsArray.splice(index, 1);
     //             }
-                
+
     //             if (index === array.length -1) resolve();
     //         });
     //       });
@@ -162,7 +164,14 @@ export default class AppPage extends React.Component {
     const chats = this.state.chats;
     const messageCount = this.state.messageCount;
     const courses = this.state.courses;
-    return <PageNavigator {...this.props} chats={chats} messageCount = {messageCount} courses={courses}/>;
+    return (
+      <PageNavigator
+        {...this.props}
+        chats={chats}
+        messageCount={messageCount}
+        courses={courses}
+      />
+    );
   }
 }
 
@@ -182,18 +191,40 @@ const PageNavigator = (props) => {
       lazy={false}
     >
       <PageDrawer.Screen name="Home">
-        {(props) => <HomeScreen {...props} userData={userData} chats={chats} messageCount={messageCount}/>}
+        {(props) => (
+          <HomeScreen
+            {...props}
+            userData={userData}
+            chats={chats}
+            messageCount={messageCount}
+          />
+        )}
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Courses">
-        {(props) => <CoursesScreen {...props} userData={userData} chats={chats} messageCount={messageCount} courses={courses}/>}
+        {(props) => (
+          <CoursesScreen
+            {...props}
+            userData={userData}
+            chats={chats}
+            messageCount={messageCount}
+            courses={courses}
+          />
+        )}
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Supplies" component={SuppliesScreen} />
       <PageDrawer.Screen name="Housemates" component={HousematesScreen} />
       <PageDrawer.Screen name="Profile">
-        {(props) => <ProfileScreen {...props} userData={userData} ownerId={userData.uid}/>}
+        {(props) => (
+          <ProfileScreen
+            {...props}
+            userData={userData}
+            ownerId={userData.uid}
+          />
+        )}
       </PageDrawer.Screen>
       <PageDrawer.Screen name="Settings" component={SettingsScreen} />
       <PageDrawer.Screen name="Onboarding" component={Onboarding} />
+      <PageDrawer.Screen name="Sponsored" component={Sponsored} />
       {/* <PageDrawer.Screen name="Messages" options={MessagesScreen.navigationOptions}>
         {(props) => <MessagesScreen {...props} userData={userData} chats={chats} newChatCount={messageCount}/>}
       </PageDrawer.Screen>

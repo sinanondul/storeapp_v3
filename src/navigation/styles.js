@@ -5,13 +5,13 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   userInfoSection: {
-    flex: 0.35,
+    flex: 0.4,
     backgroundColor: "#5DADE2",
   },
   userInfoWrapper: {
     flex: 1,
     flexDirection: "row",
-    paddingTop: 40,
+    paddingTop: 20,
     paddingBottom: 20,
   },
   userAvatar: {
@@ -22,7 +22,7 @@ const styles = StyleSheet.create({
   },
   userTextWrapper: {
     flex: 0.7,
-    paddingTop: 27.5,
+    paddingTop: 22.5,
     flexDirection: "column",
   },
   userName: {
@@ -32,6 +32,11 @@ const styles = StyleSheet.create({
   userNameText: {
     fontSize: 17,
     fontWeight: "bold",
+    color: "#fff",
+  },
+  handleText: {
+    fontSize: 12,
+    fontWeight: "normal",
     color: "#fff",
   },
 
@@ -69,7 +74,7 @@ const styles = StyleSheet.create({
     marginRight: 3,
   },
   drawerItem: {
-    marginTop: 5,
+    //marginTop: 5,
     fontWeight: "bold",
   },
   preference: {

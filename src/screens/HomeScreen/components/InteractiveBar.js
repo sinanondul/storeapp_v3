@@ -78,7 +78,7 @@ export default class InteractiveBar extends React.Component {
             <View style={styles.buttonInner}>
               <Image
                 source={require("../assets/Post_UP_Icon_Filled.png")}
-                style={{ width: 28, height: 28, borderRadius: 14 }}
+                style={{ width: 20, height: 20, borderRadius: 14 }}
                 resizeMode="stretch"
               />
               <Text style={styles.upedText}>{upCount}</Text>
@@ -87,7 +87,7 @@ export default class InteractiveBar extends React.Component {
             <View style={styles.buttonInner}>
               <Image
                 source={require("../assets/Post_UP_Icon_Outline.png")}
-                style={{ width: 28, height: 28, borderRadius: 14 }}
+                style={{ width: 20, height: 20, borderRadius: 14 }}
                 resizeMode="stretch"
               />
               <Text style={styles.regularText}>{upCount}</Text>
@@ -102,7 +102,7 @@ export default class InteractiveBar extends React.Component {
           <Ionicons
             style={styles.intButtons}
             name="chatbubble-outline"
-            size={30}
+            size={20}
             color="#73788"
           />
         </TouchableOpacity>
@@ -111,7 +111,7 @@ export default class InteractiveBar extends React.Component {
           <Ionicons
             style={styles.intButtons}
             name="send-outline"
-            size={30}
+            size={20}
             color="#73788"
           />
         </TouchableOpacity>
@@ -121,7 +121,7 @@ export default class InteractiveBar extends React.Component {
             <Ionicons
               style={styles.intButtons}
               name="bookmark"
-              size={30}
+              size={20}
               color="#f4511e"
             />
           </TouchableOpacity>
@@ -130,7 +130,7 @@ export default class InteractiveBar extends React.Component {
             <Ionicons
               style={styles.intButtons}
               name="bookmark-outline"
-              size={30}
+              size={20}
               color="black"
             />
           </TouchableOpacity>
