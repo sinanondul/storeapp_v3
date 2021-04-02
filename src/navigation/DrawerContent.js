@@ -33,7 +33,7 @@ export default class DrawerContent extends React.Component {
     return (
       <View style={{ flex: 1 }}>
         <View style={styles.userInfoSection}>
-          <View
+          <TouchableOpacity
             style={styles.userInfoWrapper}
             onPress={() =>
               this.props.navigation.navigate("Profile", {
@@ -54,7 +54,7 @@ export default class DrawerContent extends React.Component {
                 </Text>
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
           <View
             style={{ flexDirection: "row", marginLeft: 20, marginBottom: 18 }}
           >

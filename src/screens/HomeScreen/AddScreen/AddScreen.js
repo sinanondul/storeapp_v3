@@ -44,7 +44,7 @@ export default class AddScreen extends React.Component {
     this.props.navigation.setOptions({
       headerLeft: () => (
         <HeaderBackButton
-          tintColor={"#000"}
+          tintColor={"#fff"}
           onPress={() => {
             Keyboard.dismiss();
             setTimeout(() => {
@@ -115,7 +115,7 @@ export default class AddScreen extends React.Component {
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={65}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 65 : 90}
         style={styles.container}
       >
         <KeyboardAwareScrollView>
@@ -177,6 +177,7 @@ export default class AddScreen extends React.Component {
   static navigationOptions = {
     title: <Text>Add Post</Text>,
     headerStyle: {
+      height: Platform.OS === 'ios' ? 65 : 90,
       backgroundColor: "#2890cf",
     },
 
