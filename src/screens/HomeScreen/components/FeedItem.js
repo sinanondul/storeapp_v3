@@ -137,6 +137,7 @@ export default class FeedItem extends React.Component {
                 </View>
               ) : null}
             </View>
+
             {this.props.post.image ? (
               <Image
                 {...{ uri: this.props.post.image }}

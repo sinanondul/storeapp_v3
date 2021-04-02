@@ -67,12 +67,12 @@ const LandingStyles = StyleSheet.create({
   },
 
   feed: {
-    marginHorizontal: 5,
+    //marginHorizontal: 5,
   },
 
   feedItem: {
     backgroundColor: "#FFF",
-    borderRadius: 5,
+    //borderRadius: 5,
     marginVertical: 5,
     flexDirection: "column",
     elevation: 5,
@@ -167,9 +167,8 @@ const LandingStyles = StyleSheet.create({
   postImage: {
     width: "100%",
     height: 200,
-    borderRadius: 5,
+    flexGrow: 2,
     marginVertical: 0,
-    borderWidth: 1,
   },
   centeredView: {
     flex: 1,
