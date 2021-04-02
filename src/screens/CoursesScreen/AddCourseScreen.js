@@ -4,6 +4,7 @@ import {Searchbar} from "react-native-paper";
 import Icon from "react-native-vector-icons/Ionicons";
 
 import firebase from 'firebase';
+import Fire from "../../firebase/Fire";
 
 import CourseItem from './components/CourseItem';
 import ExpandableCourseItem from './components/ExpandableCourseItem';
@@ -30,7 +31,10 @@ export default class LandingScreen extends React.Component{
 
     renderItem = ({item}) => {
         return (
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity onPress={() => {
+                Fire.shared.joinCourse(this.props.userData, item.id);
+                this.props.navigation.goBack();
+            }}>
                 <CourseItem courseInfo={item}/>
             </TouchableOpacity>
             // <ExpandableCourseItem {...this.props} courseInfo={item} onPress={() => {}}/>

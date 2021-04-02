@@ -27,6 +27,7 @@ export default class AppPage extends React.Component {
     chats: [],
     messageCount: 0,
     courses: [],
+    courseNotificationCount: 0,
   };
 
   componentDidMount() {
@@ -52,42 +53,45 @@ export default class AppPage extends React.Component {
               .doc(newChatRef.id)
               .get()
               .then((firestoreDocument) => {
-                var newChatData = firestoreDocument.data();
+                if (firestoreDocument.exists) {
+                  let newChatData = firestoreDocument.data();
 
-                const newChatItem = {
-                  id: newChatRef.id,
-                  timestamp: newChatRef.lastTimestamp,
-                  new: newChatRef.new,
-                  newCount: newChatRef.newCount,
-                  participantIds: Array.from(
-                    Object.keys(newChatData.participantIds)
-                  ),
-                  lastMessage: newChatData.lastMessage,
-                  groupChatInfo: newChatData.groupChatInfo,
-                };
-                if (change.type === "added") {
-                  //Adding to array
-                  if (newChatItem.lastMessage) {
-                    chatsArray.unshift(newChatItem);
+                  const newChatItem = {
+                    id: newChatRef.id,
+                    timestamp: newChatRef.lastTimestamp,
+                    new: newChatRef.new,
+                    newCount: newChatRef.newCount,
+                    participantIds: Array.from(Object.keys(newChatData.participantIds)),
+                    lastMessage: newChatData.lastMessage,
+                    groupChatInfo: newChatData.groupChatInfo
+                  };
+                  if (change.type === "added") 
+                  {
+                    //Adding to array
+                    if (newChatItem.lastMessage)  {
+                      chatsArray.unshift(newChatItem);
+                    }
                   }
-                } else if (change.type === "modified") {
-                  //Modifying previously added chat.
-                  if (newChatItem.lastMessage) {
-                    const index = chatsArray.findIndex(
-                      (item) => item.id === newChatItem.id
-                    );
-                    chatsArray[index] = newChatItem;
+                  else if (change.type === "modified") 
+                  {
+                    //Modifying previously added chat. 
+                    if (newChatItem.lastMessage)  {
+                      const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+                      chatsArray[index] = newChatItem;
+                    }
                   }
-                } else if (change.type === "removed") {
-                  //Modifying previously added chat.
-                  const index = chatsArray.findIndex(
-                    (item) => item.id === newChatRef.id
-                  );
-                  chatsArray.splice(index, 1);
+                  else if (change.type === "removed") 
+                  {
+                    //Modifying previously added chat. 
+                    const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
+                    chatsArray.splice(index, 1);
+                  }
+                  
+                    
                 }
-
-                if (index === array.length - 1) resolve();
-              });
+                
+                if (index === array.length -1) resolve();
+            });
           });
         });
 
@@ -97,67 +101,83 @@ export default class AppPage extends React.Component {
               if (item.newCount > 0) {
                 messageCount = messageCount + 1;
               }
+              if (index === array.length -1) resolve();
+            })
+          });
+          getChatCount.then(() => {
+            this.setState({ chats: chatsArray, messageCount: messageCount })
+            messageCount = 0;
+          })
+        });
+      });
+
+    let coursesArray = [];
+    let courseNotificationCount = 0;
+    this._unsubscribeCourses = userRef
+      .collection('courses')
+      .onSnapshot((courseSnapshot) => {
+        let courseChanges = courseSnapshot.docChanges();
+        var getCourses = new Promise((resolve, reject) => {
+          courseChanges.forEach((change, index, array) => {
+
+            const newCourseRef = change.doc.data();
+            firebase
+              .firestore()
+              .collection('courses')
+              .doc(change.doc.id)
+              .get()
+              .then((firestoreDocument) => {
+                let newCourseData = firestoreDocument.data();
+                let sections = {};
+
+                const newCourseItem = {
+                  id: change.doc.id,
+                  lastTimestamp: newCourseRef.lastTimestamp,
+                  new: newCourseRef.new,
+                  newCount: newCourseRef.newCount,
+                  code: newCourseData.code,
+                  name: newCourseData.name,
+                  color: newCourseData.color,
+                  sections: newCourseData.sections,
+                };
+                if (change.type === "added") {
+                  //Adding to array
+                  coursesArray.unshift(newCourseItem);
+                }
+                else if (change.type === "modified") 
+                {
+                  //Modifying previously added chat. 
+                  const index = coursesArray.findIndex((item) => item.id === newChatItem.id)
+                  coursesArray[index] = newCourseItem;
+                }
+                else if (change.type === "removed") 
+                {
+                  //Modifying previously added chat. 
+                  const index = coursesArray.findIndex((item) => item.id === newCourseItem.id)
+                  coursesArray.splice(index, 1);
+
+                }
+
+                if (index === array.length - 1) resolve();
+              });
+          });
+        })
+
+        getCourses.then(() => {
+          var getCourseCount = new Promise((resolve, reject) => {
+            coursesArray.forEach((item, index, array) => {
+              if (item.newCount > 0) {
+                courseNotificationCount = courseNotificationCount + 1;
+              }
               if (index === array.length - 1) resolve();
             });
           });
-          getChatCount.then(() => {
-            this.setState({ chats: chatsArray, messageCount: messageCount });
-            messageCount = 0;
-          });
+          getCourseCount.then(() => {
+            this.setState({ courses: coursesArray, courseNotificationCount: courseNotificationCount })
+            courseNotificationCount = 0;
+          })
         });
       });
-    // this._unsubscribeCourses = userRef
-    //   .collection('courses')
-    //   .onSnapshot((courseSnapshot) => {
-    //     let courseChanges = courseSnapshot.docChanges();
-    //     var getCourses = new Promise((resolve, reject) => {
-    //       courseChanges.forEach((change, index, array) => {
-
-    //         const newCourseData = change.doc.data();
-    //         firebase
-    //           .firestore()
-    //           .collection('courses')
-    //           .doc(newCourseRef.id)
-    //           .get()
-    //           .then((firestoreDocument) => {
-    //             var newChatData = firestoreDocument.data();
-
-    //             const newChatItem = {
-    //               id: newChatRef.id,
-    //               timestamp: newChatRef.lastTimestamp,
-    //               new: newChatRef.new,
-    //               newCount: newChatRef.newCount,
-    //               participantIds: Array.from(Object.keys(newChatData.participantIds)),
-    //               lastMessage: newChatData.lastMessage,
-    //               groupChatInfo: newChatData.groupChatInfo
-    //             };
-    //             if (change.type === "added")
-    //             {
-    //               //Adding to array
-    //               if (newChatItem.lastMessage)  {
-    //                 chatsArray.unshift(newChatItem);
-    //               }
-    //             }
-    //             else if (change.type === "modified")
-    //             {
-    //               //Modifying previously added chat.
-    //               if (newChatItem.lastMessage)  {
-    //                 const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
-    //                 chatsArray[index] = newChatItem;
-    //               }
-    //             }
-    //             else if (change.type === "removed")
-    //             {
-    //               //Modifying previously added chat.
-    //               const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
-    //               chatsArray.splice(index, 1);
-    //             }
-
-    //             if (index === array.length -1) resolve();
-    //         });
-    //       });
-    //     })
-    //   });
   }
 
   render() {

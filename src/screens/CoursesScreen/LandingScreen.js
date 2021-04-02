@@ -2,6 +2,8 @@ import React from "react";
 import {View, Text, TouchableOpacity, FlatList, Alert, Platform} from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 
+import firebase from 'firebase';
+
 import { openDrawer } from "../../../App";
 import BottomRightButton from '../../components/BottomRightButton';
 import DefaultFooter from '../../components/DefaultFooter';
@@ -47,7 +49,7 @@ export default class LandingScreen extends React.Component{
       <View style={styles.container}>
         <View style={styles.container}>
           <FlatList
-            data={courseItems.sort((a, b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0))}
+            data={this.props.courses.sort((a, b) => (a.code > b.code) ? 1 : ((b.code > a.code) ? -1 : 0))}
             renderItem={this.renderItem}
             keyExtractor={(item) => item.id}
             showsVerticalScrollIndicator={false}
