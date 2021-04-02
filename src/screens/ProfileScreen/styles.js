@@ -54,12 +54,9 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
   profileImage: {
-    // Change this
-    //height: 5,
     marginTop: 60,
-    borderWidth: 3,
     borderRadius: 80,
-    width: "23.5%",
+    //width: "23.5%",
     // alignItems: "center",
     // justifyContent: "center",
   },
@@ -105,7 +102,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 0,
     marginBottom: 3,
     flexDirection: "row",
-
     marginTop: 15,
     paddingStart: 12,
   },
@@ -119,10 +115,8 @@ const styles = StyleSheet.create({
   },
   infoBoxWrapper: {
     borderTopColor: "#dddddd",
-
     flexDirection: "row",
     width: "100%",
-
     paddingStart: 12,
   },
   infoBox: {
