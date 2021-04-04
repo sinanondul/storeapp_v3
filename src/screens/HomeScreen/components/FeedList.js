@@ -139,7 +139,7 @@ export default class FeedList extends React.Component {
     }
 
     onRefresh() {
-        this.setState({refreshing: true, batchIndex: 0, startAfter: null});
+        this.setState({refreshing: true, batchIndex: 0, startAfter: null, adCount: 0});
         this.wait(2000).then(() => {
             this.setState({refreshing: false});
 
