@@ -14,6 +14,7 @@ export default class FeedList extends React.Component {
     constructor(props) {
         super(props)
         this.onRefresh = this.onRefresh.bind(this);
+        this.onEndReached = this.onEndReached.bind(this);
       }
 
     state = {
@@ -21,6 +22,7 @@ export default class FeedList extends React.Component {
         startAfter: null,
         refreshing: false,
         adCount: 0,
+        batchIndex: 0,
     }
     componentDidMount() {
         let postsArray = [];
@@ -126,9 +128,9 @@ export default class FeedList extends React.Component {
                     };
                     postsArray.push(newPostData);
                     if (index === array.length - 1) {
-                        const adItem = {id: 'ad0000', isAd: true};
-                        postsArray.splice(batchIndex * batchSize, 0, adItem);
-                        this.setState({posts: postsArray})
+                        const adItem = {id: 'ad000' + batchIndex, isAd: true};
+                        postsArray.splice(batchIndex * batchSize + this.state.adCount , 0, adItem);
+                        this.setState({posts: postsArray, adCount: this.state.adCount + 1})
                         resolve(newPostData);
                     }
                 })
@@ -137,7 +139,7 @@ export default class FeedList extends React.Component {
     }
 
     onRefresh() {
-        this.setState({refreshing: true});
+        this.setState({refreshing: true, batchIndex: 0, startAfter: null});
         this.wait(2000).then(() => {
             this.setState({refreshing: false});
 
@@ -153,6 +155,22 @@ export default class FeedList extends React.Component {
                 })
             }
         })
+    }
+
+    onEndReached() {
+        let postsArray = this.state.posts;
+        const batchIndex = this.state.batchIndex + 1;
+        const postsExist = !(this.props.followingOnly && Object.keys(this.props.userData.following).length <= 0);
+        if (postsExist)
+        {
+            
+            const followingOnly = this.props.followingOnly;
+
+            this.getPostBatch({postsArray: postsArray, followingOnly: followingOnly, batchIndex: batchIndex, startAfter: this.state.startAfter})
+            .then(lastPostItem => {
+                this.setState({startAfter: lastPostItem, batchIndex: batchIndex})
+            })
+        }
     }
 
     renderItem = ({ item }) => {
@@ -181,6 +199,8 @@ export default class FeedList extends React.Component {
                             onRefresh={this.onRefresh}
                         />
                     }
+                    onEndReached={this.onEndReached}
+                    onEndReachedThreshold={1}
               
                 />
             </View>
