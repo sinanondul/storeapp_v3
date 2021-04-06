@@ -1,9 +1,13 @@
 import React from "react";
-import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
+import {
+  createStackNavigator,
+  CardStyleInterpolators,
+} from "@react-navigation/stack";
 
 import LandingScreen from "./LandingScreen";
 import MessagingInterface from "../MessagesScreen/MessagingInterface";
 import EditProfileScreen from "./EditProfile";
+import Connected from "./Connected";
 import { openDrawer } from "../../../App";
 //import AddScreen from "./AddScreen";
 import styles from "./styles";
@@ -30,7 +34,7 @@ export default class ProfileScreen extends React.Component {
       <ProfileStack.Navigator
         initialRouteName="Landing"
         screenOptions={{
-          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS,
         }}
       >
         <ProfileStack.Screen
@@ -39,6 +43,20 @@ export default class ProfileScreen extends React.Component {
         >
           {(props) => (
             <LandingScreen
+              {...this.props}
+              {...props}
+              userData={this.props.userData}
+              userInfo={userInfo}
+              ownerId={ownerId}
+            />
+          )}
+        </ProfileStack.Screen>
+        <ProfileStack.Screen
+          name="Connected"
+          options={Connected.navigationOptions}
+        >
+          {(props) => (
+            <Connected
               {...this.props}
               {...props}
               userData={this.props.userData}
@@ -76,8 +94,18 @@ export default class ProfileScreen extends React.Component {
             />
           )}
         </ProfileStack.Screen>
-        <ProfileStack.Screen name="ProfileFromProfile" options={{headerShown: false}}>
-          {(props) => (<ProfileScreen {...props} userData={userData} fromFeed={true} ownerId={ownerId}/>)}
+        <ProfileStack.Screen
+          name="ProfileFromProfile"
+          options={{ headerShown: false }}
+        >
+          {(props) => (
+            <ProfileScreen
+              {...props}
+              userData={userData}
+              fromFeed={true}
+              ownerId={ownerId}
+            />
+          )}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );

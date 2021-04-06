@@ -19,6 +19,8 @@ import Fire from "../../firebase/Fire";
 import firebase from "firebase";
 import Ad from "../../components/Ad";
 
+import Connected from "./Connected";
+
 import {
   getFullName,
   getAvatar,
@@ -215,18 +217,24 @@ export default class LandingScreen extends React.Component {
 
             {/* TODO */}
             <View style={styles.infoBoxWrapper}>
-              <View style={styles.infoBox}>
+              <TouchableOpacity
+                style={styles.infoBox}
+                onPress={() => this.props.navigation.navigate("Connected")}
+              >
                 <Text style={{ fontWeight: "500" }}>
                   140{/* {getFollowers(this.props.userInfo)} */}
                   <Text style={{ fontWeight: "100" }}> Followers</Text>
                 </Text>
-              </View>
-              <View style={styles.infoBox}>
+              </TouchableOpacity>
+              <TouchableOpacity
+                style={styles.infoBox}
+                onPress={() => this.props.navigation.navigate("Connected")}
+              >
                 <Text style={{ fontWeight: "500" }}>
                   200{/* {getFollowing(this.props.userInfo)} */}
                   <Text style={{ fontWeight: "100" }}> Following</Text>
                 </Text>
-              </View>
+              </TouchableOpacity>
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
                   30 {/* {getPostCount(this.props.userInfo)} */}
