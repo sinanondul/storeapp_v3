@@ -19,7 +19,12 @@ import FeedItem from "./FeedItem";
 import styles from "./styles";
 import CommentItem from "./CommentItem";
 import CommentsScreen from "../CommentsScreen/CommentsScreen";
-import TopLeftXButton from './TopLeftXButton';
+import TopLeftXButton from "./TopLeftXButton";
+
+import {
+  SendNotificationToAllUsers,
+  sendPushNotification,
+} from "../../../components/SendNotification";
 
 export default class InteractiveBar extends React.Component {
   state = {
@@ -109,7 +114,10 @@ export default class InteractiveBar extends React.Component {
           />
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={SendNotificationToAllUsers}
+        >
           <Ionicons
             style={styles.intButtons}
             name="send-outline"
@@ -148,12 +156,12 @@ export default class InteractiveBar extends React.Component {
           }}
         >
           <View style={styles.centeredView}>
-            
             <View style={styles.modalView}>
-
               <CommentsScreen />
-              
-              <TopLeftXButton onPress={() => this.setModalVisible(!modalVisible)}/>
+
+              <TopLeftXButton
+                onPress={() => this.setModalVisible(!modalVisible)}
+              />
             </View>
           </View>
         </Modal>

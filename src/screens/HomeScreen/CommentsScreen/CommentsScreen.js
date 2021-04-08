@@ -7,6 +7,7 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
 } from "react-native";
 import styles from "../styles";
 import CommentItem from "../components/CommentItem";
@@ -25,11 +26,15 @@ class CommentsScreen extends React.Component {
 
   render() {
     return (
-      <SafeAreaView style={{
+      <KeyboardAvoidingView
+        keyboardVerticalOffset={65} // CHANGE FOR ANDROID
+        behavior="padding"
+        style={{
           flex: 1,
           backgroundColor: "#f0fbff",
-          margin: 10}
-        }>
+          margin: 10,
+        }}
+      >
         <FlatList
           style={styles.feed}
           data={this.state.comments} //{this.state.posts.sort((a, b) => b.timestamp - a.timestamp)}
@@ -67,7 +72,7 @@ class CommentsScreen extends React.Component {
             ></Ionicons>
           </TouchableOpacity>
         </View>
-      </SafeAreaView>
+      </KeyboardAvoidingView>
     );
   }
 }

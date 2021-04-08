@@ -102,45 +102,15 @@ export default class CommentItem extends React.Component {
                     {"@" + this.state.senderInfo.handle}
                   </Text>
                   <Text style={{ paddingLeft: 5 }}>
-                    Unhandled promise rejection: TypeError: undefined is not an
+                    {this.props.post.comments}
                   </Text>
                 </Text>
               </View>
-              {/* <View style={styles.userText}>
-                  {this.state.nameinit ? (
-                    <Text style={styles.name}>
-                      {getFullName(this.state.senderInfo)}
-                    </Text>
-                  ) : null}
-
-                  <Text style={styles.handle}>
-                    {"@" + this.state.senderInfo.handle}
-                  </Text>
-                  <Text style={{ flex: 0.9 }}>
-                    Thisisacommentthisisacommentasdjnsadjaskndkasndaskdmnaskdn
-                  </Text>
-                </View> */}
 
               <Text style={styles.timestamp}>
                 {getTimeSince(this.props.post.timestamp)}
               </Text>
             </TouchableOpacity>
-
-            <View style={styles.feedContent}>
-              {this.props.post.text && this.props.post.text !== "" ? (
-                <View style={styles.mainText}>
-                  <Text style={styles.post}>{this.state.comments}</Text>
-                </View>
-              ) : null}
-
-              {this.props.post.image ? (
-                <Image
-                  {...{ uri: this.props.post.image }}
-                  resizeMode={"contain"}
-                  style={styles.postImage}
-                />
-              ) : null}
-            </View>
           </View>
         </View>
       </View>

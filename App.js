@@ -58,31 +58,30 @@ export default class App extends React.Component {
       if (user) {
         var uid = user.uid;
         const usersRef = firebase.firestore().collection("users");
-        usersRef
-          .doc(uid)
-          .onSnapshot(snapshot => {
-              var userData = snapshot.data();
-              this.setState({
-                userInfo: {
-                  uid: userData.id,
-                  email: userData.email,
-                  fullName: userData.fullName,
-                  name: userData.name,
-                  surename: userData.surename,
-                  avatar: userData.avatar,
-                  handle: userData.handle,
-                  location: userData.location,
-                  phone: userData.phone,
-                  about: userData.about,
-                  myPosts: userData.myPosts,
-                  upedPosts: userData.upedPosts,
-                  favPosts: userData.favPosts,
-                  following: userData.following,
-                  followers: userData.followers,
-                },
-              });
-              this.setState({ isLoggedIn: true });
-            });
+        usersRef.doc(uid).onSnapshot((snapshot) => {
+          var userData = snapshot.data();
+          this.setState({
+            userInfo: {
+              uid: userData.id,
+              email: userData.email,
+              fullName: userData.fullName,
+              name: userData.name,
+              surename: userData.surename,
+              avatar: userData.avatar,
+              handle: userData.handle,
+              location: userData.location,
+              phone: userData.phone,
+              about: userData.about,
+              myPosts: userData.myPosts,
+              upedPosts: userData.upedPosts,
+              favPosts: userData.favPosts,
+              following: userData.following,
+              followers: userData.followers,
+              expoToken: userData.expoToken,
+            },
+          });
+          this.setState({ isLoggedIn: true });
+        });
       } else {
         this.setState({ isLoggedIn: false });
       }
