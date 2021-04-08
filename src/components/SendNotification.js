@@ -7,9 +7,9 @@ function getUser() {
   return firebase.firestore("users").doc(firebase.auth().currentUser.uid).get();
 }
 
-const sendPushNotification = async (expoPushToken) => {
+const sendPushNotification = async (token) => {
   const message = {
-    to: expoPushToken,
+    to: token,
     sound: "default",
     title: "Hello",
     body: "World",
@@ -29,7 +29,8 @@ const sendPushNotification = async (expoPushToken) => {
 
 const SendNotificationToAllUsers = async () => {
   const users = await firebase.firestore().collection("user").get();
-  users.docs.map((user) => sendPushNotification(user.data().expoToken));
+  users.docs.map((user) => sendPushNotification(user.data().token));
+  Alert.alert("here");
 };
 
 export { sendPushNotification, SendNotificationToAllUsers };

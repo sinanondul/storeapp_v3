@@ -23,7 +23,7 @@ import * as Permissions from "expo-permissions";
 import Constants from "expo-constants";
 
 import firebase from "firebase";
-import { sendPushNotification } from "../components/SendNotification";
+//import { sendPushNotification } from "../components/SendNotification";
 
 const PageDrawer = createDrawerNavigator();
 
@@ -42,6 +42,7 @@ export default class AppPage extends React.Component {
     registerForPushNotificationsAsync().then((token) =>
       this.setState({ usertoken: token })
     );
+    //SendNotificationToAllUsers();
     //adding chats
     let chatsArray = [];
     let messageCount = 0;
@@ -204,6 +205,32 @@ export default class AppPage extends React.Component {
     );
   }
 }
+//
+const sendPushNotification = async (token) => {
+  const message = {
+    to: token,
+    sound: "default",
+    title: "Hello",
+    body: "World",
+    data: { someData: "goes here" },
+  };
+
+  await fetch("https://exp.host/--/api/v2/push/send", {
+    method: "POST",
+    headers: {
+      Accept: "application/json",
+      "Accept-encoding": "gzip, deflate",
+      "Content-Type": "application/json",
+    },
+    body: JSON.stringify(message),
+  });
+};
+
+const SendNotificationToAllUsers = async () => {
+  const users = await firebase.firestore().collection("user").get();
+  users.docs.map((user) => sendPushNotification(user.data().token));
+  Alert.alert("here");
+};
 
 async function registerForPushNotificationsAsync() {
   let token;
@@ -243,7 +270,7 @@ async function registerForPushNotificationsAsync() {
       lightColor: "#FF231F7C",
     });
   }
-  Alert.alert(token);
+  //Alert.alert(token);
   return token;
 }
 
