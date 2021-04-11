@@ -77,7 +77,12 @@ export default class AppPage extends React.Component {
                     //Modifying previously added chat. 
                     if (newChatItem.lastMessage)  {
                       const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
-                      chatsArray[index] = newChatItem;
+                      if (index >= 0) {
+                        chatsArray[index] = newChatItem;
+                      }
+                      else {
+                        chatsArray.unshift(newChatItem);
+                      }
                     }
                   }
                   else if (change.type === "removed") 
