@@ -6,36 +6,6 @@ import firebase from 'firebase';
 import FeedItem from '../../HomeScreen/components/FeedItem';
 import styles from ".././styles";
 
-function isNew(prevPosts, newIds) {
-
-    //Check if either or both are null.
-    if ((!prevPosts && newIds) || (prevPosts && !newIds)) {
-        return true;
-    }
-    else if (!prevPosts && !newIds){
-        return false;
-    }
-    else {
-
-        //Check if lengths are different.
-        if (prevPosts.length !== newIds.length) {
-            return true;
-        }
-        else {
-
-            //Check if ids match.
-            const difference = newIds.filter(id => !prevPosts.some(post => post.id === id));
-            if (difference && difference.length > 0) {
-                return true;
-            }
-            else {
-                return false;
-            }
-
-        }
-    }
-}
-
 export default class PostList extends React.Component {
 
     state = {
@@ -63,6 +33,7 @@ export default class PostList extends React.Component {
                     senderId: newPost.uid,
                     upCount: newPost.upCount,
                     comments: newPost.comments,
+                    commentCount: newPost.commentCount,
                     uped: uped,
                     faved: faved,
                 };
@@ -72,28 +43,63 @@ export default class PostList extends React.Component {
         })
     }
 
+    getPostBatch({postsArray, batchIndex = 0, batchSize = 10, startAfter = null, followingOnly = false, orderByUpCount = false}) {
+        let postsQuery = firebase.firestore().collection('posts');
+        const perLoadCount = batchSize;
+
+        //Checking whether to show only posts from followed users.
+        if (followingOnly){
+            postsQuery = postsQuery.where('uid', 'in', Object.keys(this.props.userData.following));
+        }
+
+        //Setting ordering method.
+        orderByUpCount
+        ?   postsQuery = postsQuery.orderBy('upCount', 'desc')
+        :   postsQuery = postsQuery.orderBy('timestamp', 'desc')
+
+        //Checking if first batch.
+        postsQuery = startAfter
+            ?   orderByUpCount
+                ?   postsQuery.startAfter(startAfter.upCount).limit(perLoadCount)
+                :   postsQuery.startAfter(startAfter.timestamp).limit(perLoadCount)
+            :   postsQuery.limit(perLoadCount)
+        
+        return new Promise((resolve, reject) => {
+            postsQuery.get().then(postsSnapshot => {
+                postsSnapshot.docs.forEach((postDoc, index, array) => {
+                    const postData = postDoc.data();
+                    const uped = postDoc.id in this.props.userData.upedPosts;
+                    const faved = postDoc.id in this.props.userData.favPosts;
+                    
+                    const newPostData = {
+                        id: postDoc.id,
+                        name: postData.name,
+                        text: postData.text,
+                        timestamp: postData.timestamp,
+                        image: postData.image,
+                        senderId: postData.uid,
+                        upCount: postData.upCount,
+                        comments: postData.comments,
+                        commentCount: postData.commentCount,
+                        uped: uped,
+                        faved: faved,
+                    };
+                    postsArray.push(newPostData);
+                    if (index === array.length - 1) {
+                        const adItem = {id: 'ad000' + batchIndex, isAd: true};
+                        postsArray.splice(batchIndex * batchSize + this.state.adCount , 0, adItem);
+                        this.setState({posts: postsArray, adCount: this.state.adCount + 1})
+                        resolve(newPostData);
+                    }
+                })
+            })
+        })
+    }
+
     componentDidMount() {
         this.getPosts();
         this._unsubscribeFocus = this.props.navigation.addListener('focus', () => {
             this.getPosts();
-            // let postsArray = this.state.posts;
-            // postsArray.forEach(post => {
-            //     if (post.uped && !Object.keys(this.props.userData.upedPosts).some(postId => post.id === postId)) {
-            //         Alert.alert("howdy")
-            //         post.uped = false;
-            //     }
-            //     else if (!post.uped && Object.keys(this.props.userData.upedPosts).some(postId => post.id === postId)) {
-            //         post.uped = true;
-            //     }
-
-            //     if (post.faved && !Object.keys(this.props.userData.favPosts).some(postId => post.id === postId)) {
-            //         post.faved = false;
-            //     }
-            //     else if (!post.faved && Object.keys(this.props.userData.favPosts).some(postId => post.id === postId)) {
-            //         post.faved = true;
-            //     }
-            // })
-            // this.setState({posts: postsArray})
         })
         this._unsubscribeBlur = this.props.navigation.addListener('blur', () => {
             this.setState({posts: []})
@@ -106,7 +112,13 @@ export default class PostList extends React.Component {
     }
 
     renderItem = ({ item }) => {
-        return <FeedItem {...this.props} post={item} profileRoute={"ProfileFromProfile"} ownerId={this.props.ownerId}/>;
+        return  <FeedItem 
+                    {...this.props} 
+                    post={item} 
+                    profileRoute={"ProfileFromProfile"} 
+                    ownerId={this.props.ownerId} 
+                    toggleCommentsModal={this.props.toggleCommentsModal}
+                />;
     }
 
     render() {

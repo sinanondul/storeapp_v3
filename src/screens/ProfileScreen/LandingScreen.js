@@ -8,6 +8,7 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  Modal,
   Alert,
 } from "react-native";
 import { Avatar, Title, Caption, TouchableRipple } from "react-native-paper";
@@ -18,6 +19,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Fire from "../../firebase/Fire";
 import firebase from "firebase";
 import Ad from "../../components/Ad";
+import CommentsModal from '../HomeScreen/components/CommentsModal';
 
 import {
   getFullName,
@@ -39,8 +41,14 @@ import MyPosts from "./MyPosts";
 import styles from "./styles";
 const Tab = createMaterialTopTabNavigator();
 export default class LandingScreen extends React.Component {
+  constructor(props) {
+    super(props);
+    this.toggleCommentsModal = this.toggleCommentsModal.bind(this);
+  }
+
   state = {
     focusRefresh: false,
+    commentsModalOpen: false,
     posts: [],
   };
 
@@ -115,6 +123,10 @@ export default class LandingScreen extends React.Component {
     //       this.favPostsRef.getPosts();
     //     }
     // })
+  }
+
+  toggleCommentsModal(postInfo = null) {
+    this.setState({commentsModalOpen: !this.state.commentsModalOpen, modalPostInfo: postInfo});
   }
 
   render() {
@@ -193,10 +205,6 @@ export default class LandingScreen extends React.Component {
             </View>
 
             <View style={styles.userInfoSection}>
-              {/* <View style={styles.row}>
-              <Icon name="map-marker-radius" color="#777777" />
-              <Text>Ankara, Turkey</Text>
-            </View> */}
               <View style={styles.row}>
                 <Icon name="phone" color="#777777" />
                 <Text>{getPhone(this.props.userInfo)}</Text>
@@ -264,6 +272,7 @@ export default class LandingScreen extends React.Component {
                     userData={userData}
                     postIds={myPosts}
                     ownerId={this.props.ownerId}
+                    toggleCommentsModal={this.toggleCommentsModal}
                   />
                 )}
               </Tab.Screen>
@@ -280,6 +289,7 @@ export default class LandingScreen extends React.Component {
                     userData={userData}
                     postIds={upedPosts}
                     ownerId={this.props.ownerId}
+                    toggleCommentsModal={this.toggleCommentsModal}
                   />
                 )}
               </Tab.Screen>
@@ -293,10 +303,21 @@ export default class LandingScreen extends React.Component {
                     userData={userData}
                     postIds={favPosts}
                     ownerId={this.props.ownerId}
+                    toggleCommentsModal={this.toggleCommentsModal}
                   />
                 )}
               </Tab.Screen>
             </Tab.Navigator>
+
+            <Modal
+              animationType="slide"
+              transparent={true}
+              visible={this.state.commentsModalOpen}
+              onRequestClose={this.toggleCommentsModal}
+            >
+              <CommentsModal {...this.props} toggleCommentsModal={this.toggleCommentsModal} post={this.state.modalPostInfo}/>
+            </Modal>
+
           </View>
         </ScrollView>
       </SafeAreaView>
