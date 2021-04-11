@@ -6,7 +6,6 @@ import {
   Text,
   Alert,
   TouchableOpacity,
-  Modal,
   Pressable,
   FlatList,
 } from "react-native";
@@ -15,22 +14,13 @@ import { Ionicons } from "@expo/vector-icons";
 import firebase from "firebase";
 import Fire from "../../../firebase/Fire";
 
-import FeedItem from "./FeedItem";
 import styles from "./styles";
-import CommentItem from "./CommentItem";
-import CommentsScreen from "../CommentsScreen/CommentsScreen";
-import TopLeftXButton from './TopLeftXButton';
 
 export default class InteractiveBar extends React.Component {
   state = {
     uped: false,
     faved: false,
     posts: [],
-    modalVisible: false,
-  };
-
-  setModalVisible = (visible) => {
-    this.setState({ modalVisible: visible });
   };
 
   componentDidMount() {
@@ -59,20 +49,11 @@ export default class InteractiveBar extends React.Component {
     }
   };
 
-  renderItem = ({ item }) => {
-    return (
-      <CommentItem
-        {...this.props}
-        post={item}
-        profileRoute={"ProfileFromHome"}
-      />
-    );
-  };
-
   render() {
     const { modalVisible } = this.state;
     const post = this.props.post;
     const upCount = post.upCount;
+    const commentCount = post.commentCount;
     return (
       <View style={styles.interactiveBar}>
         <TouchableOpacity style={styles.button} onPress={this.toggleUped}>
@@ -99,14 +80,17 @@ export default class InteractiveBar extends React.Component {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={() => this.setModalVisible(!modalVisible)}
+          onPress={this.props.toggleCommentsModal}
         >
-          <Ionicons
-            style={styles.intButtons}
-            name="chatbubble-outline"
-            size={20}
-            color="#73788"
-          />
+          <View style={styles.buttonInner}>
+            <Ionicons
+              style={styles.intButtons}
+              name="chatbox-outline"
+              size={20}
+              color="#73788"
+            />
+            <Text style={styles.regularText}>{commentCount}</Text>
+          </View>
         </TouchableOpacity>
 
         <TouchableOpacity style={styles.button}>
@@ -137,26 +121,7 @@ export default class InteractiveBar extends React.Component {
             />
           </TouchableOpacity>
         )}
-
-        {/* Comments Modal */}
-        <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            this.setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            
-            <View style={styles.modalView}>
-
-              <CommentsScreen />
-              
-              <TopLeftXButton onPress={() => this.setModalVisible(!modalVisible)}/>
-            </View>
-          </View>
-        </Modal>
+        
       </View>
     );
   }

@@ -5,6 +5,26 @@ const LandingStyles = StyleSheet.create({
     flex: 1,
     backgroundColor: "#f0fbff",
   },
+  emptyFeedContainer: {
+    height: '100%',
+    width: '100%',
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyFeedCard: {
+    height: 200,
+    width: 200,
+    borderRadius: 10,
+    marginVertical: 100,
+    marginHorizontal: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
+  emptyFeedText: {
+
+  },
+
+
   formContainer: {
     flexDirection: "row",
     height: 80,

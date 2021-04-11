@@ -36,38 +36,27 @@ export default class CommentItem extends React.Component {
   }
   state = {
     senderInfo: {
-      fullName: " nul32123l",
-      name: "nu211ll",
-      surename: "nul323l",
+      uid: null,
+      fullName: null,
       avatar: null,
-      handle: "sldkj",
+      handle: null,
     },
-    comments: ["whatsadasds up", "notasdasd much, u?", "not asdasdbadd"],
-    nameinit: true,
+    nameinit: false,
   };
 
   componentDidMount() {
     const usersRef = firebase.firestore().collection("users");
     usersRef
-      .doc(this.props.post.senderId)
+      .doc(this.props.comment.senderId)
       .get()
       .then((firestoreDocument) => {
         var userData = firestoreDocument.data();
         this.setState({
           senderInfo: {
             uid: userData.id,
-            email: userData.email,
             fullName: userData.fullName,
-            name: userData.name,
-            surename: userData.surename,
             avatar: userData.avatar,
             handle: userData.handle,
-            about: userData.about,
-            phone: userData.phone,
-            location: userData.location,
-            myPosts: userData.myPosts,
-            favPosts: userData.favPosts,
-            upedPosts: userData.upedPosts,
           },
         });
         this.setState({ nameinit: true });
@@ -94,17 +83,20 @@ export default class CommentItem extends React.Component {
                 {this.state.nameinit
                   ? getAvatar(this.state.senderInfo, 30)
                   : null}
-                <Text style={{ flexDirection: "row" }}>
-                  <Text style={{ fontWeight: "500" }}>
-                    {getFullName(this.state.senderInfo)}
-                  </Text>
+                <View style={{ flexDirection: "row" }}>
+                  { this.state.nameinit
+                    ? <Text style={{ fontWeight: "500" }}>
+                        {getFullName(this.state.senderInfo)}
+                      </Text>
+                    : null
+                  }
                   <Text style={{ fontWeight: "100" }}>
                     {"@" + this.state.senderInfo.handle}
                   </Text>
                   <Text style={{ paddingLeft: 5 }}>
-                    Unhandled promise rejection: TypeError: undefined is not an
+                    {this.props.comment.text}
                   </Text>
-                </Text>
+                </View>
               </View>
               {/* <View style={styles.userText}>
                   {this.state.nameinit ? (

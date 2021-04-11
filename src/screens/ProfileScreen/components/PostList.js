@@ -10,12 +10,9 @@ function isNew(prevPosts, newIds) {
 
     //Check if either or both are null.
     if ((!prevPosts && newIds) || (prevPosts && !newIds)) {
-        
-        Alert.alert("uh");
         return true;
     }
     else if (!prevPosts && !newIds){
-        Alert.alert("huh");
         return false;
     }
     else {

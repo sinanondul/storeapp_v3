@@ -7,6 +7,7 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
+  Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
@@ -21,6 +22,7 @@ import {
   getAvatar,
   getHandle,
 } from "../../../functions/UserInfoFormatter";
+import CommentsModal from './CommentsModal';
 import InteractiveBar from "./InteractiveBar";
 import styles from "../styles";
 
@@ -51,9 +53,7 @@ function getTimeSince(timestamp) {
 }
 
 export default class FeedItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+
   state = {
     senderInfo: {
       fullName: null,
@@ -63,6 +63,7 @@ export default class FeedItem extends React.Component {
       handle: null,
     },
     nameinit: false,
+    commentsModalOpen: false,
   };
 
   componentDidMount() {
@@ -149,6 +150,7 @@ export default class FeedItem extends React.Component {
             <InteractiveBar
               userData={this.props.userData}
               post={this.props.post}
+              toggleCommentsModal={() => this.props.toggleCommentsModal(this.props.post)}
             />
           </View>
         </View>

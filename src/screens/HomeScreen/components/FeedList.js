@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, FlatList, Alert, Platform, RefreshControl } from "react-native";
+import { View, ScrollView, Text, FlatList, Alert, Platform, RefreshControl } from "react-native";
 
 import firebase from 'firebase';
 
@@ -15,7 +15,7 @@ export default class FeedList extends React.Component {
         super(props)
         this.onRefresh = this.onRefresh.bind(this);
         this.onEndReached = this.onEndReached.bind(this);
-      }
+    }
 
     state = {
         posts: [],
@@ -24,6 +24,7 @@ export default class FeedList extends React.Component {
         adCount: 0,
         batchIndex: 0,
     }
+
     componentDidMount() {
         let postsArray = [];
         const postsExist = !(this.props.followingOnly && Object.keys(this.props.userData.following).length <= 0);
@@ -35,55 +36,6 @@ export default class FeedList extends React.Component {
                 this.setState({startAfter: lastPostItem})
             })
         }
-
-        // let postsQuery;
-        // if (!(this.props.followingOnly && Object.keys(this.props.userData.following).length <= 0)) {
-        //     if (!this.props.followingOnly){
-        //         postsQuery = firebase.firestore().collection("posts").orderBy("timestamp", 'desc')
-        //     }
-        //     else {
-        //         postsQuery = firebase.firestore().collection("posts")
-        //         .where('uid', 'in', Object.keys(this.props.userData.following)).orderBy("timestamp", 'desc');
-        //     }
-        //     this._unsubscribe = postsQuery
-        //         .onSnapshot((snapshot) => {
-        //             let changes = snapshot.docChanges();
-
-        //             changes.forEach((change) => {
-        //                 const newPost = change.doc.data();
-        //                 const uped = change.doc.id in this.props.userData.upedPosts;
-        //                 const faved = change.doc.id in this.props.userData.favPosts;
-        //                 const newPostData = {
-        //                     id: change.doc.id,
-        //                     name: newPost.name,
-        //                     text: newPost.text,
-        //                     timestamp: newPost.timestamp,
-        //                     image: newPost.image,
-        //                     senderId: newPost.uid,
-        //                     upCount: newPost.upCount,
-        //                     comments: newPost.comments,
-        //                     uped: uped,
-        //                     faved: faved,
-        //                 };
-        //                 if (change.type === "added") {
-        //                     postsArray.push(newPostData);
-        //                 }
-        //                 else if (change.type === 'modified') {
-        //                     const index = postsArray.findIndex((item) => item.id === newPostData.id)
-        //                     postsArray[index] = newPostData;
-        //                 }
-        //                 else if (change.type === 'removed') 
-        //                 {
-        //                     //Modifying previously added chat. 
-        //                     const index = postsArray.findIndex((item) => item.id === newPostData.id)
-        //                     postsArray.splice(index, 1);
-        //                 }
-        //             });
-        //             postsArray.sort((a, b) => (a.timestamp < b.timestamp) ? 1 : ((b.timestamp < a.timestamp) ? -1 : 0))
-        //             postsArray.unshift({id: 'adId0000', isAd: true});
-        //             this.setState({ posts: postsArray });
-        //         });
-        // }
     }
 
     componentWillUnmount() {
@@ -94,7 +46,7 @@ export default class FeedList extends React.Component {
         return new Promise(resolve => setTimeout(resolve, timeout));
     }
 
-    getPostBatch({postsArray, batchIndex = 0, batchSize = 10, startAfter = null, followingOnly = false}) {
+    getPostBatch({postsArray, batchIndex = 0, batchSize = 10, startAfter = null, followingOnly = false, orderByUpCount = false}) {
         let postsQuery = firebase.firestore().collection('posts');
         const perLoadCount = batchSize;
 
@@ -103,9 +55,17 @@ export default class FeedList extends React.Component {
             postsQuery = postsQuery.where('uid', 'in', Object.keys(this.props.userData.following));
         }
 
+        //Setting ordering method.
+        orderByUpCount
+        ?   postsQuery = postsQuery.orderBy('upCount', 'desc')
+        :   postsQuery = postsQuery.orderBy('timestamp', 'desc')
+
+        //Checking if first batch.
         postsQuery = startAfter
-            ?   postsQuery.orderBy('timestamp', 'desc').startAfter(startAfter.timestamp).limit(perLoadCount)
-            :   postsQuery.orderBy('timestamp', 'desc').limit(perLoadCount)
+            ?   orderByUpCount
+                ?   postsQuery.startAfter(startAfter.upCount).limit(perLoadCount)
+                :   postsQuery.startAfter(startAfter.timestamp).limit(perLoadCount)
+            :   postsQuery.limit(perLoadCount)
         
         return new Promise((resolve, reject) => {
             postsQuery.get().then(postsSnapshot => {
@@ -123,6 +83,7 @@ export default class FeedList extends React.Component {
                         senderId: postData.uid,
                         upCount: postData.upCount,
                         comments: postData.comments,
+                        commentCount: postData.commentCount,
                         uped: uped,
                         faved: faved,
                     };
@@ -177,32 +138,51 @@ export default class FeedList extends React.Component {
         return (
             item.isAd 
             ?   <AdItem/>
-            :   <FeedItem {...this.props} post={item} profileRoute={"ProfileFromHome"} />
+            :   <FeedItem {...this.props} post={item} profileRoute={"ProfileFromHome"} toggleCommentsModal={this.props.toggleCommentsModal}/>
         );
     }
 
     render() {
         return (
             <View>
-                <FlatList
-                    style={styles.myposts}
-                    //horizontal
-                    data={this.state.posts}
-                    renderItem={this.renderItem}
-                    keyExtractor={(item) => item.id} 
-                    nestedScrollEnabled
-                    showsVerticalScrollIndicator={true}
-                    extraData={this.state}
-                    refreshControl={
-                        <RefreshControl
-                            refreshing={this.state.refreshing}
-                            onRefresh={this.onRefresh}
+                {this.state.posts.length > 0
+                    ?   <FlatList
+                            style={styles.myposts}
+                            //horizontal
+                            data={this.state.posts}
+                            renderItem={this.renderItem}
+                            keyExtractor={(item) => item.id} 
+                            nestedScrollEnabled
+                            showsVerticalScrollIndicator={true}
+                            extraData={this.state}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this.onRefresh}
+                                />
+                            }
+                            onEndReached={this.onEndReached}
+                            onEndReachedThreshold={1}
+                    
                         />
-                    }
-                    onEndReached={this.onEndReached}
-                    onEndReachedThreshold={1}
-              
-                />
+                    :   <ScrollView 
+                            contentContainerStyle={styles.emptyFeedContainer}
+                            refreshControl={
+                                <RefreshControl
+                                    refreshing={this.state.refreshing}
+                                    onRefresh={this.onRefresh}
+                                />
+                            }
+                        >   
+                            <View style={styles.emptyFeedContainer}>
+                                <View style={styles.emptyFeedCard}>
+                                    <Text style={styles.emptyFeedText}>
+                                        Nothing here...
+                                    </Text>
+                                </View>
+                            </View>
+                        </ScrollView>
+                }
             </View>
         );
     }
