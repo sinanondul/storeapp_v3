@@ -178,13 +178,14 @@ class Fire {
 
     //Check if group chat with same name exists.
     if (groupChatInfo) {
-      query.where("groupChatInfo.name", "==", groupChatInfo.name);
+      query = query.where("groupChatInfo.name", "==", groupChatInfo.name);
     }
 
     //Check if chat with *exactly* same participants exists.
     await query.get().then((snapshot) => {
       snapshot.forEach(async(firestoreDocument) => {
-          if (Object.keys(firestoreDocument.data().participantIds).length === participantIds.length)
+          if  (Object.keys(firestoreDocument.data().participantIds).length === participantIds.length && 
+              groupChatInfo && firestoreDocument.data().groupChatInfo || !groupChatInfo && !firestoreDocument.data().groupChatInfo) 
           {
             if (firestoreDocument.data().lastMessage)
             {
