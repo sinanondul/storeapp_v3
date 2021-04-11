@@ -33,7 +33,7 @@ class Fire {
           timestamp: this.timestamp,
           image: remoteUri,
           upCount: 0,
-          comments: {},
+          commentCount: 0,
         })
         .then((ref) => {
           userData.myPosts[ref.id] = true;
@@ -432,14 +432,8 @@ class Fire {
     const userRef = this.firestore.collection("users").doc(userData.uid);
     const targetUserRef = this.firestore.collection("users").doc(targetId);
 
-    
-    Alert.alert(userData.uid.toString(), targetId.toString())
-
     //Local update.
     delete userData.following[targetId];
-
-    
-    Alert.alert(Object.keys(userData.following).length.toString());
 
     //Server update for user.
     userRef.set({ following: {

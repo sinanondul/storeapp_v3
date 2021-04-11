@@ -10,6 +10,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
+    alignItems: 'center',
     marginRight: "25%",
   },
   buttonInner: {
@@ -26,7 +27,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     right: -20,
     color: "black",
-    fontSize: 20,
+    fontSize: 18,
   },
   centeredView: {
     flex: 1,
@@ -70,6 +71,16 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+  },
+  textInputStyle: {
+    alignItems: "center",
+    justifyContent: "center",
+    borderWidth: 2,
+    borderRadius: 15,
+    height: 40,
+    width: "80%",
+    textAlignVertical: "top",
+    padding: 10
   },
   modalText: {
     marginBottom: 15,
