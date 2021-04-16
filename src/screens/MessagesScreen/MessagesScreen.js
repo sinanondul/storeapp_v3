@@ -7,7 +7,7 @@ import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/
 
 
 import LandingScreen from "./LandingScreen";
-import MessagingInterface from "./MessagingInterface";
+import NewMessagingInterface from "./NewMessagingInterface";
 import AddChatScreen from "./AddChatScreen";
 import AddToGroupChatScreen from './AddToGroupChatScreen';
 import CustomizeGroupChatScreen from './CustomizeGroupChatScreen';
@@ -34,8 +34,8 @@ export default class MessagesScreen extends React.Component{
         <MessagesStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
           {(props) => <LandingScreen {...props} userData={userData} chats={chats}/>}
         </MessagesStack.Screen>
-        <MessagesStack.Screen name="Messaging" options={MessagingInterface.navigationOptions}>
-          {(props) => <MessagingInterface {...props} userData={userData}/>}
+        <MessagesStack.Screen name="Messaging" options={NewMessagingInterface.navigationOptions}>
+          {(props) => <NewMessagingInterface {...props} userData={userData}/>}
         </MessagesStack.Screen>
         <MessagesStack.Screen name="AddChat" options={AddChatScreen.navigationOptions}>
           {(props) => <AddChatScreen {...props} userData={userData}/>}
