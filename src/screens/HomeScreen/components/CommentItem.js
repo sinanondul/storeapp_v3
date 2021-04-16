@@ -54,6 +54,8 @@ export default class CommentItem extends React.Component {
         this.setState({
           senderInfo: {
             uid: userData.id,
+            name: userData.name,
+            surename: userData.surename,
             fullName: userData.fullName,
             avatar: userData.avatar,
             handle: userData.handle,
