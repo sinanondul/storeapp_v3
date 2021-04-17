@@ -190,6 +190,7 @@ export default class CommentsModal extends React.Component {
               keyExtractor={(item) => item.id}
               showsVerticalScrollIndicator={false}
               extraData={this.state}
+              scrollEnabled={true}
             />
 
             <View style={{ flexDirection: "row" }}>

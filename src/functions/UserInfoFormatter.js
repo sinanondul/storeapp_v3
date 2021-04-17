@@ -47,6 +47,12 @@ function getLocation(info) {
 function getDepartment(info) {
   return info.department;
 }
+function getFollowing(info) {
+  return info.following.length;
+}
+function getFollowers(info) {
+  return info.followers;
+}
 
 function getAvatar(info, size = 40) {
   if (!(info.avatar == null)) {
@@ -115,4 +121,6 @@ export {
   getHandle,
   getPhone,
   getDepartment,
+  getFollowers,
+  getFollowing,
 };
