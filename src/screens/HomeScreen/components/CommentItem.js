@@ -101,7 +101,7 @@ export default class CommentItem extends React.Component {
                           {"@" + this.state.senderInfo.handle}
                         </Text> */}
                     </View>
-                    <View>
+                    <View style={{ borderWidth: 2, minHeight: 10 }}>
                       <Text>{this.props.comment.text}</Text>
                     </View>
                   </View>
