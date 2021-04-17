@@ -25,6 +25,9 @@ import {
   getFullName,
   getAvatar,
   getHandle,
+  getDepartment,
+  // getFollowingCount,
+  // getFollowersCount,
 } from "../functions/UserInfoFormatter";
 import styles from "./styles";
 
@@ -49,12 +52,17 @@ export default class DrawerContent extends React.Component {
                 <Text style={styles.userNameText}>
                   {getFullName(this.props.userData)}
                 </Text>
-                <Text style={styles.handleText}>
-                  @{getHandle(this.props.userData)}
-                </Text>
+                {getHandle(this.props.userData) ? (
+                  <Text style={styles.handleText}>
+                    @{getHandle(this.props.userData)}
+                  </Text>
+                ) : null}
               </View>
             </View>
           </TouchableOpacity>
+          {/* <Text style={{ fontWeight: "100", color: "#FFF", marginLeft: 20 }}>
+            {getDepartment(this.props.userData)}
+          </Text> */}
           <View
             style={{ flexDirection: "row", marginLeft: 20, marginBottom: 18 }}
           >
@@ -66,7 +74,7 @@ export default class DrawerContent extends React.Component {
             </Text>
 
             <Text style={{ fontWeight: "500", color: "#FFF" }}>
-              4 {/* {getFollowing(this.props.userInfo)} */}
+              20 {/* {getFollowingCount(this.props.userData)} */}
               <Text style={{ fontWeight: "100", color: "#FFF" }}>
                 Following
               </Text>

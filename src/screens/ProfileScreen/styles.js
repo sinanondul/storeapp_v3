@@ -56,6 +56,8 @@ const styles = StyleSheet.create({
   profileImage: {
     marginTop: 60,
     borderRadius: 80,
+    borderWidth: 4,
+    borderColor: "orange",
     //width: "23.5%",
     // alignItems: "center",
     // justifyContent: "center",

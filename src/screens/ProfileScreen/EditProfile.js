@@ -51,6 +51,7 @@ export default class EditProfile extends React.Component {
         location: null,
         phone: null,
         avatar: null,
+        department: null,
       },
       uploading: [],
       transferred: [],
@@ -82,6 +83,7 @@ export default class EditProfile extends React.Component {
         avatar: this.props.userData.avatar,
         location: this.props.userData.location,
         phone: this.props.userData.phone,
+        department: this.props.userData.department,
       },
     });
     this.getPermission();
@@ -123,6 +125,7 @@ export default class EditProfile extends React.Component {
           handle: this.state.user.handle,
           about: this.state.user.about,
           location: this.state.user.location,
+          department: this.state.user.department,
           phone: this.state.user.phone,
           avatar: imgUrl,
         },
