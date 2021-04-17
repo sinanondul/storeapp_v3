@@ -85,19 +85,28 @@ export default class CommentItem extends React.Component {
                 {this.state.nameinit
                   ? getAvatar(this.state.senderInfo, 30)
                   : null}
-                <View style={{ flexDirection: "row" }}>
-                  { this.state.nameinit
-                    ? <Text style={{ fontWeight: "500" }}>
-                        {getFullName(this.state.senderInfo)}
+                <View
+                  style={{
+                    marginLeft: 5,
+                  }}
+                >
+                  <View numberOfLines={5}>
+                    <View>
+                      <Text numberOfLines={1}>
+                        {this.state.nameinit ? (
+                          <Text numberOfLines={1} style={{ fontWeight: "500" }}>
+                            {getFullName(this.state.senderInfo)}
+                          </Text>
+                        ) : null}
+                        {/* <Text numberOfLines={1} style={{ fontWeight: "100" }}>
+                          {"@" + this.state.senderInfo.handle}
+                        </Text> */}
                       </Text>
-                    : null
-                  }
-                  <Text style={{ fontWeight: "100" }}>
-                    {"@" + this.state.senderInfo.handle}
-                  </Text>
-                  <Text style={{ paddingLeft: 5 }}>
-                    {this.props.comment.text}
-                  </Text>
+                    </View>
+                    <View>
+                      <Text>{this.props.comment.text}</Text>
+                    </View>
+                  </View>
                 </View>
               </View>
               {/* <View style={styles.userText}>
