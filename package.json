@@ -52,7 +52,8 @@
     "react-native-windows": "^0.63.23",
     "react-navigation": "^4.4.3",
     "react-navigation-drawer": "^2.6.0",
-    "reanimated-bottom-sheet": "^1.0.0-alpha.22"
+    "reanimated-bottom-sheet": "^1.0.0-alpha.22",
+    "expo-notifications": "~0.8.2"
   },
   "devDependencies": {
     "@babel/core": "~7.9.0",

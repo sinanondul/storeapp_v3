@@ -15,6 +15,7 @@ import firebase from "firebase";
 import Fire from "../../../firebase/Fire";
 
 import styles from "./styles";
+import { schedulePushNotification } from "../../../components/Push";
 
 export default class InteractiveBar extends React.Component {
   state = {
@@ -93,7 +94,12 @@ export default class InteractiveBar extends React.Component {
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <TouchableOpacity
+          style={styles.button}
+          onPress={async () => {
+            await schedulePushNotification();
+          }}
+        >
           <Ionicons
             style={styles.intButtons}
             name="send-outline"
@@ -121,7 +127,6 @@ export default class InteractiveBar extends React.Component {
             />
           </TouchableOpacity>
         )}
-        
       </View>
     );
   }
