@@ -88,6 +88,8 @@ export default class FeedItem extends React.Component {
             myPosts: userData.myPosts,
             favPosts: userData.favPosts,
             upedPosts: userData.upedPosts,
+            following: userData.following,
+            followers: userData.followers,
           },
         });
         this.setState({ nameinit: true });

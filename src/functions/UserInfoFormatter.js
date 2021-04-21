@@ -47,11 +47,22 @@ function getLocation(info) {
 function getDepartment(info) {
   return info.department;
 }
+function getFollowingCount(info) {
+  return Object.keys(info.following).length;
+}
+function getFollowersCount(info) {
+  return Object.keys(info.followers).length;
+}
 function getFollowing(info) {
-  return info.following.length;
+  return info.following;
 }
 function getFollowers(info) {
   return info.followers;
+}
+
+function getPostCount(info) {
+  return 0;
+  // return Object.keys(info.following).length;
 }
 
 function getAvatar(info, size = 40) {
@@ -121,6 +132,9 @@ export {
   getHandle,
   getPhone,
   getDepartment,
+  getFollowersCount,
+  getFollowingCount,
+  getPostCount,
   getFollowers,
   getFollowing,
 };
