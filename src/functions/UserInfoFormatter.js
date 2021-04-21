@@ -53,6 +53,13 @@ function getFollowingCount(info) {
 function getFollowersCount(info) {
   return Object.keys(info.followers).length;
 }
+function getFollowing(info) {
+  return info.following;
+}
+function getFollowers(info) {
+  return info.followers;
+}
+
 function getPostCount(info) {
   return 0;
   // return Object.keys(info.following).length;
@@ -128,4 +135,6 @@ export {
   getFollowersCount,
   getFollowingCount,
   getPostCount,
+  getFollowers,
+  getFollowing,
 };

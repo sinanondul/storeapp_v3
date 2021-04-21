@@ -244,20 +244,31 @@ export default class LandingScreen extends React.Component {
 
             {/* TODO */}
             <View style={styles.infoBoxWrapper}>
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("FollowersList")}
+              >
+                <View style={styles.infoBox}>
+                  <Text style={{ fontWeight: "500" }}>
+                    {getFollowersCount(this.props.userInfo)}
+                    <Text style={{ fontWeight: "100" }}> Followers</Text>
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
+              <TouchableOpacity
+                onPress={() => this.props.navigation.navigate("FollowingList")}
+              >
+                <View style={styles.infoBox}>
+                  <Text style={{ fontWeight: "500" }}>
+                    {getFollowingCount(this.props.userInfo)}
+                    <Text style={{ fontWeight: "100" }}> Following</Text>
+                  </Text>
+                </View>
+              </TouchableOpacity>
+
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
-                  {getFollowersCount(this.props.userInfo)}
-                  <Text style={{ fontWeight: "100" }}> Followers</Text>
-                </Text>
-              </View>
-              <View style={styles.infoBox}>
-                <Text style={{ fontWeight: "500" }}>
-                  {getFollowingCount(this.props.userInfo)}
-                  <Text style={{ fontWeight: "100" }}> Following</Text>
-                </Text>
-              </View>
-              <View style={styles.infoBox}>
-                <Text style={{ fontWeight: "500" }}>
+                  {/* TODO */}
                   30 {/* {getPostCount(this.props.userInfo)} */}
                   <Text style={{ fontWeight: "100" }}> Posts</Text>
                 </Text>
