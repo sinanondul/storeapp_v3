@@ -29,8 +29,9 @@ import {
   getLocation,
   getAbout,
   getDepartment,
-  getFollowers,
-  getFollowing,
+  getFollowersCount,
+  getFollowingCount,
+  getPostCount,
 } from "../../functions/UserInfoFormatter";
 import { openDrawer } from "../../../App";
 
@@ -245,15 +246,13 @@ export default class LandingScreen extends React.Component {
             <View style={styles.infoBoxWrapper}>
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
-                  100
-                  {/* <Text>{getFollowersCount(this.props.userInfo)}</Text> */}
+                  {getFollowersCount(this.props.userInfo)}
                   <Text style={{ fontWeight: "100" }}> Followers</Text>
                 </Text>
               </View>
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
-                  10
-                  {/* {getFollowing(this.props.userInfo)} */}
+                  {getFollowingCount(this.props.userInfo)}
                   <Text style={{ fontWeight: "100" }}> Following</Text>
                 </Text>
               </View>

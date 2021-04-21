@@ -28,6 +28,8 @@ export default class CommentsModal extends React.Component {
     text: "",
     comments: [],
     startAfter: null,
+    toID: null,
+    toToken: null,
   };
 
   componentDidMount() {
@@ -55,6 +57,22 @@ export default class CommentsModal extends React.Component {
 
   componentWillUnmount() {}
 
+  pushNewComment = (targetToken) => {
+    let response = fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: { targetToken },
+        sound: "default",
+        title: "New Comment",
+        body: "XXX commented on your post",
+      }),
+    });
+  };
+
   addComment = () => {
     this.setState({ text: "" });
 
@@ -67,6 +85,27 @@ export default class CommentsModal extends React.Component {
     const commentsRef = postRef.collection("comments");
 
     const currentTimestamp = Fire.shared.timestamp;
+
+    //PUSH
+    // const targetID = postRef.get().then((snap) => {
+    //   const post = snap.data();
+    //   posterID = post.uid;
+    //   this.setState({ toID: posterID });
+    //   Alert.alert(toID);
+
+    //   const targetToken = firebase
+    //     .firestore()
+    //     .collection("users")
+    //     .doc(this.state.toID)
+    //     .get()
+    //     .then((snap) => {
+    //       const user = snap.data();
+    //       const token = user.token;
+    //       this.setState({ toToken: token });
+    //       Alert.alert(toToken);
+    //       this.pushNewComment(this.state.toToken);
+    //     });
+    // });
 
     const commentItem = {
       text: this.state.text,
