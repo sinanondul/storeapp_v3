@@ -61,7 +61,8 @@ export default class MessagingInterface extends React.Component{
         this.setState({userData: usersArray});
         //Getting messages.
         let messagesArray = [];
-        const chatRef = firebase.firestore().collection("chats").doc(this.props.route.params.chat.id);
+        const chatRef = firebase.firestore().collections('users').doc(this.props.userData.uid)
+        .collection("chats").doc(this.props.route.params.chat.id);
         const unsubscribe = chatRef
           .collection('messages')
           .orderBy('timestamp', 'desc')
@@ -119,22 +120,83 @@ export default class MessagingInterface extends React.Component{
     }
 
     sendMessage(text) {
-      const senderId = this.props.userData.uid;
       const chatId = this.props.route.params.chat.id;
       const participantIds = this.props.route.params.chat.participantIds;
+
+      const timeCreated = Date.now();
+      const messageItem = this.createMessageItem(text, timeCreated)
+      participantIds.forEach(participantId => this.addToUserMessages(messageItem, chatId, participantId))
+    }
+
+    addToUserMessages(messageItem, chatId, uid) {
+      const userChatRef = firebase.firestore().collection('users').doc(uid).collection('chats').doc(chatId);
+      const userMessagesRef = userChatRef.collection('messages')
+      const currentUser = uid === this.props.userData.uid;
+
+      this.addToUserChats(messageItem, chatId, userChatRef, currentUser)
+      userMessagesRef.add(messageItem);
+    }
+
+    addToUserChats(messageItem, chatId, userChatRef, currentUser) {
+      const increment = firebase.firestore.FieldValue.increment(1);
+      const chatInfo = this.props.route.params.chat;
+
+      //Checking if chat exists.
+      userChatRef.get().then((userChatDoc) => {
+
+        //If chat doesn't exist for user.
+        if (!userChatDoc.exists) {
+
+          //Creating chat header.
+          userChatRef.set({
+            id: chatId,
+            groupChatInfo: chatInfo.groupChatInfo,
+            lastMessage: messageItem,
+            new: currentUser ? false : true,
+            newCount: currentUser ? 0 : 1,
+          })
+        }
+        
+        else {
+
+          //Updating chat header.
+          if (currentUser)
+          {
+            userChatRef.set({
+              lastMessage: messageItem,
+            }, {merge: true})
+          }
+          else 
+          {
+            userChatRef.set({
+              lastMessage: messageItem,
+              new: true,
+              newCount: increment,
+            }, {merge: true})
+          }
+
+        }
+      })
+
+      
+    }
+
+    createMessageItem(text, timeCreated) {
+      return {text, timestamp: timeCreated, senderId: this.props.userData.uid}
     }
     
     onSend (messages) {
-      Fire.shared
-      .addMessage({
-        senderId: this.props.userData.uid,
-        text: messages[0].text,
-        chatId: this.props.route.params.chat.id,
-        participantIds: this.props.route.params.chat.participantIds,
-      })
-      .catch((error) => {
-        alert(error);
-      });
+      this.sendMessage(messages[0].text)
+      // Fire.shared
+      // .addMessage({
+      //   senderId: this.props.userData.uid,
+      //   text: messages[0].text,
+      //   chatId: this.props.route.params.chat.id,
+      //   participantIds: this.props.route.params.chat.participantIds,
+      // })
+      // .catch((error) => {
+      //   alert(error);
+      // });
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, messages),
       }))

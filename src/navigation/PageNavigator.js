@@ -44,63 +44,7 @@ export default class AppPage extends React.Component {
       .onSnapshot((snapshot) => {
         let changes = snapshot.docChanges();
 
-        var getChats = new Promise((resolve, reject) => {
-          changes.forEach((change, index, array) => {
-            const newChatRef = change.doc.data();
-            firebase
-              .firestore()
-              .collection("chats")
-              .doc(newChatRef.id)
-              .get()
-              .then((firestoreDocument) => {
-                if (firestoreDocument.exists) {
-                  let newChatData = firestoreDocument.data();
-
-                  const newChatItem = {
-                    id: newChatRef.id,
-                    timestamp: newChatRef.lastTimestamp,
-                    new: newChatRef.new,
-                    newCount: newChatRef.newCount,
-                    participantIds: Array.from(Object.keys(newChatData.participantIds)),
-                    lastMessage: newChatData.lastMessage,
-                    groupChatInfo: newChatData.groupChatInfo
-                  };
-                  if (change.type === "added") 
-                  {
-                    //Adding to array
-                    if (newChatItem.lastMessage)  {
-                      chatsArray.unshift(newChatItem);
-                    }
-                  }
-                  else if (change.type === "modified") 
-                  {
-                    //Modifying previously added chat. 
-                    if (newChatItem.lastMessage)  {
-                      const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
-                      if (index >= 0) {
-                        chatsArray[index] = newChatItem;
-                      }
-                      else {
-                        chatsArray.unshift(newChatItem);
-                      }
-                    }
-                  }
-                  else if (change.type === "removed") 
-                  {
-                    //Modifying previously added chat. 
-                    const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
-                    chatsArray.splice(index, 1);
-                  }
-                  
-                    
-                }
-                
-                if (index === array.length -1) resolve();
-            });
-          });
-        });
-
-        getChats.then(() => {
+        this.getChats.then(() => {
           var getChatCount = new Promise((resolve, reject) => {
             chatsArray.forEach((item, index, array) => {
               if (item.newCount > 0) {
@@ -183,6 +127,67 @@ export default class AppPage extends React.Component {
           })
         });
       });
+  }
+
+  getChats = async(changes, chatsArray) => {
+
+    return new Promise((resolve, reject) => {
+      changes.forEach((change, index, array) => {
+
+        const newChatData = change.doc.data();
+        this.getChatParticipantIds(change.id).then(participantIds => {
+          const newChatItem = {
+            id: newChatData.id,
+            timestamp: newChatData.lastTimestamp,
+            new: newChatData.new,
+            newCount: newChatData.newCount,
+            participantIds: participantIds,
+            lastMessage: newChatData.lastMessage,
+            groupChatInfo: newChatData.groupChatInfo
+          };
+  
+          if (change.type === "added") 
+          {
+            //Adding to array
+            if (newChatItem.lastMessage)  {
+              chatsArray.unshift(newChatItem);
+            }
+          }
+          else if (change.type === "modified") 
+          {
+            //Modifying previously added chat. 
+            if (newChatItem.lastMessage)  {
+              const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+              if (index >= 0) {
+                chatsArray[index] = newChatItem;
+              }
+              else {
+                chatsArray.unshift(newChatItem);
+              }
+            }
+          }
+          else if (change.type === "removed") 
+          {
+            //Modifying previously added chat. 
+            const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
+            chatsArray.splice(index, 1);
+          }
+          
+        
+          if (index === array.length -1) resolve();
+        });
+      });
+    });
+  }
+
+  getChatParticipantIds(chatId) {
+    const chatRef = firebase.firestore().collection('chats').doc(chatId);
+    return new Promise((resolve, reject) => {
+      chatRef.get.then(chatDoc => {
+        const chatData = chatDoc.data();
+        resolve(Object.keys(chatData.participantIds));
+      })
+    });
   }
 
   render() {
