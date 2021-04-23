@@ -1,5 +1,5 @@
 import React from "react";
-import { Alert } from "react-native";
+import { Alert, TouchableHighlightBase } from "react-native";
 import { createDrawerNavigator } from "@react-navigation/drawer";
 
 import HomeNavigator from "./HomeNavigator";
@@ -17,6 +17,8 @@ import Sponsored from "../screens/SponsoredScreen/Sponsored";
 import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 import AddScreen from "../screens/HomeScreen/AddScreen/AddScreen";
 import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
+
+import {getFullName, getAvatar} from "../functions/UserInfoFormatter";
 
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
@@ -50,42 +52,62 @@ export default class AppPage extends React.Component {
     usertoken: "",
   };
 
-  pushNewMessage = (/*senderId, messageBody*/) => {
+  pushNewMessage = (chat) => {
     token = this.props.userData.token;
     if (token) {
-      let response = fetch("https://exp.host/--/api/v2/push/send", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: token,
-          sound: "default",
-          title: "New Message",
-          body: "Got new Message",
-          //icon: require("../../assets/splash.jpg"),
-        }),
-      });
+      const senderId = chat.lastMessage.senderId;
+      const senderRef = firebase.firestore().collection('users').doc(senderId)
+      const currentUser = senderId === this.props.userData.uid;
+
+      if (!currentUser) {
+        senderRef.get().then(senderDoc => {
+          const senderInfo = senderDoc.data();
+          const title = getFullName(senderInfo);
+          const body = chat.lastMessage.text;
+          let response = fetch("https://exp.host/--/api/v2/push/send", {
+            method: "POST",
+            headers: {
+              Accept: "application/json",
+              "Content-Type": "application/json",
+            },
+            body: JSON.stringify({
+              to: token,
+              sound: "default",
+              title: title,
+              body: body,
+            }),
+          });
+        }).catch(error => console.log(error));
+      }
     }
+
+      
   };
-  pushNewGroupMessage = (/*senderId, messageBody*/) => {
+
+  pushNewGroupMessage = (chat) => {
     token = this.props.userData.token;
     if (token) {
-      let response = fetch("https://exp.host/--/api/v2/push/send", {
-        method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          to: token,
-          sound: "default",
-          title: "GROUP MESSAGE",
-          body: "BODEY HERE",
-          //icon: require("../../assets/splash.jpg"),
-        }),
-      });
+      const senderId = chat.lastMessage.senderId;
+      const currentUser = senderId === this.props.userData.uid;
+      if (!currentUser) {
+        const title = chat.groupChatInfo.name;
+        const body = chat.lastMessage.text;
+        let response = fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            to: token,
+            sound: "default",
+            title: title,
+            body: body,
+            //icon: require("../../assets/splash.jpg"),
+          }),
+        });
+      }
+     
     }
   };
 
@@ -115,10 +137,10 @@ export default class AppPage extends React.Component {
                 if (item.groupChatInfo) {
                   //get groupchat .avatar, .message, userid
                   //item.lastMessage timestamp
-                  this.pushNewGroupMessage();
+                  this.pushNewGroupMessage(item);
                 } else {
                   //
-                  this.pushNewMessage();
+                  this.pushNewMessage(item);
                 }
               }
               if (index === array.length - 1) resolve();
