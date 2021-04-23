@@ -50,7 +50,7 @@ export default class AppPage extends React.Component {
     usertoken: "",
   };
 
-  pushNewMessage = async (/*senderId, messageBody*/) => {
+  pushNewMessage = (/*senderId, messageBody*/) => {
     token = this.props.userData.token;
     if (token) {
       let response = fetch("https://exp.host/--/api/v2/push/send", {
@@ -64,6 +64,25 @@ export default class AppPage extends React.Component {
           sound: "default",
           title: "New Message",
           body: "Got new Message",
+          //icon: require("../../assets/splash.jpg"),
+        }),
+      });
+    }
+  };
+  pushNewGroupMessage = (/*senderId, messageBody*/) => {
+    token = this.props.userData.token;
+    if (token) {
+      let response = fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: token,
+          sound: "default",
+          title: "GROUP MESSAGE",
+          body: "BODEY HERE",
           //icon: require("../../assets/splash.jpg"),
         }),
       });
@@ -96,6 +115,7 @@ export default class AppPage extends React.Component {
                 if (item.groupChatInfo) {
                   //get groupchat .avatar, .message, userid
                   //item.lastMessage timestamp
+                  this.pushNewGroupMessage();
                 } else {
                   //
                   this.pushNewMessage();
