@@ -1,13 +1,9 @@
 import React from "react";
-import {View, Platform, Header, Text, TouchableOpacity, StyleSheet, FlatList, Alert} from "react-native";
-import {Avatar} from "react-native-paper";
-import {GiftedChat} from "react-native-gifted-chat";
-import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 
 
 import LandingScreen from "./LandingScreen";
-import NewMessagingInterface from "./NewMessagingInterface";
+import MessagingInterface from "./MessagingInterface";
 import AddChatScreen from "./AddChatScreen";
 import AddToGroupChatScreen from './AddToGroupChatScreen';
 import CustomizeGroupChatScreen from './CustomizeGroupChatScreen';
@@ -34,8 +30,8 @@ export default class MessagesScreen extends React.Component{
         <MessagesStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
           {(props) => <LandingScreen {...props} userData={userData} chats={chats}/>}
         </MessagesStack.Screen>
-        <MessagesStack.Screen name="Messaging" options={NewMessagingInterface.navigationOptions}>
-          {(props) => <NewMessagingInterface {...props} userData={userData}/>}
+        <MessagesStack.Screen name="Messaging" options={MessagingInterface.navigationOptions}>
+          {(props) => <MessagingInterface {...props} userData={userData}/>}
         </MessagesStack.Screen>
         <MessagesStack.Screen name="AddChat" options={AddChatScreen.navigationOptions}>
           {(props) => <AddChatScreen {...props} userData={userData}/>}
