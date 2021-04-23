@@ -22,7 +22,7 @@ import {
   getAvatar,
   getHandle,
 } from "../../../functions/UserInfoFormatter";
-import CommentsModal from './CommentsModal';
+import CommentsModal from "./CommentsModal";
 import InteractiveBar from "./InteractiveBar";
 import styles from "../styles";
 
@@ -53,7 +53,6 @@ function getTimeSince(timestamp) {
 }
 
 export default class FeedItem extends React.Component {
-
   state = {
     senderInfo: {
       fullName: null,
@@ -90,6 +89,7 @@ export default class FeedItem extends React.Component {
             upedPosts: userData.upedPosts,
             following: userData.following,
             followers: userData.followers,
+            token: userData.token,
           },
         });
         this.setState({ nameinit: true });
@@ -152,7 +152,9 @@ export default class FeedItem extends React.Component {
             <InteractiveBar
               userData={this.props.userData}
               post={this.props.post}
-              toggleCommentsModal={() => this.props.toggleCommentsModal(this.props.post)}
+              toggleCommentsModal={() =>
+                this.props.toggleCommentsModal(this.props.post)
+              }
             />
           </View>
         </View>

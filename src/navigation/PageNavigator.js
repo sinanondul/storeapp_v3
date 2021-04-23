@@ -32,6 +32,15 @@ Notifications.setNotificationHandler({
     shouldSetBadge: false,
   }),
 });
+
+Notifications.addNotificationReceivedListener((notification) => {
+  //console.log(notification);
+});
+
+Notifications.addNotificationResponseReceivedListener((response) => {
+  console.log(response);
+});
+
 export default class AppPage extends React.Component {
   state = {
     chats: [],
@@ -40,20 +49,25 @@ export default class AppPage extends React.Component {
     courseNotificationCount: 0,
     usertoken: "",
   };
-  pushNewMessage = async () => {
-    let response = fetch("https://exp.host/--/api/v2/push/send", {
-      method: "POST",
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({
-        to: "ExponentPushToken[LvGnDyH9xv_CcPE_uDrl3s]",
-        sound: "default",
-        title: "New Message",
-        body: "Got new Message",
-      }),
-    });
+
+  pushNewMessage = async (/*senderId, messageBody*/) => {
+    token = this.props.userData.token;
+    if (token) {
+      let response = fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: token,
+          sound: "default",
+          title: "New Message",
+          body: "Got new Message",
+          //icon: require("../../assets/splash.jpg"),
+        }),
+      });
+    }
   };
 
   componentDidMount() {
