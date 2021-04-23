@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Text,
   StatusBar,
+  TouchableOpacity,
+  Alert
 } from "react-native";
 
 import firebase from "firebase";
@@ -14,6 +16,8 @@ import {
   getFullName,
   getHandle,
 } from "../../functions/UserInfoFormatter";
+
+import UserItem from "./components/UserItem";
 
 const DATA = [
   {
@@ -30,21 +34,32 @@ const DATA = [
   },
 ];
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
-
 export default class FollowerScreen extends React.Component {
+
+  componentDidMount() {
+    
+  }
+
+  renderItem = ({ item }) => { 
+    return (
+      <TouchableOpacity>
+        <UserItem uid = {item.id}/>
+      </TouchableOpacity>
+    );
+  }
+
   render() {
-    const renderItem = ({ item }) => <Item title={item.title} />;
+    const followerArray = Object.keys(this.props.userInfo.followers)
+    let followerObjects = [];
+    followerArray.forEach(followerId => {
+      followerObjects.unshift({id: followerId});
+    })
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          data={followerObjects}
+          renderItem={this.renderItem}
+          keyExtractor={item => item.id}
         />
       </SafeAreaView>
     );

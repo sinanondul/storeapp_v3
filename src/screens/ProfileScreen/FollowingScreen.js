@@ -6,39 +6,45 @@ import {
   StyleSheet,
   Text,
   StatusBar,
+  TouchableOpacity,
+  Alert
 } from "react-native";
 
-const DATA = [
-  {
-    id: "bd7acbea-c1b1-46c2-aed5-3ad53abb28ba",
-    title: "First Item",
-  },
-  {
-    id: "3ac68afc-c605-48d3-a4f8-fbd91aa97f63",
-    title: "Second Item",
-  },
-  {
-    id: "58694a0f-3da1-471f-bd96-145571e29d72",
-    title: "Third Item",
-  },
-];
+import firebase from "firebase";
+import {
+  getAvatar,
+  getFullName,
+  getHandle,
+} from "../../functions/UserInfoFormatter";
 
-const Item = ({ title }) => (
-  <View style={styles.item}>
-    <Text style={styles.title}>{title}</Text>
-  </View>
-);
+import UserItem from "./components/UserItem";
 
 export default class FollowingScreen extends React.Component {
+
+  componentDidMount() {
+    
+  }
+
+  renderItem = ({ item }) => { 
+    return (
+      <TouchableOpacity>
+        <UserItem uid = {item.id}/>
+      </TouchableOpacity>
+    );
+  }
+
   render() {
-    //userData = this.props.userData;
-    const renderItem = ({ item }) => <Item title={item.title} />;
+    const followingArray = Object.keys(this.props.userInfo.following)
+    let followingObjects = [];
+    followingArray.forEach(followingId => {
+      followingObjects.unshift({id: followingId});
+    })
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
-          data={DATA}
-          renderItem={renderItem}
-          keyExtractor={(item) => item.id}
+          data={followingObjects}
+          renderItem={this.renderItem}
+          keyExtractor={item => item.id}
         />
       </SafeAreaView>
     );

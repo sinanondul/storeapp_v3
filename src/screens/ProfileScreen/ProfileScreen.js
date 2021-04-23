@@ -95,11 +95,11 @@ export default class ProfileScreen extends React.Component {
           )}
         </ProfileStack.Screen>
         <ProfileStack.Screen name="FollowersList">
-          {(props) => <FollowerScreen {...props} userData={userData} />}
+          {(props) => <FollowerScreen {...props} userData={userData} userInfo={userInfo} />}
         </ProfileStack.Screen>
 
         <ProfileStack.Screen name="FollowingList">
-          {(props) => <FollowingScreen {...props} userData={userData} />}
+          {(props) => <FollowingScreen {...props} userData={userData} userInfo={userInfo}/>}
         </ProfileStack.Screen>
       </ProfileStack.Navigator>
     );
