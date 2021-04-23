@@ -138,11 +138,13 @@ export default class LandingScreen extends React.Component {
     var myPosts = this.props.userInfo.myPosts;
     var favPosts = this.props.userInfo.favPosts;
     var upedPosts = this.props.userInfo.upedPosts;
+
     if (!otherProfile) {
       myPosts = userData.myPosts;
       favPosts = userData.favPosts;
       upedPosts = userData.upedPosts;
     }
+
     return (
       <SafeAreaView style={styles.container} nestedScrollEnabled={true}>
         <ScrollView
