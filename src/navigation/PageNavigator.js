@@ -18,18 +18,29 @@ import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 import AddScreen from "../screens/HomeScreen/AddScreen/AddScreen";
 import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
 
+import * as Notifications from "expo-notifications";
+import * as Permissions from "expo-permissions";
+import Constants from "expo-constants";
+
 import firebase from "firebase";
 
 const PageDrawer = createDrawerNavigator();
-
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: true,
+    shouldSetBadge: false,
+  }),
+});
 export default class AppPage extends React.Component {
   state = {
     chats: [],
     messageCount: 0,
     courses: [],
     courseNotificationCount: 0,
+    usertoken: "",
   };
-  pushNewMessage = (targetToken) => {
+  pushNewMessage = async () => {
     let response = fetch("https://exp.host/--/api/v2/push/send", {
       method: "POST",
       headers: {
@@ -37,15 +48,19 @@ export default class AppPage extends React.Component {
         "Content-Type": "application/json",
       },
       body: JSON.stringify({
-        to: { targetToken },
+        to: "ExponentPushToken[LvGnDyH9xv_CcPE_uDrl3s]",
         sound: "default",
-        title: "New Comment",
-        body: "XXX commented on your post",
+        title: "New Message",
+        body: "Got new Message",
       }),
     });
   };
 
   componentDidMount() {
+    registerForPushNotificationsAsync().then((token) =>
+      this.setState({ usertoken: token })
+    );
+
     //Adding chats
 
     let chatsArray = [];
@@ -69,31 +84,31 @@ export default class AppPage extends React.Component {
                   //item.lastMessage timestamp
                 } else {
                   //
+                  this.pushNewMessage();
                 }
               }
-              if (index === array.length -1) resolve();
-            })
+              if (index === array.length - 1) resolve();
+            });
           });
           getChatCount.then(() => {
-            this.setState({ chats: chatsArray, messageCount: messageCount })
+            this.setState({ chats: chatsArray, messageCount: messageCount });
             messageCount = 0;
-          })
+          });
         });
       });
 
     let coursesArray = [];
     let courseNotificationCount = 0;
     this._unsubscribeCourses = userRef
-      .collection('courses')
+      .collection("courses")
       .onSnapshot((courseSnapshot) => {
         let courseChanges = courseSnapshot.docChanges();
         var getCourses = new Promise((resolve, reject) => {
           courseChanges.forEach((change, index, array) => {
-
             const newCourseRef = change.doc.data();
             firebase
               .firestore()
-              .collection('courses')
+              .collection("courses")
               .doc(change.doc.id)
               .get()
               .then((firestoreDocument) => {
@@ -113,25 +128,24 @@ export default class AppPage extends React.Component {
                 if (change.type === "added") {
                   //Adding to array
                   coursesArray.unshift(newCourseItem);
-                }
-                else if (change.type === "modified") 
-                {
-                  //Modifying previously added chat. 
-                  const index = coursesArray.findIndex((item) => item.id === newChatItem.id)
+                } else if (change.type === "modified") {
+                  //Modifying previously added chat.
+                  const index = coursesArray.findIndex(
+                    (item) => item.id === newChatItem.id
+                  );
                   coursesArray[index] = newCourseItem;
-                }
-                else if (change.type === "removed") 
-                {
-                  //Modifying previously added chat. 
-                  const index = coursesArray.findIndex((item) => item.id === newCourseItem.id)
+                } else if (change.type === "removed") {
+                  //Modifying previously added chat.
+                  const index = coursesArray.findIndex(
+                    (item) => item.id === newCourseItem.id
+                  );
                   coursesArray.splice(index, 1);
-
                 }
 
                 if (index === array.length - 1) resolve();
               });
           });
-        })
+        });
 
         getCourses.then(() => {
           var getCourseCount = new Promise((resolve, reject) => {
@@ -143,20 +157,21 @@ export default class AppPage extends React.Component {
             });
           });
           getCourseCount.then(() => {
-            this.setState({ courses: coursesArray, courseNotificationCount: courseNotificationCount })
+            this.setState({
+              courses: coursesArray,
+              courseNotificationCount: courseNotificationCount,
+            });
             courseNotificationCount = 0;
-          })
+          });
         });
       });
   }
 
-  getChats = async(changes, chatsArray) => {
-
+  getChats = async (changes, chatsArray) => {
     return new Promise((resolve, reject) => {
       changes.forEach((change, index, array) => {
-
         const newChatData = change.doc.data();
-        this.getChatParticipantIds(change.doc.id).then(participantIds => {
+        this.getChatParticipantIds(change.doc.id).then((participantIds) => {
           const newChatItem = {
             id: newChatData.id,
             timestamp: newChatData.lastTimestamp,
@@ -164,51 +179,48 @@ export default class AppPage extends React.Component {
             newCount: newChatData.newCount,
             participantIds: participantIds,
             lastMessage: newChatData.lastMessage,
-            groupChatInfo: newChatData.groupChatInfo
+            groupChatInfo: newChatData.groupChatInfo,
           };
-  
-          if (change.type === "added") 
-          {
+
+          if (change.type === "added") {
             //Adding to array
-            if (newChatItem.lastMessage)  {
+            if (newChatItem.lastMessage) {
               chatsArray.unshift(newChatItem);
             }
-          }
-          else if (change.type === "modified") 
-          {
-            //Modifying previously added chat. 
-            if (newChatItem.lastMessage)  {
-              const index = chatsArray.findIndex((item) => item.id === newChatItem.id)
+          } else if (change.type === "modified") {
+            //Modifying previously added chat.
+            if (newChatItem.lastMessage) {
+              const index = chatsArray.findIndex(
+                (item) => item.id === newChatItem.id
+              );
               if (index >= 0) {
                 chatsArray[index] = newChatItem;
-              }
-              else {
+              } else {
                 chatsArray.unshift(newChatItem);
               }
             }
-          }
-          else if (change.type === "removed") 
-          {
-            //Modifying previously added chat. 
-            const index = chatsArray.findIndex((item) => item.id === newChatRef.id)
+          } else if (change.type === "removed") {
+            //Modifying previously added chat.
+            const index = chatsArray.findIndex(
+              (item) => item.id === newChatRef.id
+            );
             chatsArray.splice(index, 1);
           }
-          
-        
-          if (index === array.length -1) resolve();
+
+          if (index === array.length - 1) resolve();
         });
       });
     });
-  }
+  };
 
   getChatParticipantIds(chatId) {
-    const chatRef = firebase.firestore().collection('chats').doc(chatId);
+    const chatRef = firebase.firestore().collection("chats").doc(chatId);
     return new Promise((resolve, reject) => {
-      chatRef.get().then(chatDoc => {
+      chatRef.get().then((chatDoc) => {
         const chatData = chatDoc.data();
         const participantIds = Object.keys(chatData.participantIds);
         resolve(participantIds);
-      })
+      });
     });
   }
 
@@ -225,6 +237,46 @@ export default class AppPage extends React.Component {
       />
     );
   }
+}
+
+async function registerForPushNotificationsAsync() {
+  let token;
+  const currentUser = firebase.auth().currentUser.uid;
+  if (Constants.isDevice) {
+    const {
+      status: existingStatus,
+    } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notification!");
+      return;
+    }
+    token = (await Notifications.getExpoPushTokenAsync()).data;
+    console.log("Inside Func:" + token);
+  } else {
+    alert("Must use physical device for Push Notifications");
+  }
+  if (token) {
+    const res = await firebase
+      .firestore()
+      .collection("users")
+      .doc(firebase.auth().currentUser.uid)
+      .set({ token }, { merge: true });
+  }
+  if (Platform.OS === "android") {
+    Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+  //Alert.alert(token);
+  return token;
 }
 
 const PageNavigator = (props) => {
