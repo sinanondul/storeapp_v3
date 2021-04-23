@@ -36,7 +36,6 @@ export default function RegistrationScreen({ navigation }) {
           avatar: null,
           handle: null,
           location: null,
-          department: null,
           phone: null,
           about: null,
           myPosts: {},
@@ -49,7 +48,8 @@ export default function RegistrationScreen({ navigation }) {
         usersRef
           .doc(uid)
           .set(data)
-          .then(() => {})
+          .then(() => {
+          })
           .catch((error) => {
             alert(error);
           });

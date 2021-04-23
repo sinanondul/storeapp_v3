@@ -67,7 +67,7 @@ export default class CommentItem extends React.Component {
 
   render() {
     return (
-      <View style={{}}>
+      <View style={{ marginBottom: 5 }}>
         <View style={styles.feedItem}>
           <View style={{ flex: 1 }}>
             <TouchableOpacity
@@ -85,31 +85,39 @@ export default class CommentItem extends React.Component {
                 {this.state.nameinit
                   ? getAvatar(this.state.senderInfo, 30)
                   : null}
-                <View
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  <View numberOfLines={5}>
-                    <View>
-                      {this.state.nameinit ? (
-                        <Text numberOfLines={1} style={{ fontWeight: "500" }}>
-                          {getFullName(this.state.senderInfo)}
-                        </Text>
-                      ) : null}
-                      {/* <Text numberOfLines={1} style={{ fontWeight: "100" }}>
-                          {"@" + this.state.senderInfo.handle}
-                        </Text> */}
-                    </View>
-                    <View style={{ borderWidth: 2, minHeight: 10 }}>
-                      <Text>{this.props.comment.text}</Text>
-                    </View>
-                  </View>
-                  <Text style={{ fontWeight: "100", fontSize: 10 }}>
-                    {getTimeSince(this.props.comment.timestamp)}
+                <View style={{ flexDirection: "row" }}>
+                  { this.state.nameinit
+                    ? <Text style={{ fontWeight: "500" }}>
+                        {getFullName(this.state.senderInfo)}
+                      </Text>
+                    : null
+                  }
+                  <Text style={{ fontWeight: "100" }}>
+                    {"@" + this.state.senderInfo.handle}
+                  </Text>
+                  <Text style={{ paddingLeft: 5 }}>
+                    {this.props.comment.text}
                   </Text>
                 </View>
               </View>
+              {/* <View style={styles.userText}>
+                  {this.state.nameinit ? (
+                    <Text style={styles.name}>
+                      {getFullName(this.state.senderInfo)}
+                    </Text>
+                  ) : null}
+
+                  <Text style={styles.handle}>
+                    {"@" + this.state.senderInfo.handle}
+                  </Text>
+                  <Text style={{ flex: 0.9 }}>
+                    Thisisacommentthisisacommentasdjnsadjaskndkasndaskdmnaskdn
+                  </Text>
+                </View> */}
+
+              <Text style={styles.timestamp}>
+                {getTimeSince(this.props.post.timestamp)}
+              </Text>
             </TouchableOpacity>
 
             <View style={styles.feedContent}>

@@ -73,7 +73,7 @@ export default class GroupChatItem extends React.Component{
             </View>
             <View style={styles.messageSummary}>
               <View style={styles.summaryText}>
-                <Text style={styles.lastMessageText} numberOfLines={1}>{this.props.chat.lastMessage}</Text>
+                <Text style={styles.lastMessageText} numberOfLines={1}>{this.props.chat.lastMessage.text}</Text>
               </View>
               <View style={styles.newBadge}>
                 { this.props.chat.newCount > 0 ?

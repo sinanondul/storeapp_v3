@@ -19,7 +19,7 @@ import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import Fire from "../../firebase/Fire";
 import firebase from "firebase";
 import Ad from "../../components/Ad";
-import CommentsModal from "../HomeScreen/components/CommentsModal";
+import CommentsModal from '../HomeScreen/components/CommentsModal';
 
 import {
   getFullName,
@@ -129,10 +129,7 @@ export default class LandingScreen extends React.Component {
   }
 
   toggleCommentsModal(postInfo = null) {
-    this.setState({
-      commentsModalOpen: !this.state.commentsModalOpen,
-      modalPostInfo: postInfo,
-    });
+    this.setState({commentsModalOpen: !this.state.commentsModalOpen, modalPostInfo: postInfo});
   }
 
   render() {
@@ -153,6 +150,7 @@ export default class LandingScreen extends React.Component {
           nestedScrollEnabled={true}
           style={{ flex: 1 }}
         >
+          <Ad />
           <View style={styles.profileTop}>
             <View style={styles.profileImageContainer}>
               <View style={styles.profileImage}>
@@ -193,53 +191,37 @@ export default class LandingScreen extends React.Component {
               <Text style={[styles.text, { fontWeight: "500", fontSize: 20 }]}>
                 {getFullName(this.props.userInfo)}
               </Text>
-              {getHandle(this.props.userInfo) ? (
-                <Text style={[styles.text, { color: "gray", fontSize: 14 }]}>
-                  @{getHandle(this.props.userInfo)}
-                </Text>
-              ) : null}
-              {getDepartment(this.props.userInfo) ? (
-                <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-                  {getDepartment(this.props.userInfo)}
-                </Text>
-              ) : null}
-              {getAbout(this.props.userInfo) ? (
-                <Text
-                  style={[
-                    styles.text,
-                    {
-                      color: "black",
-                      fontSize: 14,
-                      width: 200,
-                      paddingTop: 10,
-                    },
-                  ]}
-                >
-                  {getAbout(this.props.userInfo)}
-                </Text>
-              ) : null}
+              <Text style={[styles.text, { color: "gray", fontSize: 14 }]}>
+                @{getHandle(this.props.userInfo)}
+              </Text>
+              <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
+                {getDepartment(this.props.userInfo)}
+              </Text>
+              <Text
+                style={[
+                  styles.text,
+                  { color: "black", fontSize: 14, width: 200, paddingTop: 10 },
+                ]}
+              >
+                {getAbout(this.props.userInfo)}
+              </Text>
             </View>
 
             <View style={styles.userInfoSection}>
-              {getPhone(this.props.userInfo) ? (
-                <View style={styles.row}>
-                  <Icon name="phone" color="#777777" />
-                  <Text>{getPhone(this.props.userInfo)}</Text>
-                </View>
-              ) : null}
+              <View style={styles.row}>
+                <Icon name="phone" color="#777777" />
+                <Text>{getPhone(this.props.userInfo)}</Text>
+              </View>
               <View style={styles.row}>
                 <Icon name="email" color="#777777" />
                 <Text>{this.props.userInfo.email}</Text>
               </View>
             </View>
-
             <View style={styles.userInfoSectionLower}>
-              {getLocation(this.props.userInfo) ? (
-                <View style={styles.row}>
-                  <Icon name="map" color="#777777" />
-                  <Text>{getLocation(this.props.userInfo)}</Text>
-                </View>
-              ) : null}
+              <View style={styles.row}>
+                <Icon name="map" color="#777777" />
+                <Text>{getLocation(this.props.userInfo)}</Text>
+              </View>
             </View>
 
             {/* TODO */}
@@ -268,7 +250,18 @@ export default class LandingScreen extends React.Component {
 
               <View style={styles.infoBox}>
                 <Text style={{ fontWeight: "500" }}>
-                  {/* TODO */}
+                  140{/* {getFollowers(this.props.userInfo)} */}
+                  <Text style={{ fontWeight: "100" }}> Followers</Text>
+                </Text>
+              </View>
+              <View style={styles.infoBox}>
+                <Text style={{ fontWeight: "500" }}>
+                  200{/* {getFollowing(this.props.userInfo)} */}
+                  <Text style={{ fontWeight: "100" }}> Following</Text>
+                </Text>
+              </View>
+              <View style={styles.infoBox}>
+                <Text style={{ fontWeight: "500" }}>
                   30 {/* {getPostCount(this.props.userInfo)} */}
                   <Text style={{ fontWeight: "100" }}> Posts</Text>
                 </Text>
@@ -347,12 +340,9 @@ export default class LandingScreen extends React.Component {
               visible={this.state.commentsModalOpen}
               onRequestClose={this.toggleCommentsModal}
             >
-              <CommentsModal
-                {...this.props}
-                toggleCommentsModal={this.toggleCommentsModal}
-                post={this.state.modalPostInfo}
-              />
+              <CommentsModal {...this.props} toggleCommentsModal={this.toggleCommentsModal} post={this.state.modalPostInfo}/>
             </Modal>
+
           </View>
         </ScrollView>
       </SafeAreaView>

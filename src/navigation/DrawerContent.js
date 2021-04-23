@@ -52,17 +52,12 @@ export default class DrawerContent extends React.Component {
                 <Text style={styles.userNameText}>
                   {getFullName(this.props.userData)}
                 </Text>
-                {getHandle(this.props.userData) ? (
-                  <Text style={styles.handleText}>
-                    @{getHandle(this.props.userData)}
-                  </Text>
-                ) : null}
+                <Text style={styles.handleText}>
+                  @{getHandle(this.props.userData)}
+                </Text>
               </View>
             </View>
           </TouchableOpacity>
-          {/* <Text style={{ fontWeight: "100", color: "#FFF", marginLeft: 20 }}>
-            {getDepartment(this.props.userData)}
-          </Text> */}
           <View
             style={{ flexDirection: "row", marginLeft: 20, marginBottom: 18 }}
           >

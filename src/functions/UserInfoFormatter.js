@@ -1,5 +1,5 @@
 import React from "react";
-import { View } from "react-native";
+import {View} from 'react-native';
 import { Avatar } from "react-native-paper";
 import { Image } from "react-native-expo-image-cache";
 
@@ -68,12 +68,12 @@ function getPostCount(info) {
 function getAvatar(info, size = 40) {
   if (!(info.avatar == null)) {
     return (
-      <View
-        style={{
+      <View 
+        style = {{
           width: size,
           height: size,
           borderRadius: size / 2,
-          overflow: "hidden",
+          overflow: 'hidden',
         }}
       >
         <Image
@@ -82,7 +82,7 @@ function getAvatar(info, size = 40) {
             width: size,
             height: size,
           }}
-          resizeMode={"stretch"}
+          resizeMode={'stretch'}
         />
       </View>
     );
