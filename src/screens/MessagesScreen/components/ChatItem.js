@@ -4,7 +4,7 @@ import {Avatar, Badge, withBadge} from "react-native-paper";
 import firebase from 'firebase';
 import moment from 'moment';
 
-import {getFullName, getAvatar} from "../../../functions/UserInfoFormatter";
+import {getName, getFullName, getAvatar} from "../../../functions/UserInfoFormatter";
 import Fire from "../../../firebase/Fire";
 import styles from "../styles";
 
@@ -88,7 +88,7 @@ export default class ChatItem extends React.Component{
               </View>
               <View style={styles.messageSummary}>
                 <View style={styles.summaryText}>
-                  <Text style={styles.lastMessageText} numberOfLines={1}>{this.props.chat.lastMessage}</Text>
+                  <Text style={styles.lastMessageText} numberOfLines={1}>{this.props.chat.lastMessage.text}</Text>
                 </View>
                 <View style={styles.newBadge}>
                   { this.props.chat.newCount > 0 ?

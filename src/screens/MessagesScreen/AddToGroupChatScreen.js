@@ -57,11 +57,12 @@ export default class AddGroupChatScreen extends React.Component
     onChangeSearch = (searchText => {
         if (searchText.length > 0) {
             let usersArray = [];
-            const limitString = searchText.toLowerCase().replace(/.$/, nextChar(searchText.charAt(searchText.length - 1)));
+            const lowerText = searchText.toLowerCase();
+            const limitString = lowerText.replace(/.$/, nextChar(lowerText.charAt(searchText.length - 1)));
             var getUsers = new Promise((resolve, reject) => {
                 usersRef
-                .where('name', '>=', searchText.toLowerCase())
-                .where('name', '<', limitString)
+                .where('fullName', '>=', lowerText.toLowerCase())
+                .where('fullName', '<', limitString)
                 .get()
                 .then((snapshot) => {
                     snapshot.forEach((firestoreDocument) =>{

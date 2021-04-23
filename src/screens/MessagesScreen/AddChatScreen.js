@@ -29,7 +29,7 @@ export default class AddChatScreen extends React.Component
         return (
             <TouchableOpacity 
                 onPress={() => {
-                    Fire.shared.addChat({participantIds: [this.props.userData.uid, item.uid]})
+                    Fire.shared.addChat({participantIds: [this.props.userData.uid, item.uid], creatorInfo: this.props.userData})
                     .then((chatInfo) => {
                     this.props.navigation.goBack();
                     this.props.navigation.navigate('Messaging', {senderInfo: item, chat: chatInfo});
@@ -44,11 +44,12 @@ export default class AddChatScreen extends React.Component
     onChangeSearch = (searchText => {
         if (searchText.length > 0) {
             let usersArray = [];
-            const limitString = searchText.toLowerCase().replace(/.$/, nextChar(searchText.charAt(searchText.length - 1)));
+            const lowerText = searchText.toLowerCase()
+            const limitString = lowerText.replace(/.$/, nextChar(lowerText.charAt(lowerText.length - 1)));
             var getUsers = new Promise((resolve, reject) => {
                 usersRef
-                .where('name', '>=', searchText.toLowerCase())
-                .where('name', '<', limitString)
+                .where('fullName', '>=', lowerText.toLowerCase())
+                .where('fullName', '<', limitString)
                 .get()
                 .then((snapshot) => {
                     snapshot.forEach((firestoreDocument) =>{

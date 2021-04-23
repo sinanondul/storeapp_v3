@@ -96,6 +96,7 @@ export default class AddGroupChatScreen extends React.Component {
                 .addChat({
                   participantIds: this.state.participantIds,
                   groupChatInfo: groupChatInfo,
+                  creatorInfo: this.props.userData,
                 })
                 .then((chatInfo) => {
                   this.props.navigation.goBack();

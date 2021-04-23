@@ -4,6 +4,8 @@ import deleteCollection from "./deleteCollection";
 import moment from "moment";
 import { Alert } from "react-native";
 
+import {getName} from "../functions/UserInfoFormatter";
+
 class Fire {
   constructor() {
     if (!firebase.apps.length) {
@@ -150,7 +152,7 @@ class Fire {
   }
 
   //Messaging Stuff
-  addChat = async ({ participantIds, groupChatInfo = null }) => {
+  addChat = async ({ participantIds, groupChatInfo = null, creatorInfo }) => {
     const chatsRef = this.firestore.collection("chats");
     const timeCreated = this.timestamp;
     var alreadyExists = false;
@@ -229,20 +231,65 @@ class Fire {
     const usersRef = this.firestore.collection("users");
     return new Promise((res, rej) => {
       if (!alreadyExists) {
-        usersRef
-          .where("id", "in", participantIds)
-          .get()
-          .then((snapshot) => {
-            snapshot.forEach((doc) => {
-              usersRef.doc(doc.data().id).collection("chats").add({
-                id: chatId,
-                lastTimestamp: timeCreated,
-                new: true,
-                newCount: 0,
+
+        //If created group chat.
+        if (groupChatInfo) {
+          const youCreatedMessage = {
+            text: "You created this group.",
+            timestamp: timeCreated,
+            system: true,
+            // Any additional custom parameters are passed through
+          }
+          const createdMessage = {
+            text: getName(creatorInfo) + " created this group.",
+            timestamp: timeCreated,
+            system: true,
+            // Any additional custom parameters are passed through
+          }
+          const addedMessage = {
+            text: getName(creatorInfo) + " added you.",
+            timestamp: timeCreated + 1,
+            system: true,
+            // Any additional custom parameters are passed through
+          }
+
+          usersRef
+            .where("id", "in", participantIds)
+            .get()
+            .then((snapshot) => {
+              snapshot.forEach((doc) => {
+                const currentUser = doc.data().id === creatorInfo.uid;
+                const chatRef = usersRef.doc(doc.data().id).collection("chats").doc(chatId)
+                chatRef.set({
+                  id: chatId,
+                  groupChatInfo: groupChatInfo,
+                  lastMessage: currentUser ? youCreatedMessage : addedMessage,
+                  new: currentUser ? false : true,
+                  newCount: currentUser ? 0 : 1,
+                }).then(() => {
+                  if (currentUser) {
+                    chatRef.collection('messages').add(youCreatedMessage);
+                  }
+                  else {
+                    chatRef.collection('messages').add(createdMessage);
+                    chatRef.collection('messages').add(addedMessage);
+                  }
+                  res(chatInfo);
+                });
               });
             });
+        }
+        else {
+          usersRef.doc(creatorInfo.uid).collection('chats').doc(chatId).set({
+            id: chatId,
+            groupChatInfo: groupChatInfo,
+            lastMessage: null,
+            new: false,
+            newCount: 0,
+          }).then(() => {
             res(chatInfo);
-          });
+          })
+        }
       } else {
         res(chatInfo);
       }

@@ -44,7 +44,7 @@ export default class AppPage extends React.Component {
       .onSnapshot((snapshot) => {
         let changes = snapshot.docChanges();
 
-        this.getChats.then(() => {
+        this.getChats(changes, chatsArray).then(() => {
           var getChatCount = new Promise((resolve, reject) => {
             chatsArray.forEach((item, index, array) => {
               if (item.newCount > 0) {
@@ -135,7 +135,7 @@ export default class AppPage extends React.Component {
       changes.forEach((change, index, array) => {
 
         const newChatData = change.doc.data();
-        this.getChatParticipantIds(change.id).then(participantIds => {
+        this.getChatParticipantIds(change.doc.id).then(participantIds => {
           const newChatItem = {
             id: newChatData.id,
             timestamp: newChatData.lastTimestamp,
@@ -183,9 +183,10 @@ export default class AppPage extends React.Component {
   getChatParticipantIds(chatId) {
     const chatRef = firebase.firestore().collection('chats').doc(chatId);
     return new Promise((resolve, reject) => {
-      chatRef.get.then(chatDoc => {
+      chatRef.get().then(chatDoc => {
         const chatData = chatDoc.data();
-        resolve(Object.keys(chatData.participantIds));
+        const participantIds = Object.keys(chatData.participantIds);
+        resolve(participantIds);
       })
     });
   }

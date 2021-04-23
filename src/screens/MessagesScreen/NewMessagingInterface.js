@@ -61,9 +61,11 @@ export default class MessagingInterface extends React.Component{
         this.setState({userData: usersArray});
         //Getting messages.
         let messagesArray = [];
-        const chatRef = firebase.firestore().collections('users').doc(this.props.userData.uid)
+        const chatRef = firebase.firestore().collection('users').doc(this.props.userData.uid)
         .collection("chats").doc(this.props.route.params.chat.id);
-        const unsubscribe = chatRef
+
+        //Getting messages
+        this._unsubscribe = chatRef
           .collection('messages')
           .orderBy('timestamp', 'desc')
           .onSnapshot((snapshot) => {
@@ -73,14 +75,25 @@ export default class MessagingInterface extends React.Component{
               if (change.type === 'added') {
                 const newMessage = change.doc.data();
                 const userItem = this.state.userData.find((user) => user.uid === newMessage.senderId);
-                const newMessageData = {
-                  _id: change.doc.id,
-                  text: newMessage.text,
-                  createdAt: newMessage.timestamp,
-                  user: {
-                    _id: newMessage.senderId,
-                    name: getFullName(userItem),
-                  },
+                let newMessageData;
+                if (newMessage.system) {
+                  newMessageData = {
+                    _id: change.doc.id,
+                    text: newMessage.text,
+                    createdAt: newMessage.timestamp,
+                    system: true,
+                  }
+                }
+                else {
+                  newMessageData = {
+                    _id: change.doc.id,
+                    text: newMessage.text,
+                    createdAt: newMessage.timestamp,
+                    user: {
+                      _id: newMessage.senderId,
+                      name: getFullName(userItem),
+                    },
+                  }
                 }
                 messagesArray.unshift(newMessageData);
               }
@@ -92,6 +105,7 @@ export default class MessagingInterface extends React.Component{
     }
 
     componentWillUnmount() {
+      this._unsubscribe();
     }
 
     getParticipants(usersArray) {
@@ -133,52 +147,56 @@ export default class MessagingInterface extends React.Component{
       const userMessagesRef = userChatRef.collection('messages')
       const currentUser = uid === this.props.userData.uid;
 
-      this.addToUserChats(messageItem, chatId, userChatRef, currentUser)
-      userMessagesRef.add(messageItem);
+      this.addToUserChats(messageItem, chatId, userChatRef, currentUser).then(() => {
+        userMessagesRef.add(messageItem);
+      })
     }
 
-    addToUserChats(messageItem, chatId, userChatRef, currentUser) {
+    addToUserChats = async(messageItem, chatId, userChatRef, currentUser) => {
       const increment = firebase.firestore.FieldValue.increment(1);
       const chatInfo = this.props.route.params.chat;
 
       //Checking if chat exists.
-      userChatRef.get().then((userChatDoc) => {
+      return new Promise((resolve, reject) => {
+        userChatRef.get().then((userChatDoc) => {
 
-        //If chat doesn't exist for user.
-        if (!userChatDoc.exists) {
+          //If chat doesn't exist for user.
+          if (!userChatDoc.exists) {
 
-          //Creating chat header.
-          userChatRef.set({
-            id: chatId,
-            groupChatInfo: chatInfo.groupChatInfo,
-            lastMessage: messageItem,
-            new: currentUser ? false : true,
-            newCount: currentUser ? 0 : 1,
-          })
-        }
-        
-        else {
-
-          //Updating chat header.
-          if (currentUser)
-          {
+            //Creating chat header.
             userChatRef.set({
+              id: chatId,
+              groupChatInfo: chatInfo.groupChatInfo,
               lastMessage: messageItem,
-            }, {merge: true})
+              new: currentUser ? false : true,
+              newCount: currentUser ? 0 : 1,
+            })
           }
-          else 
-          {
-            userChatRef.set({
-              lastMessage: messageItem,
-              new: true,
-              newCount: increment,
-            }, {merge: true})
-          }
+          
+          else {
 
-        }
+            //Updating chat header.
+            if (currentUser)
+            {
+              userChatRef.set({
+                lastMessage: messageItem,
+              }, {merge: true})
+            }
+            else 
+            {
+              userChatRef.set({
+                lastMessage: messageItem,
+                new: true,
+                newCount: increment,
+              }, {merge: true})
+            }
+
+          }
+          resolve();
+        });
+
+
       })
-
-      
     }
 
     createMessageItem(text, timeCreated) {
@@ -187,16 +205,6 @@ export default class MessagingInterface extends React.Component{
     
     onSend (messages) {
       this.sendMessage(messages[0].text)
-      // Fire.shared
-      // .addMessage({
-      //   senderId: this.props.userData.uid,
-      //   text: messages[0].text,
-      //   chatId: this.props.route.params.chat.id,
-      //   participantIds: this.props.route.params.chat.participantIds,
-      // })
-      // .catch((error) => {
-      //   alert(error);
-      // });
       this.setState(previousState => ({
         messages: GiftedChat.append(previousState.messages, messages),
       }))
