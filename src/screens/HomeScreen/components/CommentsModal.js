@@ -145,6 +145,7 @@ export default class CommentsModal extends React.Component {
 
     renderItem = ({ item }) => {
         return <CommentItem {...this.props} comment={item} />;
+
     };
 
 

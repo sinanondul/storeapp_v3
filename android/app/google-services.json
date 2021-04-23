@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "125486026046",
+    "project_id": "newap-a871c",
+    "storage_bucket": "newap-a871c.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:125486026046:android:894d471178224d4c28706f",
+        "android_client_info": {
+          "package_name": "com.sinanondul.updemo"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "125486026046-k7lk5cnlfv6nsrdlo127cl24uuh10lnl.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEx7FfMgYT8xWq05S7OXpRv8DKvHewqgk"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "125486026046-k7lk5cnlfv6nsrdlo127cl24uuh10lnl.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -29,6 +29,21 @@ export default class AppPage extends React.Component {
     courses: [],
     courseNotificationCount: 0,
   };
+  pushNewMessage = (targetToken) => {
+    let response = fetch("https://exp.host/--/api/v2/push/send", {
+      method: "POST",
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({
+        to: { targetToken },
+        sound: "default",
+        title: "New Comment",
+        body: "XXX commented on your post",
+      }),
+    });
+  };
 
   componentDidMount() {
     //Adding chats
@@ -49,6 +64,12 @@ export default class AppPage extends React.Component {
             chatsArray.forEach((item, index, array) => {
               if (item.newCount > 0) {
                 messageCount = messageCount + 1;
+                if (item.groupChatInfo) {
+                  //get groupchat .avatar, .message, userid
+                  //item.lastMessage timestamp
+                } else {
+                  //
+                }
               }
               if (index === array.length -1) resolve();
             })
