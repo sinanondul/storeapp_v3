@@ -1,9 +1,7 @@
 import React, {useCallback} from "react";
-import {View, Platform, Header, Text, TouchableOpacity, StyleSheet, FlatList, Alert} from "react-native";
-import {Avatar} from "react-native-paper";
+import {View, Platform, Text, TouchableOpacity, FlatList, Alert} from "react-native";
+import Clipboard from 'expo-clipboard';
 import {GiftedChat} from "react-native-gifted-chat";
-import {HeaderBackButton} from "@react-navigation/stack";
-import {AsyncStorage} from '@react-native-async-storage/async-storage';
 
 import {getFullName, getAvatar, getGroupChatName, getGroupChatAvatar} from "../../functions/UserInfoFormatter";
 import styles from "./styles";
@@ -13,6 +11,9 @@ import firebase from 'firebase';
 
 export default class MessagingInterface extends React.Component{
     
+    constructor(props) {
+      super(props);
+    }
     
     state={
         messages: [],
@@ -141,6 +142,25 @@ export default class MessagingInterface extends React.Component{
       }))
     }
 
+    onLongPress(context, message) {
+      const options = ['Delete Message', 'Copy', 'Cancel'];
+      const cancelButtonIndex = options.length - 1;
+      const messageText = message.text;
+      context.actionSheet().showActionSheetWithOptions({
+          options,
+          cancelButtonIndex
+      }, (buttonIndex) => {
+          switch (buttonIndex) {
+              case 0:
+                this.deleteMessage(message._id);
+                break;
+              case 1:
+                Clipboard.setString(messageText);
+                break;
+          }
+      });
+    }
+
     //Backend functions.
 
     sendMessage(text) {
@@ -156,17 +176,45 @@ export default class MessagingInterface extends React.Component{
       const chatId = this.props.route.params.chat.id;
       const chatRef = firebase.firestore().collection('users').doc(this.props.userData.uid).collection('chats').doc(chatId);
       const currLastMessage = this.props.route.params.chat.lastMessage;
+      let currentMessages = this.state.messages;
 
-      var currentMessages = this.state.messages;
-      const index = currentMessages.findIndex((item) => item.id === newChatRef.id)
+      //Backend delete.
+      chatRef.collection('messages').doc(messageId).delete();
+
+      //Local delete.
+      const index = currentMessages.findIndex((item) => item._id === messageId)
       currentMessages.splice(index, 1);
+      this.setState({messages: currentMessages});
 
-      //Checking to update last message.
-      if (currLastMessage.id == messageId) {
+      //Fixing last message.
+      if (currLastMessage.id === messageId) {
+        const localLastMessage = currentMessages[0]
+        let newLastMessage;
+        if (localLastMessage.system) {
+          newLastMessage = {
+            id: localLastMessage._id,
+            text: localLastMessage.text,
+            timestamp: localLastMessage.createdAt,
+            system: false,
+          }
+        }
+        else {
+          newLastMessage = {
+            id: localLastMessage._id,
+            senderId: localLastMessage.user._id,
+            text: localLastMessage.text,
+            timestamp: localLastMessage.createdAt,
+            system: false,
+          }
+        }
+        this.props.route.params.chat.lastMessage = newLastMessage;
+
+        chatRef.set({
+          lastMessage: newLastMessage,
+        }, {merge: true});
       }
 
-      //Deleting message from current user.
-      chatRef.collection('messages').doc(messageId).delete();
+      
     }
 
     //sendMessage subfunctions.
@@ -235,6 +283,8 @@ export default class MessagingInterface extends React.Component{
           newCount: increment,
         }, {merge: true})
       }
+
+      this.props.route.params.chat.lastMessage = {...messageItem, id: messageId};
     }
 
     //Creating message item.
@@ -249,6 +299,7 @@ export default class MessagingInterface extends React.Component{
             <GiftedChat
                 messages={this.state.messages}
                 onSend={messages => this.onSend(messages)}
+                onLongPress={(context, message) => this.onLongPress(context, message)}
                 user={{
                   _id: this.props.userData.uid,
                 }}
