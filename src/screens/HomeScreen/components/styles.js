@@ -1,6 +1,10 @@
 import { StyleSheet } from "react-native";
 
 const styles = StyleSheet.create({
+  feed: {
+    //marginVertical: 10,
+  },
+
   interactiveBar: {
     height: 30,
     justifyContent: "flex-start",
@@ -10,7 +14,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
   },
   button: {
-    alignItems: 'center',
+    alignItems: "center",
     marginRight: "25%",
   },
   buttonInner: {
@@ -33,7 +37,7 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: '#00000080',
+    backgroundColor: "#00000080",
     //marginTop: 22,
   },
   modalView: {
@@ -71,6 +75,8 @@ const styles = StyleSheet.create({
     color: "white",
     fontWeight: "bold",
     textAlign: "center",
+    paddingTop: 0,
+    paddingBottom: 0,
   },
   textInputStyle: {
     alignItems: "center",
@@ -80,7 +86,9 @@ const styles = StyleSheet.create({
     height: 40,
     width: "80%",
     textAlignVertical: "top",
-    padding: 10
+    padding: 10,
+    paddingTop: 9,
+    paddingBottom: 0,
   },
   modalText: {
     marginBottom: 15,

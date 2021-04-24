@@ -85,21 +85,35 @@ export default class CommentItem extends React.Component {
                 {this.state.nameinit
                   ? getAvatar(this.state.senderInfo, 30)
                   : null}
-                <View style={{ flexDirection: "row" }}>
-                  { this.state.nameinit
-                    ? <Text style={{ fontWeight: "500" }}>
-                        {getFullName(this.state.senderInfo)}
-                      </Text>
-                    : null
-                  }
+                <View
+                  style={{
+                    flexDirection: "row",
+                    paddingLeft: 5,
+                    borderWidth: 2,
+                    height: 20,
+                  }}
+                >
+                  {this.state.nameinit ? (
+                    <Text style={{ fontWeight: "500" }}>
+                      {getFullName(this.state.senderInfo)}
+                    </Text>
+                  ) : null}
                   <Text style={{ fontWeight: "100" }}>
-                    {"@" + this.state.senderInfo.handle}
-                  </Text>
-                  <Text style={{ paddingLeft: 5 }}>
-                    {this.props.comment.text}
+                    {" @" + this.state.senderInfo.handle}
                   </Text>
                 </View>
               </View>
+              <View
+                style={{ borderWidth: 2, marginLeft: 30, marginBottom: 40 }}
+              >
+                <Text style={{ paddingBottom: 20 }}>
+                  {this.props.comment.text}
+                </Text>
+              </View>
+              <Text style={styles.timestamp}>
+                {getTimeSince(this.props.post.timestamp)}
+              </Text>
+
               {/* <View style={styles.userText}>
                   {this.state.nameinit ? (
                     <Text style={styles.name}>
@@ -114,10 +128,6 @@ export default class CommentItem extends React.Component {
                     Thisisacommentthisisacommentasdjnsadjaskndkasndaskdmnaskdn
                   </Text>
                 </View> */}
-
-              <Text style={styles.timestamp}>
-                {getTimeSince(this.props.post.timestamp)}
-              </Text>
             </TouchableOpacity>
 
             <View style={styles.feedContent}>

@@ -95,23 +95,22 @@ const styles = StyleSheet.create({
   },
   row: {
     flexDirection: "row",
-    marginBottom: 10,
+    marginBottom: 3,
     marginRight: 20,
   },
   userInfoSection: {
     paddingHorizontal: 0,
     marginBottom: 3,
     flexDirection: "row",
-    marginTop: 15,
+    //marginTop: 15,
     paddingStart: 12,
   },
   userInfoSectionLower: {
     paddingHorizontal: 2,
     marginBottom: 0,
     flexDirection: "row",
-
     marginTop: 0,
-    paddingStart: 12,
+    paddingLeft: 12,
   },
   infoBoxWrapper: {
     borderTopColor: "#dddddd",

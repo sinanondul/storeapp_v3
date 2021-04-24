@@ -62,14 +62,14 @@ export default class DrawerContent extends React.Component {
             style={{ flexDirection: "row", marginLeft: 20, marginBottom: 18 }}
           >
             <Text style={{ fontWeight: "500", color: "#FFF", marginRight: 15 }}>
-              {getFollowersCount(this.props.userData)}
+              {getFollowersCount(this.props.userData) + " "}
               <Text style={{ fontWeight: "100", color: "#FFF" }}>
                 Followers
               </Text>
             </Text>
 
             <Text style={{ fontWeight: "500", color: "#FFF" }}>
-              {getFollowingCount(this.props.userData)}
+              {getFollowingCount(this.props.userData) + " "}
               <Text style={{ fontWeight: "100", color: "#FFF" }}>
                 Following
               </Text>
