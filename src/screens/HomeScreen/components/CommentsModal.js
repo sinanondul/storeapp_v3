@@ -81,6 +81,12 @@ export default class CommentsModal extends React.Component {
       const increment = firebase.firestore.FieldValue.increment(1);
       postRef.update({ commentCount: increment });
 
+      //
+      if (this.props.post.senderId !== this.props.userData.uid) {
+        const notificationItem = Fire.shared.getCommentNotificationItem(this.props.userData, this.props.post, commentItem.text);
+        Fire.shared.addNotificationItem(notificationItem);
+      }
+
       //Adding to post's local comments.
       let commentsArray = this.state.comments;
       commentsArray.push({
