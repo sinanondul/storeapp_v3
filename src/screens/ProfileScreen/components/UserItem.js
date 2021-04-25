@@ -28,12 +28,30 @@ export default class UserItem extends React.Component {
       .firestore()
       .collection("users")
       .doc(this.props.uid);
-    //Alert.alert(this.props.uid);
     userRef
       .get()
       .then((userDoc) => {
         const userInfo = userDoc.data();
-        this.setState({ userInfo: userInfo });
+        const userInfoItem = {
+          uid: userInfo.id,
+          email: userInfo.email,
+          fullName: userInfo.fullName,
+          name: userInfo.name,
+          surename: userInfo.surename,
+          avatar: userInfo.avatar,
+          handle: userInfo.handle,
+          department: userInfo.department,
+          about: userInfo.about,
+          phone: userInfo.phone,
+          location: userInfo.location,
+          myPosts: userInfo.myPosts,
+          favPosts: userInfo.favPosts,
+          upedPosts: userInfo.upedPosts,
+          following: userInfo.following,
+          followers: userInfo.followers,
+          token: userInfo.token,
+        }
+        this.setState({ userInfo: userInfo});
       })
       .catch((error) => {
         Alert.alert(error.toString());
@@ -72,11 +90,14 @@ export default class UserItem extends React.Component {
           </View>
           {/* TODO SELF PROFILE CHECK */}
           <View style={styles.buttonView}>
-            <FollowButton
-              userData={this.props.userData}
-              targetId={this.props.userInfo.uid}
-            />
-          </View>
+            {this.state.userInfo && this.state.userInfo.uid !== this.props.userData.uid
+              ? <FollowButton
+                  userData={this.props.userData}
+                  targetId={this.props.uid}
+                />
+              : null
+            }
+            </View>
         </View>
       </View>
     );
