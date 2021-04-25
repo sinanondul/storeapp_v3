@@ -14,29 +14,14 @@ const styles = StyleSheet.create({
     borderBottomColor: "#f4f4f4",
     borderBottomWidth: 1,
   },
-  messageItem2: {
-    //height: 80,
-    backgroundColor: "#FFF",
-    flexDirection: "row",
-    borderTopColor: "#f4f4f4",
-    borderTopWidth: 1,
-    borderBottomColor: "#f4f4f4",
-    borderBottomWidth: 1,
-    paddingLeft: 20,
-  },
+
   messageAvatar: {
     height: 80,
     flex: 0.2,
     justifyContent: "center",
     alignItems: "center",
   },
-  messageAvatar2: {
-    height: 80,
-    flex: 0.2,
-    justifyContent: "center",
-    alignItems: "center",
-    paddingLeft: 5,
-  },
+
   messageText: {
     flex: 0.8,
     flexDirection: "column",
@@ -53,18 +38,11 @@ const styles = StyleSheet.create({
     flex: 0.5,
     flexDirection: "row",
   },
-  messageHeader2: {
-    flex: 0.5,
-    flexDirection: "column",
-  },
+
   messageTitle: {
     flex: 0.7,
   },
-  messageTitle2: {
-    flex: 0.7,
-    paddingLeft: 20,
-    //paddingTop: 10,
-  },
+
   titleText: {
     fontSize: 17,
     fontWeight: "bold",
@@ -112,6 +90,41 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     color: "#fff",
     marginLeft: 5,
+  },
+  outer: {
+    flex: 1,
+    minHeight: 70,
+    borderBottomWidth: 1,
+    borderBottomColor: "pink",
+    //borderTopWidth: 1,
+  },
+  rowView: {
+    flexDirection: "row",
+    flex: 1,
+    flexWrap: "nowrap",
+  },
+  avatarColumn: {
+    flex: 0.15,
+    padding: 12,
+  },
+  textColumn: {
+    paddingTop: 12,
+    paddingLeft: 10,
+
+    flexDirection: "column",
+    flex: 0.6,
+  },
+  buttonView: {
+    flex: 0.35,
+    alignItems: "center",
+    paddingTop: 12,
+  },
+  name: {
+    fontWeight: "600",
+  },
+  handle: {
+    fontWeight: "100",
+    color: "gray",
   },
 });
 

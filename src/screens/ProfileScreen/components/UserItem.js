@@ -24,12 +24,11 @@ export default class UserItem extends React.Component {
   };
 
   componentDidMount() {
-    Alert.alert("mounting");
     const userRef = firebase
       .firestore()
       .collection("users")
       .doc(this.props.uid);
-    Alert.alert(this.props.uid);
+    //Alert.alert(this.props.uid);
     userRef
       .get()
       .then((userDoc) => {
@@ -43,37 +42,41 @@ export default class UserItem extends React.Component {
 
   render() {
     return (
-      <View style={styles.messageItem2}>
-        <View style={styles.messageAvatar2}>
-          {this.state.userInfo ? getAvatar(this.state.userInfo, 55) : null}
-        </View>
-        <View style={styles.messageText}>
-          <View style={styles.messageHeader2}>
-            <View style={styles.messageTitle2}>
-              <Text style={styles.titleText} numberOfLines={1}>
+      <View style={styles.outer}>
+        <View style={styles.rowView}>
+          <View style={styles.avatarColumn}>
+            {this.state.userInfo ? getAvatar(this.state.userInfo, 55) : null}
+          </View>
+          <View style={styles.textColumn}>
+            <View>
+              <Text style={styles.name} numberOfLines={1}>
                 {this.state.userInfo ? getFullName(this.state.userInfo) : null}
               </Text>
             </View>
-            <View style={styles.messageTitle2}>
-              <Text style={styles.titleText} numberOfLines={1}>
+            {/* {getHandle(this.state.userInfo) ? ( */}
+            <View>
+              <Text style={styles.handle} numberOfLines={1}>
                 {this.state.userInfo
                   ? "@" + getHandle(this.state.userInfo)
                   : null}
               </Text>
             </View>
-            {/* <View style={styles.messageTitle2}>
-
-            </View> */}
+            {/* ) : null} */}
+            {/* {getAbout(this.state.userInfo) ? ( */}
+            <View>
+              <Text>
+                {this.state.userInfo ? getAbout(this.state.userInfo) : null}
+              </Text>
+            </View>
+            {/* ) : null} */}
           </View>
-        </View>
-        <Text style={styles.titleText} numberOfLines={1}>
-          {this.state.userInfo ? getAbout(this.state.userInfo) : null}
-        </Text>
-        <View style={{ padding: 20 }}>
-          <FollowButton
-            userData={this.props.userData}
-            targetId={this.props.userInfo.uid}
-          />
+          {/* TODO SELF PROFILE CHECK */}
+          <View style={styles.buttonView}>
+            <FollowButton
+              userData={this.props.userData}
+              targetId={this.props.userInfo.uid}
+            />
+          </View>
         </View>
       </View>
     );

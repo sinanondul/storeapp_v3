@@ -70,6 +70,7 @@ export default class App extends React.Component {
               avatar: userData.avatar,
               handle: userData.handle,
               location: userData.location,
+              department: userData.department,
               phone: userData.phone,
               about: userData.about,
               myPosts: userData.myPosts,

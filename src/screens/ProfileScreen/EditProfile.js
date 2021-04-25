@@ -26,6 +26,7 @@ import Animated from "react-native-reanimated";
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import firebase from "firebase";
+import { KeyboardAwareScrollView } from "react-native-keyboard-aware-scroll-view";
 //import getFullName from "../../functions/UserInfoFormatter";
 //import firestore from "@react-native-firebase/firestore";
 
@@ -44,6 +45,7 @@ export default class EditProfile extends React.Component {
         id: null,
         name: null,
         handle: null,
+        department: null,
         about: null,
         surename: null,
         fullName: null,
@@ -79,6 +81,7 @@ export default class EditProfile extends React.Component {
         surename: this.props.userData.surename,
         fullName: this.props.userData.fullName,
         email: this.props.userData.email,
+        department: this.props.userData.department,
         avatar: this.props.userData.avatar,
         location: this.props.userData.location,
         phone: this.props.userData.phone,
@@ -122,6 +125,7 @@ export default class EditProfile extends React.Component {
           email: this.state.user.email,
           handle: this.state.user.handle,
           about: this.state.user.about,
+          department: this.state.user.department,
           location: this.state.user.location,
           phone: this.state.user.phone,
           avatar: imgUrl,
@@ -231,13 +235,13 @@ export default class EditProfile extends React.Component {
           enabledGestureInteraction={true}
           enabledContentTapInteraction={false}
         />
-        <KeyboardAvoidingView
-          style={styles.container}
-          behavior="position" //{Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={30}
-          //keyboardVerticalOffset="200" IMPORTANT && ADD KEYBOARDLISTENER TO FIND KEYBOARD HEIGHT AND ADD INSTEAD OF 200 !!!
-        >
-          <ScrollView>
+        <KeyboardAwareScrollView>
+          <KeyboardAvoidingView
+            style={styles.container}
+            behavior={Platform.OS === "ios" ? "padding" : "height"}
+            keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 90}
+            //keyboardVerticalOffset="200" IMPORTANT && ADD KEYBOARDLISTENER TO FIND KEYBOARD HEIGHT AND ADD INSTEAD OF 200 !!!
+          >
             <Animated.View
               style={{
                 margin: 20,
@@ -306,7 +310,7 @@ export default class EditProfile extends React.Component {
                     <Text style={styles.textbox}>Username </Text>
                   </View>
 
-                  <View style={styles.actualInput}>
+                  <View style={styles.textWrapper}>
                     {/* <FontAwesome
                       name="at"
                       color={this.props.textColor}
@@ -314,7 +318,7 @@ export default class EditProfile extends React.Component {
                       paddingTop={20}
                     /> */}
                     <TextInput
-                      placeholder={this.state.user.handle}
+                      placeholder={"@" + this.state.user.handle}
                       placeholderTextColor="#666666"
                       autoCorrect={false}
                       value={this.state.user.handle}
@@ -444,7 +448,7 @@ export default class EditProfile extends React.Component {
                     size={20}
                   /> */}
 
-                  <View style={styles.actualInput}>
+                  <View style={styles.textWrapper}>
                     <TextInput
                       placeholder={this.state.user.location}
                       placeholderTextColor="#666666"
@@ -474,25 +478,22 @@ export default class EditProfile extends React.Component {
                   size={20}
                 /> */}
 
-                  <View style={styles.actualInput2}>
+                  <View style={styles.textAreaContainer}>
                     <TextInput
-                      numberOfLines={3}
-                      multiline
+                      outerFocus={true}
+                      multiline={true}
+                      numberOfLines={4}
+                      maxLength={280}
                       placeholder={this.state.user.about}
-                      placeholderTextColor="#666666"
+                      style={styles.textArea}
                       autoCorrect={false}
+                      placeholderTextColor="#666666"
                       value={this.state.user.about}
                       onChangeText={(txt) =>
                         this.setState({
                           user: { ...this.state.user, about: txt },
                         })
                       }
-                      style={[
-                        styles.textInput2,
-                        {
-                          color: this.props.textColor,
-                        },
-                      ]}
                     />
                   </View>
                 </View>
@@ -506,7 +507,7 @@ export default class EditProfile extends React.Component {
                   size={20}
                 /> */}
 
-                  <View style={styles.actualInput}>
+                  <View style={styles.textWrapper}>
                     <TextInput
                       // placeholder= {{ this.state.user.department ? ({this.state.user.department})  : ("department" )}};
 
@@ -569,8 +570,8 @@ export default class EditProfile extends React.Component {
                 <Text style={styles.panelButtonTitle}>Update</Text>
               </TouchableOpacity>
             </Animated.View>
-          </ScrollView>
-        </KeyboardAvoidingView>
+          </KeyboardAvoidingView>
+        </KeyboardAwareScrollView>
       </View>
     );
   }
@@ -655,6 +656,7 @@ const styles = StyleSheet.create({
   rowBox: {
     width: 90,
     height: 50,
+    //borderWidth: 2,
 
     //justifyContent: "center",
     //alignItems: "center",
@@ -663,30 +665,31 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     //marginTop: 10,
     //marginBottom: 10,
-    borderTopWidth: 2,
+    //borderTopWidth: 2,
     borderTopColor: "#f2f2f2",
     borderBottomWidth: 2,
     borderBottomColor: "#f2f2f2",
     //paddingBottom: 5,
-    alignItems: "center",
+    //alignItems: "center",
     flex: 1,
   },
   largeaction: {
     flexDirection: "row",
     //marginTop: 10,
     //marginBottom: 10,
-    borderTopWidth: 2,
+    //borderTopWidth: 2,
     borderTopColor: "#f2f2f2",
     borderBottomWidth: 2,
     borderBottomColor: "#f2f2f2",
     //paddingBottom: 5,
     //alignItems: "center",
     flex: 1,
-    height: 100,
   },
   textbox: {
+    //borderWidth: 2,
     fontWeight: "bold",
     //alignItems: "center",
+    //paddingTop: 6,
   },
   actionError: {
     flexDirection: "row",
@@ -703,9 +706,27 @@ const styles = StyleSheet.create({
     marginTop: 0, //Platform.OS === "ios" ? 0 : -12,
     //paddingLeft: 20,
     color: "#05375a",
+    //borderWidth: 2,
     //height: 30,
     //width: 290,
     //paddingBottom: 6,
+    minWidth: "100%",
+  },
+  textAreaContainer: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    borderColor: "grey",
+    //borderWidth: 1,
+    //padding: 5,
+  },
+  textArea: {
+    //flex: 0.5,
+    //borderWidth: 2,
+    width: 250,
+    height: 80,
+    justifyContent: "flex-start",
+    //borderWidth: 2,
+    //marginBottom: 2,
   },
   textInput2: {
     //borderWidth: 2,
@@ -731,5 +752,20 @@ const styles = StyleSheet.create({
     width: 250,
     flexDirection: "row",
     //paddingTop: 10,
+  },
+  textWrapper: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    //padding: 10,
+    //borderWidth: 2,
+    flex: 1,
+  },
+  textStyle: {
+    alignItems: "flex-start",
+    justifyContent: "flex-start",
+    width: "100%",
+    textAlignVertical: "top",
+    //paddingBottom: 2,
+    //borderWidth: 2,
   },
 });
