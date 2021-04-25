@@ -29,9 +29,8 @@ const styles = StyleSheet.create({
   },
   regularText: {
     position: "absolute",
-    right: -20,
-    color: "black",
-    fontSize: 18,
+    left: 30,
+    fontSize: 16,
   },
   centeredView: {
     flex: 1,

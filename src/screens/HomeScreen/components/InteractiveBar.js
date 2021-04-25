@@ -93,12 +93,14 @@ export default class InteractiveBar extends React.Component {
           onPress={() => this.props.toggleCommentsModal(this.props.post, this.upCommentCount)}
         >
           <View style={styles.buttonInner}>
-            <Ionicons
-              style={styles.intButtons}
-              name="chatbox-outline"
-              size={20}
-              color="#73788"
-            />
+            <View style={{width: 20, height: 20, flexDirection: 'row'}}>
+              <Ionicons
+                style={styles.intButtons}
+                name="chatbox-outline"
+                size={20}
+                color="#73788"
+              />
+            </View>
             <Text style={styles.regularText}>{commentCount + this.state.commentedCount}</Text>
           </View>
         </TouchableOpacity>
