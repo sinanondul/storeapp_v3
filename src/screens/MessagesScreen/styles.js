@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   outer: {
+    backgroundColor:"blue",
     flex: 1,
     minHeight: 70,
     borderBottomWidth: 1,
