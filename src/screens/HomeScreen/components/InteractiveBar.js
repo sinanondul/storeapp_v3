@@ -29,7 +29,7 @@ export default class InteractiveBar extends React.Component {
 
   toggleUped = () => {
     if (!this.state.uped) {
-      Fire.shared.upPost(this.props.userData, this.props.post.id);
+      Fire.shared.upPost(this.props.userData, this.props.post);
       this.props.post.upCount = this.props.post.upCount + 1;
       this.setState({ uped: true });
     } else {

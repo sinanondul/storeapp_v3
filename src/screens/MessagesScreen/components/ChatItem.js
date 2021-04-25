@@ -70,7 +70,9 @@ export default class ChatItem extends React.Component{
             onPress={() => {
               Fire.shared.resetNewCount({uid: userId, chatId: chatId});
               return(this.props.navigation.navigate('Messaging', {senderInfo: this.state.senderInfo, chat: this.props.chat}));}
-            } 
+            }
+            delayLongPress={1000}
+            onLongPress = {() => {}} 
             style={styles.messageItem}>
             <View style={styles.messageAvatar}>
               {this.state.nameinit ? getAvatar(this.state.senderInfo, 47) : null}

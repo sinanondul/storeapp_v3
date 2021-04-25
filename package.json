@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.2",
+    "@react-native-clipboard/clipboard": "^1.7.0",
     "@react-native-community/masked-view": "0.1.10",
     "@react-navigation/bottom-tabs": "^5.11.3",
     "@react-navigation/drawer": "^5.12.2",
@@ -19,6 +20,7 @@
     "base-64": "^0.1.0",
     "expo": "^40.0.1",
     "expo-blur": "^8.2.2",
+    "expo-clipboard": "^1.0.2",
     "expo-constants": "~9.3.3",
     "expo-image-manipulator": "^9.0.0",
     "expo-image-picker": "^10.0.0",
