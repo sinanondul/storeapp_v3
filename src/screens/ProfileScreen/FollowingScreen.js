@@ -7,7 +7,7 @@ import {
   Text,
   StatusBar,
   TouchableOpacity,
-  Alert
+  Alert,
 } from "react-native";
 
 import firebase from "firebase";
@@ -20,31 +20,32 @@ import {
 import UserItem from "./components/UserItem";
 
 export default class FollowingScreen extends React.Component {
+  componentDidMount() {}
 
-  componentDidMount() {
-    
-  }
-
-  renderItem = ({ item }) => { 
+  renderItem = ({ item }) => {
     return (
       <TouchableOpacity>
-        <UserItem uid = {item.id}/>
+        <UserItem
+          uid={item.id}
+          userData={this.props.userData}
+          userInfo={this.props.userInfo}
+        />
       </TouchableOpacity>
     );
-  }
+  };
 
   render() {
-    const followingArray = Object.keys(this.props.userInfo.following)
+    const followingArray = Object.keys(this.props.userInfo.following);
     let followingObjects = [];
-    followingArray.forEach(followingId => {
-      followingObjects.unshift({id: followingId});
-    })
+    followingArray.forEach((followingId) => {
+      followingObjects.unshift({ id: followingId });
+    });
     return (
       <SafeAreaView style={styles.container}>
         <FlatList
           data={followingObjects}
           renderItem={this.renderItem}
-          keyExtractor={item => item.id}
+          keyExtractor={(item) => item.id}
         />
       </SafeAreaView>
     );

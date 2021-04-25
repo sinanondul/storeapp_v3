@@ -81,6 +81,7 @@ export default class FeedItem extends React.Component {
             surename: userData.surename,
             avatar: userData.avatar,
             handle: userData.handle,
+            department: userData.department,
             about: userData.about,
             phone: userData.phone,
             location: userData.location,

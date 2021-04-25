@@ -25,6 +25,10 @@
       "supportsTablet": true,
       "bundleIdentifier": "com.sinanondul.up-demo"
     },
+    "android":{
+      "package":"com.sinanondul.updemo",
+      "googleServicesFile": "./android/app/google-services.json"
+    },
     "description": ""
   }
 }
