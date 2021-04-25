@@ -574,6 +574,59 @@ class Fire {
   
   //Comment notification generators.
 
+  addCommentNotification(notificationItem, notificationsRef, docString) {
+    const finalDocString = docString + "_comment";
+    const notificationRef = notificationsRef.doc(finalDocString);
+
+    notificationRef.get().then(notificationDoc => {
+      if (notificationDoc.exists) {
+        let previousNotification = notificationDoc.data();
+        if (!previousNotification.senderIds[notificationItem.senderInfo.uid]) {
+          let newNotification = this.createUpNotification(notificationItem, previousNotification);
+          notificationRef.set({...newNotification})
+        }
+      }
+      else {
+        let newNotification = this.createUpNotification(notificationItem);
+        notificationRef.set({...newNotification})
+      }
+    })
+  }
+
+  getCommentNotificationItem(senderInfo, post) {
+    return {
+      targetInfo: {
+        type: "post",
+        action: "comment",
+        postId: post.id,
+        uid: post.senderId,
+      },
+      senderInfo: {
+        uid: senderInfo.uid,
+        avatar: senderInfo.avatar,
+        name: senderInfo.name,
+      },
+      timestamp: this.timestamp,
+    };
+  }
+
+  createCommentNotification(notificationItem, previousNotification = null)
+  {
+    let senderIds = previousNotification ? previousNotification.senders : {};
+    senderIds[notificationItem.senderInfo.uid] = true;
+    return {
+      targetInfo: {
+        type: notificationItem.targetInfo.type,
+        action: notificationItem.targetInfo.action,
+        postId: notificationItem.targetInfo.postId,
+      },
+      timestamp: notificationItem.timestamp,
+      senderCount: previousNotification ? previousNotification.senderCount + 1 : 1,
+      lastSender: notificationItem.senderInfo,
+      senderIds: senderIds, 
+      new: true,
+    }
+  }
 
 
   //Social Methods
