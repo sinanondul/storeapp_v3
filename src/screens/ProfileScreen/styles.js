@@ -99,6 +99,7 @@ const styles = StyleSheet.create({
     marginRight: 20,
   },
   userInfoSection: {
+    marginTop: 2,
     paddingHorizontal: 0,
     marginBottom: 3,
     flexDirection: "row",
@@ -109,7 +110,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 2,
     marginBottom: 0,
     flexDirection: "row",
-    marginTop: 0,
+    marginTop: 2,
     paddingLeft: 12,
   },
   infoBoxWrapper: {
