@@ -7,6 +7,7 @@ import {
   FlatList,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
   Alert,
   KeyboardAvoidingView,
 } from "react-native";
@@ -57,6 +58,7 @@ export default class CommentsModal extends React.Component {
 
   addComment = () => {
     this.setState({ text: "" });
+    this.props.upCommentCount();
 
     const postId = this.props.post.id;
     const postRef = firebase.firestore().collection("posts").doc(postId);
@@ -179,88 +181,92 @@ export default class CommentsModal extends React.Component {
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        style={styles.centeredView}
+        style={{flex: 1}}
       >
-        <View style={styles.modalView}>
-          <View
-            style={{
-              flex: 1,
-              backgroundColor: "#f0fbff",
-              margin: 10,
-            }}
-          >
-            <FlatList
-              ref={(ref) => (this.flatList = ref)}
-              onContentSizeChange={() =>
-                this.flatList.scrollToEnd({ animated: true })
-              }
-              onLayout={() => this.flatList.scrollToEnd({ animated: true })}
-              style={styles.feed}
-              data={this.state.comments}
-              renderItem={this.renderItem}
-              keyExtractor={(item) => item.id}
-              showsVerticalScrollIndicator={false}
-              extraData={this.state}
-              scrollEnabled={true}
-            />
+        <TouchableOpacity style={styles.centeredView} activeOpacity={1} onPressOut={this.props.toggleCommentsModal}>
+          <TouchableWithoutFeedback>
+            <View style={styles.modalView}>
+              <View
+                style={{
+                  flex: 1,
+                  backgroundColor: "#f0fbff",
+                  margin: 10,
+                }}
+              >
+                <FlatList
+                  ref={(ref) => (this.flatList = ref)}
+                  onContentSizeChange={() =>
+                    this.flatList.scrollToEnd({ animated: true })
+                  }
+                  onLayout={() => this.flatList.scrollToEnd({ animated: true })}
+                  style={styles.feed}
+                  data={this.state.comments}
+                  renderItem={this.renderItem}
+                  keyExtractor={(item) => item.id}
+                  showsVerticalScrollIndicator={false}
+                  extraData={this.state}
+                  scrollEnabled={true}
+                />
 
-            <View style={{ flexDirection: "row" }}>
-              <TextInput
-                outerFocus={true}
-                multiline={true}
-                maxLength={280}
-                placeholder="Type a comment..."
-                onChangeText={this.onChangeText}
-                value={this.state.text}
-                style={styles.textStyle}
-                style={styles.textInputStyle}
-              />
+                <View style={{ flexDirection: "row" }}>
+                  <TextInput
+                    outerFocus={true}
+                    multiline={true}
+                    maxLength={280}
+                    placeholder="Type a comment..."
+                    onChangeText={this.onChangeText}
+                    value={this.state.text}
+                    style={styles.textStyle}
+                    style={styles.textInputStyle}
+                  />
 
-              {this.state.text && this.state.text !== "" ? (
-                <TouchableOpacity
-                  style={{
-                    borderRadius: 20,
-                    height: 40,
-                    backgroundColor: "#f4511e",
-                    width: 50,
-                    justifyContent: "center",
-                    alignContent: "center",
-                    marginLeft: 10,
-                  }}
-                  onPress={this.addComment}
-                >
-                  <Ionicons
-                    style={{ alignSelf: "center" }}
-                    name="send"
-                    size={20}
-                    color="white"
-                  />
-                </TouchableOpacity>
-              ) : (
-                <View
-                  style={{
-                    borderRadius: 20,
-                    height: 40,
-                    backgroundColor: "#808080",
-                    width: 50,
-                    justifyContent: "center",
-                    alignContent: "center",
-                    marginLeft: 10,
-                  }}
-                >
-                  <Ionicons
-                    style={{ alignSelf: "center" }}
-                    name="send"
-                    size={20}
-                    color="white"
-                  />
+                  {this.state.text && this.state.text !== "" ? (
+                    <TouchableOpacity
+                      style={{
+                        borderRadius: 20,
+                        height: 40,
+                        backgroundColor: "#f4511e",
+                        width: 50,
+                        justifyContent: "center",
+                        alignContent: "center",
+                        marginLeft: 10,
+                      }}
+                      onPress={this.addComment}
+                    >
+                      <Ionicons
+                        style={{ alignSelf: "center" }}
+                        name="send"
+                        size={20}
+                        color="white"
+                      />
+                    </TouchableOpacity>
+                  ) : (
+                    <View
+                      style={{
+                        borderRadius: 20,
+                        height: 40,
+                        backgroundColor: "#808080",
+                        width: 50,
+                        justifyContent: "center",
+                        alignContent: "center",
+                        marginLeft: 10,
+                      }}
+                    >
+                      <Ionicons
+                        style={{ alignSelf: "center" }}
+                        name="send"
+                        size={20}
+                        color="white"
+                      />
+                    </View>
+                  )}
                 </View>
-              )}
-            </View>
-          </View>
+              </View>
 
-          <TopLeftXButton onPress={this.props.toggleCommentsModal} />
-        </View>
+              <TopLeftXButton onPress={this.props.toggleCommentsModal} />
+            </View>
+          </TouchableWithoutFeedback>
+        </TouchableOpacity>
       </KeyboardAvoidingView>
     );
   }

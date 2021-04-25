@@ -153,9 +153,7 @@ export default class FeedItem extends React.Component {
             <InteractiveBar
               userData={this.props.userData}
               post={this.props.post}
-              toggleCommentsModal={() =>
-                this.props.toggleCommentsModal(this.props.post)
-              }
+              toggleCommentsModal={this.props.toggleCommentsModal}
             />
           </View>
         </View>
