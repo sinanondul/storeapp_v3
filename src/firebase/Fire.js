@@ -15,6 +15,18 @@ class Fire {
     }
   }
 
+  
+
+  get firestore() {
+    return firebase.firestore();
+  }
+  get uid() {
+    return (firebase.auth().currentUser || {}).uid;
+  }
+  get timestamp() {
+    return Date.now();
+  }
+
   //Global functions
 
   deleteCollection = async(db, collectionPath, batchSize) => {
@@ -89,18 +101,23 @@ class Fire {
   };
 
   //Upping (liking) a post.
-  upPost(userData, postId) {
+  upPost(userData, post) {
 
     //Local update.
-    userData.upedPosts[postId] = true;
+    userData.upedPosts[post.id] = true;
 
     //Firebase consts.
     const userRef = this.firestore.collection('users').doc(userData.uid);
-    const postRef = this.firestore.collection('posts').doc(postId);
+    const postRef = this.firestore.collection('posts').doc(post.id);
     const increment = firebase.firestore.FieldValue.increment(1);
 
     //Incrementing up count of post.
     postRef.update({upCount: increment})
+
+    //Sending notification.
+    if (post.senderId !== userData.uid) {
+      this.addNotificationItem(this.getUpNotificationItem(userData, post));
+    }
 
     //Server update.
     userRef.set({
@@ -179,16 +196,6 @@ class Fire {
       );
     });
   };
-
-  get firestore() {
-    return firebase.firestore();
-  }
-  get uid() {
-    return (firebase.auth().currentUser || {}).uid;
-  }
-  get timestamp() {
-    return Date.now();
-  }
 
   //Messaging Stuff
   addChat = async ({ participantIds, groupChatInfo = null, creatorInfo }) => {
@@ -491,6 +498,83 @@ class Fire {
       });
     }
   };
+
+  //Notifications
+
+  addNotificationItem(notificationItem) {
+    const notificationsRef = firebase.firestore().collection('users').doc(notificationItem.targetInfo.uid).collection('notifications');
+    if (notificationItem.targetInfo.type === "post") {
+      this.addPostNotification(notificationItem, notificationsRef);
+    }
+  }
+
+  addPostNotification(notificationItem, notificationsRef) {
+    const docString = "post_" + notificationItem.targetInfo.postId;
+    if (notificationItem.targetInfo.action === "up") {
+      this.addUpNotification(notificationItem, notificationsRef, docString)
+    }
+  }
+
+  //Up notification generators.
+
+  addUpNotification(notificationItem, notificationsRef, docString) {
+    const finalDocString = docString + "_up";
+    const notificationRef = notificationsRef.doc(finalDocString);
+
+    notificationRef.get().then(notificationDoc => {
+      if (notificationDoc.exists) {
+        let previousNotification = notificationDoc.data();
+        if (!previousNotification.senderIds[notificationItem.senderInfo.uid]) {
+          let newNotification = this.createUpNotification(notificationItem, previousNotification);
+          notificationRef.set({...newNotification})
+        }
+      }
+      else {
+        let newNotification = this.createUpNotification(notificationItem);
+        notificationRef.set({...newNotification})
+      }
+    })
+  }
+
+  getUpNotificationItem(senderInfo, post) {
+    return {
+      targetInfo: {
+        type: "post",
+        action: "up",
+        postId: post.id,
+        uid: post.senderId,
+      },
+      senderInfo: {
+        uid: senderInfo.uid,
+        avatar: senderInfo.avatar,
+        name: senderInfo.name,
+      },
+      timestamp: this.timestamp,
+    };
+  }
+
+  createUpNotification(notificationItem, previousNotification = null)
+  {
+    let senderIds = previousNotification ? previousNotification.senders : {};
+    senderIds[notificationItem.senderInfo.uid] = true;
+    return {
+      targetInfo: {
+        type: notificationItem.targetInfo.type,
+        action: notificationItem.targetInfo.action,
+        postId: notificationItem.targetInfo.postId,
+      },
+      timestamp: notificationItem.timestamp,
+      senderCount: previousNotification ? previousNotification.senderCount + 1 : 1,
+      lastSender: notificationItem.senderInfo,
+      senderIds: senderIds, 
+      new: true,
+    }
+  }
+
+  
+  //Comment notification generators.
+
+
 
   //Social Methods
 
