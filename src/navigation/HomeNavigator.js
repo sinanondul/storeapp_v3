@@ -18,6 +18,7 @@ export default function SocialNavigator(props) {
   const userData = props.userData;
   const chats = props.chats;
   const messageCount = props.messageCount;
+  const notifications = props.notifications;
   const notificationCount = props.notificationCount;
   return (
     <SocialStack.Navigator options={{}} mode="modal">
@@ -39,18 +40,14 @@ export default function SocialNavigator(props) {
         name="Messages"
         options={MessagesScreen.navigationOptions}
       >
-        {(props) => (
-          <MessagesScreen {...props} userData={userData} chats={chats} />
-        )}
+        {(props) => ( <MessagesScreen {...props} userData={userData} chats={chats} /> )}
       </SocialStack.Screen>
       <SocialStack.Screen name="Add" options={AddScreen.navigationOptions}>
         {(props) => <AddScreen {...props} userData={userData} />}
       </SocialStack.Screen>
-      <SocialStack.Screen
-        name="Notifications"
-        component={NotificationsScreen}
-        options={NotificationsScreen.navigationOptions}
-      />
+      <SocialStack.Screen name="Notifications" options={NotificationsScreen.navigationOptions}>
+        {(props) => ( <NotificationsScreen {...props} userData={userData} notifications={notifications} /> )}
+      </SocialStack.Screen>
       <SocialStack.Screen
         name="ProfileFromHome"
         options={{ headerShown: false }}

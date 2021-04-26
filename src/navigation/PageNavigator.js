@@ -172,10 +172,13 @@ export default class AppPage extends React.Component {
               }
               if (index === array.length - 1) resolve();
             });
-            getNotificationCount.then(() => {
-              this.setState({ notifications: notificationsArray, notificationCount: notificationCount });
-              notificationCount = 0;
-            });
+          
+          });
+          
+          getNotificationCount.then(() => {
+            this.setState({ notifications: notificationsArray, notificationCount: notificationCount });
+            notificationCount = 0;
+
           });
         })
       })
