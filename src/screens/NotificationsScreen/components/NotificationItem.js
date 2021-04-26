@@ -5,6 +5,7 @@ import firebase from "firebase";
 import moment from "moment";
 
 import {
+  getName,
   getFullName,
   getAvatar,
   getHandle,
@@ -23,71 +24,6 @@ export default class UserItem extends React.Component {
   };
 
   componentDidMount() {
-    //console.log(this.props.notification);
-    //firebase.auth().currentUser;
-    // const notificationsRef = firebase
-    //   .firestore()
-    //   .collection("users")
-    //   .doc(this.props.userData.uid)
-    //   .collection("notifications");
-    // notificationsRef
-    //   .get()
-    //   .then((doc) => {
-    //     if (doc) {
-    //       doc.forEach((doc) => {
-    //         console.log("Document data:", doc.data());
-    //         this.setState({
-    //           notifications: {
-    //             lastSender: {
-    //               avatar: doc.data().avatar,
-    //               name: doc.data().name,
-    //               uid: doc.data().uid,
-    //             },
-    //             new: doc.data().new,
-    //             senderCount: doc.data().senderCount,
-    //             senderIds: doc.data().senderIds,
-    //             targetInfo: {
-    //               action: doc.data().action,
-    //               postId: doc.data().postId,
-    //               type: doc.data().type,
-    //             },
-    //             timestamp: doc.data().timestamp,
-    //           },
-    //         });
-    //       });
-    //     } else {
-    //       // doc.data() will be undefined in this case
-    //       console.log("No such document!");
-    //     }
-    //   })
-    //   .catch((error) => {
-    //     console.log("Error getting document:", error);
-    //   });
-    //alert(notificationsRef);
-    // var user = firebase.auth().currentUser;
-    //const usersRef = firebase.firestore().collection("users").doc();
-    // this.setState({
-    //   userInfo: {
-    //     uid: user.id,
-    //     email: user.email,
-    //     fullName: user.fullName,
-    //     name: user.name,
-    //     surename: user.surename,
-    //     avatar: user.avatar,
-    //     handle: user.handle,
-    //     location: user.location,
-    //     department: user.department,
-    //     phone: user.phone,
-    //     about: user.about,
-    //     myPosts: user.myPosts,
-    //     upedPosts: user.upedPosts,
-    //     favPosts: user.favPosts,
-    //     following: user.following,
-    //     followers: user.followers,
-    //     myComments: user.myComments,
-    //     token: user.token,
-    //   },
-    // });
   }
 
   render() {
@@ -103,8 +39,8 @@ export default class UserItem extends React.Component {
         }}
       >
         <Text>should be visible</Text>
-        {/* <View>{this.props.notification.lastSender.avatar} </View> */}
-        {/* <Text>{this.props.notification.lastSender.name}</Text> */}
+        <View>{getAvatar(this.props.notification.lastSender)}</View> 
+        <Text>{getName(this.props.notification.lastSender)}</Text>
       </View>
     );
   }
