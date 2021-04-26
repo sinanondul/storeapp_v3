@@ -13,34 +13,154 @@ import {
 } from "../../../functions/UserInfoFormatter";
 import Fire from "../../../firebase/Fire";
 import styles from "../styles";
+import { Icon } from "native-base";
 
-export default class UserItem extends React.Component {
+function getTimeSince(timestamp) {
+  moment.updateLocale("en", {
+    relativeTime: {
+      future: "in %s",
+      past: "%s",
+      s: "now",
+      ss: "%d",
+      m: "1m",
+      mm: "%dm",
+      h: "1h",
+      hh: "%dh",
+      d: "1d",
+      dd: "%dd",
+      w: "1w",
+      ww: "%dw",
+      M: "1m",
+      MM: "%dm",
+      y: "1y",
+      yy: "%d",
+    },
+  });
+  return moment(timestamp).fromNow();
+}
+
+export default class NotificationItem extends React.Component {
   constructor(props) {
     super(props);
   }
 
   state = {
     userInfo: {},
+    postimage: null,
+    posttext: "",
   };
 
   componentDidMount() {
+    const postRef = firebase
+      .firestore()
+      .collection("posts")
+      .doc(this.props.notification.targetInfo.postId)
+      .get()
+      .then((doc) => {
+        this.setState({ posttext: doc.data().text });
+      });
+
+    const usersRef = firebase
+      .firestore()
+      .collection("users")
+      
+    const 
+    
   }
 
   render() {
+    const notification = this.props.notification;
+    console.log(notification.targetInfo.action);
     return (
-      //Alert.alert("this.state.userInfo.uid")
-
       <View
-        style={{
-          borderWidth: 3,
-          height: 50,
-          width: "90%",
-          flexDirection: "column",
-        }}
+        style={[
+          styles.outer,
+          notification.new ? styles.outerNew : styles.outerOld,
+        ]}
       >
-        <Text>should be visible</Text>
-        <View>{getAvatar(this.props.notification.lastSender)}</View> 
-        <Text>{getName(this.props.notification.lastSender)}</Text>
+        {notification.targetInfo.action == "comment" ? (
+          //Comment NOTIF
+          <View style={styles.rowView}>
+            <View style={styles.avatarColumn2}>
+              <TouchableOpacity>
+                <View style={{ paddingTop: 5 }}>
+                  {getAvatar(notification.lastSender, 45)}
+                </View>
+              </TouchableOpacity>
+            </View>
+            <View style={styles.notificationTextColumn}>
+              <View style={styles.notificationText}>
+                <View>
+                  <TouchableOpacity>
+                    <Text style={{ fontWeight: "600" }}>
+                      {getName(notification.lastSender)}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+                <View>
+                  {notification.senderCount == 1 ? (
+                    <Text> Commented on your post</Text>
+                  ) : // <Text>
+                  //   and <Text>{notification.senderCount}</Text> others liked
+                  //   your post
+                  // </Text>
+                  null}
+                </View>
+              </View>
+              <View>
+                <Text style={styles.txt}>{notification.text}</Text>
+              </View>
+            </View>
+            <View style={styles.rightView}>
+              <Text style={styles.time}>
+                {getTimeSince(notification.timestamp)}
+              </Text>
+            </View>
+          </View>
+        ) : (
+          //Up NOTIF
+          <View style={styles.rowView}>
+            <View style={styles.avatarColumn2}>
+              <View style={{ paddingTop: 1, paddingLeft: 20 }}>
+                <Icon name="heart" style={{ fontSize: 25, color: "red" }} />
+              </View>
+            </View>
+            <View style={styles.notificationTextColumn}>
+            
+              <View>
+                
+              </View>
+              <View style={styles.notificationText}>
+                <View>
+                  <TouchableOpacity>
+                    <Text style={{ fontWeight: "600" }}>
+                      {getName(notification.lastSender)}
+                    </Text>
+                  </TouchableOpacity>
+                </View>
+
+                <View>
+                  {notification.senderCount == 1 ? (
+                    <Text> liked your Post</Text>
+                  ) : (
+                    <Text>
+                      and <Text>{notification.senderCount}</Text> others liked
+                      your post
+                    </Text>
+                  )}
+                </View>
+              </View>
+              <View>
+                <Text style={styles.txt}>{this.state.posttext}</Text>
+              </View>
+            </View>
+            <View style={styles.rightView}>
+              <Text style={styles.time}>
+                {getTimeSince(notification.timestamp)}
+              </Text>
+            </View>
+          </View>
+        )}
       </View>
     );
   }
@@ -76,7 +196,7 @@ export default class UserItem extends React.Component {
   //           {/* ) : null} */}
   //         </View>
   //         {/* TODO SELF PROFILE CHECK */}
-  //         <View style={styles.buttonView}>
+  //         <View style={styles.rightView}>
   //           {this.state.userInfo &&
   //           this.state.userInfo.uid !== this.props.userData.uid ? (
   //             <FollowButton

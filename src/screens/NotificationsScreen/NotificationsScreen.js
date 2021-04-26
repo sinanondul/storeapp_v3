@@ -16,7 +16,6 @@ import { openDrawer } from "../../../App";
 import NotificationItem from "./components/NotificationItem";
 
 export default class NotificationsScreen extends React.Component {
-
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;
@@ -37,7 +36,7 @@ export default class NotificationsScreen extends React.Component {
   render() {
     //console.log(this.state.notifications); WORKS
     return (
-      <View style={{ borderWidth: 10 }}>
+      <View>
         <FlatList
           style={styles.myposts}
           data={this.props.notifications}
@@ -46,7 +45,6 @@ export default class NotificationsScreen extends React.Component {
           nestedScrollEnabled
           showsVerticalScrollIndicator={true}
         />
-        <Text>should be at bottom of the flatlist</Text>
       </View>
     );
   }
@@ -74,7 +72,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   myposts: {
-    marginTop: 10,
-    borderWidth: 2,
+    //marginTop: 10,
   },
 });
