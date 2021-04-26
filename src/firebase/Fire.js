@@ -513,6 +513,9 @@ class Fire {
     if (notificationItem.targetInfo.action === "up") {
       this.addUpNotification(notificationItem, notificationsRef, docString)
     }
+    else if (notificationItem.targetInfo.action === "comment") {
+      this.addCommentNotification(notificationItem, notificationsRef, docString)
+    }
   }
 
   //Up notification generators.
@@ -582,18 +585,18 @@ class Fire {
       if (notificationDoc.exists) {
         let previousNotification = notificationDoc.data();
         if (!previousNotification.senderIds[notificationItem.senderInfo.uid]) {
-          let newNotification = this.createUpNotification(notificationItem, previousNotification);
-          notificationRef.set({...newNotification})
+          let newNotification = this.createCommentNotification(notificationItem, previousNotification);
+          notificationRef.set({...newNotification}).catch(error => Alert.alert(error.toString()));
         }
       }
       else {
-        let newNotification = this.createUpNotification(notificationItem);
-        notificationRef.set({...newNotification})
+        let newNotification = this.createCommentNotification(notificationItem);
+        notificationRef.set({...newNotification}).catch("Set", error => Alert.alert(error.toString()));
       }
-    })
+    }).catch(error => Alert.alert("Get", error.toString()));
   }
 
-  getCommentNotificationItem(senderInfo, post) {
+  getCommentNotificationItem(senderInfo, post, text) {
     return {
       targetInfo: {
         type: "post",
@@ -606,6 +609,7 @@ class Fire {
         avatar: senderInfo.avatar,
         name: senderInfo.name,
       },
+      text: text,
       timestamp: this.timestamp,
     };
   }
@@ -614,18 +618,20 @@ class Fire {
   {
     let senderIds = previousNotification ? previousNotification.senders : {};
     senderIds[notificationItem.senderInfo.uid] = true;
-    return {
+    const commentNotification = {
       targetInfo: {
         type: notificationItem.targetInfo.type,
         action: notificationItem.targetInfo.action,
         postId: notificationItem.targetInfo.postId,
       },
+      text: notificationItem.text,
       timestamp: notificationItem.timestamp,
       senderCount: previousNotification ? previousNotification.senderCount + 1 : 1,
       lastSender: notificationItem.senderInfo,
       senderIds: senderIds, 
       new: true,
-    }
+    };
+    return commentNotification;
   }
 
 

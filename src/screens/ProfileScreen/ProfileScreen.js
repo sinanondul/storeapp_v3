@@ -32,6 +32,7 @@ export default class ProfileScreen extends React.Component {
         ownerId = this.props.route.params.ownerId;
       }
     }
+
     return (
       <ProfileStack.Navigator
         initialRouteName="Landing"

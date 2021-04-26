@@ -17,9 +17,15 @@ import Fire from "../../../firebase/Fire";
 import styles from "./styles";
 
 export default class InteractiveBar extends React.Component {
+  constructor(props) {
+    super(props)
+    this.upCommentCount = this.upCommentCount.bind(this)
+  }
+
   state = {
     uped: false,
     faved: false,
+    commentedCount: 0,
     posts: [],
   };
 
@@ -48,6 +54,10 @@ export default class InteractiveBar extends React.Component {
       this.setState({ faved: false });
     }
   };
+
+  upCommentCount() {
+    this.setState({commentedCount: this.state.commentedCount + 1});
+  }
 
   render() {
     const { modalVisible } = this.state;
@@ -80,16 +90,18 @@ export default class InteractiveBar extends React.Component {
 
         <TouchableOpacity
           style={styles.button}
-          onPress={this.props.toggleCommentsModal}
+          onPress={() => this.props.toggleCommentsModal(this.props.post, this.upCommentCount)}
         >
           <View style={styles.buttonInner}>
-            <Ionicons
-              style={styles.intButtons}
-              name="chatbox-outline"
-              size={20}
-              color="#73788"
-            />
-            <Text style={styles.regularText}>{commentCount}</Text>
+            <View style={{width: 20, height: 20, flexDirection: 'row'}}>
+              <Ionicons
+                style={styles.intButtons}
+                name="chatbox-outline"
+                size={20}
+                color="#73788"
+              />
+            </View>
+            <Text style={styles.regularText}>{commentCount + this.state.commentedCount}</Text>
           </View>
         </TouchableOpacity>
 

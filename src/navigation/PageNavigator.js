@@ -47,6 +47,8 @@ export default class AppPage extends React.Component {
   state = {
     chats: [],
     messageCount: 0,
+    notifications: [],
+    notificationCount: 0,
     courses: [],
     courseNotificationCount: 0,
     usertoken: "",
@@ -124,12 +126,14 @@ export default class AppPage extends React.Component {
       .firestore()
       .collection("users")
       .doc(this.props.userData.uid);
+
+    //Listening to user chats.
     this._unsubscribeChats = userRef
       .collection("chats")
-      .onSnapshot((snapshot) => {
-        let changes = snapshot.docChanges();
+      .onSnapshot((chatSnapshot) => {
+        let chatChanges = chatSnapshot.docChanges();
 
-        this.getChats(changes, chatsArray).then(() => {
+        this.getChats(chatChanges, chatsArray).then(() => {
           var getChatCount = new Promise((resolve, reject) => {
             chatsArray.forEach((item, index, array) => {
               if (item.newCount > 0) {
@@ -152,6 +156,32 @@ export default class AppPage extends React.Component {
           });
         });
       });
+    
+    let notificationsArray = [];
+    let notificationCount = 0;
+    //Listening to user notifications.
+    this._unsubscribeNotifications = userRef
+      .collection('notifications')
+      .onSnapshot((notificationSnapshot) => {
+        let notificationChanges = notificationSnapshot.docChanges();
+        this.getNotifications(notificationChanges, notificationsArray).then(() => {
+          var getNotificationCount = new Promise((resolve, reject) => {
+            notificationsArray.forEach((item, index, array) => {
+              if (item.new) {
+                notificationCount = notificationCount + 1;
+              }
+              if (index === array.length - 1) resolve();
+            });
+          
+          });
+          
+          getNotificationCount.then(() => {
+            this.setState({ notifications: notificationsArray, notificationCount: notificationCount });
+            notificationCount = 0;
+
+          });
+        })
+      })
 
     let coursesArray = [];
     let courseNotificationCount = 0;
@@ -223,9 +253,13 @@ export default class AppPage extends React.Component {
       });
   }
 
-  getChats = async (changes, chatsArray) => {
+  componentWillUnmount() {
+    this._unsubscribeChats();
+  }
+
+  getChats = async (chatChanges, chatsArray) => {
     return new Promise((resolve, reject) => {
-      changes.forEach((change, index, array) => {
+      chatChanges.forEach((change, index, array) => {
         const newChatData = change.doc.data();
         this.getChatParticipantIds(change.doc.id).then((participantIds) => {
           const newChatItem = {
@@ -269,6 +303,48 @@ export default class AppPage extends React.Component {
     });
   };
 
+  getNotifications = async(notificationChanges, notificationsArray) => {
+    return new Promise((resolve, reject) => {
+      notificationChanges.forEach((change, index, array) => {
+        const newNotificationData = change.doc.data();
+        const newNotificationItem = {
+          id: change.doc.id,
+          lastSender: newNotificationData.lastSender,
+          targetInfo: newNotificationData.targetInfo,
+          new: newNotificationData.new,
+          senderCount: newNotificationData.senderCount,
+          timestamp: newNotificationData.timestamp,
+          text: newNotificationData.text,
+        }
+
+        if (change.type === "added") {
+          //Adding to array
+          notificationsArray.unshift(newNotificationItem);
+        } else if (change.type === "modified") {
+          //Modifying previously added chat.
+          if (newNotificationItem.lastMessage) {
+            const index = notificationsArray.findIndex(
+              (item) => item.id === newNotificationItem.id
+            );
+            if (index >= 0) {
+              chatsArray[index] = newNotificationItem;
+            } else {
+              chatsArray.unshift(newNotificationItem);
+            }
+          }
+        } else if (change.type === "removed") {
+          //Modifying previously added chat.
+          const index = notificationsArray.findIndex(
+            (item) => item.id === newNotificationItem.id
+          );
+          notificationsArray.splice(index, 1);
+        }
+
+        if (index === array.length - 1) resolve();
+      })
+    })
+  }
+
   getChatParticipantIds(chatId) {
     const chatRef = firebase.firestore().collection("chats").doc(chatId);
     return new Promise((resolve, reject) => {
@@ -283,12 +359,16 @@ export default class AppPage extends React.Component {
   render() {
     const chats = this.state.chats;
     const messageCount = this.state.messageCount;
+    const notifications = this.state.notifications;
+    const notificationCount = this.state.notificationCount;
     const courses = this.state.courses;
     return (
       <PageNavigator
         {...this.props}
         chats={chats}
         messageCount={messageCount}
+        notifications={notifications}
+        notificationCount={notificationCount}
         courses={courses}
       />
     );
@@ -339,6 +419,8 @@ const PageNavigator = (props) => {
   const userData = props.userData;
   const chats = props.chats;
   const messageCount = props.messageCount;
+  const notifications = props.notifications;
+  const notificationCount = props.notificationCount;
   const courses = props.courses;
   return (
     <PageDrawer.Navigator
@@ -357,6 +439,8 @@ const PageNavigator = (props) => {
             userData={userData}
             chats={chats}
             messageCount={messageCount}
+            notifications={notifications}
+            notificationCount={notificationCount}
           />
         )}
       </PageDrawer.Screen>

@@ -74,6 +74,7 @@ export default class NotificationsScreen extends React.Component {
     //notifications: [],
   };
 
+
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;
@@ -84,6 +85,11 @@ export default class NotificationsScreen extends React.Component {
       .collection("users")
       .doc(this.props.userData.uid)
       .collection("notifications");
+
+
+  componentDidMount() {
+    const notificationsRef = firebase.firestore().collection('users').doc(this.props.userData.uid).collection('notifications');
+
   }
 
   renderItem = ({ item }) => {
