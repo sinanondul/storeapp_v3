@@ -246,10 +246,14 @@ export default class LandingScreen extends React.Component {
               ) : null}
             </View>
 
-            {/* TODO */}
             <View style={styles.infoBoxWrapper}>
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("FollowersList")}
+                // onPress={() => this.props.navigation.navigate("FollowersList")}
+                onPress={() =>
+                  this.props.navigation.navigate("Connected", {
+                    fromFollowing: false,
+                  })
+                }
               >
                 <View style={styles.infoBox}>
                   <Text style={{ fontWeight: "500" }}>
@@ -260,7 +264,12 @@ export default class LandingScreen extends React.Component {
               </TouchableOpacity>
 
               <TouchableOpacity
-                onPress={() => this.props.navigation.navigate("FollowingList")}
+                // onPress={() => this.props.navigation.navigate("FollowingList")}
+                onPress={() =>
+                  this.props.navigation.navigate("Connected", {
+                    fromFollowing: true,
+                  })
+                }
               >
                 <View style={styles.infoBox}>
                   <Text style={{ fontWeight: "500" }}>

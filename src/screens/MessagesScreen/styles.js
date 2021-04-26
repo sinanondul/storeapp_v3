@@ -92,11 +92,12 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   outer: {
-    backgroundColor:"blue",
+    backgroundColor: "white",
     flex: 1,
+    //borderTopWidth: 1,
     minHeight: 70,
     borderBottomWidth: 1,
-    borderBottomColor: "pink",
+    borderBottomColor: "gray",
     //borderTopWidth: 1,
   },
   rowView: {
@@ -111,14 +112,15 @@ const styles = StyleSheet.create({
   textColumn: {
     paddingTop: 12,
     paddingLeft: 10,
-
     flexDirection: "column",
     flex: 0.6,
+    marginBottom: 12,
   },
   buttonView: {
     flex: 0.35,
     alignItems: "center",
     paddingTop: 12,
+    //borderWidth: 2,
   },
   name: {
     fontWeight: "600",

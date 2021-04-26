@@ -16,6 +16,7 @@ import { Alert, Platform } from "react-native";
 import MyHeader from "../../components/MyHeader";
 import Icon from "react-native-vector-icons/MaterialCommunityIcons";
 import { useTheme } from "react-native-paper";
+import Connected from "./Connected";
 
 export default class ProfileScreen extends React.Component {
   render() {
@@ -95,13 +96,23 @@ export default class ProfileScreen extends React.Component {
             />
           )}
         </ProfileStack.Screen>
-        <ProfileStack.Screen name="FollowersList">
+        <ProfileStack.Screen name="Connected">
+          {(props) => (
+            <Connected
+              {...props}
+              userData={userData}
+              userInfo={userInfo}
+              fromFollowing={false}
+            />
+          )}
+        </ProfileStack.Screen>
+        {/* <ProfileStack.Screen name="FollowersList">
           {(props) => <FollowerScreen {...props} userData={userData} userInfo={userInfo} />}
         </ProfileStack.Screen>
 
         <ProfileStack.Screen name="FollowingList">
           {(props) => <FollowingScreen {...props} userData={userData} userInfo={userInfo}/>}
-        </ProfileStack.Screen>
+        </ProfileStack.Screen> */}
       </ProfileStack.Navigator>
     );
   }

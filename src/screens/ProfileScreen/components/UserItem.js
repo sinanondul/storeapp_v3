@@ -50,8 +50,8 @@ export default class UserItem extends React.Component {
           following: userInfo.following,
           followers: userInfo.followers,
           token: userInfo.token,
-        }
-        this.setState({ userInfo: userInfo});
+        };
+        this.setState({ userInfo: userInfo });
       })
       .catch((error) => {
         Alert.alert(error.toString());
@@ -90,14 +90,14 @@ export default class UserItem extends React.Component {
           </View>
           {/* TODO SELF PROFILE CHECK */}
           <View style={styles.buttonView}>
-            {this.state.userInfo && this.state.userInfo.uid !== this.props.userData.uid
-              ? <FollowButton
-                  userData={this.props.userData}
-                  targetId={this.props.uid}
-                />
-              : null
-            }
-            </View>
+            {this.state.userInfo &&
+            this.state.userInfo.uid !== this.props.userData.uid ? (
+              <FollowButton
+                userData={this.props.userData}
+                targetId={this.props.uid}
+              />
+            ) : null}
+          </View>
         </View>
       </View>
     );
