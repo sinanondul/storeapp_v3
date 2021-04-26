@@ -7,8 +7,10 @@ import { openDrawer } from "../../../App"
 
 export default class NotificationsScreen extends React.Component{
 
+
   componentDidMount() {
     const notificationsRef = firebase.firestore().collection('users').doc(this.props.userData.uid).collection('notifications');
+
   }
 
   render(){

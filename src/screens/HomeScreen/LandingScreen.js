@@ -36,6 +36,7 @@ export default class LandingScreen extends React.Component {
     currentPost: [],
     commentsModalOpen: false,
     modalPostInfo: null,
+    upCommentCount: null,
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -87,8 +88,11 @@ export default class LandingScreen extends React.Component {
     this._unsubscribe();
   }
 
-  toggleCommentsModal(postInfo = null) {
+  toggleCommentsModal(postInfo = null, upCommentCount = null) {
     this.setState({commentsModalOpen: !this.state.commentsModalOpen, modalPostInfo: postInfo});
+    if (upCommentCount) {
+      this.setState({upCommentCount: upCommentCount})
+    }
   }
 
 
@@ -113,7 +117,7 @@ export default class LandingScreen extends React.Component {
           visible={this.state.commentsModalOpen}
           onRequestClose={this.toggleCommentsModal}
         >
-          <CommentsModal {...this.props} toggleCommentsModal={this.toggleCommentsModal} post={this.state.modalPostInfo}/>
+          <CommentsModal {...this.props} toggleCommentsModal={this.toggleCommentsModal} post={this.state.modalPostInfo} upCommentCount={this.state.upCommentCount}/>
         </Modal>
 
         {/*  */}
