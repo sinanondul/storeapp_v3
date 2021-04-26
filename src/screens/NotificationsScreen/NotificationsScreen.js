@@ -15,110 +15,95 @@ import firebase from "firebase";
 import { openDrawer } from "../../../App";
 import NotificationItem from "./components/NotificationItem";
 
-const notifications = [
-  {
-    lastSender: {
-      avatar: null,
-      name: "tempuser",
-      fullName: "tempUser x",
-    },
-    targetInfo: {
-      type: "post",
-      action: "comment",
-      postId: null,
-      text:
-        "A comment asdjfkjasdflasdlkfjaslkdj fasjdlkfaljksdnfjkansdjkfnakjsdnfkjasnkdjfnajhsdgvcsoakpoej rbahıdsbcıans0eısadfadfmasdklfmlkasdmfamsldkf mlaksdmfasmdlkfmaslkdfmlasd",
-    },
-    senderCount: 1,
-    new: true,
-    timestamp: 1619347624401,
-  },
-  {
-    lastSender: {
-      avatar: null,
-      name: "tempuser",
-      fullName: "tempUser x",
-    },
-    targetInfo: {
-      type: "post",
-      action: "comment",
-      postId: null,
-      text:
-        "A comment asdjfkjasdflasdlkfjaslkdj fasjdlkfaljksdnfjkansdjkfnakjsdnfkjasnkdjfnajhsdgvcsoakpoej rbahıdsbcıans0eısadfadfmasdklfmlkasdmfamsldkf mlaksdmfasmdlkfmaslkdfmlasd",
-    },
-    senderCount: 1,
-    new: true,
-    timestamp: 1619352662401,
-  },
-  {
-    lastSender: {
-      avatar: null,
-      name: "tempuser",
-      fullName: "tempUser x",
-    },
-    targetInfo: {
-      type: "post",
-      action: "comment",
-      postId: null,
-      text:
-        "A comment asdjfkjasdflasdlkfjaslkdj fasjdlkfaljksdnfjkansdjkfnakjsdnfkjasnkdjfnajhsdgvcsoakpoej rbahıdsbcıans0eısadfadfmasdklfmlkasdmfamsldkf mlaksdmfasmdlkfmaslkdfmlasd",
-    },
-    senderCount: 1,
-    new: true,
-    timestamp: 1611447662401,
-  },
-];
-
 export default class NotificationsScreen extends React.Component {
   state = {
-    //notifications: [],
+    notifications: {},
   };
-
 
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;
   };
+
   componentDidMount() {
+    // const notificationsRef = firebase
+    //   .firestore()
+    //   .collection("users")
+    //   .doc(this.props.userData.uid)
+    //   .collection("notifications");
     const notificationsRef = firebase
       .firestore()
       .collection("users")
       .doc(this.props.userData.uid)
       .collection("notifications");
 
-
-  componentDidMount() {
-    const notificationsRef = firebase.firestore().collection('users').doc(this.props.userData.uid).collection('notifications');
-
+    notificationsRef
+      .get()
+      .then((doc) => {
+        if (doc) {
+          doc.forEach((doc) => {
+            //working til now
+            this.setState({
+              notifications: {
+                lastSender: {
+                  avatar: doc.data().lastSender.avatar,
+                  name: doc.data().lastSender.name,
+                  uid: doc.data().lastSender.uid,
+                },
+                new: doc.data().new,
+                senderCount: doc.data().senderCount,
+                senderIds: doc.data().senderIds,
+                targetInfo: {
+                  action: doc.data().targetInfo.action,
+                  postId: doc.data().targetInfo.postId,
+                  type: doc.data().targetInfo.type,
+                },
+                timestamp: doc.data().timestamp,
+              },
+            });
+          });
+        } else {
+          // doc.data() will be undefined in this case
+          console.log("No such document!");
+        }
+      })
+      .catch((error) => {
+        console.log("Error getting document:", error);
+      });
   }
 
   renderItem = ({ item }) => {
     return (
-      <NotificationItem
-        {...this.props}
-        userData={this.props.userData}
-        notification={item}
-      />
+      <View>
+        {this.state.notifications.length ? (
+          <NotificationItem
+            {...this.props}
+            userData={this.props.userData}
+            notifications={this.state.notifications}
+            notification={item}
+          />
+        ) : (
+          <View style={{ borderWidth: 2, length: 100 }}>
+            <Text>no luck this time</Text>
+          </View>
+        )}
+      </View>
     );
   };
 
   render() {
+    //console.log(this.state.notifications); WORKS
     return (
-      <View>
+      <View style={{ borderWidth: 10 }}>
         <FlatList
-          //style={styles.myposts}
-          //horizontal
-          data={
-            notifications //.sort(
-            //this.state.notifications.sort(
-            //(a, b) => b.timestamp - a.timestamp
-          } //)}
+          style={styles.myposts}
+          data={this.state.notifications}
           renderItem={this.renderItem}
-          keyExtractor={(item) => item.timestamp} //id}
+          keyExtractor={(item) => item.id} //id}
           nestedScrollEnabled
           showsVerticalScrollIndicator={true}
-          extraData={this.state}
         />
+        <Text>should be at bottom of the flatlist</Text>
       </View>
     );
   }
@@ -141,8 +126,12 @@ export default class NotificationsScreen extends React.Component {
 
 const styles = StyleSheet.create({
   container: {
-    flex: 0.8,
+    flex: 1,
     justifyContent: "center",
     alignItems: "center",
+  },
+  myposts: {
+    marginTop: 10,
+    borderWidth: 2,
   },
 });

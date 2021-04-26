@@ -98,7 +98,7 @@ export default class EditProfile extends React.Component {
       .get()
       .then((documentSnapshot) => {
         if (documentSnapshot.exists) {
-          console.log("User Data", documentSnapshot.data());
+          //console.log("User Data", documentSnapshot.data());
           this.setState({ user: documentSnapshot.data() });
         }
       });

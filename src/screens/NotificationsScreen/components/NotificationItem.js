@@ -20,36 +20,52 @@ export default class UserItem extends React.Component {
 
   state = {
     userInfo: {},
-    notifications: [],
   };
 
   componentDidMount() {
-    firebase.auth().currentUser;
-    const notificationsRef = firebase
-      .firestore()
-      .collection("users")
-      .doc(this.props.userData.uid)
-      .collection("notifications");
-
-    notificationsRef
-      .get()
-      .then((doc) => {
-        if (doc) {
-          doc.forEach((doc) => {});
-          console.log("Document data:", doc.data());
-        } else {
-          // doc.data() will be undefined in this case
-          console.log("No such document!");
-        }
-      })
-      .catch((error) => {
-        console.log("Error getting document:", error);
-      });
-
-    alert(notificationsRef);
+    //console.log(this.props.notification);
+    //firebase.auth().currentUser;
+    // const notificationsRef = firebase
+    //   .firestore()
+    //   .collection("users")
+    //   .doc(this.props.userData.uid)
+    //   .collection("notifications");
+    // notificationsRef
+    //   .get()
+    //   .then((doc) => {
+    //     if (doc) {
+    //       doc.forEach((doc) => {
+    //         console.log("Document data:", doc.data());
+    //         this.setState({
+    //           notifications: {
+    //             lastSender: {
+    //               avatar: doc.data().avatar,
+    //               name: doc.data().name,
+    //               uid: doc.data().uid,
+    //             },
+    //             new: doc.data().new,
+    //             senderCount: doc.data().senderCount,
+    //             senderIds: doc.data().senderIds,
+    //             targetInfo: {
+    //               action: doc.data().action,
+    //               postId: doc.data().postId,
+    //               type: doc.data().type,
+    //             },
+    //             timestamp: doc.data().timestamp,
+    //           },
+    //         });
+    //       });
+    //     } else {
+    //       // doc.data() will be undefined in this case
+    //       console.log("No such document!");
+    //     }
+    //   })
+    //   .catch((error) => {
+    //     console.log("Error getting document:", error);
+    //   });
+    //alert(notificationsRef);
     // var user = firebase.auth().currentUser;
     //const usersRef = firebase.firestore().collection("users").doc();
-
     // this.setState({
     //   userInfo: {
     //     uid: user.id,
@@ -75,11 +91,20 @@ export default class UserItem extends React.Component {
   }
 
   render() {
-    //console.log(this.state.userInfo.handle);
     return (
       //Alert.alert("this.state.userInfo.uid")
-      <View>
-        <Text>{"this.state.userInfo.handle"}</Text>
+
+      <View
+        style={{
+          borderWidth: 3,
+          height: 50,
+          width: "90%",
+          flexDirection: "column",
+        }}
+      >
+        <Text>should be visible</Text>
+        {/* <View>{this.props.notification.lastSender.avatar} </View> */}
+        {/* <Text>{this.props.notification.lastSender.name}</Text> */}
       </View>
     );
   }

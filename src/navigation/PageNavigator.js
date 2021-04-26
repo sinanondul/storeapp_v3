@@ -18,7 +18,7 @@ import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 import AddScreen from "../screens/HomeScreen/AddScreen/AddScreen";
 import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
 
-import {getFullName, getAvatar} from "../functions/UserInfoFormatter";
+import { getFullName, getAvatar } from "../functions/UserInfoFormatter";
 
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
@@ -58,32 +58,33 @@ export default class AppPage extends React.Component {
     token = this.props.userData.token;
     if (token) {
       const senderId = chat.lastMessage.senderId;
-      const senderRef = firebase.firestore().collection('users').doc(senderId)
+      const senderRef = firebase.firestore().collection("users").doc(senderId);
       const currentUser = senderId === this.props.userData.uid;
 
       if (!currentUser) {
-        senderRef.get().then(senderDoc => {
-          const senderInfo = senderDoc.data();
-          const title = getFullName(senderInfo);
-          const body = chat.lastMessage.text;
-          let response = fetch("https://exp.host/--/api/v2/push/send", {
-            method: "POST",
-            headers: {
-              Accept: "application/json",
-              "Content-Type": "application/json",
-            },
-            body: JSON.stringify({
-              to: token,
-              sound: "default",
-              title: title,
-              body: body,
-            }),
-          });
-        }).catch(error => console.log(error));
+        senderRef
+          .get()
+          .then((senderDoc) => {
+            const senderInfo = senderDoc.data();
+            const title = getFullName(senderInfo);
+            const body = chat.lastMessage.text;
+            let response = fetch("https://exp.host/--/api/v2/push/send", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                to: token,
+                sound: "default",
+                title: title,
+                body: body,
+              }),
+            });
+          })
+          .catch((error) => console.log(error));
       }
     }
-
-      
   };
 
   pushNewGroupMessage = (chat) => {
@@ -109,7 +110,6 @@ export default class AppPage extends React.Component {
           }),
         });
       }
-     
     }
   };
 
@@ -156,32 +156,35 @@ export default class AppPage extends React.Component {
           });
         });
       });
-    
+
     let notificationsArray = [];
     let notificationCount = 0;
     //Listening to user notifications.
     this._unsubscribeNotifications = userRef
-      .collection('notifications')
+      .collection("notifications")
       .onSnapshot((notificationSnapshot) => {
         let notificationChanges = notificationSnapshot.docChanges();
-        this.getNotifications(notificationChanges, notificationsArray).then(() => {
-          var getNotificationCount = new Promise((resolve, reject) => {
-            notificationsArray.forEach((item, index, array) => {
-              if (item.new) {
-                notificationCount = notificationCount + 1;
-              }
-              if (index === array.length - 1) resolve();
+        this.getNotifications(notificationChanges, notificationsArray).then(
+          () => {
+            var getNotificationCount = new Promise((resolve, reject) => {
+              notificationsArray.forEach((item, index, array) => {
+                if (item.new) {
+                  notificationCount = notificationCount + 1;
+                }
+                if (index === array.length - 1) resolve();
+              });
             });
-          
-          });
-          
-          getNotificationCount.then(() => {
-            this.setState({ notifications: notificationsArray, notificationCount: notificationCount });
-            notificationCount = 0;
 
-          });
-        })
-      })
+            getNotificationCount.then(() => {
+              this.setState({
+                notifications: notificationsArray,
+                notificationCount: notificationCount,
+              });
+              notificationCount = 0;
+            });
+          }
+        );
+      });
 
     let coursesArray = [];
     let courseNotificationCount = 0;
@@ -303,7 +306,7 @@ export default class AppPage extends React.Component {
     });
   };
 
-  getNotifications = async(notificationChanges, notificationsArray) => {
+  getNotifications = async (notificationChanges, notificationsArray) => {
     return new Promise((resolve, reject) => {
       notificationChanges.forEach((change, index, array) => {
         const newNotificationData = change.doc.data();
@@ -315,7 +318,7 @@ export default class AppPage extends React.Component {
           senderCount: newNotificationData.senderCount,
           timestamp: newNotificationData.timestamp,
           text: newNotificationData.text,
-        }
+        };
 
         if (change.type === "added") {
           //Adding to array
@@ -341,9 +344,9 @@ export default class AppPage extends React.Component {
         }
 
         if (index === array.length - 1) resolve();
-      })
-    })
-  }
+      });
+    });
+  };
 
   getChatParticipantIds(chatId) {
     const chatRef = firebase.firestore().collection("chats").doc(chatId);
@@ -392,7 +395,7 @@ async function registerForPushNotificationsAsync() {
       return;
     }
     token = (await Notifications.getExpoPushTokenAsync()).data;
-    console.log("Inside Func:" + token);
+    //console.log("Inside Func:" + token);
   } else {
     alert("Must use physical device for Push Notifications");
   }
