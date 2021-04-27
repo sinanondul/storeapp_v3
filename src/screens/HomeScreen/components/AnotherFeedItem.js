@@ -62,7 +62,7 @@ export default class AnotherFeedItem extends React.Component {
       // avatar: null,
       // handle: null,
     },
-    nameinit: true,
+    nameinit: false,
     commentsModalOpen: false,
   };
 
@@ -105,7 +105,7 @@ export default class AnotherFeedItem extends React.Component {
 
   render() {
     if (this.state.senderInfo != null) {
-      console.log(this.state.senderInfo);
+      //console.log(this.state.senderInfo);
       //alert(this.state.senderInfo.fullName);
       return (
         <View>
@@ -154,7 +154,7 @@ export default class AnotherFeedItem extends React.Component {
                 {this.props.post.image ? (
                   <Image
                     {...{ uri: this.props.post.image }}
-                    resizeMode={"cover"}
+                    resizeMode={"contain"}
                     style={tempstyles.postImage}
                   />
                 ) : null}
