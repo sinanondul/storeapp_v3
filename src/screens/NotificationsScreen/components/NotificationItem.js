@@ -14,6 +14,7 @@ import {
 import Fire from "../../../firebase/Fire";
 import styles from "../styles";
 import { Icon } from "native-base";
+import PostSpecificScreen from "../PostSpecificScreen";
 
 function getTimeSince(timestamp) {
   moment.updateLocale("en", {
@@ -45,9 +46,10 @@ export default class NotificationItem extends React.Component {
   }
 
   state = {
-    userInfo: {},
-    postimage: null,
-    posttext: "",
+    senderInfo: {},
+    postImage: null,
+    postText: "",
+    postId: "",
   };
 
   componentDidMount() {
@@ -57,20 +59,15 @@ export default class NotificationItem extends React.Component {
       .doc(this.props.notification.targetInfo.postId)
       .get()
       .then((doc) => {
-        this.setState({ posttext: doc.data().text });
+        this.setState({ postText: doc.data().text });
       });
 
-    const usersRef = firebase
-      .firestore()
-      .collection("users")
-      
-    
-    
+    const usersRef = firebase.firestore().collection("users");
   }
 
   render() {
     const notification = this.props.notification;
-    console.log(notification.targetInfo.action);
+    //console.log(notification.targetInfo.action);
     return (
       <View
         style={[
@@ -126,10 +123,7 @@ export default class NotificationItem extends React.Component {
               </View>
             </View>
             <View style={styles.notificationTextColumn}>
-            
-              <View>
-
-              </View>
+              <View></View>
               <View style={styles.notificationText}>
                 <View>
                   <TouchableOpacity>
