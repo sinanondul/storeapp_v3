@@ -64,7 +64,7 @@ export default class NotificationItem extends React.Component {
       .firestore()
       .collection("users")
       
-    const 
+    
     
   }
 
@@ -128,7 +128,7 @@ export default class NotificationItem extends React.Component {
             <View style={styles.notificationTextColumn}>
             
               <View>
-                
+
               </View>
               <View style={styles.notificationText}>
                 <View>

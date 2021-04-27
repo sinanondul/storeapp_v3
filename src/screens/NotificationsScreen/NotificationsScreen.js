@@ -1,77 +1,41 @@
 import React from "react";
-import {
-  View,
-  Platform,
-  Header,
-  Text,
-  StyleSheet,
-  Alert,
-  FlatList,
-} from "react-native";
-import Icon from "react-native-vector-icons/Ionicons";
-import { createStackNavigator } from "@react-navigation/stack";
+import { createStackNavigator, CardStyleInterpolators } from "@react-navigation/stack";
 
-import firebase from "firebase";
-import { openDrawer } from "../../../App";
-import NotificationItem from "./components/NotificationItem";
 
-export default class NotificationsScreen extends React.Component {
-  static navigationOptions = ({ navigation }) => {
-    const { params } = navigation.state;
-    return params;
-  };
+import LandingScreen from "./LandingScreen";
+import PostSpecificScreen from "./PostSpecificScreen"
+import styles from "./styles";
 
-  renderItem = ({ item }) => {
+export default class NotificationsScreen extends React.Component{
+
+
+  componentDidMount() {
+  }
+
+  render(){
+    const NotificationsStack = createStackNavigator();
+    const userData = this.props.userData;
+    const notifications = this.props.notifications;
     return (
-      <View>
-        <NotificationItem
-          {...this.props}
-          userData={this.props.userData}
-          notification={item}
-        />
-      </View>
-    );
-  };
+      <NotificationsStack.Navigator
+        initialRouteName="Landing"
+        screenOptions={{
+          cardStyleInterpolator: CardStyleInterpolators.forHorizontalIOS
+        }}
+      >
+        <NotificationsStack.Screen name="Landing" options={LandingScreen.navigationOptions}>
+          {(props) => <LandingScreen {...props} userData={userData} notifications={notifications}/>}
+        </NotificationsStack.Screen>
+        <NotificationsStack.Screen name="Post" options={PostSpecificScreen.navigationOptions}>
+          {(props) => <LandingScreen {...props} userData={userData} notifications={notifications}/>}
+        </NotificationsStack.Screen>
 
-  render() {
-    //console.log(this.state.notifications); WORKS
-    return (
-      <View>
-        <FlatList
-          style={styles.myposts}
-          data={this.props.notifications}
-          renderItem={this.renderItem}
-          keyExtractor={(item) => item.id} //id}
-          nestedScrollEnabled
-          showsVerticalScrollIndicator={true}
-        />
-      </View>
+      </NotificationsStack.Navigator>
     );
   }
 
   static navigationOptions = {
-    title: "Notifications",
-    headerStyle: {
-      backgroundColor: "#f4511e",
-    },
-    headerTintColor: "#fff",
-    headerTitleStyle: {
-      flex: 0.6,
-      paddingRight: 60,
-      alignSelf: "center",
-      alignItems: "center",
-      fontWeight: "bold",
-    },
+   headerShown: false,
   };
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  myposts: {
-    //marginTop: 10,
-  },
-});
