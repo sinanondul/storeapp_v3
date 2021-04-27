@@ -7,6 +7,7 @@ import {
   StyleSheet,
   Alert,
   FlatList,
+  TouchableOpacity,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -14,6 +15,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 import firebase from "firebase";
 import { openDrawer } from "../../../App";
 import NotificationItem from "./components/NotificationItem";
+import PostSpecificScreen from "./PostSpecificScreen";
 
 export default class LandingScreen extends React.Component {
   static navigationOptions = ({ navigation }) => {
@@ -22,14 +24,27 @@ export default class LandingScreen extends React.Component {
   };
 
   renderItem = ({ item }) => {
+    //<PostSpecificScreen {...this.props} notification={item} />;
     return (
-      <View>
+      <TouchableOpacity
+        onPress={() => {
+          this.props.navigation.navigate("Post"),
+            (props) => (
+              <PostSpecificScreen
+                {...props}
+                userData={userData}
+                notification={item}
+                //notifications={notifications}
+              />
+            );
+        }}
+      >
         <NotificationItem
           {...this.props}
           userData={this.props.userData}
           notification={item}
         />
-      </View>
+      </TouchableOpacity>
     );
   };
 
