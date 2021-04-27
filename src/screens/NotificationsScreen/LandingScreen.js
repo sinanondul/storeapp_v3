@@ -28,15 +28,7 @@ export default class LandingScreen extends React.Component {
     return (
       <TouchableOpacity
         onPress={() => {
-          this.props.navigation.navigate("Post"),
-            (props) => (
-              <PostSpecificScreen
-                {...props}
-                userData={userData}
-                notification={item}
-                //notifications={notifications}
-              />
-            );
+          this.props.navigation.navigate("Post", {notification: item});
         }}
       >
         <NotificationItem

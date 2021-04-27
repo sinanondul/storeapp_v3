@@ -32,10 +32,9 @@ export default class PostSpecificScreen extends React.Component {
   };
 
   componentDidMount() {
-    if (this.props.notification) {
-      alert("aq");
-      alert("aqq");
-    }
+    const postId = this.props.route.params.notification.targetInfo.postId;
+    Alert.alert(this.props.route.params.notification.targetInfo.postId);
+    
     // const postRef = firebase
     //   .firestore()
     //   .collection("posts")
