@@ -99,7 +99,7 @@ export default class LandingScreen extends React.Component {
   render() {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
     const userData = this.props.userData;
-    const fromFollowing = this.props.fromFollowing;
+    const fromFollowing = this.props.route.params.fromFollowing;
     return (
       <SafeAreaView style={styles.container} nestedScrollEnabled={true}>
         <View
@@ -111,7 +111,7 @@ export default class LandingScreen extends React.Component {
         >
           <Tab.Navigator
             headerMode={false}
-            initialRouteName={fromFollowing ? "Following" : "Following"}
+            initialRouteName={fromFollowing ? "Following" : "Followers"}
             tabBarOptions={{
               labelStyle: {
                 fontSize: 11,
@@ -126,7 +126,6 @@ export default class LandingScreen extends React.Component {
                   {...props}
                   userData={this.props.userData}
                   userInfo={this.props.userInfo}
-                  fromFollowing="Followers"
                 />
               )}
             </Tab.Screen>
@@ -137,7 +136,6 @@ export default class LandingScreen extends React.Component {
                   {...props}
                   userData={this.props.userData}
                   userInfo={this.props.userInfo}
-                  fromFollowing="Following"
                 />
               )}
             </Tab.Screen>
