@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "UP",
-    "icon": "./assets/UP_AppLogo.png",
+    "icon": "./assets/UP_SquareLogo.png",
     "slug": "up-demo",
     "platforms": [
       "ios",
