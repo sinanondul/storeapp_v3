@@ -102,7 +102,6 @@ export default class ProfileScreen extends React.Component {
               {...props}
               userData={userData}
               userInfo={userInfo}
-              fromFollowing={false}
             />
           )}
         </ProfileStack.Screen>

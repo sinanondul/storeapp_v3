@@ -148,6 +148,10 @@ export default class LandingScreen extends React.Component {
       upedPosts = userData.upedPosts;
     }
 
+    const myPostCount = Object.keys(myPosts).length;
+    const favPostCount = Object.keys(favPosts).length;
+    const upedPostCount = Object.keys(upedPosts).length;
+
     return (
       <SafeAreaView style={styles.container} nestedScrollEnabled={true}>
         <ScrollView
@@ -227,21 +231,21 @@ export default class LandingScreen extends React.Component {
             <View style={styles.userInfoSection}>
               {getPhone(this.props.userInfo) ? (
                 <View style={styles.row}>
-                  <Icon name="phone" color="#777777" />
-                  <Text>{getPhone(this.props.userInfo)}</Text>
+                  <Icon name="phone" color="#777777" size={16}/>
+                  <Text>{" " + getPhone(this.props.userInfo)}</Text>
                 </View>
               ) : null}
               <View style={styles.row}>
-                <Icon name="email" color="#777777" />
-                <Text>{this.props.userInfo.email}</Text>
+                <Icon name="email" color="#777777" size={16}/>
+                <Text>{" " + this.props.userInfo.email}</Text>
               </View>
             </View>
 
             <View style={styles.userInfoSectionLower}>
               {getLocation(this.props.userInfo) ? (
                 <View style={styles.row}>
-                  <Icon name="map" color="#777777" />
-                  <Text>{getLocation(this.props.userInfo)}</Text>
+                  <Icon name="map" color="#777777" size={16}/>
+                  <Text>{" " + getLocation(this.props.userInfo)}</Text>
                 </View>
               ) : null}
             </View>
@@ -256,10 +260,11 @@ export default class LandingScreen extends React.Component {
                 }
               >
                 <View style={styles.infoBox}>
-                  <Text style={{ fontWeight: "500" }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
                     {getFollowersCount(this.props.userInfo)}
-                    <Text style={{ fontWeight: "100" }}> Followers</Text>
                   </Text>
+
+                  <Text style={{ fontWeight: "100" }}> Followers</Text>
                 </View>
               </TouchableOpacity>
 
@@ -272,19 +277,12 @@ export default class LandingScreen extends React.Component {
                 }
               >
                 <View style={styles.infoBox}>
-                  <Text style={{ fontWeight: "500" }}>
+                  <Text style={{ fontWeight: "bold", fontSize: 16 }}>
                     {getFollowingCount(this.props.userInfo)}
-                    <Text style={{ fontWeight: "100" }}> Following</Text>
                   </Text>
+                  <Text style={{ fontWeight: "100" }}> Following</Text>
                 </View>
               </TouchableOpacity>
-
-              <View style={styles.infoBox}>
-                <Text style={{ fontWeight: "500" }}>
-                  30 {/* {getPostCount(this.props.userInfo)} TODO!! */}
-                  <Text style={{ fontWeight: "100" }}> Posts</Text>
-                </Text>
-              </View>
             </View>
           </View>
 
@@ -306,7 +304,7 @@ export default class LandingScreen extends React.Component {
               lazy={false}
               style={{ flex: 1 }}
             >
-              <Tab.Screen name="Posts">
+              <Tab.Screen name={"Posts (" + myPostCount.toString() + ")"}>
                 {(props) => (
                   <PostList
                     ref={(child) => {
@@ -337,20 +335,23 @@ export default class LandingScreen extends React.Component {
                   />
                 )}
               </Tab.Screen>
-              <Tab.Screen name="Favourites">
-                {(props) => (
-                  <PostList
-                    ref={(child) => {
-                      this.favPostsRef = child;
-                    }}
-                    {...props}
-                    userData={userData}
-                    postIds={favPosts}
-                    ownerId={this.props.ownerId}
-                    toggleCommentsModal={this.toggleCommentsModal}
-                  />
-                )}
-              </Tab.Screen>
+              {!otherProfile 
+                ? <Tab.Screen name="Favourites">
+                    {(props) => (
+                      <PostList
+                        ref={(child) => {
+                          this.favPostsRef = child;
+                        }}
+                        {...props}
+                        userData={userData}
+                        postIds={favPosts}
+                        ownerId={this.props.ownerId}
+                        toggleCommentsModal={this.toggleCommentsModal}
+                      />
+                    )}
+                  </Tab.Screen>
+                  : null
+              }
             </Tab.Navigator>
 
             <Modal
