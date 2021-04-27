@@ -42,7 +42,6 @@ export default class NotificationsScreen extends React.Component {
             <PostSpecificScreen
               {...props}
               userData={userData}
-              notification=""
               //notifications={notifications}
             />
           )}
