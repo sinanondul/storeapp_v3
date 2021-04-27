@@ -149,6 +149,7 @@ export default class PostSpecificScreen extends React.Component {
   render() {
     //console.log(this.state.post);
     if (this.state.post) {
+      console.log(this.state.post);
       return (
         <View style={{ flex: 1, borderWidth: 2 }}>
           {this.state.post ? (
