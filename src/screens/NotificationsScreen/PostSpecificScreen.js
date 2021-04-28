@@ -22,7 +22,7 @@ import {
   //getTimeSince,
 } from "../../functions/UserInfoFormatter";
 import moment from "moment";
-import AnotherFeedItem from "../HomeScreen/components/AnotherFeedItem";
+import FeedItem from "./components/FeedItem";
 import CommentsSection from "../HomeScreen/components/CommentsSection";
 //import YetAnotherFeedItem from "../HomeScreen/components/YetAnotherFeedItem";
 function getTimeSince(timestamp) {
@@ -51,40 +51,7 @@ function getTimeSince(timestamp) {
 
 export default class PostSpecificScreen extends React.Component {
   state = {
-    // user
-    senderInfo: {
-      uid: "",
-      email: "",
-      fullName: "",
-      name: "",
-      surename: "",
-      avatar: "",
-      handle: "",
-      department: "",
-      about: "",
-      phone: "",
-      location: "",
-      myPosts: "",
-      favPosts: "",
-      upedPosts: "",
-      following: "",
-      followers: "",
-      token: "",
-    },
-    post: {
-      // comments: {
-      //   senderId: "",
-      //   text: "",
-      //   timestamp: "",
-      //   upCount: "",
-      // },
-      // commentCount: 0,
-      // image: "",
-      // text: "",
-      // timestamp: "",
-      // uid: "",
-      // upCount: 0,
-    },
+    post: null,
 
     nameinit: false,
   };
@@ -94,21 +61,24 @@ export default class PostSpecificScreen extends React.Component {
     const usersRef = firebase.firestore().collection("users");
     const postRef = firebase.firestore().collection("posts").doc(postId);
 
-    postRef.get().then((doc) => {
+    postRef.get().then((postDoc) => {
+      const postData = postDoc.data();
+      const uped = postDoc.id in this.props.userData.upedPosts;
+      const faved = postDoc.id in this.props.userData.favPosts;
       this.setState({
+        
         post: {
-          // comments: {
-          //   senderId: doc.data().commentCount,
-          //   text: doc.data().text,
-          //   timestamp: doc.data().timestamp,
-          //   upCount: doc.data().upCount,
-          // },
-          commentCount: doc.data().commentCount,
-          image: doc.data().image,
-          text: doc.data().text,
-          timestamp: doc.data().timestamp,
-          uid: doc.data().uid,
-          upcount: doc.data().uid,
+          id: postDoc.id,
+          name: postData.name,
+          text: postData.text,
+          timestamp: postData.timestamp,
+          image: postData.image,
+          senderId: postData.uid,
+          upCount: postData.upCount,
+          comments: postData.comments,
+          commentCount: postData.commentCount,
+          uped: uped,
+          faved: faved,
         },
 
         nameinit: true,
@@ -144,27 +114,21 @@ export default class PostSpecificScreen extends React.Component {
       //   });
     });
 
-    //Alert.alert("dısj");
-    //const usersRef = firebase.firestore().collection("users");
   }
   render() {
-    //console.log(this.state.post);
-    if (this.state.post) {
-      //console.log(this.state.post);
-      return (
-        <View style={{ flex: 1 }}>
-          {this.state.post ? (
-            <AnotherFeedItem
-              {...this.props}
-              post={this.state.post}
-              //user={this.state.senderInfo}
-              profileRoute={"ProfileFromProfile"}
-              //ownerId={this.props.ownerId}
-              toggleCommentsModal={this.props.toggleCommentsModal}
-            />
-          ) : null}
-        </View>
-      );
-    }
+  //console.log(this.state.post);
+    return (
+      <View style={{ flex: 1 }}>
+        {this.state.post ? (
+          <FeedItem
+            {...this.props}
+            post={this.state.post}
+            //user={this.state.senderInfo}
+            profileRoute={"ProfileFromFeed"}
+            //ownerId={this.props.ownerId}
+          />
+        ) : null}
+      </View>
+    );
   }
 }

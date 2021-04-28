@@ -185,11 +185,9 @@ const styles = StyleSheet.create({
   feedItem: {
     backgroundColor: "#FFF",
     //borderRadius: 5,
-    marginVertical: 5,
+    margin: 5,
     flexDirection: "column",
-    elevation: 2,
-    borderWidth: 2,
-    height: "50%",
+    height: "75%",
   },
   feedHeader: {
     flex: 1,
