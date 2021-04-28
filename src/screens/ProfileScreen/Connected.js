@@ -8,7 +8,9 @@ import {
   SafeAreaView,
   ScrollView,
   Dimensions,
+  Image,
   Modal,
+  Keyboard,
   Alert,
 } from "react-native";
 import { Avatar, Title, Caption, TouchableRipple } from "react-native-paper";
@@ -65,23 +67,27 @@ export default class LandingScreen extends React.Component {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
     this.props.navigation.setOptions({
       headerLeft: () => (
-        <Ionicons
-          name={"arrow-back"}
-          size={30}
-          color="#000"
+        <HeaderBackButton
+          headerTintColor="white"
           tintColor={"#fff"}
           onPress={() => {
-            this.props.navigation.goBack();
+            Keyboard.dismiss();
+            setTimeout(() => {
+              this.props.navigation.goBack();
+            }, 160);
           }}
         />
       ),
 
-      headerRight: () => (
-        <Icon name="account-edit" style={{ marginRight: 10 }} size={30} />
-      ),
+      // headerRight: () => (
+      //   <Icon name="settings" style={{ marginRight: 10 }} size={30} />
+      // ),
     });
 
     this.props.navigation.setOptions({
+      headerStyle: {
+        backgroundColor: "#2890cf",
+      },
       headerTitle: () => (
         <View style={styles.headerTitleContainer}>
           <View style={styles.headerAvatar}>
@@ -93,6 +99,16 @@ export default class LandingScreen extends React.Component {
           </Text>
         </View>
       ),
+      headerTintColor: "#ffff",
+      headerTitleStyle: {
+        flex: 0.6,
+        //alignSelf: "center",
+        //alignItems: "center",
+        fontWeight: "bold",
+        //alignItems: "center",
+        //justifyContent: "center",
+      },
+      //headerTintColor: "#fff",
     });
   }
 
@@ -118,7 +134,6 @@ export default class LandingScreen extends React.Component {
               },
             }}
             lazy={false}
-            style={{ flex: 1 }}
           >
             <Tab.Screen name="Followers">
               {(props) => (
@@ -146,18 +161,41 @@ export default class LandingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: <Text>Profile</Text>,
+    title: (
+      <View style={{ flexDirection: "row", paddingTop: 5 }}>
+        <Image
+          style={{ height: 20, width: 30 }}
+          source={require("../../../assets/splash.png")}
+        />
+        <Text
+          style={{
+            alignSelf: "center",
+            alignItems: "center",
+            fontWeight: "bold",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            paddingLeft: 3,
+          }}
+        >
+          Social
+        </Text>
+      </View>
+    ),
     headerStyle: {
       backgroundColor: "#2890cf",
     },
-
-    //headerTintColor: "#fff",
+    headerTintColor: "#ffff",
     headerTitleStyle: {
       flex: 0.6,
       alignSelf: "center",
       alignItems: "center",
       fontWeight: "bold",
+      alignItems: "center",
+      justifyContent: "center",
     },
+    //headerTintColor: "#fff",
+
     headerRight: () => <View style={{ width: "20%" }}></View>,
   };
 }

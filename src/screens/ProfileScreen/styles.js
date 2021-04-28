@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
   },
   headerText: {
     fontSize: 16,
-    fontWeight: "500",
+    fontWeight: "bold",
     color: "#fff",
     marginLeft: 5,
   },
@@ -34,7 +34,6 @@ const styles = StyleSheet.create({
   text: {
     //fontFamily: "HelveticaNeue",
     color: "#52575D",
-    
   },
   image: {
     flex: 1,
@@ -98,7 +97,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginBottom: 3,
     marginRight: 20,
-    alignItems: 'center',
+    alignItems: "center",
   },
   userInfoSection: {
     marginTop: 2,
@@ -124,8 +123,8 @@ const styles = StyleSheet.create({
   infoBox: {
     marginVertical: 10,
     marginRight: 30,
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
   },
 
   menuItem: {
