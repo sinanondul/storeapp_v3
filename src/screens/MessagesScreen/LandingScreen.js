@@ -10,6 +10,15 @@ import styles from "./styles";
 
 export default class LandingScreen extends React.Component{
 
+  constructor(props) {
+    super(props)
+    this.handleDelete = this.handleDelete.bind(this);
+}
+
+  state = {
+    chats: [],
+  }
+
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;
@@ -18,8 +27,8 @@ export default class LandingScreen extends React.Component{
   renderItem = ({item}) => {
     return (
         item.groupChatInfo
-        ? <GroupChatItem {...this.props} chat={item}/>
-        : <ChatItem {...this.props} chat={item}/>
+        ? <GroupChatItem {...this.props} chat={item} handleDelete={this.handleDelete}/>
+        : <ChatItem {...this.props} chat={item} handleDelete={this.handleDelete}/>
         
     );
   }
@@ -30,9 +39,19 @@ export default class LandingScreen extends React.Component{
             <HeaderBackButton tintColor={"#fff"} onPress = {() => {this.props.navigation.goBack()}}/>
         ),
       });
+    this.setState({chats: this.props.chats});
   }
 
   componentWillUnmount() {
+  }
+
+  handleDelete(chatId) {
+    let chatsArray = this.state.chats;
+    const index = chatsArray.findIndex(
+      (item) => item.id === chatId
+    );
+    chatsArray.splice(index, 1);
+    this.setState({chats: chatsArray});
   }
 
   render(){

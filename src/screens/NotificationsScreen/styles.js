@@ -77,6 +77,7 @@ const styles = StyleSheet.create({
     //alignItems: "center",
     paddingTop: 12,
     //borderWidth: 2,
+    alignItems: "flex-end",
   },
   time: {
     color: "gray",

@@ -29,13 +29,13 @@ class Fire {
 
   //Global functions
 
-  deleteCollection = async(db, collectionPath, batchSize) => {
-    const collectionRef = db.collection(collectionPath);
-    const query = collectionRef.orderBy('__name__').limit(batchSize);
-  
-    return new Promise((resolve, reject) => {
-      this.deleteQueryBatch(db, query, resolve).catch(reject);
-    });
+  deleteCollection(db, path) {
+    const ref = db.collection(path)
+    ref.onSnapshot((snapshot) => {
+      snapshot.docs.forEach((doc) => {
+        ref.doc(doc.id).delete()
+      })
+    })
   }
   
   deleteQueryBatch = async(db, query, resolve) => {
@@ -558,7 +558,7 @@ class Fire {
 
   createUpNotification(notificationItem, previousNotification = null)
   {
-    let senderIds = previousNotification ? previousNotification.senders : {};
+    let senderIds = previousNotification ? previousNotification.senderIds : {};
     senderIds[notificationItem.senderInfo.uid] = true;
     return {
       targetInfo: {
@@ -616,7 +616,7 @@ class Fire {
 
   createCommentNotification(notificationItem, previousNotification = null)
   {
-    let senderIds = previousNotification ? previousNotification.senders : {};
+    let senderIds = previousNotification ? previousNotification.senderIds : {};
     senderIds[notificationItem.senderInfo.uid] = true;
     const commentNotification = {
       targetInfo: {

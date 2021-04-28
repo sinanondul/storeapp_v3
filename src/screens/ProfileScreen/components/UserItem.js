@@ -49,9 +49,8 @@ export default class UserItem extends React.Component {
           upedPosts: userInfo.upedPosts,
           following: userInfo.following,
           followers: userInfo.followers,
-          token: userInfo.token,
         };
-        this.setState({ userInfo: userInfo });
+        this.setState({ userInfo: userInfoItem });
       })
       .catch((error) => {
         Alert.alert(error.toString());
@@ -60,7 +59,13 @@ export default class UserItem extends React.Component {
 
   render() {
     return (
-      <View style={styles.outer}>
+      <TouchableOpacity style={styles.outer} onPress={() => {
+        this.props.navigation.navigate("ProfileFromProfile", {
+        userInfo: this.state.userInfo,
+        otherProfile: true,
+        ownerId: this.state.userInfo.uid,
+        }); 
+      }}>
         <View style={styles.rowView}>
           <View style={styles.avatarColumn}>
             {this.state.userInfo ? getAvatar(this.state.userInfo, 55) : null}
@@ -99,7 +104,7 @@ export default class UserItem extends React.Component {
             ) : null}
           </View>
         </View>
-      </View>
+      </TouchableOpacity>
     );
   }
 }

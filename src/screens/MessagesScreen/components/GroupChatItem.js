@@ -48,6 +48,21 @@ export default class GroupChatItem extends React.Component{
 
   }
 
+  swipeButtons = [{
+    text: 'Delete',
+    backgroundColor: 'red',
+    underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+    onPress: () => {this.deleteGroupChat()},
+  }];
+
+  deleteGroupChat() {
+    const userRef = firebase.firestore().collection('users').doc(this.props.userData.uid);
+    const chatRef = userRef.collection('chats').doc(this.props.chat.id);
+    Fire.shared.deleteCollection(chatRef, 'messages', 10);
+    chatRef.delete();
+    this.props.handleDelete(this.props.chat.id);
+  }
+
   render(){
     const userId = this.props.userData.uid;
     const chatId = this.props.chat.id;

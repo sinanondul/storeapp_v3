@@ -7,6 +7,7 @@ import AuthNavigator from "./src/navigation/AuthNavigator";
 import { Alert, LogBox } from "react-native";
 import { DrawerActions } from "@react-navigation/native";
 import { render } from "react-dom";
+import * as Notifications from "expo-notifications";
 
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 
@@ -35,6 +36,14 @@ export function openDrawer() {
   navigationRef.current &&
     navigationRef.current.dispatch(DrawerActions.toggleDrawer());
 }
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldShowAlert: true,
+    shouldPlaySound: false,
+    shouldSetBadge: false,
+  }),
+});
 
 export default class App extends React.Component {
   constructor(props) {

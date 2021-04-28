@@ -40,13 +40,12 @@ export default class FollowerScreen extends React.Component {
 
   renderItem = ({ item }) => {
     return (
-      <TouchableOpacity>
         <UserItem
+          {...this.props}
           uid={item.id}
           userData={this.props.userData}
           userInfo={this.props.userInfo}
         />
-      </TouchableOpacity>
     );
   };
 

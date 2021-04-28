@@ -27,21 +27,20 @@ import Constants from "expo-constants";
 import firebase from "firebase";
 
 const PageDrawer = createDrawerNavigator();
-Notifications.setNotificationHandler({
-  handleNotification: async () => ({
-    shouldShowAlert: true,
-    shouldPlaySound: true,
-    shouldSetBadge: false,
-  }),
-});
 
-Notifications.addNotificationReceivedListener((notification) => {
-  //console.log(notification);
-});
 
-Notifications.addNotificationResponseReceivedListener((response) => {
-  console.log(response);
-});
+
+function getNotificationBody(notificationItem) {
+  
+}
+
+          // id: change.doc.id,
+          // lastSender: newNotificationData.lastSender,
+          // targetInfo: newNotificationData.targetInfo,
+          // new: newNotificationData.new,
+          // senderCount: newNotificationData.senderCount,
+          // timestamp: newNotificationData.timestamp,
+          // text: newNotificationData.text,
 
 export default class AppPage extends React.Component {
   state = {
@@ -54,70 +53,16 @@ export default class AppPage extends React.Component {
     usertoken: "",
   };
 
-  pushNewMessage = (chat) => {
-    token = this.props.userData.token;
-    if (token) {
-      const senderId = chat.lastMessage.senderId;
-      const senderRef = firebase.firestore().collection("users").doc(senderId);
-      const currentUser = senderId === this.props.userData.uid;
-
-      if (!currentUser) {
-        senderRef
-          .get()
-          .then((senderDoc) => {
-            const senderInfo = senderDoc.data();
-            const title = getFullName(senderInfo);
-            const body = chat.lastMessage.text;
-            let response = fetch("https://exp.host/--/api/v2/push/send", {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                to: token,
-                sound: "default",
-                title: title,
-                body: body,
-              }),
-            });
-          })
-          .catch((error) => console.log(error));
-      }
-    }
-  };
-
-  pushNewGroupMessage = (chat) => {
-    token = this.props.userData.token;
-    if (token) {
-      const senderId = chat.lastMessage.senderId;
-      const currentUser = senderId === this.props.userData.uid;
-      if (!currentUser) {
-        const title = chat.groupChatInfo.name;
-        const body = chat.lastMessage.text;
-        let response = fetch("https://exp.host/--/api/v2/push/send", {
-          method: "POST",
-          headers: {
-            Accept: "application/json",
-            "Content-Type": "application/json",
-          },
-          body: JSON.stringify({
-            to: token,
-            sound: "default",
-            title: title,
-            body: body,
-            //icon: require("../../assets/splash.jpg"),
-          }),
-        });
-      }
-    }
-  };
-
   componentDidMount() {
     registerForPushNotificationsAsync().then((token) =>
       this.setState({ usertoken: token })
     );
 
+    Notifications.addNotificationResponseReceivedListener(this.handleNotificationResponse);
+    Notifications.addNotificationReceivedListener((notification) => {
+      Alert.alert("hi")
+      console.log(notification);
+    });
     //Adding chats
 
     let chatsArray = [];
@@ -136,16 +81,20 @@ export default class AppPage extends React.Component {
         this.getChats(chatChanges, chatsArray).then(() => {
           var getChatCount = new Promise((resolve, reject) => {
             chatsArray.forEach((item, index, array) => {
-              if (item.newCount > 0) {
+              if (item.new) {
                 messageCount = messageCount + 1;
-                if (item.groupChatInfo) {
-                  //get groupchat .avatar, .message, userid
-                  //item.lastMessage timestamp
-                  this.pushNewGroupMessage(item);
-                } else {
-                  //
-                  this.pushNewMessage(item);
+
+                //Push notification
+                if(!item.notified) {
+                  if (item.groupChatInfo) {
+                    this.pushNewGroupMessage(item);
+                  } else {
+                    this.pushNewMessage(item);
+                  }
+                  userRef.collection("chats").doc(item.id).set({notified: true}, {merge: true});
                 }
+
+
               }
               if (index === array.length - 1) resolve();
             });
@@ -260,6 +209,133 @@ export default class AppPage extends React.Component {
     this._unsubscribeChats();
   }
 
+
+  pushNewMessage = (chat) => {
+    token = this.props.userData.token;
+    if (token) {
+      const senderId = chat.lastMessage.senderId;
+      const senderRef = firebase.firestore().collection("users").doc(senderId);
+      const currentUser = senderId === this.props.userData.uid;
+
+      if (!currentUser) {
+        senderRef
+          .get()
+          .then((senderDoc) => {
+            const senderInfo = senderDoc.data();
+            const title = getFullName(senderInfo);
+            const body = chat.lastMessage.text;
+            let response = fetch("https://exp.host/--/api/v2/push/send", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                to: token,
+                sound: "default",
+                title: title,
+                body: body,
+              }),
+              data: {
+                type: "message",
+                chat: chat,
+                senderInfo: senderInfo,
+              }
+            });
+          })
+          .catch((error) => console.log(error));
+      }
+    }
+  };
+
+  pushNewGroupMessage = (chat) => {
+    token = this.props.userData.token;
+    if (token) {
+      const senderId = chat.lastMessage.senderId;
+      const currentUser = senderId === this.props.userData.uid;
+      if (!currentUser) {
+        const title = chat.groupChatInfo.name;
+        const body = chat.lastMessage.text;
+        let response = fetch("https://exp.host/--/api/v2/push/send", {
+          method: "POST",
+          headers: {
+            Accept: "application/json",
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            to: token,
+            sound: "default",
+            title: title,
+            body: body,
+            //icon: require("../../assets/splash.jpg"),
+          }),
+          data: {
+            type: "groupMessage",
+            chat: chat,
+            senderInfo: null,
+          }
+        });
+      }
+    }
+  };
+
+  pushNewNotification = (notification) => {
+    token = this.props.userData.token;
+    if (token) {
+      const senderId = chat.lastMessage.senderId;
+      const senderRef = firebase.firestore().collection("users").doc(senderId);
+      const currentUser = senderId === this.props.userData.uid;
+
+      if (!currentUser) {
+        senderRef
+          .get()
+          .then((senderDoc) => {
+            const senderInfo = senderDoc.data();
+            const title = getFullName(senderInfo);
+            const body = chat.lastMessage.text;
+            let response = fetch("https://exp.host/--/api/v2/push/send", {
+              method: "POST",
+              headers: {
+                Accept: "application/json",
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                to: token,
+                sound: "default",
+                title: title,
+                body: body,
+              }),
+            });
+          })
+          .catch((error) => console.log(error));
+      }
+    }
+  }
+
+  handleNotificationResponse = response => {
+    Alert.alert("hey");
+    if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
+      const notification = response.notification.request;
+      const notificationContent = notification.content;
+      Alert.alert(notificationContent.body.title)
+      const notificationData = notificationContent.data; //{type: ["message, groupMessage"], chat, senderInfo}
+      if (notificationData.type === "message") {
+        this.props.redirectData = {
+          route: "Home",
+          subroute: {
+            route: "Messages",
+            subroute: {
+              route: "Messaging",
+              params: {chat: notificationData.chat, senderInfo: notificationData.senderInfo},
+            }
+          }
+        }
+      }
+
+
+    }
+  }
+
   getChats = async (chatChanges, chatsArray) => {
     return new Promise((resolve, reject) => {
       chatChanges.forEach((change, index, array) => {
@@ -273,6 +349,7 @@ export default class AppPage extends React.Component {
             participantIds: participantIds,
             lastMessage: newChatData.lastMessage,
             groupChatInfo: newChatData.groupChatInfo,
+            notified: newChatData.notified,
           };
 
           if (change.type === "added") {

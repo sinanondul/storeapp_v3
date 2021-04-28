@@ -98,21 +98,21 @@ export default class InteractiveBar extends React.Component {
                 style={styles.intButtons}
                 name="chatbox-outline"
                 size={20}
-                color="#73788"
+                color='black'
               />
             </View>
             <Text style={styles.regularText}>{commentCount + this.state.commentedCount}</Text>
           </View>
         </TouchableOpacity>
 
-        <TouchableOpacity style={styles.button}>
+        <View style={styles.button}>
           <Ionicons
             style={styles.intButtons}
             name="send-outline"
             size={20}
-            color="#73788"
+            color="white"
           />
-        </TouchableOpacity>
+        </View>
 
         {this.state.faved ? (
           <TouchableOpacity onPress={this.toggleFaved}>

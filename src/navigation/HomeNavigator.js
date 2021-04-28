@@ -23,7 +23,7 @@ export default function SocialNavigator(props) {
   return (
     <SocialStack.Navigator options={{}} mode="modal">
       <SocialStack.Screen
-        name="Default"
+        name="Feed"
         options={LandingScreen.navigationOptions}
       >
         {(props) => (
