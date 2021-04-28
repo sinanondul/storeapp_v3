@@ -1,6 +1,7 @@
 import React from 'react';
 import {View, Text, TouchableOpacity, Alert} from "react-native";
 import {Avatar, Badge, withBadge} from "react-native-paper";
+import Swipeout from 'react-native-swipeout';
 import firebase from 'firebase';
 import moment from 'moment';
 
@@ -25,11 +26,6 @@ function getTimeSince(timestamp) {
 
 
 export default class ChatItem extends React.Component{
-
-  constructor(props) {
-    super(props)
-
-  }
 
   state= {
       senderInfo: null,
@@ -62,17 +58,31 @@ export default class ChatItem extends React.Component{
         })
   }
 
+  swipeButtons = [{
+    text: 'Delete',
+    backgroundColor: 'red',
+    underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+    onPress: () => {this.deleteChat()},
+  }];
+
+  deleteChat() {
+    const userRef = firebase.firestore().collection('users').doc(this.props.userData.uid);
+    const chatRef = userRef.collection('chats').doc(this.props.chat.id);
+    Fire.shared.deleteCollection(chatRef, 'messages', 10);
+    chatRef.delete();
+    this.props.handleDelete(this.props.chat.id);
+  }
+
   render(){
     const userId = this.props.userData.uid;
     const chatId = this.props.chat.id;
-      return (
+      return ( 
+        <Swipeout right={this.swipeButtons} autoClose='true' backgroundColor= 'transparent'>
           <TouchableOpacity 
             onPress={() => {
               Fire.shared.resetNewCount({uid: userId, chatId: chatId});
               return(this.props.navigation.navigate('Messaging', {senderInfo: this.state.senderInfo, chat: this.props.chat}));}
             }
-            delayLongPress={1000}
-            onLongPress = {() => {}} 
             style={styles.messageItem}>
             <View style={styles.messageAvatar}>
               {this.state.nameinit ? getAvatar(this.state.senderInfo, 47) : null}
@@ -102,6 +112,7 @@ export default class ChatItem extends React.Component{
               </View>
             </View>
           </TouchableOpacity>
+        </Swipeout>
       );
   }
 }
