@@ -92,6 +92,7 @@ const styles = StyleSheet.create({
     marginLeft: 5,
   },
   outer: {
+    elevation: 2,
     backgroundColor: "white",
     flex: 1,
     //borderTopWidth: 1,

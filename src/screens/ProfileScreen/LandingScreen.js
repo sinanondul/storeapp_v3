@@ -159,7 +159,6 @@ export default class LandingScreen extends React.Component {
           nestedScrollEnabled={true}
           style={{ flex: 1 }}
         >
-          <Ad />
           <View style={styles.profileTop}>
             <View style={styles.profileImageContainer}>
               <View style={styles.profileImage}>
@@ -230,16 +229,16 @@ export default class LandingScreen extends React.Component {
             </View>
 
             <View style={styles.userInfoSection}>
+              <View style={styles.row}>
+                <Icon name="email" color="#777777" size={16} />
+                <Text>{" " + this.props.userInfo.email}</Text>
+              </View>
               {getPhone(this.props.userInfo) ? (
                 <View style={styles.row}>
                   <Icon name="phone" color="#777777" size={16} />
                   <Text>{" " + getPhone(this.props.userInfo)}</Text>
                 </View>
               ) : null}
-              <View style={styles.row}>
-                <Icon name="email" color="#777777" size={16} />
-                <Text>{" " + this.props.userInfo.email}</Text>
-              </View>
             </View>
 
             <View style={styles.userInfoSectionLower}>

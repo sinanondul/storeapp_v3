@@ -331,12 +331,7 @@ export default class EditProfile extends React.Component {
                           user: { ...this.state.user, handle: txt },
                         })
                       }
-                      style={[
-                        styles.textInput,
-                        {
-                          color: this.props.textColor,
-                        },
-                      ]}
+                      style={styles.textInput}
                     />
                   </View>
                 </View>
@@ -463,12 +458,7 @@ export default class EditProfile extends React.Component {
                           user: { ...this.state.user, location: txt },
                         })
                       }
-                      style={[
-                        styles.textInput,
-                        {
-                          color: this.props.textColor,
-                        },
-                      ]}
+                      style={styles.textInput}
                     />
                   </View>
                 </View>
@@ -524,12 +514,7 @@ export default class EditProfile extends React.Component {
                           user: { ...this.state.user, department: txt },
                         })
                       }
-                      style={[
-                        styles.textInput,
-                        {
-                          color: this.props.textColor,
-                        },
-                      ]}
+                      style={styles.textInput}
                     />
                   </View>
                 </View>

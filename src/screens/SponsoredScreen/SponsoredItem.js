@@ -1,3 +1,4 @@
+import { HeaderBackButton } from "@react-navigation/stack";
 import React from "react";
 import {
   View,
@@ -6,6 +7,7 @@ import {
   Image,
   useWindowDimensions,
   ImageBackground,
+  Keyboard,
 } from "react-native";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
