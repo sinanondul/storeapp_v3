@@ -10,18 +10,18 @@ import {
   TouchableOpacity,
   SafeAreaView,
   Modal,
+  ImageBackground,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-
 
 import firebase from "firebase";
 
 import { openDrawer } from "../../../App";
 import DefaultFooter from "../../components/DefaultFooter";
-import FeedList from './components/FeedList';
+import FeedList from "./components/FeedList";
 import FeedItem from "./components/FeedItem";
-import CommentsModal from './components/CommentsModal';
+import CommentsModal from "./components/CommentsModal";
 import styles from "./styles";
 
 const Tab = createMaterialTopTabNavigator();
@@ -55,7 +55,7 @@ export default class LandingScreen extends React.Component {
     this._unsubscribe = firebase
       .firestore()
       .collection("posts")
-      .orderBy("timestamp", 'desc')
+      .orderBy("timestamp", "desc")
       .onSnapshot((snapshot) => {
         let changes = snapshot.docChanges();
 
@@ -83,30 +83,44 @@ export default class LandingScreen extends React.Component {
       });
   }
 
-
   componentWillUnmount() {
     this._unsubscribe();
   }
 
   toggleCommentsModal(postInfo = null, upCommentCount = null) {
-    this.setState({commentsModalOpen: !this.state.commentsModalOpen, modalPostInfo: postInfo});
+    this.setState({
+      commentsModalOpen: !this.state.commentsModalOpen,
+      modalPostInfo: postInfo,
+    });
     if (upCommentCount) {
-      this.setState({upCommentCount: upCommentCount})
+      this.setState({ upCommentCount: upCommentCount });
     }
   }
-
 
   render() {
     return (
       <SafeAreaView style={styles.container}>
-
         {/*  */}
         <Tab.Navigator>
           <Tab.Screen name="All">
-            {(props) => <FeedList {...props} {...this.props} followingOnly={false} toggleCommentsModal={this.toggleCommentsModal}/>}
+            {(props) => (
+              <FeedList
+                {...props}
+                {...this.props}
+                followingOnly={false}
+                toggleCommentsModal={this.toggleCommentsModal}
+              />
+            )}
           </Tab.Screen>
           <Tab.Screen name="Following">
-            {(props) => <FeedList {...props} {...this.props} followingOnly={true} toggleCommentsModal={this.toggleCommentsModal}/>}
+            {(props) => (
+              <FeedList
+                {...props}
+                {...this.props}
+                followingOnly={true}
+                toggleCommentsModal={this.toggleCommentsModal}
+              />
+            )}
           </Tab.Screen>
         </Tab.Navigator>
 
@@ -117,18 +131,42 @@ export default class LandingScreen extends React.Component {
           visible={this.state.commentsModalOpen}
           onRequestClose={this.toggleCommentsModal}
         >
-          <CommentsModal {...this.props} toggleCommentsModal={this.toggleCommentsModal} post={this.state.modalPostInfo} upCommentCount={this.state.upCommentCount}/>
+          <CommentsModal
+            {...this.props}
+            toggleCommentsModal={this.toggleCommentsModal}
+            post={this.state.modalPostInfo}
+            upCommentCount={this.state.upCommentCount}
+          />
         </Modal>
 
         {/*  */}
         <DefaultFooter {...this.props} />
-
       </SafeAreaView>
     );
   }
 
   static navigationOptions = {
-    title: <Text style={{ alignItems: "center" }}>Home</Text>,
+    title: (
+      <View style={{ flexDirection: "row", paddingTop: 5 }}>
+        <Image
+          style={{ height: 20, width: 30 }}
+          source={require("../../../assets/splash.png")}
+        />
+        <Text
+          style={{
+            alignSelf: "center",
+            alignItems: "center",
+            fontWeight: "bold",
+            alignItems: "center",
+            justifyContent: "center",
+            color: "#fff",
+            paddingLeft: 3,
+          }}
+        >
+          Social
+        </Text>
+      </View>
+    ),
     headerStyle: {
       backgroundColor: "#2890cf",
     },

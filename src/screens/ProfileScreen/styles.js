@@ -34,6 +34,7 @@ const styles = StyleSheet.create({
   text: {
     //fontFamily: "HelveticaNeue",
     color: "#52575D",
+    
   },
   image: {
     flex: 1,

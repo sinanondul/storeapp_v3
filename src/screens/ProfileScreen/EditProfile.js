@@ -58,6 +58,10 @@ export default class EditProfile extends React.Component {
       transferred: [],
     };
   }
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return params;
+  };
 
   getPermission = async () => {
     if (Platform.OS !== "web") {
@@ -483,7 +487,8 @@ export default class EditProfile extends React.Component {
                       outerFocus={true}
                       multiline={true}
                       numberOfLines={4}
-                      maxLength={280}
+                      ellipsizeMode="tail"
+                      maxLength={140}
                       placeholder={this.state.user.about}
                       style={styles.textArea}
                       autoCorrect={false}
@@ -575,6 +580,19 @@ export default class EditProfile extends React.Component {
       </View>
     );
   }
+  static navigationOptions = {
+    title: "Edit Profile",
+    headerStyle: {
+      backgroundColor: "#2890cf",
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      flex: 0.6,
+      alignSelf: "center",
+      alignItems: "center",
+      fontWeight: "bold",
+    },
+  };
 }
 
 const styles = StyleSheet.create({
@@ -590,7 +608,7 @@ const styles = StyleSheet.create({
   commandButton: {
     padding: 15,
     borderRadius: 10,
-    backgroundColor: "#FF6347",
+    backgroundColor: "rgb(255, 92, 43)",
     alignItems: "center",
     marginTop: 10,
   },
@@ -717,11 +735,14 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
     borderColor: "grey",
     //borderWidth: 1,
+    width: 250,
+    paddingRight: 2,
     //padding: 5,
   },
   textArea: {
     //flex: 0.5,
     //borderWidth: 2,
+    paddingRight: 4,
     width: 250,
     height: 80,
     justifyContent: "flex-start",

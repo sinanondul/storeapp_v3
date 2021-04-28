@@ -56,9 +56,7 @@ export default class ProfileScreen extends React.Component {
         </ProfileStack.Screen>
         <ProfileStack.Screen
           name="EditProfile"
-          options={{
-            title: "Edit Profile",
-          }}
+          options={EditProfileScreen.navigationOptions}
         >
           {(props) => (
             <EditProfileScreen
@@ -66,7 +64,7 @@ export default class ProfileScreen extends React.Component {
               {...props}
               userData={this.props.userData}
               userInfo={userInfo}
-              textColor={"#000000"}
+              textColor={"#fff"}
             />
           )}
         </ProfileStack.Screen>
@@ -98,11 +96,7 @@ export default class ProfileScreen extends React.Component {
         </ProfileStack.Screen>
         <ProfileStack.Screen name="Connected">
           {(props) => (
-            <Connected
-              {...props}
-              userData={userData}
-              userInfo={userInfo}
-            />
+            <Connected {...props} userData={userData} userInfo={userInfo} />
           )}
         </ProfileStack.Screen>
         {/* <ProfileStack.Screen name="FollowersList">
