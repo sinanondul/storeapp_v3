@@ -551,6 +551,8 @@ class Fire {
         uid: senderInfo.uid,
         avatar: senderInfo.avatar,
         name: senderInfo.name,
+        surename: senderInfo.surename,
+        fullName: senderInfo.fullName
       },
       timestamp: this.timestamp,
     };
@@ -608,6 +610,8 @@ class Fire {
         uid: senderInfo.uid,
         avatar: senderInfo.avatar,
         name: senderInfo.name,
+        surename: senderInfo.surename,
+        fullName: senderInfo.fullName,
       },
       text: text,
       timestamp: this.timestamp,

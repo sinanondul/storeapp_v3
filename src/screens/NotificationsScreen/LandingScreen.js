@@ -23,10 +23,21 @@ export default class LandingScreen extends React.Component {
     return params;
   };
 
+  resetNew(notification) {
+    const notificationsRef = firebase.firestore().collection("users").doc(this.props.userData.uid).collection('notifications');
+
+    //Local reset.
+    notification.new = false;
+
+    //Backend reset.
+    notificationsRef.doc(notification.id).set({new: false}, {merge: true});
+  }
+
   renderItem = ({ item }) => {
     return (
       <TouchableOpacity
         onPress={() => {
+          this.resetNew(item);
           this.props.navigation.navigate("Post", { notification: item });
         }}
       >

@@ -7,6 +7,8 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
+  Modal,
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
@@ -21,32 +23,53 @@ import {
   getAvatar,
   getHandle,
 } from "../../../functions/UserInfoFormatter";
-import styles from "./styles";
+import CommentsModal from "../../HomeScreen/components/CommentsModal";
+import InteractiveBar from "./InteractiveBar";
+import styles from "../styles";
 
 const usersRef = firebase.firestore().collection("users");
 
 function getTimeSince(timestamp) {
+  moment.updateLocale("en", {
+    relativeTime: {
+      future: "in %s",
+      past: "%s",
+      s: "now",
+      ss: "%d",
+      m: "1m",
+      mm: "%dm",
+      h: "1h",
+      hh: "%dh",
+      d: "1d",
+      dd: "%dd",
+      w: "1w",
+      ww: "%dw",
+      M: "1m",
+      MM: "%dm",
+      y: "1y",
+      yy: "%d",
+    },
+  });
   return moment(timestamp).fromNow();
 }
 
-export default class CommentItem extends React.Component {
-  constructor(props) {
-    super(props);
-  }
+export default class FeedItem extends React.Component {
   state = {
     senderInfo: {
-      uid: null,
       fullName: null,
+      name: null,
+      surename: null,
       avatar: null,
       handle: null,
     },
     nameinit: false,
+    commentsModalOpen: false,
   };
 
   componentDidMount() {
     const usersRef = firebase.firestore().collection("users");
     usersRef
-      .doc(this.props.comment.senderId)
+      .doc(this.props.post.senderId)
       .get()
       .then((firestoreDocument) => {
         var userData = firestoreDocument.data();
@@ -59,16 +82,16 @@ export default class CommentItem extends React.Component {
             surename: userData.surename,
             avatar: userData.avatar,
             handle: userData.handle,
-            location: userData.location,
             department: userData.department,
-            phone: userData.phone,
             about: userData.about,
+            phone: userData.phone,
+            location: userData.location,
             myPosts: userData.myPosts,
-            upedPosts: userData.upedPosts,
             favPosts: userData.favPosts,
+            upedPosts: userData.upedPosts,
             following: userData.following,
             followers: userData.followers,
-            myComments: userData.myComments,
+            token: userData.token,
           },
         });
         this.setState({ nameinit: true });
@@ -77,77 +100,63 @@ export default class CommentItem extends React.Component {
 
   render() {
     return (
-      <View style={{}}>
         <View style={styles.feedItem}>
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               style={styles.feedHeader}
+              disabled={this.props.post.senderId === this.props.ownerId}
               onPress={() => {
-                this.props.toggleCommentsModal();
-                this.props.navigation.navigate("ProfileFromHome", {
-                  userInfo: this.state.senderInfo,
+                this.props.navigation.navigate(this.props.profileRoute, {
+                  userInfo: this.props.senderInfo,
                   otherProfile: true,
-                  ownerId: this.state.senderInfo.uid,
-                })
+                  ownerId: this.props.post.senderId,
+                });
               }}
-              // disabled={this.props.post.senderId === this.props.ownerId}
-              // onPress={() => {
-              //   this.props.navigation.navigate(this.props.profileRoute, {
-              //     userInfo: this.state.senderInfo,
-              //     otherProfile: true,
-              //     ownerId: this.props.post.senderId,
-              //   });
-              // }}
             >
-              <View style={{ flexDirection: "row" }}>
-                {this.state.nameinit
-                  ? getAvatar(this.state.senderInfo, 30)
-                  : null}
-                <View
-                  style={{
-                    marginLeft: 5,
-                  }}
-                >
-                  <View numberOfLines={5}>
-                    <View>
-                      {this.state.nameinit ? (
-                        <Text numberOfLines={1} style={{ fontWeight: "500" }}>
-                          {getFullName(this.state.senderInfo)}
-                        </Text>
-                      ) : null}
-                      {/* <Text numberOfLines={1} style={{ fontWeight: "100" }}>
-                          {"@" + this.state.senderInfo.handle}
-                        </Text> */}
-                    </View>
-                    <View style={{ minHeight: 10 }}>
-                      <Text>{this.props.comment.text}</Text>
-                    </View>
-                  </View>
-                  <Text style={{ fontWeight: "100", fontSize: 10 }}>
-                    {getTimeSince(this.props.comment.timestamp)}
+              {this.state.nameinit
+                ? getAvatar(this.state.senderInfo, 50)
+                : null}
+
+              <View style={styles.userText}>
+                {this.state.nameinit ? (
+                  <Text style={styles.name}>
+                    {getFullName(this.state.senderInfo)}
                   </Text>
-                </View>
+                ) : null}
+
+                <Text style={styles.handle}>
+                  {"@" + this.state.senderInfo.handle}
+                </Text>
+                <Text style={styles.seperatorDot}>{"\u2B24"}</Text>
+                <Text style={styles.timestamp}>
+                  {getTimeSince(this.props.post.timestamp)}
+                </Text>
               </View>
             </TouchableOpacity>
 
             <View style={styles.feedContent}>
               {this.props.post.text && this.props.post.text !== "" ? (
                 <View style={styles.mainText}>
-                  <Text style={styles.post}>{this.state.comments}</Text>
+                  <Text style={styles.post}>{this.props.post.text}</Text>
                 </View>
               ) : null}
-
               {this.props.post.image ? (
                 <Image
                   {...{ uri: this.props.post.image }}
-                  resizeMode={"contain"}
+                  resizeMode={"cover"}
                   style={styles.postImage}
                 />
               ) : null}
             </View>
+
+
+            <InteractiveBar
+              userData={this.props.userData}
+              post={this.props.post}
+              toggleCommentsModal={this.props.toggleCommentsModal}
+            />
           </View>
         </View>
-      </View>
     );
   }
 }
