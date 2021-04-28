@@ -7,6 +7,7 @@ import {
   FlatList,
   Alert,
   TouchableOpacity,
+  ScrollView,
   Modal,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
@@ -22,7 +23,7 @@ import {
   getAvatar,
   getHandle,
 } from "../../../functions/UserInfoFormatter";
-import CommentsModal from "./CommentsModal";
+import CommentsSection from "./CommentsSection";
 import InteractiveBar from "./InteractiveBar";
 import tempstyles from "./tempstyles";
 //import styles from "../../LoginScreen/styles";
@@ -55,15 +56,9 @@ function getTimeSince(timestamp) {
 
 export default class AnotherFeedItem extends React.Component {
   state = {
-    senderInfo: {
-      // fullName: null,
-      // name: null,
-      // surename: null,
-      // avatar: null,
-      // handle: null,
-    },
+    senderInfo: {},
     nameinit: false,
-    commentsModalOpen: false,
+    commentsModalOpen: true,
   };
 
   componentDidMount() {
@@ -100,19 +95,42 @@ export default class AnotherFeedItem extends React.Component {
           });
           this.setState({ nameinit: true });
         });
+
+      // const commentsRef = firebase.firestore
+      //   .collection("posts")
+      //   .doc(this.props.post.uid)
+      //   .collection("comments")
+      //   .get()
+      //   .then((doc) => {
+      //     this.setState({
+      //       comments: {
+      //         senderId: doc.data().senderId,
+      //         text: doc.data().upCount,
+      //         timestamp: doc.data().timestamp,
+      //         upCount: doc.data().upCount,
+      //       },
+      //     });
+      //   });
     }
   }
 
   render() {
     if (this.state.senderInfo != null) {
-      //console.log(this.state.senderInfo);
+      console.log(this.state.senderInfo);
       //alert(this.state.senderInfo.fullName);
       return (
-        <View>
-          <View style={tempstyles.feedItem}>
-            <View style={{ flex: 1 }}>
-              <TouchableOpacity
-                style={tempstyles.feedHeader}
+        <ScrollView style={{ backgroundColor: "white" }}>
+          <View style={{ padding: 12 }}>
+            <View style={tempstyles.feedItem}>
+              <View style={tempstyles.rowView}>
+                <View>
+                  <TouchableOpacity>
+                    {this.state.nameinit
+                      ? getAvatar(this.state.senderInfo, 50)
+                      : null}
+                  </TouchableOpacity>
+                </View>
+                <TouchableOpacity
                 // disabled={this.props.post.senderId === this.props.ownerId}
                 // onPress={() => {
                 //   this.props.navigation.navigate(this.props.profileRoute, {
@@ -121,53 +139,55 @@ export default class AnotherFeedItem extends React.Component {
                 //     ownerId: this.props.post.senderId,
                 //   });
                 // }}
-              >
-                {this.state.nameinit
-                  ? getAvatar(this.state.senderInfo, 50)
-                  : null}
+                >
+                  <View style={tempstyles.userText}>
+                    {this.state.nameinit ? (
+                      <Text style={tempstyles.name}>
+                        {getFullName(this.state.senderInfo)}
+                      </Text>
+                    ) : null}
 
-                <View style={tempstyles.userText}>
-                  {this.state.nameinit ? (
-                    <Text style={tempstyles.name}>
-                      {getFullName(this.state.senderInfo)}
+                    <Text style={tempstyles.handle}>
+                      {"@" + this.state.senderInfo.handle}
                     </Text>
-                  ) : null}
 
-                  <Text style={tempstyles.handle}>
-                    {"@" + this.state.senderInfo.handle}
-                  </Text>
-                  <Text style={tempstyles.seperatorDot}>{"\u2B24"}</Text>
-                  <Text style={tempstyles.timestamp}>
-                    {getTimeSince(this.props.post.timestamp)}
-                  </Text>
-                </View>
-              </TouchableOpacity>
-
-              <View style={tempstyles.feedContent}>
-                {this.props.post.text && this.props.post.text !== "" ? (
-                  <View style={tempstyles.mainText}>
-                    <Text style={tempstyles.post}>{this.props.post.text}</Text>
+                    <Text style={tempstyles.timestamp}>
+                      {getTimeSince(this.props.post.timestamp)}
+                    </Text>
                   </View>
-                ) : null}
+                </TouchableOpacity>
               </View>
-              <View style={tempstyles.postImage}>
-                {this.props.post.image ? (
-                  <Image
-                    {...{ uri: this.props.post.image }}
-                    resizeMode={"contain"}
-                    style={tempstyles.postImage}
-                  />
-                ) : null}
+              <View>
+                <View>
+                  {this.props.post.text && this.props.post.text !== "" ? (
+                    <View style={tempstyles.mainText}>
+                      <Text style={tempstyles.post}>
+                        {this.props.post.text}
+                      </Text>
+                    </View>
+                  ) : null}
+                </View>
+                <View style={tempstyles.postImage}>
+                  {this.props.post.image ? (
+                    <Image
+                      {...{ uri: this.props.post.image }}
+                      resizeMode={"contain"}
+                      style={tempstyles.postImage2}
+                    />
+                  ) : null}
+                </View>
               </View>
-
-              <InteractiveBar
-                userData={this.props.userData}
-                post={this.props.post}
-                toggleCommentsModal={this.props.toggleCommentsModal}
-              />
+              <View style={{ borderWidth: 1 }}>
+                <InteractiveBar
+                  userData={this.props.userData}
+                  post={this.props.post}
+                />
+              </View>
             </View>
+
+            <CommentsSection {...this.props} post={this.props.post} />
           </View>
-        </View>
+        </ScrollView>
       );
     }
     //if (this.state.senderInfo) {

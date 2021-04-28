@@ -43,6 +43,7 @@ export default class NotificationsScreen extends React.Component {
               {...props}
               userData={userData}
               //notifications={notifications}
+              toggleCommentsModal={this.toggleCommentsModal}
             />
           )}
         </NotificationsStack.Screen>

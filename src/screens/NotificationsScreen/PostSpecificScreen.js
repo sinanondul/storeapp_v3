@@ -23,6 +23,7 @@ import {
 } from "../../functions/UserInfoFormatter";
 import moment from "moment";
 import AnotherFeedItem from "../HomeScreen/components/AnotherFeedItem";
+import CommentsSection from "../HomeScreen/components/CommentsSection";
 //import YetAnotherFeedItem from "../HomeScreen/components/YetAnotherFeedItem";
 function getTimeSince(timestamp) {
   moment.updateLocale("en", {
@@ -149,9 +150,9 @@ export default class PostSpecificScreen extends React.Component {
   render() {
     //console.log(this.state.post);
     if (this.state.post) {
-      console.log(this.state.post);
+      //console.log(this.state.post);
       return (
-        <View style={{ flex: 1, borderWidth: 2 }}>
+        <View style={{ flex: 1 }}>
           {this.state.post ? (
             <AnotherFeedItem
               {...this.props}
