@@ -6,7 +6,7 @@ const tempstyles = StyleSheet.create({
   },
 
   feedItem: {
-    backgroundColor: "#FFF",
+    backgroundColor: "#fff",
     //borderRadius: 5,
     //marginVertical: 5,
     flexDirection: "column",
@@ -36,7 +36,7 @@ const tempstyles = StyleSheet.create({
     height: 50,
   },
   userText: {
-    flexDirection: "row",
+    flexDirection: "column",
     flex: 0.5,
     height: 20,
     paddingLeft: 10,
@@ -59,6 +59,8 @@ const tempstyles = StyleSheet.create({
 
   mainText: {
     marginTop: 10,
+    width: "90%",
+    //borderWidth: 2,
     marginBottom: 10,
   },
 
@@ -74,7 +76,7 @@ const tempstyles = StyleSheet.create({
     color: "#454D65",
   },
   handle: {
-    paddingLeft: 4,
+    //paddingLeft: 4,
     paddingTop: 1,
     fontSize: 12,
     fontWeight: "normal",
@@ -83,7 +85,7 @@ const tempstyles = StyleSheet.create({
   timestamp: {
     fontSize: 11,
     color: "#999999",
-    marginTop: 2,
+    paddingTop: 2,
   },
   seperatorDot: {
     alignItems: "center",
@@ -97,13 +99,27 @@ const tempstyles = StyleSheet.create({
   },
   post: {
     //marginTop: 16,
-    fontSize: 14,
+    fontSize: 17,
   },
   postImage: {
-    width: "110%",
-    height: 200,
-    flexGrow: 2,
+    borderWidth: 14,
+    width: "100%",
+    height: "60%",
+    //flexGrow: 2,
+    borderRadius: 5,
+    //marginBottom: 10,
+  },
+
+  postImage2: {
+    borderWidth: 5,
+    width: "100%",
+    height: "100%",
+    //flexGrow: 2,
+    borderRadius: 5,
     marginVertical: 0,
+  },
+  rowView: {
+    flexDirection: "row",
   },
   centeredView: {
     flex: 1,

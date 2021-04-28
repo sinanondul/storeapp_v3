@@ -72,14 +72,14 @@ export default class CommentItem extends React.Component {
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               style={styles.feedHeader}
-              disabled={this.props.post.senderId === this.props.ownerId}
-              onPress={() => {
-                this.props.navigation.navigate(this.props.profileRoute, {
-                  userInfo: this.state.senderInfo,
-                  otherProfile: true,
-                  ownerId: this.props.post.senderId,
-                });
-              }}
+              // disabled={this.props.post.senderId === this.props.ownerId}
+              // onPress={() => {
+              //   this.props.navigation.navigate(this.props.profileRoute, {
+              //     userInfo: this.state.senderInfo,
+              //     otherProfile: true,
+              //     ownerId: this.props.post.senderId,
+              //   });
+              // }}
             >
               <View style={{ flexDirection: "row" }}>
                 {this.state.nameinit
