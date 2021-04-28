@@ -79,24 +79,24 @@ export default class NotificationItem extends React.Component {
           //Comment NOTIF
           <View style={styles.rowView}>
             <View style={styles.avatarColumn2}>
-              <TouchableOpacity>
+              <View>
                 <View style={{ paddingTop: 5 }}>
                   {getAvatar(notification.lastSender, 45)}
                 </View>
-              </TouchableOpacity>
+              </View>
             </View>
             <View style={styles.notificationTextColumn}>
               <View style={styles.notificationText}>
                 <View>
                   <TouchableOpacity>
-                    <Text style={{ fontWeight: "600" }}>
+                    <Text style={{ fontWeight: "bold" }}>
                       {getName(notification.lastSender)}
                     </Text>
                   </TouchableOpacity>
                 </View>
                 <View>
                   {notification.senderCount == 1 ? (
-                    <Text> Commented on your post</Text>
+                    <Text> commented on your post</Text>
                   ) : // <Text>
                   //   and <Text>{notification.senderCount}</Text> others liked
                   //   your post
@@ -118,16 +118,21 @@ export default class NotificationItem extends React.Component {
           //Up NOTIF
           <View style={styles.rowView}>
             <View style={styles.avatarColumn2}>
-              <View style={{ paddingTop: 1, paddingLeft: 20 }}>
-                <Icon name="heart" style={{ fontSize: 25, color: "red" }} />
+              <View>
+                <View style={{ paddingTop: 5 }}>
+                  {getAvatar(notification.lastSender, 45)}
+                </View>
               </View>
+              {/* <View style={{ paddingTop: 1, paddingLeft: 20 }}>
+                <Icon name="heart" style={{ fontSize: 25, color: "red" }} />
+              </View> */}
             </View>
             <View style={styles.notificationTextColumn}>
               <View></View>
               <View style={styles.notificationText}>
                 <View>
                   <TouchableOpacity>
-                    <Text style={{ fontWeight: "600" }}>
+                    <Text style={{ fontWeight: "bold" }}>
                       {getName(notification.lastSender)}
                     </Text>
                   </TouchableOpacity>
@@ -135,11 +140,11 @@ export default class NotificationItem extends React.Component {
 
                 <View>
                   {notification.senderCount == 1 ? (
-                    <Text> liked your Post</Text>
+                    <Text> uped your post.</Text>
                   ) : (
                     <Text>
-                      and <Text>{notification.senderCount}</Text> others liked
-                      your post
+                      and <Text>{notification.senderCount}</Text> others uped
+                      your post.
                     </Text>
                   )}
                 </View>

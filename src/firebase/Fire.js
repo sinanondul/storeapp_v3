@@ -558,7 +558,7 @@ class Fire {
 
   createUpNotification(notificationItem, previousNotification = null)
   {
-    let senderIds = previousNotification ? previousNotification.senders : {};
+    let senderIds = previousNotification ? previousNotification.senderIds : {};
     senderIds[notificationItem.senderInfo.uid] = true;
     return {
       targetInfo: {
@@ -616,7 +616,7 @@ class Fire {
 
   createCommentNotification(notificationItem, previousNotification = null)
   {
-    let senderIds = previousNotification ? previousNotification.senders : {};
+    let senderIds = previousNotification ? previousNotification.senderIds : {};
     senderIds[notificationItem.senderInfo.uid] = true;
     const commentNotification = {
       targetInfo: {

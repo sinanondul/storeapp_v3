@@ -23,6 +23,12 @@ export default class CoursesScreen extends React.Component{
     const chats = this.props.chats;
     const messageCount = this.props.messageCount;
     const courses = this.props.courses;
+    if (this.props.redirectData && this.props.redirectData.route) {
+      const redirectRoute = redirectData.route;
+      const redirectSubroute = redirectData.subroute ? redirectData.subroute : null;
+      const redirectParams = redirectData.params ? redirectData.params : null;
+      this.props.navigation.navigate(redirectRoute, {});
+    }
     return (
       <CoursesStack.Navigator
         initialRouteName="Landing"

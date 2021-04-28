@@ -54,11 +54,22 @@ export default class CommentItem extends React.Component {
         this.setState({
           senderInfo: {
             uid: userData.id,
+            email: userData.email,
+            fullName: userData.fullName,
             name: userData.name,
             surename: userData.surename,
-            fullName: userData.fullName,
             avatar: userData.avatar,
             handle: userData.handle,
+            location: userData.location,
+            department: userData.department,
+            phone: userData.phone,
+            about: userData.about,
+            myPosts: userData.myPosts,
+            upedPosts: userData.upedPosts,
+            favPosts: userData.favPosts,
+            following: userData.following,
+            followers: userData.followers,
+            myComments: userData.myComments,
           },
         });
         this.setState({ nameinit: true });
@@ -72,6 +83,14 @@ export default class CommentItem extends React.Component {
           <View style={{ flex: 1 }}>
             <TouchableOpacity
               style={styles.feedHeader}
+              onPress={() => {
+                this.props.toggleCommentsModal();
+                this.props.navigation.navigate("ProfileFromHome", {
+                  userInfo: this.state.senderInfo,
+                  otherProfile: true,
+                  ownerId: this.state.senderInfo.uid,
+                })
+              }}
               // disabled={this.props.post.senderId === this.props.ownerId}
               // onPress={() => {
               //   this.props.navigation.navigate(this.props.profileRoute, {
