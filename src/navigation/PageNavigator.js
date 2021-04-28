@@ -57,12 +57,6 @@ export default class AppPage extends React.Component {
     registerForPushNotificationsAsync().then((token) =>
       this.setState({ usertoken: token })
     );
-
-    Notifications.addNotificationResponseReceivedListener(this.handleNotificationResponse);
-    Notifications.addNotificationReceivedListener((notification) => {
-      Alert.alert("hi")
-      console.log(notification);
-    });
     //Adding chats
 
     let chatsArray = [];
