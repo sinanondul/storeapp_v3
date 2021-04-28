@@ -21,7 +21,6 @@ import {
   getAvatar,
   getHandle,
 } from "../../../functions/UserInfoFormatter";
-import InteractiveBar from "./InteractiveBar";
 import styles from "./styles";
 
 const usersRef = firebase.firestore().collection("users");

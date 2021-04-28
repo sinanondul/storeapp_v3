@@ -185,15 +185,16 @@ const styles = StyleSheet.create({
   feedItem: {
     backgroundColor: "#FFF",
     //borderRadius: 5,
-    margin: 5,
+    marginTop: 5,
     flexDirection: "column",
-    height: "75%",
+    flex: 0.57,
   },
   feedHeader: {
-    flex: 1,
     flexDirection: "row",
     alignItems: "flex-start",
     padding: 10,
+    height: 70,
+    flexBasis: 90,
     //paddingRight: 10,
   },
   userInfo: {
@@ -279,6 +280,7 @@ const styles = StyleSheet.create({
   postImage: {
     width: "100%",
     height: 200,
+    flexBasis: 200,
     //flexGrow: 2,
     marginVertical: 0,
   },

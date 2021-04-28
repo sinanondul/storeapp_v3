@@ -7,6 +7,7 @@ const styles = StyleSheet.create({
 
   interactiveBar: {
     height: 30,
+    flexBasis: 30,
     justifyContent: "flex-start",
     alignItems: "center",
     marginVertical: 10,
@@ -55,7 +56,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
-    backgroundColor: "#f0fbff",
   },
   button2: {
     width: "100%",

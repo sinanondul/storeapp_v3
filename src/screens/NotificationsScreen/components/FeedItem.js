@@ -8,6 +8,7 @@ import {
   Alert,
   TouchableOpacity,
   Modal,
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { Ionicons } from "@expo/vector-icons";
@@ -99,7 +100,6 @@ export default class FeedItem extends React.Component {
 
   render() {
     return (
-      <View>
         <View style={styles.feedItem}>
           <View style={{ flex: 1 }}>
             <TouchableOpacity
@@ -140,15 +140,15 @@ export default class FeedItem extends React.Component {
                   <Text style={styles.post}>{this.props.post.text}</Text>
                 </View>
               ) : null}
+              {this.props.post.image ? (
+                <Image
+                  {...{ uri: this.props.post.image }}
+                  resizeMode={"cover"}
+                  style={styles.postImage}
+                />
+              ) : null}
             </View>
 
-            {this.props.post.image ? (
-              <Image
-                {...{ uri: this.props.post.image }}
-                resizeMode={"cover"}
-                style={styles.postImage}
-              />
-            ) : null}
 
             <InteractiveBar
               userData={this.props.userData}
@@ -157,7 +157,6 @@ export default class FeedItem extends React.Component {
             />
           </View>
         </View>
-      </View>
     );
   }
 }

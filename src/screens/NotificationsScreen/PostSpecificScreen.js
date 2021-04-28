@@ -9,12 +9,13 @@ import {
   Image,
   FlatList,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  ScrollView
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
 import styles from "./styles";
 import firebase from "firebase";
-import InteractiveBar from "../../screens/HomeScreen/components/InteractiveBar";
 import {
   getAvatar,
   getFullName,
@@ -23,7 +24,7 @@ import {
 } from "../../functions/UserInfoFormatter";
 import moment from "moment";
 import FeedItem from "./components/FeedItem";
-import CommentsSection from "../HomeScreen/components/CommentsSection";
+import CommentsList from "./components/CommentsList";
 //import YetAnotherFeedItem from "../HomeScreen/components/YetAnotherFeedItem";
 function getTimeSince(timestamp) {
   moment.updateLocale("en", {
@@ -118,17 +119,28 @@ export default class PostSpecificScreen extends React.Component {
   render() {
   //console.log(this.state.post);
     return (
-      <View style={{ flex: 1 }}>
-        {this.state.post ? (
-          <FeedItem
-            {...this.props}
-            post={this.state.post}
-            //user={this.state.senderInfo}
-            profileRoute={"ProfileFromFeed"}
-            //ownerId={this.props.ownerId}
-          />
-        ) : null}
-      </View>
+      <KeyboardAvoidingView
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
+        keyboardVerticalOffset={Platform.OS === 'ios' ? 65 : 90}
+        style={{flex: 1}}
+      >
+        <ScrollView style={{flex: 1}}>
+          {this.state.post ? (
+            <FeedItem
+              {...this.props}
+              post={this.state.post}
+              //user={this.state.senderInfo}
+              profileRoute={"ProfileFromFeed"}
+              //ownerId={this.props.ownerId}
+            />
+          ) : null}
+          
+          {this.state.post 
+            ? <CommentsList {...this.props} post={this.state.post}/>
+            : null
+          }
+        </ScrollView>
+      </KeyboardAvoidingView>
     );
   }
 }
