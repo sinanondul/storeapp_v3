@@ -6,16 +6,16 @@ const Stack = createStackNavigator();
 
 const screenOptionStyle = {
   headerStyle: {
-    backgroundColor: "#9AC4F8",
+    backgroundColor: "#2890cf",
   },
   headerTintColor: "white",
   headerBackTitle: "Back",
 };
 
-const AuthNavigator = ({navigation}) => {
+const AuthNavigator = ({ navigation }) => {
   return (
-    <Stack.Navigator screenOptions={screenOptionStyle}> 
-      <Stack.Screen name="Login" component={LoginScreen}/>
+    <Stack.Navigator screenOptions={screenOptionStyle}>
+      <Stack.Screen name="Login" component={LoginScreen} />
       <Stack.Screen name="Registration" component={RegistrationScreen} />
     </Stack.Navigator>
   );

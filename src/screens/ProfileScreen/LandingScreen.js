@@ -212,12 +212,13 @@ export default class LandingScreen extends React.Component {
               ) : null}
               {getAbout(this.props.userInfo) ? (
                 <Text
+                  numberOfLines={3}
                   style={[
                     styles.text,
                     {
                       color: "black",
                       fontSize: 14,
-                      width: 200,
+                      width: 300,
                       paddingTop: 10,
                       paddingBottom: 5,
                     },
@@ -231,12 +232,12 @@ export default class LandingScreen extends React.Component {
             <View style={styles.userInfoSection}>
               {getPhone(this.props.userInfo) ? (
                 <View style={styles.row}>
-                  <Icon name="phone" color="#777777" size={16}/>
+                  <Icon name="phone" color="#777777" size={16} />
                   <Text>{" " + getPhone(this.props.userInfo)}</Text>
                 </View>
               ) : null}
               <View style={styles.row}>
-                <Icon name="email" color="#777777" size={16}/>
+                <Icon name="email" color="#777777" size={16} />
                 <Text>{" " + this.props.userInfo.email}</Text>
               </View>
             </View>
@@ -244,7 +245,7 @@ export default class LandingScreen extends React.Component {
             <View style={styles.userInfoSectionLower}>
               {getLocation(this.props.userInfo) ? (
                 <View style={styles.row}>
-                  <Icon name="map" color="#777777" size={16}/>
+                  <Icon name="map" color="#777777" size={16} />
                   <Text>{" " + getLocation(this.props.userInfo)}</Text>
                 </View>
               ) : null}
@@ -335,23 +336,22 @@ export default class LandingScreen extends React.Component {
                   />
                 )}
               </Tab.Screen>
-              {!otherProfile 
-                ? <Tab.Screen name="Favourites">
-                    {(props) => (
-                      <PostList
-                        ref={(child) => {
-                          this.favPostsRef = child;
-                        }}
-                        {...props}
-                        userData={userData}
-                        postIds={favPosts}
-                        ownerId={this.props.ownerId}
-                        toggleCommentsModal={this.toggleCommentsModal}
-                      />
-                    )}
-                  </Tab.Screen>
-                  : null
-              }
+              {!otherProfile ? (
+                <Tab.Screen name="Favourites">
+                  {(props) => (
+                    <PostList
+                      ref={(child) => {
+                        this.favPostsRef = child;
+                      }}
+                      {...props}
+                      userData={userData}
+                      postIds={favPosts}
+                      ownerId={this.props.ownerId}
+                      toggleCommentsModal={this.toggleCommentsModal}
+                    />
+                  )}
+                </Tab.Screen>
+              ) : null}
             </Tab.Navigator>
 
             <Modal
