@@ -285,7 +285,7 @@ export default class EditProfile extends React.Component {
                       >
                         <Icon
                           name="camera"
-                          size={35}
+                          size={25}
                           color="#ffffff"
                           style={{
                             opacity: 0.7,

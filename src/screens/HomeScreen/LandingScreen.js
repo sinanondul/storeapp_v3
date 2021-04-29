@@ -154,6 +154,7 @@ export default class LandingScreen extends React.Component {
         />
         <Text
           style={{
+            fontSize: 15,
             alignSelf: "center",
             alignItems: "center",
             fontWeight: "bold",
