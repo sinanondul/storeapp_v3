@@ -10,7 +10,7 @@ import {
   FlatList,
   TouchableOpacity,
   KeyboardAvoidingView,
-  ScrollView
+  ScrollView,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
 import { createStackNavigator } from "@react-navigation/stack";
@@ -57,6 +57,11 @@ export default class PostSpecificScreen extends React.Component {
     nameinit: false,
   };
 
+  static navigationOptions = ({ navigation }) => {
+    const { params } = navigation.state;
+    return params;
+  };
+
   componentDidMount() {
     const postId = this.props.route.params.notification.targetInfo.postId;
     const usersRef = firebase.firestore().collection("users");
@@ -67,7 +72,6 @@ export default class PostSpecificScreen extends React.Component {
       const uped = postDoc.id in this.props.userData.upedPosts;
       const faved = postDoc.id in this.props.userData.favPosts;
       this.setState({
-        
         post: {
           id: postDoc.id,
           name: postData.name,
@@ -114,17 +118,16 @@ export default class PostSpecificScreen extends React.Component {
       //     this.setState({ nameinit: true });
       //   });
     });
-
   }
   render() {
-  //console.log(this.state.post);
+    //console.log(this.state.post);
     return (
       <KeyboardAvoidingView
         behavior={Platform.OS === "ios" ? "padding" : "height"}
-        keyboardVerticalOffset={Platform.OS === 'ios' ? 65 : 90}
-        style={{flex: 1}}
+        keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 90}
+        style={{ flex: 1 }}
       >
-        <ScrollView style={{flex: 1}}>
+        <ScrollView style={{ flex: 1 }}>
           {this.state.post ? (
             <FeedItem
               {...this.props}
@@ -134,13 +137,27 @@ export default class PostSpecificScreen extends React.Component {
               //ownerId={this.props.ownerId}
             />
           ) : null}
-          
-          {this.state.post 
-            ? <CommentsList {...this.props} post={this.state.post}/>
-            : null
-          }
+
+          {this.state.post ? (
+            <CommentsList {...this.props} post={this.state.post} />
+          ) : null}
         </ScrollView>
       </KeyboardAvoidingView>
     );
   }
+  static navigationOptions = {
+    title: <Text style={{ alignSelf: "center", paddingTop: 2 }}>Post</Text>,
+    headerStyle: {
+      backgroundColor: "#2890cf",
+    },
+    headerTintColor: "#fff",
+    headerTitleStyle: {
+      flex: 0.6,
+      //paddingRight: 60,
+
+      alignSelf: "center",
+      alignItems: "center",
+      fontWeight: "bold",
+    },
+  };
 }

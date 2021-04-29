@@ -24,13 +24,17 @@ export default class LandingScreen extends React.Component {
   };
 
   resetNew(notification) {
-    const notificationsRef = firebase.firestore().collection("users").doc(this.props.userData.uid).collection('notifications');
+    const notificationsRef = firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userData.uid)
+      .collection("notifications");
 
     //Local reset.
     notification.new = false;
 
     //Backend reset.
-    notificationsRef.doc(notification.id).set({new: false}, {merge: true});
+    notificationsRef.doc(notification.id).set({ new: false }, { merge: true });
   }
 
   renderItem = ({ item }) => {
@@ -66,14 +70,17 @@ export default class LandingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: "Notifications",
+    title: (
+      <Text style={{ alignSelf: "center", paddingTop: 2 }}>Notifications</Text>
+    ),
     headerStyle: {
-      backgroundColor: "#f4511e",
+      backgroundColor: "#2890cf",
     },
     headerTintColor: "#fff",
     headerTitleStyle: {
       flex: 0.6,
-      paddingRight: 60,
+      //paddingRight: 60,
+
       alignSelf: "center",
       alignItems: "center",
       fontWeight: "bold",
