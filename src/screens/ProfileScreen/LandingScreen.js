@@ -287,7 +287,7 @@ export default class LandingScreen extends React.Component {
 
           <View
             style={{
-              marginTop: 10,
+              marginTop: 5,
               height: Dimensions.get("window").height - 56,
               flex: 1,
             }}
