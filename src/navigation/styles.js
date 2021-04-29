@@ -30,8 +30,8 @@ const styles = StyleSheet.create({
     flex: 0.5,
   },
   userNameText: {
-    fontWeight: "500",
     fontSize: 17,
+    fontWeight: "bold",
     color: "#fff",
   },
   handleText: {
