@@ -33,7 +33,7 @@ function getAvatarTag(info) {
   return (info.name.charAt(0) + info.surename.charAt(0)).toUpperCase();
 }
 function getHandle(info) {
-  return info.handle;
+  return info.handle ? info.handle : "";
 }
 function getAbout(info) {
   return info.about;

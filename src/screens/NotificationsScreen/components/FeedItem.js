@@ -125,7 +125,7 @@ export default class FeedItem extends React.Component {
                 ) : null}
 
                 <Text style={styles.handle}>
-                  {"@" + this.state.senderInfo.handle}
+                  {getHandle(this.state.senderInfo)}
                 </Text>
                 <Text style={styles.seperatorDot}>{"\u2B24"}</Text>
                 <Text style={styles.timestamp}>
