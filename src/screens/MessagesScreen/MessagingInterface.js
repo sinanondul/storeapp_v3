@@ -312,9 +312,37 @@ export default class MessagingInterface extends React.Component {
           new: true,
           newCount: increment,
           notified: false,
+
         },
         { merge: true }
       );
+
+        }, {merge: true})
+      }
+
+      this.props.route.params.chat.lastMessage = {...messageItem, id: messageId};
+    }
+
+    //Creating message item.
+    createMessageItem(text, timeCreated) {
+      return {text, timestamp: timeCreated, senderId: this.props.userData.uid, system: false}
+    }
+    
+
+    render() {
+        return(
+          <View style={{flex: 1, backgroundColor: '#fff'}}>
+            <GiftedChat
+                messages={this.state.messages}
+                onSend={messages => this.onSend(messages)}
+                onLongPress={(context, message) => this.onLongPress(context, message)}
+                user={{
+                  _id: this.props.userData.uid,
+                }}
+            />
+          </View>
+        );
+
     }
 
     this.props.route.params.chat.lastMessage = {

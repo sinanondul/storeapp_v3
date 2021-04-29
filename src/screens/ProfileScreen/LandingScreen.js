@@ -39,7 +39,6 @@ import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
 import PostList from "./components/PostList";
 import FollowButton from "./components/FollowButton";
-import MyPosts from "./MyPosts";
 
 import styles from "./styles";
 const Tab = createMaterialTopTabNavigator();
