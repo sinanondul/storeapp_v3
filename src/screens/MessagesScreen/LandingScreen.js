@@ -80,9 +80,7 @@ export default class LandingScreen extends React.Component {
   }
 
   static navigationOptions = {
-    title: (
-      <Text style={{ alignSelf: "center", paddingTop: 2 }}>Notifications</Text>
-    ),
+    title: <Text style={{ alignSelf: "center", paddingTop: 2 }}>Messages</Text>,
     headerStyle: {
       backgroundColor: "#2890cf",
     },
