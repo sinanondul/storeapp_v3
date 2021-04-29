@@ -80,7 +80,7 @@ export default function RegistrationScreen({ navigation }) {
         />
         <TextInput
           style={styles.input}
-          placeholder="Surename"
+          placeholder="Surname"
           placeholderTextColor="#aaaaaa"
           onChangeText={(text) => setSurename(text)}
           value={surename}

@@ -181,6 +181,7 @@ class Fire {
       id: null,
       lastMessage: null,
       participantIds: participantIds,
+      subscribedIds: participantIds,
       groupChatInfo: groupChatInfo,
     };
     var chatId;

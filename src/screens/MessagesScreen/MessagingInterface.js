@@ -165,11 +165,11 @@ export default class MessagingInterface extends React.Component{
 
     sendMessage(text) {
       const chatId = this.props.route.params.chat.id;
-      const participantIds = this.props.route.params.chat.participantIds;
+      const subscribedIds = this.props.route.params.chat.subscribedIds;
 
       const timeCreated = Date.now();
       const messageItem = this.createMessageItem(text, timeCreated)
-      participantIds.forEach(participantId => this.addToUserMessages(messageItem, chatId, participantId))
+      subscribedIds.forEach(participantId => this.addToUserMessages(messageItem, chatId, participantId))
     }
 
     deleteMessage(messageId) {

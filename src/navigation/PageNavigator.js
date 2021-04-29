@@ -292,13 +292,14 @@ export default class AppPage extends React.Component {
     return new Promise((resolve, reject) => {
       chatChanges.forEach((change, index, array) => {
         const newChatData = change.doc.data();
-        this.getChatParticipantIds(change.doc.id).then((participantIds) => {
+        this.getChatParticipants(change.doc.id).then((participants) => {
           const newChatItem = {
             id: newChatData.id,
             timestamp: newChatData.lastTimestamp,
             new: newChatData.new,
             newCount: newChatData.newCount,
-            participantIds: participantIds,
+            participantIds: participants.participantIds,
+            subscribedIds: participants.subscribedIds,
             lastMessage: newChatData.lastMessage,
             groupChatInfo: newChatData.groupChatInfo,
             notified: newChatData.notified,
@@ -383,14 +384,14 @@ export default class AppPage extends React.Component {
       courseChanges.forEach((change, index, array) => {
         const newCourseData = change.doc.data();
         const generalId = Object.keys(newCourseData.sections)[0];
-        this.getSectionParticipantIds(generalId).then((participantIds) => {
+        this.getSectionParticipants(generalId).then((participants) => {
           const newCourseItem = {
             id: change.doc.id,
             timestamp: newCourseData.lastTimestamp,
             new: newCourseData.new,
             newCount: newCourseData.newCount,
-            participantIds: participantIds,
-            lastMessage: newCourseData.lastMessage,
+            participantIds: participants.participantIds,
+            subscribedIds: participants.subscribedIds,
             code: newCourseData.code,
             name: newCourseData.name,
             color: newCourseData.color,
@@ -421,23 +422,29 @@ export default class AppPage extends React.Component {
           }
 
           if (index === array.length - 1) resolve();
-        });
+        }).catch(error => Alert.alert(error.toString()));
       });
     });
   };
 
-  getChatParticipantIds(chatId) {
+  getChatParticipants(chatId) {
     const chatRef = firebase.firestore().collection("chats").doc(chatId);
     return new Promise((resolve, reject) => {
       chatRef.get().then((chatDoc) => {
         const chatData = chatDoc.data();
         const participantIds = Object.keys(chatData.participantIds);
-        resolve(participantIds);
+        let subscribedIds = []
+        participantIds.forEach(participantId => {
+          if (chatData.participantIds[participantId]) {
+            subscribedIds.push(participantId)
+          }
+        })
+        resolve({participantIds, subscribedIds});
       });
     });
   }
 
-  getSectionParticipantIds(sectionId) {
+  getSectionParticipants(sectionId) {
     const sectionRef = firebase.firestore().collection("sections").doc(sectionId);
     return new Promise((resolve, reject) => {
       sectionRef.get().then((sectionDoc) => {
@@ -445,10 +452,16 @@ export default class AppPage extends React.Component {
         if (sectionData.studentIds && Object.keys(sectionData.studentIds).length !== 0 )
         {
           const participantIds = Object.keys(sectionData.studentIds);
-          resolve(participantIds);
+          let subscribedIds = [];
+          participantIds.forEach(participantId => {
+            if (sectionData.studentIds[participantId]) {
+              subscribedIds.push(participantId)
+            }
+          })
+          resolve({participantIds, subscribedIds});
         }
         else {
-          resolve([]);
+          resolve([], []);
         }
       });
     });

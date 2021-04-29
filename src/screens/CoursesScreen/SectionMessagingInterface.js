@@ -28,6 +28,20 @@ export default class SectionMessagingInterface extends React.Component{
 
 
     componentDidMount() {
+      this.props.navigation.setOptions({
+        title: this.props.route.params.course.code,
+        headerStyle: {
+          backgroundColor: "#2890cf",
+        },
+        headerTintColor: "#fff",
+        headerTitleStyle: {
+          flex: 0.6,
+          paddingRight: 60,
+          alignSelf: "center",
+          alignItems: "center",
+          fontWeight: "bold",
+        },
+      });
       //Getting participant info.
       let usersArray = [];
 
@@ -140,12 +154,11 @@ export default class SectionMessagingInterface extends React.Component{
 
     sendMessage(text) {
       const courseId = this.props.route.params.course.id;
-      const participantIds = this.props.route.params.course.participantIds;
+      const subscribedIds = this.props.route.params.course.subscribedIds;
 
       const timeCreated = Date.now();
       const messageItem = this.createMessageItem(text, timeCreated)
-      Alert.alert(participantIds.length.toString());
-      participantIds.forEach(participantId => this.addToUserMessages(messageItem, courseId, participantId))
+      subscribedIds.forEach(participantId => this.addToUserMessages(messageItem, courseId, participantId))
     }
 
     //sendMessage subfunctions.

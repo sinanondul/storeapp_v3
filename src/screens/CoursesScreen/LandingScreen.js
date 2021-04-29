@@ -9,8 +9,10 @@ import {
   Image,
 } from "react-native";
 import Icon from "react-native-vector-icons/Ionicons";
+import Swipeout from 'react-native-swipeout';
 
 import firebase from "firebase";
+import Fire from "../../firebase/Fire";
 
 import { openDrawer } from "../../../App";
 import BottomRightButton from "../../components/BottomRightButton";
@@ -19,19 +21,11 @@ import DefaultFooter from "../../components/DefaultFooter";
 import CourseItem from "./components/CourseItem";
 import styles from "./styles";
 
-const courseItems = [
-  {
-    id: 1,
-    code: "GE 402",
-    color: "#00b300",
-    name: "Innovative Design and Entrepreneurship II",
-    description: null,
-    sectionChats: [],
-    groupChats: [],
-  },
-];
-
 export default class LandingScreen extends React.Component {
+  state = {
+    courses: [],
+  }
+
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
     return params;
@@ -39,27 +33,65 @@ export default class LandingScreen extends React.Component {
 
   renderItem = ({ item }) => {
     return (
-      <TouchableOpacity
-        style={styles.container}
-        onPress={() =>
-          this.props.navigation.navigate("CourseItem", { course: item })
-        }
-      >
-        <CourseItem {...this.props} courseInfo={item} />
-      </TouchableOpacity>
+      <Swipeout right={this.swipeButtons(item)} autoClose='true' backgroundColor= 'transparent'>
+        <TouchableOpacity
+          style={styles.container}
+          onPress={() =>
+            this.props.navigation.navigate("CourseItem", { course: item })
+          }
+        >
+          <CourseItem {...this.props} courseInfo={item} />
+        </TouchableOpacity>
+      </Swipeout>
     );
   };
 
-  componentDidMount() {}
+  componentDidMount() {
+    this.setState({courses: this.props.courses});
+    this._unsubscribeFocus = this.props.navigation.addListener("focus", () => {
+      this.setState({courses: this.props.courses});
+    });
+  }
 
   componentWillUnmount() {}
+
+  swipeButtons(course) {return [{
+    text: 'Remove',
+    backgroundColor: 'red',
+    underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
+    onPress: () => {this.removeCourse(course)},
+  }];}
+
+  removeCourse(course) {
+    const userRef = firebase.firestore().collection('users').doc(this.props.userData.uid);
+    const courseRef = userRef.collection('courses').doc(course.id);
+    const sectionHeaderRef = firebase.firestore().collection('sections').doc(Object.keys(course.sections)[0]);
+    sectionHeaderRef.get().then(courseHeaderDoc => {
+      let courseHeader = courseHeaderDoc.data();
+      courseHeader.participantIds[this.props.userData.uid] = false;
+
+      sectionHeaderRef.set({participantIds: courseHeader.participantIds}, {merge: true});
+    })
+    Fire.shared.deleteCollection(courseRef, 'messages');
+    courseRef.delete();
+    this.handleDelete(course.id);
+  }
+
+  handleDelete(courseId) {
+    let coursesArray = this.state.courses;
+    const index = coursesArray.findIndex(
+      (item) => item.id === courseId
+    );
+    coursesArray.splice(index, 1);
+    this.setState({courses: coursesArray});
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.container}>
           <FlatList
-            data={this.props.courses.sort((a, b) =>
+            data={this.state.courses.sort((a, b) =>
               a.code > b.code ? 1 : b.code > a.code ? -1 : 0
             )}
             renderItem={this.renderItem}
