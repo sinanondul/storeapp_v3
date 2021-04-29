@@ -77,6 +77,10 @@ const styles = StyleSheet.create({
     //marginTop: 5,
     fontWeight: "bold",
   },
+  comingSoonLabel: {
+    fontWeight: "bold",
+    color: "#D00000",
+  },
   preference: {
     flexDirection: "row",
     justifyContent: "space-between",

@@ -142,6 +142,7 @@ export default class EditProfile extends React.Component {
           "Profile Updated!",
           "Your Profile has been updated succesfully."
         );
+        this.props.navigation.goBack();
       });
   };
 
@@ -240,12 +241,6 @@ export default class EditProfile extends React.Component {
           enabledContentTapInteraction={false}
         />
         <KeyboardAwareScrollView>
-          <KeyboardAvoidingView
-            style={styles.container}
-            behavior={Platform.OS === "ios" ? "padding" : "height"}
-            keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 90}
-            //keyboardVerticalOffset="200" IMPORTANT && ADD KEYBOARDLISTENER TO FIND KEYBOARD HEIGHT AND ADD INSTEAD OF 200 !!!
-          >
             <Animated.View
               style={{
                 margin: 20,
@@ -560,7 +555,6 @@ export default class EditProfile extends React.Component {
                 <Text style={styles.panelButtonTitle}>Update</Text>
               </TouchableOpacity>
             </Animated.View>
-          </KeyboardAvoidingView>
         </KeyboardAwareScrollView>
       </View>
     );
@@ -573,6 +567,7 @@ export default class EditProfile extends React.Component {
     headerTintColor: "#fff",
     headerTitleStyle: {
       flex: 0.6,
+      paddingRight: Platform.OS === "ios" ? 0 : 60,
       alignSelf: "center",
       alignItems: "center",
       fontWeight: "bold",

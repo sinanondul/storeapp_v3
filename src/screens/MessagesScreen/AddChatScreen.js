@@ -114,7 +114,7 @@ export default class AddChatScreen extends React.Component
         headerTintColor: '#fff',
         headerTitleStyle: {
           flex: 0.6,
-          paddingRight: 60,
+          paddingRight: Platform.OS === "ios" ? 0 : 60,
           alignSelf: 'center', 
           alignItems: 'center',
           fontWeight: 'bold',

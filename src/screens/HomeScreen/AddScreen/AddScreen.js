@@ -97,7 +97,7 @@ export default class AddScreen extends React.Component {
         });
       this.props.navigation.goBack();
     } else {
-      Alert.alert("Cannot Post Blank");
+      Alert.alert("Post cannot be empty!");
     }
   };
 

@@ -196,7 +196,7 @@ export default class LandingScreen extends React.Component {
         }
         style={{ marginRight: 12 }}
         size={30}
-        color="#fff"
+        color="#2890cf"
         //onPress={() => this.props.navigation.navigate("EditProfile")}
       />
     ),

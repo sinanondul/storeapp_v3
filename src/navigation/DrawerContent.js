@@ -133,10 +133,10 @@ export default class DrawerContent extends React.Component {
                         size={size}
                       />
                     )}
-                    label="Supplies"
-                    labelStyle={styles.drawerItem}
+                    label="Coming Soon"
+                    labelStyle={styles.comingSoonLabel}
                     onPress={() => {
-                      this.props.navigation.navigate("Supplies");
+                      //this.props.navigation.navigate("Supplies");
                     }}
                   />
 
@@ -152,10 +152,10 @@ export default class DrawerContent extends React.Component {
                         size={size}
                       />
                     )}
-                    label="Housemates"
-                    labelStyle={styles.drawerItem}
+                    label="Coming Soon"
+                    labelStyle={styles.comingSoonLabel}
                     onPress={() => {
-                      this.props.navigation.navigate("Housemates");
+                      //this.props.navigation.navigate("Housemates");
                     }}
                   />
 
@@ -183,10 +183,10 @@ export default class DrawerContent extends React.Component {
                         size={size}
                       />
                     )}
-                    label="Sponsored"
-                    labelStyle={styles.drawerItem}
+                    label="Coming Soon"
+                    labelStyle={styles.comingSoonLabel}
                     onPress={() => {
-                      this.props.navigation.navigate("Sponsored");
+                      //this.props.navigation.navigate("Sponsored");
                     }}
                   />
                 </Drawer.Section>
@@ -211,7 +211,7 @@ export default class DrawerContent extends React.Component {
                 this.props.navigation.navigate("Onboarding");
               }}
             />
-            <DrawerItem
+            {/* <DrawerItem
               icon={({ color, size }) => (
                 <Icon
                   name={
@@ -228,7 +228,7 @@ export default class DrawerContent extends React.Component {
               onPress={() => {
                 this.props.navigation.navigate("Settings");
               }}
-            />
+            /> */}
             <DrawerItem
               icon={({ color, size }) => (
                 <Icon

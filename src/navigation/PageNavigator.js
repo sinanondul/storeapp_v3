@@ -18,7 +18,7 @@ import MessagesScreen from "../screens/MessagesScreen/MessagesScreen";
 import AddScreen from "../screens/HomeScreen/AddScreen/AddScreen";
 import NotificationsScreen from "../screens/NotificationsScreen/NotificationsScreen";
 
-import { getFullName, getAvatar } from "../functions/UserInfoFormatter";
+import { getName, getFullName, getAvatar } from "../functions/UserInfoFormatter";
 
 import * as Notifications from "expo-notifications";
 import * as Permissions from "expo-permissions";
@@ -107,12 +107,16 @@ export default class AppPage extends React.Component {
       .collection("notifications")
       .onSnapshot((notificationSnapshot) => {
         let notificationChanges = notificationSnapshot.docChanges();
-        this.getNotifications(notificationChanges, notificationsArray).then(
-          () => {
+        this.getNotifications(notificationChanges, notificationsArray).then( () => {
             var getNotificationCount = new Promise((resolve, reject) => {
               notificationsArray.forEach((item, index, array) => {
                 if (item.new) {
                   notificationCount = notificationCount + 1;
+
+                  if (!item.notified) {
+                    this.pushNewNotification(item);
+                    userRef.collection("notifications").doc(item.id).set({notified: true}, {merge: true});
+                  }
                 }
                 if (index === array.length - 1) resolve();
               });
@@ -164,7 +168,7 @@ export default class AppPage extends React.Component {
 
 
   pushNewMessage = (chat) => {
-    token = this.props.userData.token;
+    let token = this.props.userData.token;
     if (token) {
       const senderId = chat.lastMessage.senderId;
       const senderRef = firebase.firestore().collection("users").doc(senderId);
@@ -202,7 +206,7 @@ export default class AppPage extends React.Component {
   };
 
   pushNewGroupMessage = (chat) => {
-    token = this.props.userData.token;
+    let token = this.props.userData.token;
     if (token) {
       const senderId = chat.lastMessage.senderId;
       const currentUser = senderId === this.props.userData.uid;
@@ -233,35 +237,41 @@ export default class AppPage extends React.Component {
   };
 
   pushNewNotification = (notification) => {
-    token = this.props.userData.token;
+    let token = this.props.userData.token;
     if (token) {
-      const senderId = chat.lastMessage.senderId;
-      const senderRef = firebase.firestore().collection("users").doc(senderId);
-      const currentUser = senderId === this.props.userData.uid;
-
-      if (!currentUser) {
-        senderRef
-          .get()
-          .then((senderDoc) => {
-            const senderInfo = senderDoc.data();
-            const title = getFullName(senderInfo);
-            const body = chat.lastMessage.text;
-            let response = fetch("https://exp.host/--/api/v2/push/send", {
-              method: "POST",
-              headers: {
-                Accept: "application/json",
-                "Content-Type": "application/json",
-              },
-              body: JSON.stringify({
-                to: token,
-                sound: "default",
-                title: title,
-                body: body,
-              }),
-            });
-          })
-          .catch((error) => console.log(error));
+      const senderId = notification.lastSender.uid;
+      const senderInfo = notification.lastSender;
+      const senderCount = notification.senderCount;
+      let body;
+      if (notification.targetInfo.action === "up") {
+        if (senderCount === 1) {
+          body = getName(senderInfo) + " upped your post."
+        }
+        else {
+          body = getName(senderInfo) + " and " + (senderCount - 1).toString() + " others upped your post."
+        }
       }
+      else if (notification.targetInfo.action === "comment") {
+        if (senderCount === 1) {
+          body = getName(senderInfo) + " commented on your post: " + notification.text;
+        }
+        else {
+          body = getName(senderInfo) + " and " + (senderCount - 1).toString() + " others commented on your post."
+        }
+      }
+
+      let response = fetch("https://exp.host/--/api/v2/push/send", {
+        method: "POST",
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          to: token,
+          sound: "default",
+          body: body,
+        }),
+      });
     }
   }
 
@@ -269,7 +279,6 @@ export default class AppPage extends React.Component {
     if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
       const notification = response.notification.request;
       const notificationContent = notification.content;
-      Alert.alert(notificationContent.body.title)
       const notificationData = notificationContent.data; //{type: ["message, groupMessage"], chat, senderInfo}
       if (notificationData.type === "message") {
         this.props.redirectData = {
@@ -422,7 +431,7 @@ export default class AppPage extends React.Component {
           }
 
           if (index === array.length - 1) resolve();
-        }).catch(error => Alert.alert(error.toString()));
+        });
       });
     });
   };

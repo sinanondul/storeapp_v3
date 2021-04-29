@@ -36,7 +36,7 @@ export default class SectionMessagingInterface extends React.Component{
         headerTintColor: "#fff",
         headerTitleStyle: {
           flex: 0.6,
-          paddingRight: 60,
+          paddingRight: Platform.OS === "ios" ? 0 : 60,
           alignSelf: "center",
           alignItems: "center",
           fontWeight: "bold",
@@ -62,28 +62,73 @@ export default class SectionMessagingInterface extends React.Component{
             changes.forEach((change) => {
               if (change.type === 'added') {
                 const newMessage = change.doc.data();
-                const userItem = this.state.userData.find((user) => user.uid === newMessage.senderId);
-                let newMessageData;
-                if (newMessage.system) {
-                  newMessageData = {
-                    _id: change.doc.id,
-                    text: newMessage.text,
-                    createdAt: newMessage.timestamp,
-                    system: true,
-                  }
+                let userItem = this.state.userData.find((user) => user.uid === newMessage.senderId);
+                if (!userItem) {
+                  firebase.firestore().collection('users')
+                  .doc(newMessage.senderId)
+                  .get()
+                  .then((firestoreDocument) => {
+                    let userData = firestoreDocument.data();
+                    const userInfo = {
+                        uid: userData.id,
+                        fullName: userData.fullName,
+                        name: userData.name,
+                        surename: userData.surename,
+                        avatar: userData.avatar,
+                    }
+                    
+                    usersArray.unshift(userInfo);
+
+                    userItem = userInfo;
+                    
+                    let newMessageData;
+                    if (newMessage.system) {
+                      newMessageData = {
+                        _id: change.doc.id,
+                        text: newMessage.text,
+                        createdAt: newMessage.timestamp,
+                        system: true,
+                      }
+                    }
+                    else {
+                      newMessageData = {
+                        _id: change.doc.id,
+                        text: newMessage.text,
+                        createdAt: newMessage.timestamp,
+                        user: {
+                          _id: newMessage.senderId,
+                          name: getFullName(userItem),
+                        },
+                      }
+                    }
+                    messagesArray.unshift(newMessageData);
+                  });
                 }
                 else {
-                  newMessageData = {
-                    _id: change.doc.id,
-                    text: newMessage.text,
-                    createdAt: newMessage.timestamp,
-                    user: {
-                      _id: newMessage.senderId,
-                      name: getFullName(userItem),
-                    },
+
+                  let newMessageData;
+                  if (newMessage.system) {
+                    newMessageData = {
+                      _id: change.doc.id,
+                      text: newMessage.text,
+                      createdAt: newMessage.timestamp,
+                      system: true,
+                    }
                   }
+                  else {
+                    newMessageData = {
+                      _id: change.doc.id,
+                      text: newMessage.text,
+                      createdAt: newMessage.timestamp,
+                      user: {
+                        _id: newMessage.senderId,
+                        name: getFullName(userItem),
+                      },
+                    }
+                  }
+                  messagesArray.unshift(newMessageData);
                 }
-                messagesArray.unshift(newMessageData);
+
               }
             });
             messagesArray.sort((a, b) => b.createdAt - a.createdAt)
@@ -164,7 +209,6 @@ export default class SectionMessagingInterface extends React.Component{
     //sendMessage subfunctions.
 
     addToUserMessages(messageItem, courseId, uid) {
-      Alert.alert(uid);
       const userCourseRef = firebase.firestore().collection('users').doc(uid).collection('courses').doc(courseId);
       const userMessagesRef = userCourseRef.collection('messages')
       const currentUser = uid === this.props.userData.uid;

@@ -132,9 +132,9 @@ export default class CommentsList extends React.Component {
     //Checking if first batch.
     commentsQuery = startAfter
       ? orderByUpCount
-        ? commentsQuery.startAfter(startAfter.upCount).limit(perLoadCount)
-        : commentsQuery.startAfter(startAfter.timestamp).limit(perLoadCount)
-      : commentsQuery.limit(perLoadCount);
+        ? commentsQuery.startAfter(startAfter.upCount)
+        : commentsQuery.startAfter(startAfter.timestamp)
+      : commentsQuery
 
     return new Promise((resolve, reject) => {
       commentsQuery.get().then((commentsSnapshot) => {

@@ -51,9 +51,6 @@ export default class UserItem extends React.Component {
           followers: userInfo.followers,
         };
         this.setState({ userInfo: userInfoItem });
-      })
-      .catch((error) => {
-        Alert.alert(error.toString());
       });
   }
 
