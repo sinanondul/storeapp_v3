@@ -35,13 +35,8 @@ import {
   getFollowingCount,
   getPostCount,
 } from "../../functions/UserInfoFormatter";
-import { openDrawer } from "../../../App";
 
-import MyPostFeedItem from "../../screens/ProfileScreen/MyPostFeedItem";
 import { createMaterialTopTabNavigator } from "@react-navigation/material-top-tabs";
-import PostList from "./components/PostList";
-import FollowButton from "./components/FollowButton";
-import MyPosts from "./MyPosts";
 import FollowerScreen from "./FollowerScreen";
 import FollowingScreen from "./FollowingScreen";
 

@@ -9,6 +9,7 @@ import LandingScreen from "./LandingScreen";
 import CourseItemScreen from './CourseItemScreen';
 import AddCourseScreen from './AddCourseScreen';
 import styles from "./styles";
+import SectionMessagingInterface from "./SectionMessagingInterface";
 
 
 export default class CoursesScreen extends React.Component{
@@ -23,12 +24,6 @@ export default class CoursesScreen extends React.Component{
     const chats = this.props.chats;
     const messageCount = this.props.messageCount;
     const courses = this.props.courses;
-    if (this.props.redirectData && this.props.redirectData.route) {
-      const redirectRoute = redirectData.route;
-      const redirectSubroute = redirectData.subroute ? redirectData.subroute : null;
-      const redirectParams = redirectData.params ? redirectData.params : null;
-      this.props.navigation.navigate(redirectRoute, {});
-    }
     return (
       <CoursesStack.Navigator
         initialRouteName="Landing"
@@ -43,7 +38,7 @@ export default class CoursesScreen extends React.Component{
           {(props) => <AddCourseScreen {...props} userData={userData} chats={chats} messageCount={messageCount} courses={courses}/>}
         </CoursesStack.Screen>
         <CoursesStack.Screen name="CourseItem" options={CourseItemScreen.navigationOptions}>
-          {(props) => <CourseItemScreen {...props} userData={userData} chats={chats} messageCount={messageCount} courses={courses}/>}
+          {(props) => <SectionMessagingInterface {...props} userData={userData} chats={chats} messageCount={messageCount} courses={courses}/>}
         </CoursesStack.Screen>
       </CoursesStack.Navigator>
     );

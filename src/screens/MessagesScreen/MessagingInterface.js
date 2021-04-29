@@ -281,6 +281,7 @@ export default class MessagingInterface extends React.Component{
           lastMessage: {...messageItem, id: messageId},
           new: true,
           newCount: increment,
+          notified: false,
         }, {merge: true})
       }
 
