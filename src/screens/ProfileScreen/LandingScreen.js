@@ -174,8 +174,10 @@ export default class LandingScreen extends React.Component {
                             this.props.userData.uid,
                             this.props.userInfo.uid,
                           ],
+                          creatorInfo: this.props.userData,
                         })
                         .then((chatInfo) => {
+                          console.log(chatInfo);
                           return this.props.navigation.navigate(
                             "MessagingFromProfile",
                             { senderInfo: this.props.userInfo, chat: chatInfo }
@@ -200,7 +202,7 @@ export default class LandingScreen extends React.Component {
               </Text>
               {getHandle(this.props.userInfo) ? (
                 <Text style={[styles.text, { color: "gray", fontSize: 14 }]}>
-                  @{getHandle(this.props.userInfo)}
+                  {getHandle(this.props.userInfo)}
                 </Text>
               ) : null}
               {getDepartment(this.props.userInfo) ? (

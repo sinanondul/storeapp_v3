@@ -89,8 +89,8 @@ export default class FeedList extends React.Component {
                     };
                     postsArray.push(newPostData);
                     if (index === array.length - 1) {
-                        const adItem = {id: 'ad000' + batchIndex, isAd: true};
-                        postsArray.splice(batchIndex * batchSize + this.state.adCount , 0, adItem);
+                        // const adItem = {id: 'ad000' + batchIndex, isAd: true};
+                        // postsArray.splice(batchIndex * batchSize + this.state.adCount , 0, adItem);
                         this.setState({posts: postsArray, adCount: this.state.adCount + 1})
                         resolve(newPostData);
                     }

@@ -143,7 +143,7 @@ export default class EditProfile extends React.Component {
           "Your Profile has been updated succesfully."
         );
         this.props.navigation.goBack();
-      });
+      }).catch(error => Alert.alert(error.toString()));
   };
 
   uploadPhoto = async (uri) => {
@@ -321,10 +321,14 @@ export default class EditProfile extends React.Component {
                       placeholderTextColor="#666666"
                       autoCorrect={false}
                       value={this.state.user.handle}
-                      onChangeText={(txt) =>
+                      onChangeText={(txt) => {
+                        if (txt[0] !== "@") {
+                          txt = "@" + txt;
+                        }
                         this.setState({
                           user: { ...this.state.user, handle: txt },
                         })
+                      }
                       }
                       style={styles.textInput}
                     />

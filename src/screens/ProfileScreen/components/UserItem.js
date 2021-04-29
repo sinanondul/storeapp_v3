@@ -77,7 +77,7 @@ export default class UserItem extends React.Component {
             <View>
               <Text style={styles.handle} numberOfLines={1}>
                 {this.state.userInfo
-                  ? "@" + getHandle(this.state.userInfo)
+                  ? getHandle(this.state.userInfo)
                   : null}
               </Text>
             </View>
