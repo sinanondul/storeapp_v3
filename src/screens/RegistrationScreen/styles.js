@@ -25,7 +25,7 @@ export default StyleSheet.create({
     paddingLeft: 16,
   },
   button: {
-    backgroundColor: "#788eec",
+    backgroundColor: "rgb(255, 92, 43)",
     marginLeft: 30,
     marginRight: 30,
     marginTop: 20,
