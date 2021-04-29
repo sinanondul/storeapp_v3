@@ -24,6 +24,7 @@ const styles = StyleSheet.create({
   },
 
   profileTop: {
+    paddingTop: 40,
     //borderBottomWidth: 2,
   },
   containerHeader: {
@@ -54,7 +55,7 @@ const styles = StyleSheet.create({
     paddingLeft: 12,
   },
   profileImage: {
-    marginTop: 60,
+    //marginTop: 60,
     borderRadius: 80,
     //width: "23.5%",
     // alignItems: "center",
