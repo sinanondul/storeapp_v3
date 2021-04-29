@@ -549,6 +549,7 @@ class Fire {
       lastSender: notificationItem.senderInfo,
       senderIds: senderIds, 
       new: true,
+      notified: false,
     }
   }
 
@@ -564,14 +565,14 @@ class Fire {
         let previousNotification = notificationDoc.data();
         if (!previousNotification.senderIds[notificationItem.senderInfo.uid]) {
           let newNotification = this.createCommentNotification(notificationItem, previousNotification);
-          notificationRef.set({...newNotification}).catch(error => Alert.alert(error.toString()));
+          notificationRef.set({...newNotification});
         }
       }
       else {
         let newNotification = this.createCommentNotification(notificationItem);
-        notificationRef.set({...newNotification}).catch("Set", error => Alert.alert(error.toString()));
+        notificationRef.set({...newNotification});
       }
-    }).catch(error => Alert.alert("Get", error.toString()));
+    });
   }
 
   getCommentNotificationItem(senderInfo, post, text) {
@@ -610,6 +611,7 @@ class Fire {
       lastSender: notificationItem.senderInfo,
       senderIds: senderIds, 
       new: true,
+      notified: false,
     };
     return commentNotification;
   }

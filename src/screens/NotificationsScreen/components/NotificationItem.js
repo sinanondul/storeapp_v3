@@ -88,26 +88,29 @@ export default class NotificationItem extends React.Component {
             <View style={styles.notificationTextColumn}>
               <View style={styles.notificationText}>
                 <View>
-                  <TouchableOpacity>
+                  <View>
                     <Text style={{ fontWeight: "bold" }}>
                       {getName(notification.lastSender)}
                     </Text>
-                  </TouchableOpacity>
+                  </View>
                 </View>
                 <View>
                   {notification.senderCount == 1 ? (
-                    <Text> commented on your post</Text>
-                  ) : // <Text>
-                  //   and <Text>{notification.senderCount}</Text> others liked
-                  //   your post
-                  // </Text>
-                  null}
+                    <Text> commented on your post: </Text>
+                  ) :  
+                  <Text>
+                    {" and " + (notification.senderCount - 1).toString() + " others commented on your post."}
+                  </Text>
+                }
                 </View>
               </View>
-              <View>
-                <Text style={styles.txt}>{notification.text}</Text>
+              {notification.senderCount === 1 
+                ? <View>
+                    <Text style={styles.txt}>{notification.text}</Text>
+                  </View>
+                : null
+              }
               </View>
-            </View>
             <View style={styles.rightView}>
               <Text style={styles.time}>
                 {getTimeSince(notification.timestamp)}
@@ -143,8 +146,7 @@ export default class NotificationItem extends React.Component {
                     <Text> uped your post.</Text>
                   ) : (
                     <Text>
-                      and <Text>{notification.senderCount}</Text> others uped
-                      your post.
+                      {" and " + (notification.senderCount - 1).toString() + " others uped your post."}
                     </Text>
                   )}
                 </View>

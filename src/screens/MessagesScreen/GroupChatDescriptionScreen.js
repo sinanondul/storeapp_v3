@@ -159,9 +159,9 @@ export default class GroupChatDescriptionScreen extends React.Component{
                                 }}
                             />
                         </View>
-                        <Text style={pageStyles.leaveGroupText}>
+                        {/* <Text style={pageStyles.leaveGroupText}>
                             Leave group
-                        </Text>
+                        </Text> */}
                     </TouchableOpacity>
                 </ScrollView>
                 {   this.state.showParticipantDialog
