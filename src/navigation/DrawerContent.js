@@ -53,7 +53,7 @@ export default class DrawerContent extends React.Component {
                   {getFullName(this.props.userData)}
                 </Text>
                 <Text style={styles.handleText}>
-                  @{getHandle(this.props.userData)}
+                  {getHandle(this.props.userData)}
                 </Text>
               </View>
             </View>

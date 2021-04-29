@@ -31,6 +31,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     left: 30,
     fontSize: 16,
+    color: 'black'
   },
   centeredView: {
     flex: 1,

@@ -77,46 +77,49 @@ class Fire {
 
   //Upping (liking) a post.
   upPost(userData, post) {
+    if (!userData.upedPosts[post.id]) {
+      //Local update.
+      userData.upedPosts[post.id] = true;
 
-    //Local update.
-    userData.upedPosts[post.id] = true;
+      //Firebase consts.
+      const userRef = this.firestore.collection('users').doc(userData.uid);
+      const postRef = this.firestore.collection('posts').doc(post.id);
+      const increment = firebase.firestore.FieldValue.increment(1);
 
-    //Firebase consts.
-    const userRef = this.firestore.collection('users').doc(userData.uid);
-    const postRef = this.firestore.collection('posts').doc(post.id);
-    const increment = firebase.firestore.FieldValue.increment(1);
+      //Incrementing up count of post.
+      postRef.update({upCount: increment})
 
-    //Incrementing up count of post.
-    postRef.update({upCount: increment})
+      //Sending notification.
+      if (post.senderId !== userData.uid) {
+        this.addNotificationItem(this.getUpNotificationItem(userData, post));
+      }
 
-    //Sending notification.
-    if (post.senderId !== userData.uid) {
-      this.addNotificationItem(this.getUpNotificationItem(userData, post));
+      //Server update.
+      userRef.set({
+        "upedPosts": userData.upedPosts
+      }, {merge:true})
     }
-
-    //Server update.
-    userRef.set({
-      "upedPosts": userData.upedPosts
-    }, {merge:true})
   }
 
   //Removing up (like) from already uped post.
   removeUpPost = async(userData, postId) => {
-    //Local update.
-    delete userData.upedPosts[postId];
+    if (userData.upedPosts.postId) {
+      //Local update.
+      delete userData.upedPosts[postId];
 
-    //Firebase consts.
-    const userRef = this.firestore.collection('users').doc(userData.uid);
-    const postRef = this.firestore.collection('posts').doc(postId);
-    const decrement = firebase.firestore.FieldValue.increment(-1);
+      //Firebase consts.
+      const userRef = this.firestore.collection('users').doc(userData.uid);
+      const postRef = this.firestore.collection('posts').doc(postId);
+      const decrement = firebase.firestore.FieldValue.increment(-1);
 
-    //Incrementing up count of post.
-    postRef.update({upCount: decrement})
+      //Incrementing up count of post.
+      postRef.update({upCount: decrement})
 
-    //Server update.
-    userRef.set({ upedPosts: {
-      [postId]: firebase.firestore.FieldValue.delete()
-    }}, {merge:true})
+      //Server update.
+      userRef.set({ upedPosts: {
+        [postId]: firebase.firestore.FieldValue.delete()
+      }}, {merge:true})
+    }
   }
 
   //Favouriting post.
