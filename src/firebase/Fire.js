@@ -31,37 +31,12 @@ class Fire {
 
   deleteCollection(db, path) {
     const ref = db.collection(path)
-    ref.onSnapshot((snapshot) => {
+    ref.get().then((snapshot) => {
       snapshot.docs.forEach((doc) => {
         ref.doc(doc.id).delete()
       })
     })
   }
-  
-  deleteQueryBatch = async(db, query, resolve) => {
-    const snapshot = await query.get();
-  
-    const batchSize = snapshot.size;
-    if (batchSize === 0) {
-      // When there are no documents left, we are done
-      resolve();
-      return;
-    }
-  
-    // Delete documents in a batch
-    const batch = db.batch();
-    snapshot.docs.forEach((doc) => {
-      batch.delete(doc.ref);
-    });
-    await batch.commit();
-  
-    // Recurse on the next process tick, to avoid
-    // exploding the stack.
-    process.nextTick(() => {
-      deleteQueryBatch(db, query, resolve);
-    });
-  }
-
 
 
 
@@ -729,6 +704,9 @@ class Fire {
           lastTimestamp: currTime,
           new: false,
           newCount: 0,
+          code: courseData.code,
+          name: courseData.name,
+          color: courseData.color,
         })
 
       });

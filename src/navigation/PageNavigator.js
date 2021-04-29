@@ -135,51 +135,8 @@ export default class AppPage extends React.Component {
       .collection("courses")
       .onSnapshot((courseSnapshot) => {
         let courseChanges = courseSnapshot.docChanges();
-        var getCourses = new Promise((resolve, reject) => {
-          courseChanges.forEach((change, index, array) => {
-            const newCourseRef = change.doc.data();
-            firebase
-              .firestore()
-              .collection("courses")
-              .doc(change.doc.id)
-              .get()
-              .then((firestoreDocument) => {
-                let newCourseData = firestoreDocument.data();
-                let sections = {};
 
-                const newCourseItem = {
-                  id: change.doc.id,
-                  lastTimestamp: newCourseRef.lastTimestamp,
-                  new: newCourseRef.new,
-                  newCount: newCourseRef.newCount,
-                  code: newCourseData.code,
-                  name: newCourseData.name,
-                  color: newCourseData.color,
-                  sections: newCourseData.sections,
-                };
-                if (change.type === "added") {
-                  //Adding to array
-                  coursesArray.unshift(newCourseItem);
-                } else if (change.type === "modified") {
-                  //Modifying previously added chat.
-                  const index = coursesArray.findIndex(
-                    (item) => item.id === newChatItem.id
-                  );
-                  coursesArray[index] = newCourseItem;
-                } else if (change.type === "removed") {
-                  //Modifying previously added chat.
-                  const index = coursesArray.findIndex(
-                    (item) => item.id === newCourseItem.id
-                  );
-                  coursesArray.splice(index, 1);
-                }
-
-                if (index === array.length - 1) resolve();
-              });
-          });
-        });
-
-        getCourses.then(() => {
+        this.getCourses(courseChanges, coursesArray).then(() => {
           var getCourseCount = new Promise((resolve, reject) => {
             coursesArray.forEach((item, index, array) => {
               if (item.newCount > 0) {
@@ -195,12 +152,14 @@ export default class AppPage extends React.Component {
             });
             courseNotificationCount = 0;
           });
-        });
+        })
       });
   }
 
   componentWillUnmount() {
     this._unsubscribeChats();
+    this._unsubscribeNotifications();
+    this._unsubscribeCourses();
   }
 
 
@@ -307,7 +266,6 @@ export default class AppPage extends React.Component {
   }
 
   handleNotificationResponse = response => {
-    Alert.alert("hey");
     if (response.actionIdentifier === Notifications.DEFAULT_ACTION_IDENTIFIER) {
       const notification = response.notification.request;
       const notificationContent = notification.content;
@@ -366,7 +324,7 @@ export default class AppPage extends React.Component {
           } else if (change.type === "removed") {
             //Modifying previously added chat.
             const index = chatsArray.findIndex(
-              (item) => item.id === newChatRef.id
+              (item) => item.id === newChatItem.id
             );
             chatsArray.splice(index, 1);
           }
@@ -419,6 +377,55 @@ export default class AppPage extends React.Component {
     });
   };
 
+  
+  getCourses = async (courseChanges, coursesArray) => {
+    return new Promise((resolve, reject) => {
+      courseChanges.forEach((change, index, array) => {
+        const newCourseData = change.doc.data();
+        const generalId = Object.keys(newCourseData.sections)[0];
+        this.getSectionParticipantIds(generalId).then((participantIds) => {
+          const newCourseItem = {
+            id: change.doc.id,
+            timestamp: newCourseData.lastTimestamp,
+            new: newCourseData.new,
+            newCount: newCourseData.newCount,
+            participantIds: participantIds,
+            lastMessage: newCourseData.lastMessage,
+            code: newCourseData.code,
+            name: newCourseData.name,
+            color: newCourseData.color,
+            sections: newCourseData.sections,
+            // groupChatInfo: newCourseData.groupChatInfo,
+            // notified: newCourseData.notified,
+          };
+
+          if (change.type === "added") {
+            //Adding to array
+            coursesArray.unshift(newCourseItem);
+          } else if (change.type === "modified") {
+            //Modifying previously added chat.
+            const index = coursesArray.findIndex(
+              (item) => item.id === newCourseItem.id
+            );
+            if (index >= 0) {
+              coursesArray[index] = newCourseItem;
+            } else {
+              coursesArray.unshift(newCourseItem);
+            }
+          } else if (change.type === "removed") {
+            //Modifying previously added chat.
+            const index = coursesArray.findIndex(
+              (item) => item.id === newCourseItem.id
+            );
+            coursesArray.splice(index, 1);
+          }
+
+          if (index === array.length - 1) resolve();
+        });
+      });
+    });
+  };
+
   getChatParticipantIds(chatId) {
     const chatRef = firebase.firestore().collection("chats").doc(chatId);
     return new Promise((resolve, reject) => {
@@ -426,6 +433,23 @@ export default class AppPage extends React.Component {
         const chatData = chatDoc.data();
         const participantIds = Object.keys(chatData.participantIds);
         resolve(participantIds);
+      });
+    });
+  }
+
+  getSectionParticipantIds(sectionId) {
+    const sectionRef = firebase.firestore().collection("sections").doc(sectionId);
+    return new Promise((resolve, reject) => {
+      sectionRef.get().then((sectionDoc) => {
+        const sectionData = sectionDoc.data();
+        if (sectionData.studentIds && Object.keys(sectionData.studentIds).length !== 0 )
+        {
+          const participantIds = Object.keys(sectionData.studentIds);
+          resolve(participantIds);
+        }
+        else {
+          resolve([]);
+        }
       });
     });
   }

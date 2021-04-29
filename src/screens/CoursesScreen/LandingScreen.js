@@ -42,7 +42,7 @@ export default class LandingScreen extends React.Component {
       <TouchableOpacity
         style={styles.container}
         onPress={() =>
-          this.props.navigation.navigate("CourseItem", { courseInfo: item })
+          this.props.navigation.navigate("CourseItem", { course: item })
         }
       >
         <CourseItem {...this.props} courseInfo={item} />
