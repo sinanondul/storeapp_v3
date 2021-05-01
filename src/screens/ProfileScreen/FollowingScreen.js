@@ -26,6 +26,7 @@ export default class FollowingScreen extends React.Component {
     return (
       <TouchableOpacity>
         <UserItem
+          {...this.props}
           uid={item.id}
           userData={this.props.userData}
           userInfo={this.props.userInfo}
