@@ -39,6 +39,7 @@ export default function RegistrationScreen({ navigation }) {
           phone: null,
           about: null,
           department: null,
+          myComments: {},
           myPosts: {},
           upedPosts: {},
           favPosts: {},
