@@ -46,12 +46,15 @@ export default class LandingScreen extends React.Component {
   constructor(props) {
     super(props);
     this.toggleCommentsModal = this.toggleCommentsModal.bind(this);
+    this.userInfoHandler = this.userInfoHandler.bind(this);
+    this.followerHandler = this.followerHandler.bind(this);
   }
 
   state = {
     focusRefresh: false,
     commentsModalOpen: false,
     posts: [],
+    userInfo: null,
   };
 
   static navigationOptions = ({ navigation }) => {
@@ -65,6 +68,7 @@ export default class LandingScreen extends React.Component {
 
   componentDidMount() {
     const otherProfile = this.props.userData.uid !== this.props.userInfo.uid;
+    this.setState({userInfo: this.props.userInfo})
     //Navigation update.
 
     this.props.navigation.setOptions({
@@ -87,13 +91,19 @@ export default class LandingScreen extends React.Component {
         ),
       headerRight: () =>
         !otherProfile ? (
-          <Icon
-            name="account-edit"
-            style={{ marginRight: 10 }}
-            size={30}
-            color="#fff"
-            onPress={() => this.props.navigation.navigate("EditProfile")}
-          />
+          <TouchableOpacity 
+            style={{ marginRight: 10}} 
+            onPress={() => this.props.navigation.navigate("EditProfile", {userInfoHandler: this.userInfoHandler})}
+          >
+            <Text style={{fontSize: 18, color: 'white'}}> Edit </Text>
+          </TouchableOpacity>
+          // <Icon
+          //   name="account-edit"
+          //   style={{ marginRight: 10 }}
+          //   size={30}
+          //   color="#fff"
+          //   onPress={() => this.props.navigation.navigate("EditProfile")}
+          // />
         ) : null,
     });
 
@@ -102,11 +112,11 @@ export default class LandingScreen extends React.Component {
         headerTitle: () => (
           <View style={styles.headerTitleContainer}>
             <View style={styles.headerAvatar}>
-              {getAvatar(this.props.userInfo, 30)}
+              {this.state.userInfo ? getAvatar(this.state.userInfo, 30) : null}
             </View>
 
             <Text style={styles.headerText}>
-              {getFullName(this.props.userInfo)}
+              {this.state.userInfo ? getFullName(this.state.userInfo) : null}
             </Text>
           </View>
         ),
@@ -132,6 +142,23 @@ export default class LandingScreen extends React.Component {
       commentsModalOpen: !this.state.commentsModalOpen,
       modalPostInfo: postInfo,
     });
+  }
+
+  userInfoHandler(userInfo){
+    this.setState({userInfo: {...this.state.userInfo, ...userInfo}});
+  }
+
+  followerHandler(add) {
+    let newUserInfo = this.state.userInfo;
+    if (add) {
+      newUserInfo.followers[this.props.userData.uid] = Date.now();
+    }
+    else {
+      if (newUserInfo.followers[this.props.userData.uid]) {
+       delete newUserInfo.followers[this.props.userData.uid]
+      }
+    }
+    this.setState({userInfo: newUserInfo})
   }
 
   render() {
@@ -161,7 +188,7 @@ export default class LandingScreen extends React.Component {
           <View style={styles.profileTop}>
             <View style={styles.profileImageContainer}>
               <View style={styles.profileImage}>
-                {getAvatar(this.props.userInfo, 80)}
+                {this.state.userInfo ? getAvatar(this.state.userInfo, 80) : null}
               </View>
               {otherProfile ? (
                 <View style={styles.buttonsContainer}>
@@ -191,6 +218,7 @@ export default class LandingScreen extends React.Component {
                   <FollowButton
                     userData={userData}
                     targetId={this.props.userInfo.uid}
+                    followerHandler={this.followerHandler}
                   />
                 </View>
               ) : null}
@@ -198,19 +226,19 @@ export default class LandingScreen extends React.Component {
 
             <View style={styles.infoContainer}>
               <Text style={[styles.text, { fontWeight: "500", fontSize: 20 }]}>
-                {getFullName(this.props.userInfo)}
+                {this.state.userInfo ? getFullName(this.state.userInfo) : null}
               </Text>
-              {getHandle(this.props.userInfo) ? (
+              {(this.state.userInfo ? getHandle(this.state.userInfo) : null) ? (
                 <Text style={[styles.text, { color: "gray", fontSize: 14 }]}>
-                  {getHandle(this.props.userInfo)}
+                  {getHandle(this.state.userInfo)}
                 </Text>
               ) : null}
-              {getDepartment(this.props.userInfo) ? (
+              {(this.state.userInfo ? getDepartment(this.props.userInfo) : null) ? (
                 <Text style={[styles.text, { color: "#AEB5BC", fontSize: 14 }]}>
-                  {getDepartment(this.props.userInfo)}
+                  {getDepartment(this.state.userInfo)}
                 </Text>
               ) : null}
-              {getAbout(this.props.userInfo) ? (
+              {(this.state.userInfo ? getAbout(this.state.userInfo) : null) ? (
                 <Text
                   numberOfLines={3}
                   style={[
@@ -224,7 +252,7 @@ export default class LandingScreen extends React.Component {
                     },
                   ]}
                 >
-                  {getAbout(this.props.userInfo)}
+                  {getAbout(this.state.userInfo)}
                 </Text>
               ) : null}
             </View>
@@ -232,21 +260,21 @@ export default class LandingScreen extends React.Component {
             <View style={styles.userInfoSection}>
               <View style={styles.row}>
                 <Icon name="email" color="#777777" size={16} />
-                <Text>{" " + this.props.userInfo.email}</Text>
+                <Text>{" " + (this.state.userInfo ? this.state.userInfo.email : "")}</Text>
               </View>
-              {getPhone(this.props.userInfo) ? (
+              {(this.state.userInfo ? getPhone(this.state.userInfo) : null) ? (
                 <View style={styles.row}>
                   <Icon name="phone" color="#777777" size={16} />
-                  <Text>{" " + getPhone(this.props.userInfo)}</Text>
+                  <Text>{" " + getPhone(this.state.userInfo)}</Text>
                 </View>
               ) : null}
             </View>
 
             <View style={styles.userInfoSectionLower}>
-              {getLocation(this.props.userInfo) ? (
+              {(this.state.userInfo ? getLocation(this.state.userInfo) : null) ? (
                 <View style={styles.row}>
                   <Icon name="map" color="#777777" size={16} />
-                  <Text>{" " + getLocation(this.props.userInfo)}</Text>
+                  <Text>{" " + getLocation(this.state.userInfo)}</Text>
                 </View>
               ) : null}
             </View>
@@ -262,7 +290,7 @@ export default class LandingScreen extends React.Component {
               >
                 <View style={styles.infoBox}>
                   <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                    {getFollowersCount(this.props.userInfo)}
+                    {(this.state.userInfo ? getFollowersCount(this.state.userInfo) : null)}
                   </Text>
 
                   <Text style={{ fontWeight: "100" }}> Followers</Text>
@@ -279,7 +307,7 @@ export default class LandingScreen extends React.Component {
               >
                 <View style={styles.infoBox}>
                   <Text style={{ fontWeight: "bold", fontSize: 16 }}>
-                    {getFollowingCount(this.props.userInfo)}
+                    {(this.state.userInfo ? getFollowingCount(this.state.userInfo) : null)}
                   </Text>
                   <Text style={{ fontWeight: "100" }}> Following</Text>
                 </View>

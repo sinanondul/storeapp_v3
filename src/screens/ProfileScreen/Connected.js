@@ -41,6 +41,7 @@ import FollowerScreen from "./FollowerScreen";
 import FollowingScreen from "./FollowingScreen";
 
 import styles from "./styles";
+import { relativeTimeThreshold } from "moment";
 const Tab = createMaterialTopTabNavigator();
 export default class LandingScreen extends React.Component {
   constructor(props) {
@@ -133,6 +134,7 @@ export default class LandingScreen extends React.Component {
             <Tab.Screen name="Followers">
               {(props) => (
                 <FollowerScreen
+                  {...this.props}
                   {...props}
                   userData={this.props.userData}
                   userInfo={this.props.userInfo}
@@ -143,6 +145,7 @@ export default class LandingScreen extends React.Component {
             <Tab.Screen name="Following">
               {(props) => (
                 <FollowingScreen
+                  {...this.props}
                   {...props}
                   userData={this.props.userData}
                   userInfo={this.props.userInfo}
