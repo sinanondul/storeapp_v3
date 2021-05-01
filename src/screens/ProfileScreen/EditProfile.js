@@ -42,7 +42,7 @@ export default class EditProfile extends React.Component {
       image: null,
       fall: new Animated.Value(1),
       user: {
-        id: null,
+        uid: null,
         name: null,
         handle: null,
         department: null,
@@ -78,7 +78,7 @@ export default class EditProfile extends React.Component {
     this.setState({
       image: null,
       user: {
-        id: this.props.userData.uid,
+        uid: this.props.userData.uid,
         name: this.props.userData.name,
         handle: this.props.userData.handle,
         about: this.props.userData.about,
@@ -116,13 +116,17 @@ export default class EditProfile extends React.Component {
       imgUrl = this.props.userData.avatar;
     }
 
+    //Local update.
+    this.props.route.params.userInfoHandler(this.state.user)
+    
+    //Backend update.
     firebase
       .firestore()
       .collection("users")
       .doc(this.props.userData.uid)
       .set(
         {
-          id: this.state.user.id,
+          id: this.state.user.uid,
           name: this.state.user.name,
           surename: this.state.user.surename,
           fullName: this.state.user.fullName,

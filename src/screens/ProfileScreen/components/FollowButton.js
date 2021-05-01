@@ -24,10 +24,12 @@ export default class PostList extends React.Component {
     toggleFollowing = () => {
         if (!this.state.following) {
             Fire.shared.follow(this.props.userData, this.props.targetId)
+            this.props.followerHandler(true);
             this.setState({following: true})
         }
         else {
             Fire.shared.unFollow(this.props.userData, this.props.targetId)
+            this.props.followerHandler(false);
             this.setState({following: false})
         }
     }
