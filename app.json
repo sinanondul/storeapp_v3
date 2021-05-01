@@ -1,7 +1,6 @@
 {
   "expo": {
     "name": "UP",
-    "icon": "./assets/UP_SquareLogo.png",
     "slug": "up-demo",
     "platforms": [
       "ios",
@@ -22,10 +21,12 @@
       "**/*"
     ],
     "ios": {
+      "icon": "./assets/UP_SquareLogo_ios.png",
       "supportsTablet": true,
       "bundleIdentifier": "com.sinanondul.up-demo"
     },
     "android":{
+      "icon": "./assets/UP_SquareLogo.png",
       "package":"com.sinanondul.updemo",
       "googleServicesFile": "./android/app/google-services.json"
     },
