@@ -17,6 +17,7 @@ import {
   TouchableRipple,
   Switch,
 } from "react-native-paper";
+
 import { DrawerContentScrollView, DrawerItem } from "@react-navigation/drawer";
 import firebase from "firebase";
 import Icon from "react-native-vector-icons/Ionicons";

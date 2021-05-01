@@ -23,11 +23,17 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "bundleIdentifier": "com.sinanondul.up-demo"
+      "bundleIdentifier": "com.sinanondul.up-demo",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8480856077293657~9636871540" 
+      }
     },
     "android":{
       "package":"com.sinanondul.updemo",
-      "googleServicesFile": "./android/app/google-services.json"
+      "googleServicesFile": "./android/app/google-services.json",
+      "config": {
+        "googleMobileAdsAppId": "ca-app-pub-8480856077293657~9636871540" 
+      }
     },
     "description": ""
   }

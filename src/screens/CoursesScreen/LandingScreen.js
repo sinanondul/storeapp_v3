@@ -8,8 +8,15 @@ import {
   Platform,
   Image,
 } from "react-native";
+import {
+  AdMobBanner,
+  AdMobInterstitial,
+  PublisherBanner,
+  AdMobRewarded,
+  setTestDeviceIDAsync,
+} from "expo-ads-admob";
 import Icon from "react-native-vector-icons/Ionicons";
-import Swipeout from 'react-native-swipeout';
+import Swipeout from "react-native-swipeout";
 
 import firebase from "firebase";
 import Fire from "../../firebase/Fire";
@@ -24,7 +31,7 @@ import styles from "./styles";
 export default class LandingScreen extends React.Component {
   state = {
     courses: [],
-  }
+  };
 
   static navigationOptions = ({ navigation }) => {
     const { params } = navigation.state;
@@ -33,7 +40,11 @@ export default class LandingScreen extends React.Component {
 
   renderItem = ({ item }) => {
     return (
-      <Swipeout right={this.swipeButtons(item)} autoClose='true' backgroundColor= 'transparent'>
+      <Swipeout
+        right={this.swipeButtons(item)}
+        autoClose="true"
+        backgroundColor="transparent"
+      >
         <TouchableOpacity
           style={styles.container}
           onPress={() =>
@@ -47,43 +58,56 @@ export default class LandingScreen extends React.Component {
   };
 
   componentDidMount() {
-    this.setState({courses: this.props.courses});
+    this.setState({ courses: this.props.courses });
     this._unsubscribeFocus = this.props.navigation.addListener("focus", () => {
-      this.setState({courses: this.props.courses});
+      this.setState({ courses: this.props.courses });
     });
   }
 
   componentWillUnmount() {}
 
-  swipeButtons(course) {return [{
-    text: 'Remove',
-    backgroundColor: 'red',
-    underlayColor: 'rgba(0, 0, 0, 1, 0.6)',
-    onPress: () => {this.removeCourse(course)},
-  }];}
+  swipeButtons(course) {
+    return [
+      {
+        text: "Remove",
+        backgroundColor: "red",
+        underlayColor: "rgba(0, 0, 0, 1, 0.6)",
+        onPress: () => {
+          this.removeCourse(course);
+        },
+      },
+    ];
+  }
 
   removeCourse(course) {
-    const userRef = firebase.firestore().collection('users').doc(this.props.userData.uid);
-    const courseRef = userRef.collection('courses').doc(course.id);
-    const sectionHeaderRef = firebase.firestore().collection('sections').doc(Object.keys(course.sections)[0]);
-    sectionHeaderRef.get().then(courseHeaderDoc => {
+    const userRef = firebase
+      .firestore()
+      .collection("users")
+      .doc(this.props.userData.uid);
+    const courseRef = userRef.collection("courses").doc(course.id);
+    const sectionHeaderRef = firebase
+      .firestore()
+      .collection("sections")
+      .doc(Object.keys(course.sections)[0]);
+    sectionHeaderRef.get().then((courseHeaderDoc) => {
       let courseHeader = courseHeaderDoc.data();
       courseHeader.participantIds[this.props.userData.uid] = false;
 
-      sectionHeaderRef.set({participantIds: courseHeader.participantIds}, {merge: true});
-    })
-    Fire.shared.deleteCollection(courseRef, 'messages');
+      sectionHeaderRef.set(
+        { participantIds: courseHeader.participantIds },
+        { merge: true }
+      );
+    });
+    Fire.shared.deleteCollection(courseRef, "messages");
     courseRef.delete();
     this.handleDelete(course.id);
   }
 
   handleDelete(courseId) {
     let coursesArray = this.state.courses;
-    const index = coursesArray.findIndex(
-      (item) => item.id === courseId
-    );
+    const index = coursesArray.findIndex((item) => item.id === courseId);
     coursesArray.splice(index, 1);
-    this.setState({courses: coursesArray});
+    this.setState({ courses: coursesArray });
   }
 
   render() {
@@ -107,6 +131,12 @@ export default class LandingScreen extends React.Component {
             }}
           />
         </View>
+        <AdMobBanner
+          bannerSize="fullBanner"
+          adUnitID="ca-app-pub-8480856077293657~9636871540" // Test ID, Replace with your-admob-unit-id
+          servePersonalizedAds // true or false
+          onDidFailToReceiveAdWithError={this.bannerError}
+        />
       </View>
     );
   }
@@ -164,3 +194,16 @@ export default class LandingScreen extends React.Component {
     ),
   };
 }
+async () => {
+  await setTestDeviceIDAsync("EMULATOR");
+
+  // Display an interstitial
+  await AdMobInterstitial.setAdUnitID("ca-app-pub-8480856077293657~9636871540"); // Test ID, Replace with your-admob-unit-id
+  await AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true });
+  await AdMobInterstitial.showAdAsync();
+
+  // Display a rewarded ad
+  await AdMobRewarded.setAdUnitID("ca-app-pub-8480856077293657~9636871540"); // Test ID, Replace with your-admob-unit-id
+  await AdMobRewarded.requestAdAsync();
+  await AdMobRewarded.showAdAsync();
+};
